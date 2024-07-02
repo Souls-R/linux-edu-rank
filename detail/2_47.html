@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Harvard University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Harvard University</h1>
+    <div class="pagination">
+        <a href='2_46.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><span>[47]</span><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_48.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 3ca9aebac2ebb8f56d2d097636b8c568320a9f87
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:22:05 2012 -0400
+
+    USB: EHCI: use hrtimer for the periodic schedule
+    
+    This patch (as1573) adds hrtimer support for managing ehci-hcd's
+    periodic schedule.  There are two issues to deal with.
+    
+    First, the schedule's state (on or off) must not be changed until the
+    hardware status has caught up with the current command.  This is
+    handled by an hrtimer event that polls at 1-ms intervals to see when
+    the Periodic Schedule Status (PSS) flag matches the Periodic Schedule
+    Enable (PSE) value.
+    
+    Second, the schedule should not be turned off as soon as it becomes
+    empty.  Turning the schedule on and off takes time, so we want to wait
+    until the schedule has been empty for a suitable period before turning
+    it off.  This is handled by an hrtimer event that gets set to expire
+    10 ms after the periodic schedule becomes empty.
+    
+    The existing code polls (for up to 1125 us and with interrupts
+    disabled!) to check the status, and doesn't implement a delay before
+    turning off the schedule.  Furthermore, if the polling fails then the
+    driver decides that the controller has died.  This has caused problems
+    for several people; some controllers can take 10 ms or more to turn
+    off their periodic schedules.
+    
+    This patch fixes these issues.  It also makes the "broken_periodic"
+    workaround unnecessary; there is no longer any danger of turning off
+    the periodic schedule after it has been on for less than 1 ms.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index f8fed163a23a..7e00ca095cea 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -546,7 +546,7 @@ static void ehci_work (struct ehci_hcd *ehci)
+ 	 */
+ 	if (ehci-&gt;rh_state == EHCI_RH_RUNNING &amp;&amp;
+ 			(ehci-&gt;async-&gt;qh_next.ptr != NULL ||
+-			 ehci-&gt;periodic_sched != 0))
++			 ehci-&gt;periodic_count != 0))
+ 		timer_action (ehci, TIMER_IO_WATCHDOG);
+ }
+ 
+diff --git a/drivers/usb/host/ehci-pci.c b/drivers/usb/host/ehci-pci.c
+index 21e5f963f331..2cb7d370c4ef 100644
+--- a/drivers/usb/host/ehci-pci.c
++++ b/drivers/usb/host/ehci-pci.c
+@@ -104,10 +104,6 @@ static int ehci_pci_setup(struct usb_hcd *hcd)
+ 		break;
+ 	case PCI_VENDOR_ID_INTEL:
+ 		ehci-&gt;fs_i_thresh = 1;
+-		if (pdev-&gt;device == 0x27cc) {
+-			ehci-&gt;broken_periodic = 1;
+-			ehci_info(ehci, "using broken periodic workaround\n");
+-		}
+ 		if (pdev-&gt;device == PCI_DEVICE_ID_INTEL_CE4100_USB)
+ 			hcd-&gt;has_tt = 1;
+ 		break;
+diff --git a/drivers/usb/host/ehci-sched.c b/drivers/usb/host/ehci-sched.c
+index 3429b8a33c58..f5c15880c65a 100644
+--- a/drivers/usb/host/ehci-sched.c
++++ b/drivers/usb/host/ehci-sched.c
+@@ -481,67 +481,26 @@ static int tt_no_collision (
+ 
+ static int enable_periodic (struct ehci_hcd *ehci)
+ {
+-	int	status;
+-
+-	if (ehci-&gt;periodic_sched++)
++	if (ehci-&gt;periodic_count++)
+ 		return 0;
+ 
+-	/* did clearing PSE did take effect yet?
+-	 * takes effect only at frame boundaries...
+-	 */
+-	status = handshake_on_error_set_halt(ehci, &amp;ehci-&gt;regs-&gt;status,
+-					     STS_PSS, 0, 9 * 125);
+-	if (status) {
+-		usb_hc_died(ehci_to_hcd(ehci));
+-		return status;
+-	}
+-
+-	ehci-&gt;command |= CMD_PSE;
+-	ehci_writel(ehci, ehci-&gt;command, &amp;ehci-&gt;regs-&gt;command);
+-	/* posted write ... PSS happens later */
++	/* Stop waiting to turn off the periodic schedule */
++	ehci-&gt;enabled_hrtimer_events &amp;= ~BIT(EHCI_HRTIMER_DISABLE_PERIODIC);
+ 
+-	/* make sure ehci_work scans these */
+-	ehci-&gt;next_uframe = ehci_read_frame_index(ehci)
+-		% (ehci-&gt;periodic_size &lt;&lt; 3);
+-	if (unlikely(ehci-&gt;broken_periodic))
+-		ehci-&gt;last_periodic_enable = ktime_get_real();
++	/* Don't start the schedule until PSS is 0 */
++	ehci_poll_PSS(ehci);
+ 	return 0;
+ }
+ 
+ static int disable_periodic (struct ehci_hcd *ehci)
+ {
+-	int	status;
+-
+-	if (--ehci-&gt;periodic_sched)
++	if (--ehci-&gt;periodic_count)
+ 		return 0;
+ 
+-	if (unlikely(ehci-&gt;broken_periodic)) {
+-		/* delay experimentally determined */
+-		ktime_t safe = ktime_add_us(ehci-&gt;last_periodic_enable, 1000);
+-		ktime_t now = ktime_get_real();
+-		s64 delay = ktime_us_delta(safe, now);
+-
+-		if (unlikely(delay &gt; 0))
+-			udelay(delay);
+-	}
+-
+-	/* did setting PSE not take effect yet?
+-	 * takes effect only at frame boundaries...
+-	 */
+-	status = handshake_on_error_set_halt(ehci, &amp;ehci-&gt;regs-&gt;status,
+-					     STS_PSS, STS_PSS, 9 * 125);
+-	if (status) {
+-		usb_hc_died(ehci_to_hcd(ehci));
+-		return status;
+-	}
+-
+-	ehci-&gt;command &amp;= ~CMD_PSE;
+-	ehci_writel(ehci, ehci-&gt;command, &amp;ehci-&gt;regs-&gt;command);
+-	/* posted write ... */
+-
+-	free_cached_lists(ehci);
++	ehci-&gt;next_uframe = -1;		/* the periodic schedule is empty */
+ 
+-	ehci-&gt;next_uframe = -1;
++	/* Don't turn off the schedule until PSS is 1 */
++	ehci_poll_PSS(ehci);
+ 	return 0;
+ }
+ 
+@@ -650,8 +609,7 @@ static int qh_unlink_periodic(struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	qh-&gt;qh_state = QH_STATE_UNLINK;
+ 	qh-&gt;qh_next.ptr = NULL;
+ 
+-	/* maybe turn off periodic schedule */
+-	return disable_periodic(ehci);
++	return 0;
+ }
+ 
+ static void intr_deschedule (struct ehci_hcd *ehci, struct ehci_qh *qh)
+@@ -706,6 +664,9 @@ static void intr_deschedule (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 			ehci_err(ehci, "can't reschedule qh %p, err %d\n",
+ 					qh, rc);
+ 	}
++
++	/* maybe turn off periodic schedule */
++	disable_periodic(ehci);
+ }
+ 
+ /*-------------------------------------------------------------------------*/
+@@ -2447,7 +2408,7 @@ scan_periodic (struct ehci_hcd *ehci)
+ 
+ 			/* assume completion callbacks modify the queue */
+ 			if (unlikely (modified)) {
+-				if (likely(ehci-&gt;periodic_sched &gt; 0))
++				if (likely(ehci-&gt;periodic_count &gt; 0))
+ 					goto restart;
+ 				/* short-circuit this scan */
+ 				now_uframe = clock;
+@@ -2476,7 +2437,7 @@ scan_periodic (struct ehci_hcd *ehci)
+ 			unsigned	now;
+ 
+ 			if (ehci-&gt;rh_state &lt; EHCI_RH_RUNNING
+-					|| ehci-&gt;periodic_sched == 0)
++					|| ehci-&gt;periodic_count == 0)
+ 				break;
+ 			ehci-&gt;next_uframe = now_uframe;
+ 			now = ehci_read_frame_index(ehci) &amp; (mod - 1);
+diff --git a/drivers/usb/host/ehci-timer.c b/drivers/usb/host/ehci-timer.c
+index f6279e2883a8..ecd3296157c6 100644
+--- a/drivers/usb/host/ehci-timer.c
++++ b/drivers/usb/host/ehci-timer.c
+@@ -16,6 +16,28 @@
+ 
+ /*-------------------------------------------------------------------------*/
+ 
++/* Set a bit in the USBCMD register */
++static void ehci_set_command_bit(struct ehci_hcd *ehci, u32 bit)
++{
++	ehci-&gt;command |= bit;
++	ehci_writel(ehci, ehci-&gt;command, &amp;ehci-&gt;regs-&gt;command);
++
++	/* unblock posted write */
++	ehci_readl(ehci, &amp;ehci-&gt;regs-&gt;command);
++}
++
++/* Clear a bit in the USBCMD register */
++static void ehci_clear_command_bit(struct ehci_hcd *ehci, u32 bit)
++{
++	ehci-&gt;command &amp;= ~bit;
++	ehci_writel(ehci, ehci-&gt;command, &amp;ehci-&gt;regs-&gt;command);
++
++	/* unblock posted write */
++	ehci_readl(ehci, &amp;ehci-&gt;regs-&gt;command);
++}
++
++/*-------------------------------------------------------------------------*/
++
+ /*
+  * EHCI timer support...  Now using hrtimers.
+  *
+@@ -45,6 +67,8 @@
+  * the event types indexed by enum ehci_hrtimer_event in ehci.h.
+  */
+ static unsigned event_delays_ns[] = {
++	1 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_POLL_PSS */
++	10 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_DISABLE_PERIODIC */
+ };
+ 
+ /* Enable a pending hrtimer event */
+@@ -67,12 +91,68 @@ static void ehci_enable_event(struct ehci_hcd *ehci, unsigned event,
+ }
+ 
+ 
++/* Poll the STS_PSS status bit; see when it agrees with CMD_PSE */
++static void ehci_poll_PSS(struct ehci_hcd *ehci)
++{
++	unsigned	actual, want;
++
++	/* Don't do anything if the controller isn't running (e.g., died) */
++	if (ehci-&gt;rh_state != EHCI_RH_RUNNING)
++		return;
++
++	want = (ehci-&gt;command &amp; CMD_PSE) ? STS_PSS : 0;
++	actual = ehci_readl(ehci, &amp;ehci-&gt;regs-&gt;status) &amp; STS_PSS;
++
++	if (want != actual) {
++
++		/* Poll again later, but give up after about 20 ms */
++		if (ehci-&gt;PSS_poll_count++ &lt; 20) {
++			ehci_enable_event(ehci, EHCI_HRTIMER_POLL_PSS, true);
++			return;
++		}
++		ehci_warn(ehci, "Waited too long for the periodic schedule status, giving up\n");
++	}
++	ehci-&gt;PSS_poll_count = 0;
++
++	/* The status is up-to-date; restart or stop the schedule as needed */
++	if (want == 0) {	/* Stopped */
++		free_cached_lists(ehci);
++		if (ehci-&gt;periodic_count &gt; 0) {
++
++			/* make sure ehci_work scans these */
++			ehci-&gt;next_uframe = ehci_read_frame_index(ehci)
++					&amp; ((ehci-&gt;periodic_size &lt;&lt; 3) - 1);
++			ehci_set_command_bit(ehci, CMD_PSE);
++		}
++
++	} else {		/* Running */
++		if (ehci-&gt;periodic_count == 0) {
++
++			/* Turn off the schedule after a while */
++			ehci_enable_event(ehci, EHCI_HRTIMER_DISABLE_PERIODIC,
++					true);
++		}
++	}
++}
++
++/* Turn off the periodic schedule after a brief delay */
++static void ehci_disable_PSE(struct ehci_hcd *ehci)
++{
++	ehci_clear_command_bit(ehci, CMD_PSE);
++
++	/* Poll to see when it actually stops */
++	ehci_enable_event(ehci, EHCI_HRTIMER_POLL_PSS, true);
++}
++
++
+ /*
+  * Handler functions for the hrtimer event types.
+  * Keep this array in the same order as the event types indexed by
+  * enum ehci_hrtimer_event in ehci.h.
+  */
+ static void (*event_handlers[])(struct ehci_hcd *) = {
++	ehci_poll_PSS,			/* EHCI_HRTIMER_POLL_PSS */
++	ehci_disable_PSE,		/* EHCI_HRTIMER_DISABLE_PERIODIC */
+ };
+ 
+ static enum hrtimer_restart ehci_hrtimer_func(struct hrtimer *t)
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 070be83028d5..da2e0ab23850 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -79,6 +79,8 @@ enum ehci_rh_state {
+  * ehci-timer.c) in parallel with this list.
+  */
+ enum ehci_hrtimer_event {
++	EHCI_HRTIMER_POLL_PSS,		/* Poll for periodic schedule off */
++	EHCI_HRTIMER_DISABLE_PERIODIC,	/* Wait to disable periodic sched */
+ 	EHCI_HRTIMER_NUM_EVENTS		/* Must come last */
+ };
+ #define EHCI_HRTIMER_NO_EVENT	99
+@@ -90,6 +92,8 @@ struct ehci_hcd {			/* one per controller */
+ 	ktime_t			hr_timeouts[EHCI_HRTIMER_NUM_EVENTS];
+ 	struct hrtimer		hrtimer;
+ 
++	int			PSS_poll_count;
++
+ 	/* glue to PCI and HCD framework */
+ 	struct ehci_caps __iomem *caps;
+ 	struct ehci_regs __iomem *regs;
+@@ -116,7 +120,7 @@ struct ehci_hcd {			/* one per controller */
+ 
+ 	union ehci_shadow	*pshadow;	/* mirror hw periodic table */
+ 	int			next_uframe;	/* scan periodic, start here */
+-	unsigned		periodic_sched;	/* periodic activity count */
++	unsigned		periodic_count;	/* periodic activity count */
+ 	unsigned		uframe_periodic_max; /* max periodic time per uframe */
+ 
+ 
+@@ -165,7 +169,6 @@ struct ehci_hcd {			/* one per controller */
+ 	unsigned		big_endian_capbase:1;
+ 	unsigned		has_amcc_usb23:1;
+ 	unsigned		need_io_watchdog:1;
+-	unsigned		broken_periodic:1;
+ 	unsigned		amd_pll_fix:1;
+ 	unsigned		fs_i_thresh:1;	/* Intel iso scheduling */
+ 	unsigned		use_dummy_qh:1;	/* AMD Frame List table quirk*/</pre><hr><pre>commit d58b4bcc6df8046cf9c3c59f9ff84d2cd86b93eb
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:21:54 2012 -0400
+
+    USB: EHCI: introduce high-res timer
+    
+    This patch (as1572) begins the conversion of ehci-hcd over to using
+    high-resolution timers rather than old-fashioned low-resolution kernel
+    timers.  This reduces overhead caused by timer roundoff on systems
+    where HZ is smaller than 1000.  Also, the new timer framework
+    introduced here is much more logical and easily extended than the
+    ad-hoc approach ehci-hcd currently uses for timers.
+    
+    An hrtimer structure is added to ehci_hcd, along with a bitflag array
+    and an array of ktime_t values, to keep track of which timing events
+    are pending and what their expiration times are.
+    
+    Only the infrastructure for the timing operations is added in this
+    patch.  Later patches will add routines for handling each of the
+    various timing events the driver needs.  In some cases the new hrtimer
+    handlers will replace the existing handlers for ehci-hcd's kernel
+    timers; as this happens the old timers will be removed.  In other
+    cases the new timing events will replace busy-wait loops.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index bc94822f4c5d..f8fed163a23a 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -30,8 +30,7 @@
+ #include &lt;linux/vmalloc.h&gt;
+ #include &lt;linux/errno.h&gt;
+ #include &lt;linux/init.h&gt;
+-#include &lt;linux/timer.h&gt;
+-#include &lt;linux/ktime.h&gt;
++#include &lt;linux/hrtimer.h&gt;
+ #include &lt;linux/list.h&gt;
+ #include &lt;linux/interrupt.h&gt;
+ #include &lt;linux/usb.h&gt;
+@@ -380,6 +379,7 @@ static void ehci_quiesce (struct ehci_hcd *ehci)
+ static void end_unlink_async(struct ehci_hcd *ehci);
+ static void ehci_work(struct ehci_hcd *ehci);
+ 
++#include "ehci-timer.c"
+ #include "ehci-hub.c"
+ #include "ehci-lpm.c"
+ #include "ehci-mem.c"
+@@ -494,7 +494,10 @@ static void ehci_shutdown(struct usb_hcd *hcd)
+ 	spin_lock_irq(&amp;ehci-&gt;lock);
+ 	ehci-&gt;rh_state = EHCI_RH_STOPPING;
+ 	ehci_silence_controller(ehci);
++	ehci-&gt;enabled_hrtimer_events = 0;
+ 	spin_unlock_irq(&amp;ehci-&gt;lock);
++
++	hrtimer_cancel(&amp;ehci-&gt;hrtimer);
+ }
+ 
+ static void ehci_port_power (struct ehci_hcd *ehci, int is_on)
+@@ -561,12 +564,14 @@ static void ehci_stop (struct usb_hcd *hcd)
+ 	del_timer_sync(&amp;ehci-&gt;iaa_watchdog);
+ 
+ 	spin_lock_irq(&amp;ehci-&gt;lock);
++	ehci-&gt;enabled_hrtimer_events = 0;
+ 	ehci_quiesce(ehci);
+ 
+ 	ehci_silence_controller(ehci);
+ 	ehci_reset (ehci);
+ 	spin_unlock_irq(&amp;ehci-&gt;lock);
+ 
++	hrtimer_cancel(&amp;ehci-&gt;hrtimer);
+ 	remove_sysfs_files(ehci);
+ 	remove_debug_files (ehci);
+ 
+@@ -615,6 +620,10 @@ static int ehci_init(struct usb_hcd *hcd)
+ 	ehci-&gt;iaa_watchdog.function = ehci_iaa_watchdog;
+ 	ehci-&gt;iaa_watchdog.data = (unsigned long) ehci;
+ 
++	hrtimer_init(&amp;ehci-&gt;hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS);
++	ehci-&gt;hrtimer.function = ehci_hrtimer_func;
++	ehci-&gt;next_hrtimer_event = EHCI_HRTIMER_NO_EVENT;
++
+ 	hcc_params = ehci_readl(ehci, &amp;ehci-&gt;caps-&gt;hcc_params);
+ 
+ 	/*
+@@ -954,6 +963,8 @@ static irqreturn_t ehci_irq (struct usb_hcd *hcd)
+ 		dbg_status(ehci, "fatal", status);
+ 		ehci_halt(ehci);
+ dead:
++		ehci-&gt;enabled_hrtimer_events = 0;
++		hrtimer_try_to_cancel(&amp;ehci-&gt;hrtimer);
+ 		ehci_reset(ehci);
+ 		ehci_writel(ehci, 0, &amp;ehci-&gt;regs-&gt;configured_flag);
+ 		usb_hc_died(hcd);
+diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
+index fb1b99e74937..25329e4b844f 100644
+--- a/drivers/usb/host/ehci-hub.c
++++ b/drivers/usb/host/ehci-hub.c
+@@ -311,12 +311,15 @@ static int ehci_bus_suspend (struct usb_hcd *hcd)
+ 	ehci_readl(ehci, &amp;ehci-&gt;regs-&gt;intr_enable);
+ 
+ 	ehci-&gt;next_statechange = jiffies + msecs_to_jiffies(10);
++	ehci-&gt;enabled_hrtimer_events = 0;
++	ehci-&gt;next_hrtimer_event = EHCI_HRTIMER_NO_EVENT;
+ 	spin_unlock_irq (&amp;ehci-&gt;lock);
+ 
+ 	/* ehci_work() may have re-enabled the watchdog timer, which we do not
+ 	 * want, and so we must delete any pending watchdog timer events.
+ 	 */
+ 	del_timer_sync(&amp;ehci-&gt;watchdog);
++	hrtimer_cancel(&amp;ehci-&gt;hrtimer);
+ 	return 0;
+ }
+ 
+diff --git a/drivers/usb/host/ehci-timer.c b/drivers/usb/host/ehci-timer.c
+new file mode 100644
+index 000000000000..f6279e2883a8
+--- /dev/null
++++ b/drivers/usb/host/ehci-timer.c
+@@ -0,0 +1,106 @@
++/*
++ * Copyright (C) 2012 by Alan Stern
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ * for more details.
++ */
++
++/* This file is part of ehci-hcd.c */
++
++/*-------------------------------------------------------------------------*/
++
++/*
++ * EHCI timer support...  Now using hrtimers.
++ *
++ * Lots of different events are triggered from ehci-&gt;hrtimer.  Whenever
++ * the timer routine runs, it checks each possible event; events that are
++ * currently enabled and whose expiration time has passed get handled.
++ * The set of enabled events is stored as a collection of bitflags in
++ * ehci-&gt;enabled_hrtimer_events, and they are numbered in order of
++ * increasing delay values (ranging between 1 ms and 100 ms).
++ *
++ * Rather than implementing a sorted list or tree of all pending events,
++ * we keep track only of the lowest-numbered pending event, in
++ * ehci-&gt;next_hrtimer_event.  Whenever ehci-&gt;hrtimer gets restarted, its
++ * expiration time is set to the timeout value for this event.
++ *
++ * As a result, events might not get handled right away; the actual delay
++ * could be anywhere up to twice the requested delay.  This doesn't
++ * matter, because none of the events are especially time-critical.  The
++ * ones that matter most all have a delay of 1 ms, so they will be
++ * handled after 2 ms at most, which is okay.  In addition to this, we
++ * allow for an expiration range of 1 ms.
++ */
++
++/*
++ * Delay lengths for the hrtimer event types.
++ * Keep this list sorted by delay length, in the same order as
++ * the event types indexed by enum ehci_hrtimer_event in ehci.h.
++ */
++static unsigned event_delays_ns[] = {
++};
++
++/* Enable a pending hrtimer event */
++static void ehci_enable_event(struct ehci_hcd *ehci, unsigned event,
++		bool resched)
++{
++	ktime_t		*timeout = &amp;ehci-&gt;hr_timeouts[event];
++
++	if (resched)
++		*timeout = ktime_add(ktime_get(),
++				ktime_set(0, event_delays_ns[event]));
++	ehci-&gt;enabled_hrtimer_events |= (1 &lt;&lt; event);
++
++	/* Track only the lowest-numbered pending event */
++	if (event &lt; ehci-&gt;next_hrtimer_event) {
++		ehci-&gt;next_hrtimer_event = event;
++		hrtimer_start_range_ns(&amp;ehci-&gt;hrtimer, *timeout,
++				NSEC_PER_MSEC, HRTIMER_MODE_ABS);
++	}
++}
++
++
++/*
++ * Handler functions for the hrtimer event types.
++ * Keep this array in the same order as the event types indexed by
++ * enum ehci_hrtimer_event in ehci.h.
++ */
++static void (*event_handlers[])(struct ehci_hcd *) = {
++};
++
++static enum hrtimer_restart ehci_hrtimer_func(struct hrtimer *t)
++{
++	struct ehci_hcd	*ehci = container_of(t, struct ehci_hcd, hrtimer);
++	ktime_t		now;
++	unsigned long	events;
++	unsigned long	flags;
++	unsigned	e;
++
++	spin_lock_irqsave(&amp;ehci-&gt;lock, flags);
++
++	events = ehci-&gt;enabled_hrtimer_events;
++	ehci-&gt;enabled_hrtimer_events = 0;
++	ehci-&gt;next_hrtimer_event = EHCI_HRTIMER_NO_EVENT;
++
++	/*
++	 * Check each pending event.  If its time has expired, handle
++	 * the event; otherwise re-enable it.
++	 */
++	now = ktime_get();
++	for_each_set_bit(e, &amp;events, EHCI_HRTIMER_NUM_EVENTS) {
++		if (now.tv64 &gt;= ehci-&gt;hr_timeouts[e].tv64)
++			event_handlers[e](ehci);
++		else
++			ehci_enable_event(ehci, e, false);
++	}
++
++	spin_unlock_irqrestore(&amp;ehci-&gt;lock, flags);
++	return HRTIMER_NORESTART;
++}
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 9e8e82ecce58..070be83028d5 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -73,7 +73,23 @@ enum ehci_rh_state {
+ 	EHCI_RH_STOPPING
+ };
+ 
++/*
++ * Timer events, ordered by increasing delay length.
++ * Always update event_delays_ns[] and event_handlers[] (defined in
++ * ehci-timer.c) in parallel with this list.
++ */
++enum ehci_hrtimer_event {
++	EHCI_HRTIMER_NUM_EVENTS		/* Must come last */
++};
++#define EHCI_HRTIMER_NO_EVENT	99
++
+ struct ehci_hcd {			/* one per controller */
++	/* timing support */
++	enum ehci_hrtimer_event	next_hrtimer_event;
++	unsigned		enabled_hrtimer_events;
++	ktime_t			hr_timeouts[EHCI_HRTIMER_NUM_EVENTS];
++	struct hrtimer		hrtimer;
++
+ 	/* glue to PCI and HCD framework */
+ 	struct ehci_caps __iomem *caps;
+ 	struct ehci_regs __iomem *regs;</pre><hr><pre>commit c0c53dbc32ea05a1e1dd9dba4772327da9a11750
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:21:48 2012 -0400
+
+    USB: EHCI: add new root-hub state: STOPPING
+    
+    This patch (as1571) adds a new state for ehci-hcd's root hubs:
+    EHCI_RH_STOPPING.  This value is used at times when the root hub is
+    being stopped and we don't know whether or not the hardware has
+    finished all its DMA yet.
+    
+    Although the purpose may not be apparent, this distinction will come
+    in useful later on.  Future patches will avoid actions that depend on
+    the root hub being operational (like turning on the async or periodic
+    schedules) when they see the state is EHCI_RH_STOPPING.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-dbg.c b/drivers/usb/host/ehci-dbg.c
+index 76120957d60a..f0c00de035ef 100644
+--- a/drivers/usb/host/ehci-dbg.c
++++ b/drivers/usb/host/ehci-dbg.c
+@@ -706,6 +706,8 @@ static const char *rh_state_string(struct ehci_hcd *ehci)
+ 		return "suspended";
+ 	case EHCI_RH_RUNNING:
+ 		return "running";
++	case EHCI_RH_STOPPING:
++		return "stopping";
+ 	}
+ 	return "?";
+ }
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 8b75e4279a47..bc94822f4c5d 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -357,10 +357,8 @@ static void ehci_quiesce (struct ehci_hcd *ehci)
+ {
+ 	u32	temp;
+ 
+-#ifdef DEBUG
+ 	if (ehci-&gt;rh_state != EHCI_RH_RUNNING)
+-		BUG ();
+-#endif
++		return;
+ 
+ 	/* wait for any schedule enables/disables to take effect */
+ 	temp = (ehci-&gt;command &lt;&lt; 10) &amp; (STS_ASS | STS_PSS);
+@@ -494,6 +492,7 @@ static void ehci_shutdown(struct usb_hcd *hcd)
+ 	del_timer_sync(&amp;ehci-&gt;iaa_watchdog);
+ 
+ 	spin_lock_irq(&amp;ehci-&gt;lock);
++	ehci-&gt;rh_state = EHCI_RH_STOPPING;
+ 	ehci_silence_controller(ehci);
+ 	spin_unlock_irq(&amp;ehci-&gt;lock);
+ }
+@@ -562,8 +561,7 @@ static void ehci_stop (struct usb_hcd *hcd)
+ 	del_timer_sync(&amp;ehci-&gt;iaa_watchdog);
+ 
+ 	spin_lock_irq(&amp;ehci-&gt;lock);
+-	if (ehci-&gt;rh_state == EHCI_RH_RUNNING)
+-		ehci_quiesce (ehci);
++	ehci_quiesce(ehci);
+ 
+ 	ehci_silence_controller(ehci);
+ 	ehci_reset (ehci);
+@@ -951,6 +949,7 @@ static irqreturn_t ehci_irq (struct usb_hcd *hcd)
+ 	/* PCI errors [4.15.2.4] */
+ 	if (unlikely ((status &amp; STS_FATAL) != 0)) {
+ 		ehci_err(ehci, "fatal error\n");
++		ehci-&gt;rh_state = EHCI_RH_STOPPING;
+ 		dbg_cmd(ehci, "fatal", cmd);
+ 		dbg_status(ehci, "fatal", status);
+ 		ehci_halt(ehci);
+@@ -1026,7 +1025,7 @@ static int ehci_urb_enqueue (
+ static void unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ {
+ 	/* failfast */
+-	if (ehci-&gt;rh_state != EHCI_RH_RUNNING &amp;&amp; ehci-&gt;async_unlink)
++	if (ehci-&gt;rh_state &lt; EHCI_RH_RUNNING &amp;&amp; ehci-&gt;async_unlink)
+ 		end_unlink_async(ehci);
+ 
+ 	/* If the QH isn't linked then there's nothing we can do
+@@ -1148,7 +1147,7 @@ ehci_endpoint_disable (struct usb_hcd *hcd, struct usb_host_endpoint *ep)
+ 		goto idle_timeout;
+ 	}
+ 
+-	if (ehci-&gt;rh_state != EHCI_RH_RUNNING)
++	if (ehci-&gt;rh_state &lt; EHCI_RH_RUNNING)
+ 		qh-&gt;qh_state = QH_STATE_IDLE;
+ 	switch (qh-&gt;qh_state) {
+ 	case QH_STATE_LINKED:
+diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
+index 77d3324b4b28..fb1b99e74937 100644
+--- a/drivers/usb/host/ehci-hub.c
++++ b/drivers/usb/host/ehci-hub.c
+@@ -227,8 +227,7 @@ static int ehci_bus_suspend (struct usb_hcd *hcd)
+ 	}
+ 
+ 	/* stop schedules, clean any completed work */
+-	if (ehci-&gt;rh_state == EHCI_RH_RUNNING)
+-		ehci_quiesce (ehci);
++	ehci_quiesce(ehci);
+ 	ehci_work(ehci);
+ 
+ 	/* Unlike other USB host controller types, EHCI doesn't have
+diff --git a/drivers/usb/host/ehci-q.c b/drivers/usb/host/ehci-q.c
+index 5193612c96ea..285d5a0f3f70 100644
+--- a/drivers/usb/host/ehci-q.c
++++ b/drivers/usb/host/ehci-q.c
+@@ -433,7 +433,7 @@ qh_completions (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 
+ 		/* stop scanning when we reach qtds the hc is using */
+ 		} else if (likely (!stopped
+-				&amp;&amp; ehci-&gt;rh_state == EHCI_RH_RUNNING)) {
++				&amp;&amp; ehci-&gt;rh_state &gt;= EHCI_RH_RUNNING)) {
+ 			break;
+ 
+ 		/* scan the whole queue for unlinks whenever it stops */
+@@ -441,7 +441,7 @@ qh_completions (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 			stopped = 1;
+ 
+ 			/* cancel everything if we halt, suspend, etc */
+-			if (ehci-&gt;rh_state != EHCI_RH_RUNNING)
++			if (ehci-&gt;rh_state &lt; EHCI_RH_RUNNING)
+ 				last_status = -ESHUTDOWN;
+ 
+ 			/* this qtd is active; skip it unless a previous qtd
+@@ -1241,7 +1241,7 @@ static void start_unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	wmb ();
+ 
+ 	/* If the controller isn't running, we don't have to wait for it */
+-	if (unlikely(ehci-&gt;rh_state != EHCI_RH_RUNNING)) {
++	if (unlikely(ehci-&gt;rh_state &lt; EHCI_RH_RUNNING)) {
+ 		/* if (unlikely (qh-&gt;unlink_next != 0))
+ 		 *	this will recurse, probably not much
+ 		 */
+@@ -1263,7 +1263,7 @@ static void scan_async (struct ehci_hcd *ehci)
+ 	enum ehci_timer_action	action = TIMER_IO_WATCHDOG;
+ 
+ 	timer_action_done (ehci, TIMER_ASYNC_SHRINK);
+-	stopped = (ehci-&gt;rh_state != EHCI_RH_RUNNING);
++	stopped = (ehci-&gt;rh_state &lt; EHCI_RH_RUNNING);
+ 
+ 	ehci-&gt;qh_scan_next = ehci-&gt;async-&gt;qh_next.qh;
+ 	while (ehci-&gt;qh_scan_next) {
+diff --git a/drivers/usb/host/ehci-sched.c b/drivers/usb/host/ehci-sched.c
+index 027df3de2dc9..3429b8a33c58 100644
+--- a/drivers/usb/host/ehci-sched.c
++++ b/drivers/usb/host/ehci-sched.c
+@@ -2299,7 +2299,7 @@ scan_periodic (struct ehci_hcd *ehci)
+ 	 * Touches as few pages as possible:  cache-friendly.
+ 	 */
+ 	now_uframe = ehci-&gt;next_uframe;
+-	if (ehci-&gt;rh_state == EHCI_RH_RUNNING) {
++	if (ehci-&gt;rh_state &gt;= EHCI_RH_RUNNING) {
+ 		clock = ehci_read_frame_index(ehci);
+ 		clock_frame = (clock &gt;&gt; 3) &amp; (ehci-&gt;periodic_size - 1);
+ 	} else  {
+@@ -2334,7 +2334,7 @@ scan_periodic (struct ehci_hcd *ehci)
+ 			union ehci_shadow	temp;
+ 			int			live;
+ 
+-			live = (ehci-&gt;rh_state == EHCI_RH_RUNNING);
++			live = (ehci-&gt;rh_state &gt;= EHCI_RH_RUNNING);
+ 			switch (hc32_to_cpu(ehci, type)) {
+ 			case Q_TYPE_QH:
+ 				/* handle any completions */
+@@ -2459,7 +2459,7 @@ scan_periodic (struct ehci_hcd *ehci)
+ 		 * We can't advance our scan without collecting the ISO
+ 		 * transfers that are still pending in this frame.
+ 		 */
+-		if (incomplete &amp;&amp; ehci-&gt;rh_state == EHCI_RH_RUNNING) {
++		if (incomplete &amp;&amp; ehci-&gt;rh_state &gt;= EHCI_RH_RUNNING) {
+ 			ehci-&gt;next_uframe = now_uframe;
+ 			break;
+ 		}
+@@ -2475,7 +2475,7 @@ scan_periodic (struct ehci_hcd *ehci)
+ 		if (now_uframe == clock) {
+ 			unsigned	now;
+ 
+-			if (ehci-&gt;rh_state != EHCI_RH_RUNNING
++			if (ehci-&gt;rh_state &lt; EHCI_RH_RUNNING
+ 					|| ehci-&gt;periodic_sched == 0)
+ 				break;
+ 			ehci-&gt;next_uframe = now_uframe;
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 475f23e10bbf..9e8e82ecce58 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -62,10 +62,15 @@ struct ehci_stats {
+ 
+ #define	EHCI_MAX_ROOT_PORTS	15		/* see HCS_N_PORTS */
+ 
++/*
++ * ehci_rh_state values of EHCI_RH_RUNNING or above mean that the
++ * controller may be doing DMA.  Lower values mean there's no DMA.
++ */
+ enum ehci_rh_state {
+ 	EHCI_RH_HALTED,
+ 	EHCI_RH_SUSPENDED,
+-	EHCI_RH_RUNNING
++	EHCI_RH_RUNNING,
++	EHCI_RH_STOPPING
+ };
+ 
+ struct ehci_hcd {			/* one per controller */</pre><hr><pre>commit 2f5bb665ba7a14c5842fa2e1cde2be039843a2a2
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:21:43 2012 -0400
+
+    USB: EHCI: add pointer to end of async-unlink list
+    
+    This patch (as1570) adds a pointer for the end of ehci-hcd's
+    async-unlink list.  The list (which is actually a queue) is singly
+    linked, so having a pointer to its end makes adding new entries easier
+    -- there's no longer any need to scan through the whole list.
+    
+    In principle it could be changed to a standard doubly-linked list.  It
+    turns out that doing so actually makes the code less clear, so I'm
+    leaving it as is.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index efee426a2465..8b75e4279a47 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1041,14 +1041,9 @@ static void unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 
+ 	/* defer till later if busy */
+ 	if (ehci-&gt;async_unlink) {
+-		struct ehci_qh		*last;
+-
+-		for (last = ehci-&gt;async_unlink;
+-				last-&gt;unlink_next;
+-				last = last-&gt;unlink_next)
+-			continue;
+ 		qh-&gt;qh_state = QH_STATE_UNLINK_WAIT;
+-		last-&gt;unlink_next = qh;
++		ehci-&gt;async_unlink_last-&gt;unlink_next = qh;
++		ehci-&gt;async_unlink_last = qh;
+ 
+ 	/* start IAA cycle */
+ 	} else
+diff --git a/drivers/usb/host/ehci-q.c b/drivers/usb/host/ehci-q.c
+index 8e80cde8c35e..5193612c96ea 100644
+--- a/drivers/usb/host/ehci-q.c
++++ b/drivers/usb/host/ehci-q.c
+@@ -1227,6 +1227,8 @@ static void start_unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 
+ 	qh-&gt;qh_state = QH_STATE_UNLINK;
+ 	ehci-&gt;async_unlink = qh;
++	if (!qh-&gt;unlink_next)
++		ehci-&gt;async_unlink_last = qh;
+ 
+ 	prev = ehci-&gt;async;
+ 	while (prev-&gt;qh_next.qh != qh)
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 3c6c07c0956a..475f23e10bbf 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -82,6 +82,7 @@ struct ehci_hcd {			/* one per controller */
+ 	struct ehci_qh		*async;
+ 	struct ehci_qh		*dummy;		/* For AMD quirk use */
+ 	struct ehci_qh		*async_unlink;
++	struct ehci_qh		*async_unlink_last;
+ 	struct ehci_qh		*qh_scan_next;
+ 	unsigned		scanning : 1;
+ </pre><hr><pre>commit 99ac5b1e9536f142461681fa6143a947d66b4279
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:21:38 2012 -0400
+
+    USB: EHCI: rename "reclaim"
+    
+    This patch (as1569) renames the ehci-&gt;reclaim list in ehci-hcd.  The
+    word "reclaim" is used in the EHCI specification to mean something
+    quite different, and "unlink_next" is more descriptive of the list's
+    purpose anyway.
+    
+    Similarly, the "reclaim" field in the ehci_stats structure is renamed
+    "iaa", which is more meaningful (to experts, anyway) and is a better
+    match for the "lost_iaa" field.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-dbg.c b/drivers/usb/host/ehci-dbg.c
+index 97338abff296..76120957d60a 100644
+--- a/drivers/usb/host/ehci-dbg.c
++++ b/drivers/usb/host/ehci-dbg.c
+@@ -538,12 +538,13 @@ static ssize_t fill_async_buffer(struct debug_buffer *buf)
+ 	spin_lock_irqsave (&amp;ehci-&gt;lock, flags);
+ 	for (qh = ehci-&gt;async-&gt;qh_next.qh; size &gt; 0 &amp;&amp; qh; qh = qh-&gt;qh_next.qh)
+ 		qh_lines (ehci, qh, &amp;next, &amp;size);
+-	if (ehci-&gt;reclaim &amp;&amp; size &gt; 0) {
+-		temp = scnprintf (next, size, "\nreclaim =\n");
++	if (ehci-&gt;async_unlink &amp;&amp; size &gt; 0) {
++		temp = scnprintf(next, size, "\nunlink =\n");
+ 		size -= temp;
+ 		next += temp;
+ 
+-		for (qh = ehci-&gt;reclaim; size &gt; 0 &amp;&amp; qh; qh = qh-&gt;reclaim)
++		for (qh = ehci-&gt;async_unlink; size &gt; 0 &amp;&amp; qh;
++				qh = qh-&gt;unlink_next)
+ 			qh_lines (ehci, qh, &amp;next, &amp;size);
+ 	}
+ 	spin_unlock_irqrestore (&amp;ehci-&gt;lock, flags);
+@@ -841,16 +842,17 @@ static ssize_t fill_registers_buffer(struct debug_buffer *buf)
+ 		}
+ 	}
+ 
+-	if (ehci-&gt;reclaim) {
+-		temp = scnprintf(next, size, "reclaim qh %p\n", ehci-&gt;reclaim);
++	if (ehci-&gt;async_unlink) {
++		temp = scnprintf(next, size, "async unlink qh %p\n",
++				ehci-&gt;async_unlink);
+ 		size -= temp;
+ 		next += temp;
+ 	}
+ 
+ #ifdef EHCI_STATS
+ 	temp = scnprintf (next, size,
+-		"irq normal %ld err %ld reclaim %ld (lost %ld)\n",
+-		ehci-&gt;stats.normal, ehci-&gt;stats.error, ehci-&gt;stats.reclaim,
++		"irq normal %ld err %ld iaa %ld (lost %ld)\n",
++		ehci-&gt;stats.normal, ehci-&gt;stats.error, ehci-&gt;stats.iaa,
+ 		ehci-&gt;stats.lost_iaa);
+ 	size -= temp;
+ 	next += temp;
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index cdb15769468a..efee426a2465 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -403,7 +403,7 @@ static void ehci_iaa_watchdog(unsigned long param)
+ 	 * (a) SMP races against real IAA firing and retriggering, and
+ 	 * (b) clean HC shutdown, when IAA watchdog was pending.
+ 	 */
+-	if (ehci-&gt;reclaim
++	if (ehci-&gt;async_unlink
+ 			&amp;&amp; !timer_pending(&amp;ehci-&gt;iaa_watchdog)
+ 			&amp;&amp; ehci-&gt;rh_state == EHCI_RH_RUNNING) {
+ 		u32 cmd, status;
+@@ -583,8 +583,8 @@ static void ehci_stop (struct usb_hcd *hcd)
+ 		usb_amd_dev_put();
+ 
+ #ifdef	EHCI_STATS
+-	ehci_dbg (ehci, "irq normal %ld err %ld reclaim %ld (lost %ld)\n",
+-		ehci-&gt;stats.normal, ehci-&gt;stats.error, ehci-&gt;stats.reclaim,
++	ehci_dbg(ehci, "irq normal %ld err %ld iaa %ld (lost %ld)\n",
++		ehci-&gt;stats.normal, ehci-&gt;stats.error, ehci-&gt;stats.iaa,
+ 		ehci-&gt;stats.lost_iaa);
+ 	ehci_dbg (ehci, "complete %ld unlink %ld\n",
+ 		ehci-&gt;stats.complete, ehci-&gt;stats.unlink);
+@@ -651,7 +651,6 @@ static int ehci_init(struct usb_hcd *hcd)
+ 	else					// N microframes cached
+ 		ehci-&gt;i_thresh = 2 + HCC_ISOC_THRES(hcc_params);
+ 
+-	ehci-&gt;reclaim = NULL;
+ 	ehci-&gt;next_uframe = -1;
+ 	ehci-&gt;clock_frame = -1;
+ 
+@@ -896,11 +895,11 @@ static irqreturn_t ehci_irq (struct usb_hcd *hcd)
+ 		/* guard against (alleged) silicon errata */
+ 		if (cmd &amp; CMD_IAAD)
+ 			ehci_dbg(ehci, "IAA with IAAD still set?\n");
+-		if (ehci-&gt;reclaim) {
+-			COUNT(ehci-&gt;stats.reclaim);
++		if (ehci-&gt;async_unlink) {
++			COUNT(ehci-&gt;stats.iaa);
+ 			end_unlink_async(ehci);
+ 		} else
+-			ehci_dbg(ehci, "IAA with nothing to reclaim?\n");
++			ehci_dbg(ehci, "IAA with nothing unlinked?\n");
+ 	}
+ 
+ 	/* remote wakeup [4.3.1] */
+@@ -1027,7 +1026,7 @@ static int ehci_urb_enqueue (
+ static void unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ {
+ 	/* failfast */
+-	if (ehci-&gt;rh_state != EHCI_RH_RUNNING &amp;&amp; ehci-&gt;reclaim)
++	if (ehci-&gt;rh_state != EHCI_RH_RUNNING &amp;&amp; ehci-&gt;async_unlink)
+ 		end_unlink_async(ehci);
+ 
+ 	/* If the QH isn't linked then there's nothing we can do
+@@ -1041,15 +1040,15 @@ static void unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	}
+ 
+ 	/* defer till later if busy */
+-	if (ehci-&gt;reclaim) {
++	if (ehci-&gt;async_unlink) {
+ 		struct ehci_qh		*last;
+ 
+-		for (last = ehci-&gt;reclaim;
+-				last-&gt;reclaim;
+-				last = last-&gt;reclaim)
++		for (last = ehci-&gt;async_unlink;
++				last-&gt;unlink_next;
++				last = last-&gt;unlink_next)
+ 			continue;
+ 		qh-&gt;qh_state = QH_STATE_UNLINK_WAIT;
+-		last-&gt;reclaim = qh;
++		last-&gt;unlink_next = qh;
+ 
+ 	/* start IAA cycle */
+ 	} else
+diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
+index 1daaa96f527d..77d3324b4b28 100644
+--- a/drivers/usb/host/ehci-hub.c
++++ b/drivers/usb/host/ehci-hub.c
+@@ -301,7 +301,7 @@ static int ehci_bus_suspend (struct usb_hcd *hcd)
+ 	ehci_halt (ehci);
+ 	ehci-&gt;rh_state = EHCI_RH_SUSPENDED;
+ 
+-	if (ehci-&gt;reclaim)
++	if (ehci-&gt;async_unlink)
+ 		end_unlink_async(ehci);
+ 
+ 	/* allow remote wakeup */
+diff --git a/drivers/usb/host/ehci-q.c b/drivers/usb/host/ehci-q.c
+index 156504787711..8e80cde8c35e 100644
+--- a/drivers/usb/host/ehci-q.c
++++ b/drivers/usb/host/ehci-q.c
+@@ -1153,11 +1153,11 @@ submit_async (
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+-/* the async qh for the qtds being reclaimed are now unlinked from the HC */
++/* the async qh for the qtds being unlinked are now gone from the HC */
+ 
+ static void end_unlink_async (struct ehci_hcd *ehci)
+ {
+-	struct ehci_qh		*qh = ehci-&gt;reclaim;
++	struct ehci_qh		*qh = ehci-&gt;async_unlink;
+ 	struct ehci_qh		*next;
+ 
+ 	iaa_watchdog_done(ehci);
+@@ -1167,9 +1167,9 @@ static void end_unlink_async (struct ehci_hcd *ehci)
+ 	qh-&gt;qh_next.qh = NULL;
+ 
+ 	/* other unlink(s) may be pending (in QH_STATE_UNLINK_WAIT) */
+-	next = qh-&gt;reclaim;
+-	ehci-&gt;reclaim = next;
+-	qh-&gt;reclaim = NULL;
++	next = qh-&gt;unlink_next;
++	ehci-&gt;async_unlink = next;
++	qh-&gt;unlink_next = NULL;
+ 
+ 	qh_completions (ehci, qh);
+ 
+@@ -1185,7 +1185,7 @@ static void end_unlink_async (struct ehci_hcd *ehci)
+ 	}
+ 
+ 	if (next) {
+-		ehci-&gt;reclaim = NULL;
++		ehci-&gt;async_unlink = NULL;
+ 		start_unlink_async (ehci, next);
+ 	}
+ 
+@@ -1203,7 +1203,7 @@ static void start_unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 
+ #ifdef DEBUG
+ 	assert_spin_locked(&amp;ehci-&gt;lock);
+-	if (ehci-&gt;reclaim
++	if (ehci-&gt;async_unlink
+ 			|| (qh-&gt;qh_state != QH_STATE_LINKED
+ 				&amp;&amp; qh-&gt;qh_state != QH_STATE_UNLINK_WAIT)
+ 			)
+@@ -1214,7 +1214,7 @@ static void start_unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	if (unlikely (qh == ehci-&gt;async)) {
+ 		/* can't get here without STS_ASS set */
+ 		if (ehci-&gt;rh_state != EHCI_RH_HALTED
+-				&amp;&amp; !ehci-&gt;reclaim) {
++				&amp;&amp; !ehci-&gt;async_unlink) {
+ 			/* ... and CMD_IAAD clear */
+ 			ehci-&gt;command &amp;= ~CMD_ASE;
+ 			ehci_writel(ehci, ehci-&gt;command, &amp;ehci-&gt;regs-&gt;command);
+@@ -1226,7 +1226,7 @@ static void start_unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	}
+ 
+ 	qh-&gt;qh_state = QH_STATE_UNLINK;
+-	ehci-&gt;reclaim = qh;
++	ehci-&gt;async_unlink = qh;
+ 
+ 	prev = ehci-&gt;async;
+ 	while (prev-&gt;qh_next.qh != qh)
+@@ -1240,7 +1240,7 @@ static void start_unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 
+ 	/* If the controller isn't running, we don't have to wait for it */
+ 	if (unlikely(ehci-&gt;rh_state != EHCI_RH_RUNNING)) {
+-		/* if (unlikely (qh-&gt;reclaim != 0))
++		/* if (unlikely (qh-&gt;unlink_next != 0))
+ 		 *	this will recurse, probably not much
+ 		 */
+ 		end_unlink_async (ehci);
+@@ -1295,7 +1295,7 @@ static void scan_async (struct ehci_hcd *ehci)
+ 		 */
+ 		if (list_empty(&amp;qh-&gt;qtd_list)
+ 				&amp;&amp; qh-&gt;qh_state == QH_STATE_LINKED) {
+-			if (!ehci-&gt;reclaim &amp;&amp; (stopped ||
++			if (!ehci-&gt;async_unlink &amp;&amp; (stopped ||
+ 					time_after_eq(jiffies, qh-&gt;unlink_time)))
+ 				start_unlink_async(ehci, qh);
+ 			else
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 195449db1b18..3c6c07c0956a 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -42,7 +42,7 @@ struct ehci_stats {
+ 	/* irq usage */
+ 	unsigned long		normal;
+ 	unsigned long		error;
+-	unsigned long		reclaim;
++	unsigned long		iaa;
+ 	unsigned long		lost_iaa;
+ 
+ 	/* termination of urbs from core */
+@@ -51,7 +51,7 @@ struct ehci_stats {
+ };
+ 
+ /* ehci_hcd-&gt;lock guards shared data against other CPUs:
+- *   ehci_hcd:	async, reclaim, periodic (and shadow), ...
++ *   ehci_hcd:	async, unlink, periodic (and shadow), ...
+  *   usb_host_endpoint: hcpriv
+  *   ehci_qh:	qh_next, qtd_list
+  *   ehci_qtd:	qtd_list
+@@ -81,7 +81,7 @@ struct ehci_hcd {			/* one per controller */
+ 	/* async schedule support */
+ 	struct ehci_qh		*async;
+ 	struct ehci_qh		*dummy;		/* For AMD quirk use */
+-	struct ehci_qh		*reclaim;
++	struct ehci_qh		*async_unlink;
+ 	struct ehci_qh		*qh_scan_next;
+ 	unsigned		scanning : 1;
+ 
+@@ -354,7 +354,7 @@ struct ehci_qh {
+ 	union ehci_shadow	qh_next;	/* ptr to qh; or periodic */
+ 	struct list_head	qtd_list;	/* sw qtd list */
+ 	struct ehci_qtd		*dummy;
+-	struct ehci_qh		*reclaim;	/* next to reclaim */
++	struct ehci_qh		*unlink_next;	/* next on unlink list */
+ 
+ 	unsigned long		unlink_time;
+ 	unsigned		stamp;
+@@ -364,7 +364,7 @@ struct ehci_qh {
+ #define	QH_STATE_LINKED		1		/* HC sees this */
+ #define	QH_STATE_UNLINK		2		/* HC may still see this */
+ #define	QH_STATE_IDLE		3		/* HC doesn't see this */
+-#define	QH_STATE_UNLINK_WAIT	4		/* LINKED and on reclaim q */
++#define	QH_STATE_UNLINK_WAIT	4		/* LINKED and on unlink q */
+ #define	QH_STATE_COMPLETING	5		/* don't touch token.HALT */
+ 
+ 	u8			xacterrs;	/* XactErr retry counter */</pre><hr><pre>commit 4c53de72109759c931744734ca75f9cecb3baef1
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:21:32 2012 -0400
+
+    USB: EHCI: add symbolic constants for QHs
+    
+    This patch (as1568) introduces symbolic constants for some of the
+    less-frequently used bitfields in the QH structure.  This makes the
+    code a little easier to read and understand.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-dbg.c b/drivers/usb/host/ehci-dbg.c
+index 7561966fbdc4..97338abff296 100644
+--- a/drivers/usb/host/ehci-dbg.c
++++ b/drivers/usb/host/ehci-dbg.c
+@@ -404,9 +404,9 @@ struct debug_buffer {
+ 
+ #define speed_char(info1) ({ char tmp; \
+ 		switch (info1 &amp; (3 &lt;&lt; 12)) { \
+-		case 0 &lt;&lt; 12: tmp = 'f'; break; \
+-		case 1 &lt;&lt; 12: tmp = 'l'; break; \
+-		case 2 &lt;&lt; 12: tmp = 'h'; break; \
++		case QH_FULL_SPEED: tmp = 'f'; break; \
++		case QH_LOW_SPEED:  tmp = 'l'; break; \
++		case QH_HIGH_SPEED: tmp = 'h'; break; \
+ 		default: tmp = '?'; break; \
+ 		}; tmp; })
+ 
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 1f8f792eec86..cdb15769468a 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -667,7 +667,7 @@ static int ehci_init(struct usb_hcd *hcd)
+ 	hw-&gt;hw_next = QH_NEXT(ehci, ehci-&gt;async-&gt;qh_dma);
+ 	hw-&gt;hw_info1 = cpu_to_hc32(ehci, QH_HEAD);
+ #if defined(CONFIG_PPC_PS3)
+-	hw-&gt;hw_info1 |= cpu_to_hc32(ehci, (1 &lt;&lt; 7));	/* I = 1 */
++	hw-&gt;hw_info1 |= cpu_to_hc32(ehci, QH_INACTIVATE);
+ #endif
+ 	hw-&gt;hw_token = cpu_to_hc32(ehci, QTD_STS_HALT);
+ 	hw-&gt;hw_qtd_next = EHCI_LIST_END(ehci);
+diff --git a/drivers/usb/host/ehci-q.c b/drivers/usb/host/ehci-q.c
+index 7d117bbffac1..156504787711 100644
+--- a/drivers/usb/host/ehci-q.c
++++ b/drivers/usb/host/ehci-q.c
+@@ -100,7 +100,7 @@ qh_update (struct ehci_hcd *ehci, struct ehci_qh *qh, struct ehci_qtd *qtd)
+ 	 * and set the pseudo-toggle in udev. Only usb_clear_halt() will
+ 	 * ever clear it.
+ 	 */
+-	if (!(hw-&gt;hw_info1 &amp; cpu_to_hc32(ehci, 1 &lt;&lt; 14))) {
++	if (!(hw-&gt;hw_info1 &amp; cpu_to_hc32(ehci, QH_TOGGLE_CTL))) {
+ 		unsigned	is_out, epnum;
+ 
+ 		is_out = qh-&gt;is_out;
+@@ -886,7 +886,7 @@ qh_make (
+ 	/* using TT? */
+ 	switch (urb-&gt;dev-&gt;speed) {
+ 	case USB_SPEED_LOW:
+-		info1 |= (1 &lt;&lt; 12);	/* EPS "low" */
++		info1 |= QH_LOW_SPEED;
+ 		/* FALL THROUGH */
+ 
+ 	case USB_SPEED_FULL:
+@@ -894,8 +894,8 @@ qh_make (
+ 		if (type != PIPE_INTERRUPT)
+ 			info1 |= (EHCI_TUNE_RL_TT &lt;&lt; 28);
+ 		if (type == PIPE_CONTROL) {
+-			info1 |= (1 &lt;&lt; 27);	/* for TT */
+-			info1 |= 1 &lt;&lt; 14;	/* toggle from qtd */
++			info1 |= QH_CONTROL_EP;		/* for TT */
++			info1 |= QH_TOGGLE_CTL;		/* toggle from qtd */
+ 		}
+ 		info1 |= maxp &lt;&lt; 16;
+ 
+@@ -920,11 +920,11 @@ qh_make (
+ 		break;
+ 
+ 	case USB_SPEED_HIGH:		/* no TT involved */
+-		info1 |= (2 &lt;&lt; 12);	/* EPS "high" */
++		info1 |= QH_HIGH_SPEED;
+ 		if (type == PIPE_CONTROL) {
+ 			info1 |= (EHCI_TUNE_RL_HS &lt;&lt; 28);
+ 			info1 |= 64 &lt;&lt; 16;	/* usb2 fixed maxpacket */
+-			info1 |= 1 &lt;&lt; 14;	/* toggle from qtd */
++			info1 |= QH_TOGGLE_CTL;	/* toggle from qtd */
+ 			info2 |= (EHCI_TUNE_MULT_HS &lt;&lt; 30);
+ 		} else if (type == PIPE_BULK) {
+ 			info1 |= (EHCI_TUNE_RL_HS &lt;&lt; 28);
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index f7a59f5d70c6..195449db1b18 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -324,7 +324,13 @@ union ehci_shadow {
+ struct ehci_qh_hw {
+ 	__hc32			hw_next;	/* see EHCI 3.6.1 */
+ 	__hc32			hw_info1;       /* see EHCI 3.6.2 */
+-#define	QH_HEAD		0x00008000
++#define	QH_CONTROL_EP	(1 &lt;&lt; 27)	/* FS/LS control endpoint */
++#define	QH_HEAD		(1 &lt;&lt; 15)	/* Head of async reclamation list */
++#define	QH_TOGGLE_CTL	(1 &lt;&lt; 14)	/* Data toggle control */
++#define	QH_HIGH_SPEED	(2 &lt;&lt; 12)	/* Endpoint speed */
++#define	QH_LOW_SPEED	(1 &lt;&lt; 12)
++#define	QH_FULL_SPEED	(0 &lt;&lt; 12)
++#define	QH_INACTIVATE	(1 &lt;&lt; 7)	/* Inactivate on next transaction */
+ 	__hc32			hw_info2;        /* see EHCI 3.6.2 */
+ #define	QH_SMASK	0x000000ff
+ #define	QH_CMASK	0x0000ff00</pre><hr><pre>commit c83e1a9ff68a6535b81c40dc8fda99348ab480fb
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:21:25 2012 -0400
+
+    USB: EHCI: don't refcount QHs
+    
+    This patch (as1567) removes ehci-hcd's reference counting of QH
+    structures.  It's not necessary to refcount these things because they
+    always get deallocated at exactly one spot in ehci_endpoint_disable()
+    (except for two special QHs, ehci-&gt;async and ehci-&gt;dummy) and are
+    never used again.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index ab7306de8d16..1f8f792eec86 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1179,7 +1179,7 @@ ehci_endpoint_disable (struct usb_hcd *hcd, struct usb_host_endpoint *ep)
+ 		if (qh-&gt;clearing_tt)
+ 			goto idle_timeout;
+ 		if (list_empty (&amp;qh-&gt;qtd_list)) {
+-			qh_put (qh);
++			qh_destroy(ehci, qh);
+ 			break;
+ 		}
+ 		/* else FALL THROUGH */
+diff --git a/drivers/usb/host/ehci-mem.c b/drivers/usb/host/ehci-mem.c
+index 12f70c302b0b..93132d8ad360 100644
+--- a/drivers/usb/host/ehci-mem.c
++++ b/drivers/usb/host/ehci-mem.c
+@@ -64,10 +64,8 @@ static inline void ehci_qtd_free (struct ehci_hcd *ehci, struct ehci_qtd *qtd)
+ }
+ 
+ 
+-static void qh_destroy(struct ehci_qh *qh)
++static void qh_destroy(struct ehci_hcd *ehci, struct ehci_qh *qh)
+ {
+-	struct ehci_hcd *ehci = qh-&gt;ehci;
+-
+ 	/* clean qtds first, and know this is not linked */
+ 	if (!list_empty (&amp;qh-&gt;qtd_list) || qh-&gt;qh_next.ptr) {
+ 		ehci_dbg (ehci, "unused qh not empty!\n");
+@@ -92,8 +90,6 @@ static struct ehci_qh *ehci_qh_alloc (struct ehci_hcd *ehci, gfp_t flags)
+ 	if (!qh-&gt;hw)
+ 		goto fail;
+ 	memset(qh-&gt;hw, 0, sizeof *qh-&gt;hw);
+-	qh-&gt;refcount = 1;
+-	qh-&gt;ehci = ehci;
+ 	qh-&gt;qh_dma = dma;
+ 	// INIT_LIST_HEAD (&amp;qh-&gt;qh_list);
+ 	INIT_LIST_HEAD (&amp;qh-&gt;qtd_list);
+@@ -113,20 +109,6 @@ static struct ehci_qh *ehci_qh_alloc (struct ehci_hcd *ehci, gfp_t flags)
+ 	return NULL;
+ }
+ 
+-/* to share a qh (cpu threads, or hc) */
+-static inline struct ehci_qh *qh_get (struct ehci_qh *qh)
+-{
+-	WARN_ON(!qh-&gt;refcount);
+-	qh-&gt;refcount++;
+-	return qh;
+-}
+-
+-static inline void qh_put (struct ehci_qh *qh)
+-{
+-	if (!--qh-&gt;refcount)
+-		qh_destroy(qh);
+-}
+-
+ /*-------------------------------------------------------------------------*/
+ 
+ /* The queue heads and transfer descriptors are managed from pools tied
+@@ -138,11 +120,11 @@ static void ehci_mem_cleanup (struct ehci_hcd *ehci)
+ {
+ 	free_cached_lists(ehci);
+ 	if (ehci-&gt;async)
+-		qh_put (ehci-&gt;async);
++		qh_destroy(ehci, ehci-&gt;async);
+ 	ehci-&gt;async = NULL;
+ 
+ 	if (ehci-&gt;dummy)
+-		qh_put(ehci-&gt;dummy);
++		qh_destroy(ehci, ehci-&gt;dummy);
+ 	ehci-&gt;dummy = NULL;
+ 
+ 	/* DMA consistent memory and pools */
+diff --git a/drivers/usb/host/ehci-q.c b/drivers/usb/host/ehci-q.c
+index 4378bf72bbac..7d117bbffac1 100644
+--- a/drivers/usb/host/ehci-q.c
++++ b/drivers/usb/host/ehci-q.c
+@@ -265,7 +265,6 @@ __acquires(ehci-&gt;lock)
+ 			/* ... update hc-wide periodic stats (for usbfs) */
+ 			ehci_to_hcd(ehci)-&gt;self.bandwidth_int_reqs--;
+ 		}
+-		qh_put (qh);
+ 	}
+ 
+ 	if (unlikely(urb-&gt;unlinked)) {
+@@ -946,7 +945,7 @@ qh_make (
+ 		ehci_dbg(ehci, "bogus dev %p speed %d\n", urb-&gt;dev,
+ 			urb-&gt;dev-&gt;speed);
+ done:
+-		qh_put (qh);
++		qh_destroy(ehci, qh);
+ 		return NULL;
+ 	}
+ 
+@@ -1003,7 +1002,6 @@ static void qh_link_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	head-&gt;qh_next.qh = qh;
+ 	head-&gt;hw-&gt;hw_next = dma;
+ 
+-	qh_get(qh);
+ 	qh-&gt;xacterrs = 0;
+ 	qh-&gt;qh_state = QH_STATE_LINKED;
+ 	/* qtd completions reported later by interrupt */
+@@ -1090,7 +1088,7 @@ static struct ehci_qh *qh_append_tds (
+ 			wmb ();
+ 			dummy-&gt;hw_token = token;
+ 
+-			urb-&gt;hcpriv = qh_get (qh);
++			urb-&gt;hcpriv = qh;
+ 		}
+ 	}
+ 	return qh;
+@@ -1167,7 +1165,6 @@ static void end_unlink_async (struct ehci_hcd *ehci)
+ 	// qh-&gt;hw_next = cpu_to_hc32(qh-&gt;qh_dma);
+ 	qh-&gt;qh_state = QH_STATE_IDLE;
+ 	qh-&gt;qh_next.qh = NULL;
+-	qh_put (qh);			// refcount from reclaim
+ 
+ 	/* other unlink(s) may be pending (in QH_STATE_UNLINK_WAIT) */
+ 	next = qh-&gt;reclaim;
+@@ -1186,7 +1183,6 @@ static void end_unlink_async (struct ehci_hcd *ehci)
+ 				&amp;&amp; ehci-&gt;async-&gt;qh_next.qh == NULL)
+ 			timer_action (ehci, TIMER_ASYNC_OFF);
+ 	}
+-	qh_put(qh);			/* refcount from async list */
+ 
+ 	if (next) {
+ 		ehci-&gt;reclaim = NULL;
+@@ -1230,7 +1226,7 @@ static void start_unlink_async (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	}
+ 
+ 	qh-&gt;qh_state = QH_STATE_UNLINK;
+-	ehci-&gt;reclaim = qh = qh_get (qh);
++	ehci-&gt;reclaim = qh;
+ 
+ 	prev = ehci-&gt;async;
+ 	while (prev-&gt;qh_next.qh != qh)
+@@ -1283,12 +1279,10 @@ static void scan_async (struct ehci_hcd *ehci)
+ 			 * gets unlinked then ehci-&gt;qh_scan_next is adjusted
+ 			 * in start_unlink_async().
+ 			 */
+-			qh = qh_get(qh);
+ 			temp = qh_completions(ehci, qh);
+ 			if (qh-&gt;needs_rescan)
+ 				unlink_async(ehci, qh);
+ 			qh-&gt;unlink_time = jiffies + EHCI_SHRINK_JIFFIES;
+-			qh_put(qh);
+ 			if (temp != 0)
+ 				goto rescan;
+ 		}
+diff --git a/drivers/usb/host/ehci-sched.c b/drivers/usb/host/ehci-sched.c
+index 33182c6d1ff9..027df3de2dc9 100644
+--- a/drivers/usb/host/ehci-sched.c
++++ b/drivers/usb/host/ehci-sched.c
+@@ -606,7 +606,6 @@ static int qh_link_periodic (struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	}
+ 	qh-&gt;qh_state = QH_STATE_LINKED;
+ 	qh-&gt;xacterrs = 0;
+-	qh_get (qh);
+ 
+ 	/* update per-qh bandwidth for usbfs */
+ 	ehci_to_hcd(ehci)-&gt;self.bandwidth_allocated += qh-&gt;period
+@@ -650,7 +649,6 @@ static int qh_unlink_periodic(struct ehci_hcd *ehci, struct ehci_qh *qh)
+ 	/* qh-&gt;qh_next still "live" to HC */
+ 	qh-&gt;qh_state = QH_STATE_UNLINK;
+ 	qh-&gt;qh_next.ptr = NULL;
+-	qh_put (qh);
+ 
+ 	/* maybe turn off periodic schedule */
+ 	return disable_periodic(ehci);
+@@ -2340,7 +2338,7 @@ scan_periodic (struct ehci_hcd *ehci)
+ 			switch (hc32_to_cpu(ehci, type)) {
+ 			case Q_TYPE_QH:
+ 				/* handle any completions */
+-				temp.qh = qh_get (q.qh);
++				temp.qh = q.qh;
+ 				type = Q_NEXT_TYPE(ehci, q.qh-&gt;hw-&gt;hw_next);
+ 				q = q.qh-&gt;qh_next;
+ 				if (temp.qh-&gt;stamp != ehci-&gt;periodic_stamp) {
+@@ -2351,7 +2349,6 @@ scan_periodic (struct ehci_hcd *ehci)
+ 							temp.qh-&gt;needs_rescan))
+ 						intr_deschedule(ehci, temp.qh);
+ 				}
+-				qh_put (temp.qh);
+ 				break;
+ 			case Q_TYPE_FSTN:
+ 				/* for "save place" FSTNs, look at QH entries
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 85c3572155d1..f7a59f5d70c6 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -350,16 +350,7 @@ struct ehci_qh {
+ 	struct ehci_qtd		*dummy;
+ 	struct ehci_qh		*reclaim;	/* next to reclaim */
+ 
+-	struct ehci_hcd		*ehci;
+ 	unsigned long		unlink_time;
+-
+-	/*
+-	 * Do NOT use atomic operations for QH refcounting. On some CPUs
+-	 * (PPC7448 for example), atomic operations cannot be performed on
+-	 * memory that is cache-inhibited (i.e. being used for DMA).
+-	 * Spinlocks are used to protect all QH fields.
+-	 */
+-	u32			refcount;
+ 	unsigned		stamp;
+ 
+ 	u8			needs_rescan;	/* Dequeue during giveback */</pre><hr><pre>commit 15be105b4a18c461b95fa683907f6da6deae1b75
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:21:17 2012 -0400
+
+    USB: EHCI: remove unneeded suspend/resume code
+    
+    This patch (as1566) removes the code in ehci-hcd's resume routines
+    which tries to restart or cancel any transfers left active while the
+    root hub or controller was asleep.  This code isn't necessary, because
+    all URBs are terminated before the root hub is suspended.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 8727f4ea343f..ab7306de8d16 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1312,13 +1312,6 @@ static int __maybe_unused ehci_resume(struct usb_hcd *hcd, bool hibernated)
+ 	(void) ehci_halt(ehci);
+ 	(void) ehci_reset(ehci);
+ 
+-	/* emptying the schedule aborts any urbs */
+-	spin_lock_irq(&amp;ehci-&gt;lock);
+-	if (ehci-&gt;reclaim)
+-		end_unlink_async(ehci);
+-	ehci_work(ehci);
+-	spin_unlock_irq(&amp;ehci-&gt;lock);
+-
+ 	ehci_writel(ehci, ehci-&gt;command, &amp;ehci-&gt;regs-&gt;command);
+ 	ehci_writel(ehci, FLAG_CF, &amp;ehci-&gt;regs-&gt;configured_flag);
+ 	ehci_readl(ehci, &amp;ehci-&gt;regs-&gt;command);	/* unblock posted writes */
+diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
+index b3e2d66e95bb..1daaa96f527d 100644
+--- a/drivers/usb/host/ehci-hub.c
++++ b/drivers/usb/host/ehci-hub.c
+@@ -424,23 +424,12 @@ static int ehci_bus_resume (struct usb_hcd *hcd)
+ 			ehci_vdbg (ehci, "resumed port %d\n", i + 1);
+ 		}
+ 	}
+-	(void) ehci_readl(ehci, &amp;ehci-&gt;regs-&gt;command);
+-
+-	/* maybe re-activate the schedule(s) */
+-	temp = 0;
+-	if (ehci-&gt;async-&gt;qh_next.qh)
+-		temp |= CMD_ASE;
+-	if (ehci-&gt;periodic_sched)
+-		temp |= CMD_PSE;
+-	if (temp) {
+-		ehci-&gt;command |= temp;
+-		ehci_writel(ehci, ehci-&gt;command, &amp;ehci-&gt;regs-&gt;command);
+-	}
+ 
+ 	ehci-&gt;next_statechange = jiffies + msecs_to_jiffies(5);
+ 
+ 	/* Now we can safely re-enable irqs */
+ 	ehci_writel(ehci, INTR_MASK, &amp;ehci-&gt;regs-&gt;intr_enable);
++	(void) ehci_readl(ehci, &amp;ehci-&gt;regs-&gt;intr_enable);
+ 
+ 	spin_unlock_irq (&amp;ehci-&gt;lock);
+ 	ehci_handover_companion_ports(ehci);</pre><hr><pre>commit 631fe9d9d20e28fffdf750d12dd2cd275bd654e9
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Wed Jul 11 11:21:09 2012 -0400
+
+    USB: EHCI: initialize data before resetting hardware
+    
+    Currently, EHCI initialization turns off the controller (in case it
+    was left running by the firmware) before setting up the ehci_hcd data
+    structure.  This patch (as1565) reverses that order.
+    
+    Although it doesn't matter now, it will matter later on when future
+    additions to ehci_halt() will want to acquire a spinlock that gets
+    initialized by ehci_init().
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index f9a783bfa1fe..8727f4ea343f 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -823,12 +823,12 @@ static int ehci_setup(struct usb_hcd *hcd)
+ 
+ 	ehci-&gt;sbrn = HCD_USB2;
+ 
+-	retval = ehci_halt(ehci);
++	/* data structure init */
++	retval = ehci_init(hcd);
+ 	if (retval)
+ 		return retval;
+ 
+-	/* data structure init */
+-	retval = ehci_init(hcd);
++	retval = ehci_halt(ehci);
+ 	if (retval)
+ 		return retval;
+ </pre><hr><pre>commit dbf0e4c7257f8d684ec1a3c919853464293de66e
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Jul 9 11:09:21 2012 -0400
+
+    PCI: EHCI: fix crash during suspend on ASUS computers
+    
+    Quite a few ASUS computers experience a nasty problem, related to the
+    EHCI controllers, when going into system suspend.  It was observed
+    that the problem didn't occur if the controllers were not put into the
+    D3 power state before starting the suspend, and commit
+    151b61284776be2d6f02d48c23c3625678960b97 (USB: EHCI: fix crash during
+    suspend on ASUS computers) was created to do this.
+    
+    It turned out this approach messed up other computers that didn't have
+    the problem -- it prevented USB wakeup from working.  Consequently
+    commit c2fb8a3fa25513de8fedb38509b1f15a5bbee47b (USB: add
+    NO_D3_DURING_SLEEP flag and revert 151b61284776be2) was merged; it
+    reverted the earlier commit and added a whitelist of known good board
+    names.
+    
+    Now we know the actual cause of the problem.  Thanks to AceLan Kao for
+    tracking it down.
+    
+    According to him, an engineer at ASUS explained that some of their
+    BIOSes contain a bug that was added in an attempt to work around a
+    problem in early versions of Windows.  When the computer goes into S3
+    suspend, the BIOS tries to verify that the EHCI controllers were first
+    quiesced by the OS.  Nothing's wrong with this, but the BIOS does it
+    by checking that the PCI COMMAND registers contain 0 without checking
+    the controllers' power state.  If the register isn't 0, the BIOS
+    assumes the controller needs to be quiesced and tries to do so.  This
+    involves making various MMIO accesses to the controller, which don't
+    work very well if the controller is already in D3.  The end result is
+    a system hang or memory corruption.
+    
+    Since the value in the PCI COMMAND register doesn't matter once the
+    controller has been suspended, and since the value will be restored
+    anyway when the controller is resumed, we can work around the BIOS bug
+    simply by setting the register to 0 during system suspend.  This patch
+    (as1590) does so and also reverts the second commit mentioned above,
+    which is now unnecessary.
+    
+    In theory we could do this for every PCI device.  However to avoid
+    introducing new problems, the patch restricts itself to EHCI host
+    controllers.
+    
+    Finally the affected systems can suspend with USB wakeup working
+    properly.
+    
+    Reference: https://bugzilla.kernel.org/show_bug.cgi?id=37632
+    Reference: https://bugzilla.kernel.org/show_bug.cgi?id=42728
+    Based-on-patch-by: AceLan Kao &lt;acelan.kao@canonical.com&gt;
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Tested-by: Dâniel Fraga &lt;fragabr@gmail.com&gt;
+    Tested-by: Javier Marcet &lt;jmarcet@gmail.com&gt;
+    Tested-by: Andrey Rahmatullin &lt;wrar@wrar.name&gt;
+    Tested-by: Oleksij Rempel &lt;bug-track@fisher-privat.net&gt;
+    Tested-by: Pavel Pisa &lt;pisa@cmp.felk.cvut.cz&gt;
+    Cc: stable &lt;stable@vger.kernel.org&gt;
+    Acked-by: Bjorn Helgaas &lt;bhelgaas@google.com&gt;
+    Acked-by: Rafael J. Wysocki &lt;rjw@sisk.pl&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index bf0cee629b60..099f46cd8e87 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -748,6 +748,18 @@ static int pci_pm_suspend_noirq(struct device *dev)
+ 
+ 	pci_pm_set_unknown_state(pci_dev);
+ 
++	/*
++	 * Some BIOSes from ASUS have a bug: If a USB EHCI host controller's
++	 * PCI COMMAND register isn't 0, the BIOS assumes that the controller
++	 * hasn't been quiesced and tries to turn it off.  If the controller
++	 * is already in D3, this can hang or cause memory corruption.
++	 *
++	 * Since the value of the COMMAND register doesn't matter once the
++	 * device has been suspended, we can safely set it to 0 here.
++	 */
++	if (pci_dev-&gt;class == PCI_CLASS_SERIAL_USB_EHCI)
++		pci_write_config_word(pci_dev, PCI_COMMAND, 0);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 77cb54a65cde..447e83472c01 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1744,11 +1744,6 @@ int pci_prepare_to_sleep(struct pci_dev *dev)
+ 	if (target_state == PCI_POWER_ERROR)
+ 		return -EIO;
+ 
+-	/* Some devices mustn't be in D3 during system sleep */
+-	if (target_state == PCI_D3hot &amp;&amp;
+-			(dev-&gt;dev_flags &amp; PCI_DEV_FLAGS_NO_D3_DURING_SLEEP))
+-		return 0;
+-
+ 	pci_enable_wake(dev, target_state, device_may_wakeup(&amp;dev-&gt;dev));
+ 
+ 	error = pci_set_power_state(dev, target_state);
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 194b243a2817..2a7521677541 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -2929,32 +2929,6 @@ static void __devinit disable_igfx_irq(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x0102, disable_igfx_irq);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x010a, disable_igfx_irq);
+ 
+-/*
+- * The Intel 6 Series/C200 Series chipset's EHCI controllers on many
+- * ASUS motherboards will cause memory corruption or a system crash
+- * if they are in D3 while the system is put into S3 sleep.
+- */
+-static void __devinit asus_ehci_no_d3(struct pci_dev *dev)
+-{
+-	const char *sys_info;
+-	static const char good_Asus_board[] = "P8Z68-V";
+-
+-	if (dev-&gt;dev_flags &amp; PCI_DEV_FLAGS_NO_D3_DURING_SLEEP)
+-		return;
+-	if (dev-&gt;subsystem_vendor != PCI_VENDOR_ID_ASUSTEK)
+-		return;
+-	sys_info = dmi_get_system_info(DMI_BOARD_NAME);
+-	if (sys_info &amp;&amp; memcmp(sys_info, good_Asus_board,
+-			sizeof(good_Asus_board) - 1) == 0)
+-		return;
+-
+-	dev_info(&amp;dev-&gt;dev, "broken D3 during system sleep on ASUS\n");
+-	dev-&gt;dev_flags |= PCI_DEV_FLAGS_NO_D3_DURING_SLEEP;
+-	device_set_wakeup_capable(&amp;dev-&gt;dev, false);
+-}
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1c26, asus_ehci_no_d3);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1c2d, asus_ehci_no_d3);
+-
+ static void pci_do_fixups(struct pci_dev *dev, struct pci_fixup *f,
+ 			  struct pci_fixup *end)
+ {
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index fefb4e19bf6a..d8c379dba6ad 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -176,8 +176,6 @@ enum pci_dev_flags {
+ 	PCI_DEV_FLAGS_NO_D3 = (__force pci_dev_flags_t) 2,
+ 	/* Provide indication device is assigned by a Virtual Machine Manager */
+ 	PCI_DEV_FLAGS_ASSIGNED = (__force pci_dev_flags_t) 4,
+-	/* Device causes system crash if in D3 during S3 sleep */
+-	PCI_DEV_FLAGS_NO_D3_DURING_SLEEP = (__force pci_dev_flags_t) 8,
+ };
+ 
+ enum pci_irq_reroute_variant {</pre>
+    <div class="pagination">
+        <a href='2_46.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><span>[47]</span><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_48.html'>Next&gt;&gt;</a>
+    <div>
+</body>

@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Harvard University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Harvard University</h1>
+    <div class="pagination">
+        <a href='2_78.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><span>[79]</span><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_80.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 0f43158caddcbb110916212ebe4e39993ae70864
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Apr 27 13:22:40 2009 -0400
+
+    USB: Gadget: fix UTF conversion in the usbstring library
+    
+    This patch (as1234) fixes a bug in the UTF8 -&gt; UTF-16 conversion
+    routine in the gadget/usbstring library.  In a UTF-8 multi-byte
+    sequence, all bytes after the first should have their high-order
+    two bits set to 10, not 11.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Acked-by: David Brownell &lt;dbrownell@users.sourceforge.net&gt;
+    Cc: stable &lt;stable@kernel.org&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/gadget/usbstring.c b/drivers/usb/gadget/usbstring.c
+index 4154be375c7a..58c4d37d312a 100644
+--- a/drivers/usb/gadget/usbstring.c
++++ b/drivers/usb/gadget/usbstring.c
+@@ -38,7 +38,7 @@ static int utf8_to_utf16le(const char *s, __le16 *cp, unsigned len)
+ 				uchar = (c &amp; 0x1f) &lt;&lt; 6;
+ 
+ 				c = (u8) *s++;
+-				if ((c &amp; 0xc0) != 0xc0)
++				if ((c &amp; 0xc0) != 0x80)
+ 					goto fail;
+ 				c &amp;= 0x3f;
+ 				uchar |= c;
+@@ -49,13 +49,13 @@ static int utf8_to_utf16le(const char *s, __le16 *cp, unsigned len)
+ 				uchar = (c &amp; 0x0f) &lt;&lt; 12;
+ 
+ 				c = (u8) *s++;
+-				if ((c &amp; 0xc0) != 0xc0)
++				if ((c &amp; 0xc0) != 0x80)
+ 					goto fail;
+ 				c &amp;= 0x3f;
+ 				uchar |= c &lt;&lt; 6;
+ 
+ 				c = (u8) *s++;
+-				if ((c &amp; 0xc0) != 0xc0)
++				if ((c &amp; 0xc0) != 0x80)
+ 					goto fail;
+ 				c &amp;= 0x3f;
+ 				uchar |= c;</pre><hr><pre>commit 82a10a81c853be3859b3d222db0f372ee8d2eaa2
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Apr 16 15:37:28 2009 -0400
+
+    USB: g_file_storage: fix use-after-free bug when closing files
+    
+    This patch (as1231) fixes a use-after-free bug in g_file_storage.  A
+    device's name may not be available after the device is unregistered,
+    even if the device structure itself is still allocated.  Since
+    close_backing_file() prints a LUN's name for debugging, it shouldn't
+    be called after the LUN has been unregistered.
+    
+    That whole area needed to be cleaned up; the backing files were
+    getting closed in a couple of different places.  The patch fixes
+    things so that they get closed in just one place, as part of the
+    unbind procedure, immediately before the LUN is unregistered.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/gadget/file_storage.c b/drivers/usb/gadget/file_storage.c
+index 5c030b080d4c..381a53b3e11c 100644
+--- a/drivers/usb/gadget/file_storage.c
++++ b/drivers/usb/gadget/file_storage.c
+@@ -738,7 +738,6 @@ static struct fsg_dev			*the_fsg;
+ static struct usb_gadget_driver		fsg_driver;
+ 
+ static void	close_backing_file(struct lun *curlun);
+-static void	close_all_backing_files(struct fsg_dev *fsg);
+ 
+ 
+ /*-------------------------------------------------------------------------*/
+@@ -3593,12 +3592,10 @@ static int fsg_main_thread(void *fsg_)
+ 	fsg-&gt;thread_task = NULL;
+ 	spin_unlock_irq(&amp;fsg-&gt;lock);
+ 
+-	/* In case we are exiting because of a signal, unregister the
+-	 * gadget driver and close the backing file. */
+-	if (test_and_clear_bit(REGISTERED, &amp;fsg-&gt;atomic_bitflags)) {
++	/* If we are exiting because of a signal, unregister the
++	 * gadget driver. */
++	if (test_and_clear_bit(REGISTERED, &amp;fsg-&gt;atomic_bitflags))
+ 		usb_gadget_unregister_driver(&amp;fsg_driver);
+-		close_all_backing_files(fsg);
+-	}
+ 
+ 	/* Let the unbind and cleanup routines know the thread has exited */
+ 	complete_and_exit(&amp;fsg-&gt;thread_notifier, 0);
+@@ -3703,14 +3700,6 @@ static void close_backing_file(struct lun *curlun)
+ 	}
+ }
+ 
+-static void close_all_backing_files(struct fsg_dev *fsg)
+-{
+-	int	i;
+-
+-	for (i = 0; i &lt; fsg-&gt;nluns; ++i)
+-		close_backing_file(&amp;fsg-&gt;luns[i]);
+-}
+-
+ 
+ static ssize_t show_ro(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+@@ -3845,6 +3834,7 @@ static void /* __init_or_exit */ fsg_unbind(struct usb_gadget *gadget)
+ 		if (curlun-&gt;registered) {
+ 			device_remove_file(&amp;curlun-&gt;dev, &amp;dev_attr_ro);
+ 			device_remove_file(&amp;curlun-&gt;dev, &amp;dev_attr_file);
++			close_backing_file(curlun);
+ 			device_unregister(&amp;curlun-&gt;dev);
+ 			curlun-&gt;registered = 0;
+ 		}
+@@ -4190,7 +4180,6 @@ static int __init fsg_bind(struct usb_gadget *gadget)
+ out:
+ 	fsg-&gt;state = FSG_STATE_TERMINATED;	// The thread is dead
+ 	fsg_unbind(gadget);
+-	close_all_backing_files(fsg);
+ 	complete(&amp;fsg-&gt;thread_notifier);
+ 	return rc;
+ }
+@@ -4284,7 +4273,6 @@ static void __exit fsg_cleanup(void)
+ 	/* Wait for the thread to finish up */
+ 	wait_for_completion(&amp;fsg-&gt;thread_notifier);
+ 
+-	close_all_backing_files(fsg);
+ 	kref_put(&amp;fsg-&gt;ref, fsg_release);
+ }
+ module_exit(fsg_cleanup);</pre><hr><pre>commit 2d93148ab6988cad872e65d694c95e8944e1b626
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Apr 14 11:31:02 2009 -0400
+
+    USB: serial: fix lifetime and locking problems
+    
+    This patch (as1229) fixes a few lifetime and locking problems in the
+    usb-serial driver.  The main symptom is that an invalid kevent is
+    created when the serial device is unplugged while a connection is
+    active.
+    
+            Ports should be unregistered when device is disconnected,
+            not when the parent usb_serial structure is deallocated.
+    
+            Each open file should hold a reference to the corresponding
+            port structure, and the reference should be released when
+            the file is closed.
+    
+            serial-&gt;disc_mutex should be acquired in serial_open(), to
+            resolve the classic race between open and disconnect.
+    
+            serial_close() doesn't need to hold both serial-&gt;disc_mutex
+            and port-&gt;mutex at the same time.
+    
+            Release the subdriver's module reference only after releasing
+            all the other references, in case one of the release routines
+            needs to invoke some code in the subdriver module.
+    
+            Replace a call to flush_scheduled_work() (which is prone to
+            deadlocks) with cancel_work_sync().  Also, add a call to
+            cancel_work_sync() in the disconnect routine.
+    
+            Reduce the scope of serial-&gt;disc_mutex in serial_disconnect().
+            The only place it really needs to protect is where the
+            "disconnected" flag is set.
+    
+    This fixes the bug reported in
+    
+            http://bugs.freedesktop.org/show_bug.cgi?id=20703
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Tested-by: Dan Williams &lt;dcbw@redhat.com&gt;
+    Tested-by: Ming Lei &lt;tom.leiming@gmail.com&gt;
+    Reviewed-by: Oliver Neukum &lt;oliver@neukum.org&gt;
+    Acked-by: Alan Cox &lt;alan@linux.intel.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/serial/usb-serial.c b/drivers/usb/serial/usb-serial.c
+index 2a70563bbee1..0a566eea49c0 100644
+--- a/drivers/usb/serial/usb-serial.c
++++ b/drivers/usb/serial/usb-serial.c
+@@ -137,22 +137,10 @@ static void destroy_serial(struct kref *kref)
+ 
+ 	dbg("%s - %s", __func__, serial-&gt;type-&gt;description);
+ 
+-	serial-&gt;type-&gt;shutdown(serial);
+-
+ 	/* return the minor range that this device had */
+ 	if (serial-&gt;minor != SERIAL_TTY_NO_MINOR)
+ 		return_serial(serial);
+ 
+-	for (i = 0; i &lt; serial-&gt;num_ports; ++i)
+-		serial-&gt;port[i]-&gt;port.count = 0;
+-
+-	/* the ports are cleaned up and released in port_release() */
+-	for (i = 0; i &lt; serial-&gt;num_ports; ++i)
+-		if (serial-&gt;port[i]-&gt;dev.parent != NULL) {
+-			device_unregister(&amp;serial-&gt;port[i]-&gt;dev);
+-			serial-&gt;port[i] = NULL;
+-		}
+-
+ 	/* If this is a "fake" port, we have to clean it up here, as it will
+ 	 * not get cleaned up in port_release() as it was never registered with
+ 	 * the driver core */
+@@ -187,7 +175,7 @@ static int serial_open (struct tty_struct *tty, struct file *filp)
+ 	struct usb_serial *serial;
+ 	struct usb_serial_port *port;
+ 	unsigned int portNumber;
+-	int retval;
++	int retval = 0;
+ 
+ 	dbg("%s", __func__);
+ 
+@@ -198,21 +186,24 @@ static int serial_open (struct tty_struct *tty, struct file *filp)
+ 		return -ENODEV;
+ 	}
+ 
++	mutex_lock(&amp;serial-&gt;disc_mutex);
+ 	portNumber = tty-&gt;index - serial-&gt;minor;
+ 	port = serial-&gt;port[portNumber];
+-	if (!port) {
+-		retval = -ENODEV;
+-		goto bailout_kref_put;
+-	}
+-
+-	if (port-&gt;serial-&gt;disconnected) {
++	if (!port || serial-&gt;disconnected)
+ 		retval = -ENODEV;
+-		goto bailout_kref_put;
+-	}
++	else
++		get_device(&amp;port-&gt;dev);
++	/*
++	 * Note: Our locking order requirement does not allow port-&gt;mutex
++	 * to be acquired while serial-&gt;disc_mutex is held.
++	 */
++	mutex_unlock(&amp;serial-&gt;disc_mutex);
++	if (retval)
++		goto bailout_serial_put;
+ 
+ 	if (mutex_lock_interruptible(&amp;port-&gt;mutex)) {
+ 		retval = -ERESTARTSYS;
+-		goto bailout_kref_put;
++		goto bailout_port_put;
+ 	}
+ 
+ 	++port-&gt;port.count;
+@@ -232,14 +223,20 @@ static int serial_open (struct tty_struct *tty, struct file *filp)
+ 			goto bailout_mutex_unlock;
+ 		}
+ 
+-		retval = usb_autopm_get_interface(serial-&gt;interface);
++		mutex_lock(&amp;serial-&gt;disc_mutex);
++		if (serial-&gt;disconnected)
++			retval = -ENODEV;
++		else
++			retval = usb_autopm_get_interface(serial-&gt;interface);
+ 		if (retval)
+ 			goto bailout_module_put;
++
+ 		/* only call the device specific open if this
+ 		 * is the first time the port is opened */
+ 		retval = serial-&gt;type-&gt;open(tty, port, filp);
+ 		if (retval)
+ 			goto bailout_interface_put;
++		mutex_unlock(&amp;serial-&gt;disc_mutex);
+ 	}
+ 
+ 	mutex_unlock(&amp;port-&gt;mutex);
+@@ -248,13 +245,16 @@ static int serial_open (struct tty_struct *tty, struct file *filp)
+ bailout_interface_put:
+ 	usb_autopm_put_interface(serial-&gt;interface);
+ bailout_module_put:
++	mutex_unlock(&amp;serial-&gt;disc_mutex);
+ 	module_put(serial-&gt;type-&gt;driver.owner);
+ bailout_mutex_unlock:
+ 	port-&gt;port.count = 0;
+ 	tty-&gt;driver_data = NULL;
+ 	tty_port_tty_set(&amp;port-&gt;port, NULL);
+ 	mutex_unlock(&amp;port-&gt;mutex);
+-bailout_kref_put:
++bailout_port_put:
++	put_device(&amp;port-&gt;dev);
++bailout_serial_put:
+ 	usb_serial_put(serial);
+ 	return retval;
+ }
+@@ -262,6 +262,9 @@ static int serial_open (struct tty_struct *tty, struct file *filp)
+ static void serial_close(struct tty_struct *tty, struct file *filp)
+ {
+ 	struct usb_serial_port *port = tty-&gt;driver_data;
++	struct usb_serial *serial;
++	struct module *owner;
++	int count;
+ 
+ 	if (!port)
+ 		return;
+@@ -269,6 +272,8 @@ static void serial_close(struct tty_struct *tty, struct file *filp)
+ 	dbg("%s - port %d", __func__, port-&gt;number);
+ 
+ 	mutex_lock(&amp;port-&gt;mutex);
++	serial = port-&gt;serial;
++	owner = serial-&gt;type-&gt;driver.owner;
+ 
+ 	if (port-&gt;port.count == 0) {
+ 		mutex_unlock(&amp;port-&gt;mutex);
+@@ -281,7 +286,7 @@ static void serial_close(struct tty_struct *tty, struct file *filp)
+ 		 * this before we drop the port count. The call is protected
+ 		 * by the port mutex
+ 		 */
+-		port-&gt;serial-&gt;type-&gt;close(tty, port, filp);
++		serial-&gt;type-&gt;close(tty, port, filp);
+ 
+ 	if (port-&gt;port.count == (port-&gt;console ? 2 : 1)) {
+ 		struct tty_struct *tty = tty_port_tty_get(&amp;port-&gt;port);
+@@ -295,17 +300,23 @@ static void serial_close(struct tty_struct *tty, struct file *filp)
+ 		}
+ 	}
+ 
+-	if (port-&gt;port.count == 1) {
+-		mutex_lock(&amp;port-&gt;serial-&gt;disc_mutex);
+-		if (!port-&gt;serial-&gt;disconnected)
+-			usb_autopm_put_interface(port-&gt;serial-&gt;interface);
+-		mutex_unlock(&amp;port-&gt;serial-&gt;disc_mutex);
+-		module_put(port-&gt;serial-&gt;type-&gt;driver.owner);
+-	}
+ 	--port-&gt;port.count;
+-
++	count = port-&gt;port.count;
+ 	mutex_unlock(&amp;port-&gt;mutex);
+-	usb_serial_put(port-&gt;serial);
++	put_device(&amp;port-&gt;dev);
++
++	/* Mustn't dereference port any more */
++	if (count == 0) {
++		mutex_lock(&amp;serial-&gt;disc_mutex);
++		if (!serial-&gt;disconnected)
++			usb_autopm_put_interface(serial-&gt;interface);
++		mutex_unlock(&amp;serial-&gt;disc_mutex);
++	}
++	usb_serial_put(serial);
++
++	/* Mustn't dereference serial any more */
++	if (count == 0)
++		module_put(owner);
+ }
+ 
+ static int serial_write(struct tty_struct *tty, const unsigned char *buf,
+@@ -549,7 +560,13 @@ static void kill_traffic(struct usb_serial_port *port)
+ 
+ static void port_free(struct usb_serial_port *port)
+ {
++	/*
++	 * Stop all the traffic before cancelling the work, so that
++	 * nobody will restart it by calling usb_serial_port_softint.
++	 */
+ 	kill_traffic(port);
++	cancel_work_sync(&amp;port-&gt;work);
++
+ 	usb_free_urb(port-&gt;read_urb);
+ 	usb_free_urb(port-&gt;write_urb);
+ 	usb_free_urb(port-&gt;interrupt_in_urb);
+@@ -558,7 +575,6 @@ static void port_free(struct usb_serial_port *port)
+ 	kfree(port-&gt;bulk_out_buffer);
+ 	kfree(port-&gt;interrupt_in_buffer);
+ 	kfree(port-&gt;interrupt_out_buffer);
+-	flush_scheduled_work();		/* port-&gt;work */
+ 	kfree(port);
+ }
+ 
+@@ -1043,6 +1059,12 @@ void usb_serial_disconnect(struct usb_interface *interface)
+ 	usb_set_intfdata(interface, NULL);
+ 	/* must set a flag, to signal subdrivers */
+ 	serial-&gt;disconnected = 1;
++	mutex_unlock(&amp;serial-&gt;disc_mutex);
++
++	/* Unfortunately, many of the sub-drivers expect the port structures
++	 * to exist when their shutdown method is called, so we have to go
++	 * through this awkward two-step unregistration procedure.
++	 */
+ 	for (i = 0; i &lt; serial-&gt;num_ports; ++i) {
+ 		port = serial-&gt;port[i];
+ 		if (port) {
+@@ -1052,11 +1074,21 @@ void usb_serial_disconnect(struct usb_interface *interface)
+ 				tty_kref_put(tty);
+ 			}
+ 			kill_traffic(port);
++			cancel_work_sync(&amp;port-&gt;work);
++			device_del(&amp;port-&gt;dev);
++		}
++	}
++	serial-&gt;type-&gt;shutdown(serial);
++	for (i = 0; i &lt; serial-&gt;num_ports; ++i) {
++		port = serial-&gt;port[i];
++		if (port) {
++			put_device(&amp;port-&gt;dev);
++			serial-&gt;port[i] = NULL;
+ 		}
+ 	}
++
+ 	/* let the last holder of this object
+ 	 * cause it to be cleaned up */
+-	mutex_unlock(&amp;serial-&gt;disc_mutex);
+ 	usb_serial_put(serial);
+ 	dev_info(dev, "device disconnected\n");
+ }</pre><hr><pre>commit dfc15e8955338fedf5c5d15622c4042c1e4ee332
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Apr 9 14:59:44 2009 -0400
+
+    usb-storage: fix mistake in Makefile
+    
+    This patch (as1228) fixes a Makefile error introduced when the
+    subdrivers in usb-storage were split out into separate modules.  The
+    intention is that when CONFIG_USB_LIBUSUAL is set, libusual.o and
+    usual-tables.o should be combined into a single object file (called
+    usb-libusual).  The current Makefile will instead create two separate
+    objects, and the result won't load properly.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Reported-and-tested-by: Alan Jenkins &lt;sourcejedi.lkml@googlemail.com&gt;
+    Reported-and-tested-by: Mike Galbraith &lt;efault@gmx.de&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/storage/Makefile b/drivers/usb/storage/Makefile
+index 5be54c019662..ef7e5a8ceab5 100644
+--- a/drivers/usb/storage/Makefile
++++ b/drivers/usb/storage/Makefile
+@@ -17,7 +17,8 @@ usb-storage-objs :=	scsiglue.o protocol.o transport.o usb.o \
+ ifeq ($(CONFIG_USB_LIBUSUAL),)
+ 	usb-storage-objs	+= usual-tables.o
+ else
+-	obj-$(CONFIG_USB)	+= libusual.o usual-tables.o
++	obj-$(CONFIG_USB)	+= usb-libusual.o
++	usb-libusual-objs	:= libusual.o usual-tables.o
+ endif
+ 
+ obj-$(CONFIG_USB_STORAGE_ALAUDA)	+= ums-alauda.o</pre><hr><pre>commit e4813eec8d47c8299d968bd5349dc881fa481c26
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Mar 24 10:39:13 2009 -0400
+
+    USB: usb-storage: augment unusual_devs entry for Simple Tech/Datafab
+    
+    This patch (as1227) adds the MAX_SECTORS_64 flag to the unusual_devs
+    entry for the Simple Tech/Datafab controller.  This fixes Bugzilla
+    #12882.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Reported-and-tested-by: binbin &lt;binbinsh@gmail.com&gt;
+    Cc: stable &lt;stable@kernel.org&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/storage/unusual_devs.h b/drivers/usb/storage/unusual_devs.h
+index 6ff2b283edb1..96db479d1165 100644
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -975,12 +975,14 @@ UNUSUAL_DEV(  0x07c4, 0xa400, 0x0000, 0xffff,
+ 		US_SC_DEVICE, US_PR_DEVICE, NULL,
+ 		US_FL_FIX_INQUIRY | US_FL_FIX_CAPACITY ),
+ 
+-/* Reported by Rauch Wolke &lt;rauchwolke@gmx.net&gt; */
++/* Reported by Rauch Wolke &lt;rauchwolke@gmx.net&gt;
++ * and augmented by binbin &lt;binbinsh@gmail.com&gt; (Bugzilla #12882)
++ */
+ UNUSUAL_DEV(  0x07c4, 0xa4a5, 0x0000, 0xffff,
+ 		"Simple Tech/Datafab",
+ 		"CF+SM Reader",
+ 		US_SC_DEVICE, US_PR_DEVICE, NULL,
+-		US_FL_IGNORE_RESIDUE ),
++		US_FL_IGNORE_RESIDUE | US_FL_MAX_SECTORS_64 ),
+ 
+ /* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant
+  * to the USB storage specification in two ways:</pre><hr><pre>commit d34d9721a559fd11ec682bd9ef17220de0162060
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Mar 9 13:44:48 2009 -0400
+
+    USB: usbfs: remove unneeded "inline" annotations
+    
+    This patch (as1223) removes a bunch of unnecessary "inline"
+    annotations from the usbfs driver.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
+index 8f022af2fd7a..d3883f639604 100644
+--- a/drivers/usb/core/devio.c
++++ b/drivers/usb/core/devio.c
+@@ -104,7 +104,7 @@ MODULE_PARM_DESC(usbfs_snoop, "true to log all usbfs traffic");
+ 
+ #define	MAX_USBFS_BUFFER_SIZE	16384
+ 
+-static inline int connected(struct dev_state *ps)
++static int connected(struct dev_state *ps)
+ {
+ 	return (!list_empty(&amp;ps-&gt;list) &amp;&amp;
+ 			ps-&gt;dev-&gt;state != USB_STATE_NOTATTACHED);
+@@ -248,7 +248,7 @@ static void free_async(struct async *as)
+ 	kfree(as);
+ }
+ 
+-static inline void async_newpending(struct async *as)
++static void async_newpending(struct async *as)
+ {
+ 	struct dev_state *ps = as-&gt;ps;
+ 	unsigned long flags;
+@@ -258,7 +258,7 @@ static inline void async_newpending(struct async *as)
+ 	spin_unlock_irqrestore(&amp;ps-&gt;lock, flags);
+ }
+ 
+-static inline void async_removepending(struct async *as)
++static void async_removepending(struct async *as)
+ {
+ 	struct dev_state *ps = as-&gt;ps;
+ 	unsigned long flags;
+@@ -268,7 +268,7 @@ static inline void async_removepending(struct async *as)
+ 	spin_unlock_irqrestore(&amp;ps-&gt;lock, flags);
+ }
+ 
+-static inline struct async *async_getcompleted(struct dev_state *ps)
++static struct async *async_getcompleted(struct dev_state *ps)
+ {
+ 	unsigned long flags;
+ 	struct async *as = NULL;
+@@ -283,7 +283,7 @@ static inline struct async *async_getcompleted(struct dev_state *ps)
+ 	return as;
+ }
+ 
+-static inline struct async *async_getpending(struct dev_state *ps,
++static struct async *async_getpending(struct dev_state *ps,
+ 					     void __user *userurb)
+ {
+ 	unsigned long flags;
+@@ -376,7 +376,7 @@ static void destroy_async_on_interface(struct dev_state *ps,
+ 	destroy_async(ps, &amp;hitlist);
+ }
+ 
+-static inline void destroy_all_async(struct dev_state *ps)
++static void destroy_all_async(struct dev_state *ps)
+ {
+ 	destroy_async(ps, &amp;ps-&gt;async_pending);
+ }</pre><hr><pre>commit 4fe0387afa893b44c5a21b9bfbb0888354ef4656
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Feb 26 10:21:02 2009 -0500
+
+    USB: don't send Set-Interface after reset
+    
+    This patch (as1221) changes the way usbcore reinitializes a device
+    following a reset or a reset-resume.  Currently we call
+    usb_set_interface() for every interface in the active configuration;
+    this is to put the interface into the same altsetting as before the
+    reset and to make sure that the host's endpoint state matches the
+    device's endpoint state.
+    
+    However, sending a Set-Interface request is a waste of time if an
+    interface was already in altsetting 0 before the reset, since it is
+    certainly in altsetting 0 afterward.  In addition, many devices can't
+    handle Set-Interface requests -- they crash when they receive them.
+    
+    So instead, the patch adds code to check each interface.  If the
+    interface wasn't in altsetting 0 before the reset, we go head with the
+    Set-Interface request as before.  But if it was then we skip sending
+    the Set-Interface request, and we clear out the host-side endpoint
+    state by calling usb_disable_interface() followed by
+    usb_enable_interface().
+    
+    The patch also adds a couple of new comments to explain what's going
+    on.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index f17d9ebc44af..81eb3e6b6592 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -3393,10 +3393,10 @@ static int usb_reset_and_verify_device(struct usb_device *udev)
+ 		udev-&gt;descriptor = descriptor;	/* for disconnect() calls */
+ 		goto re_enumerate;
+   	}
+-  
++
++	/* Restore the device's previous configuration */
+ 	if (!udev-&gt;actconfig)
+ 		goto done;
+-
+ 	ret = usb_control_msg(udev, usb_sndctrlpipe(udev, 0),
+ 			USB_REQ_SET_CONFIGURATION, 0,
+ 			udev-&gt;actconfig-&gt;desc.bConfigurationValue, 0,
+@@ -3409,16 +3409,25 @@ static int usb_reset_and_verify_device(struct usb_device *udev)
+   	}
+ 	usb_set_device_state(udev, USB_STATE_CONFIGURED);
+ 
++	/* Put interfaces back into the same altsettings as before.
++	 * Don't bother to send the Set-Interface request for interfaces
++	 * that were already in altsetting 0; besides being unnecessary,
++	 * many devices can't handle it.  Instead just reset the host-side
++	 * endpoint state.
++	 */
+ 	for (i = 0; i &lt; udev-&gt;actconfig-&gt;desc.bNumInterfaces; i++) {
+ 		struct usb_interface *intf = udev-&gt;actconfig-&gt;interface[i];
+ 		struct usb_interface_descriptor *desc;
+ 
+-		/* set_interface resets host side toggle even
+-		 * for altsetting zero.  the interface may have no driver.
+-		 */
+ 		desc = &amp;intf-&gt;cur_altsetting-&gt;desc;
+-		ret = usb_set_interface(udev, desc-&gt;bInterfaceNumber,
+-			desc-&gt;bAlternateSetting);
++		if (desc-&gt;bAlternateSetting == 0) {
++			usb_disable_interface(udev, intf, true);
++			usb_enable_interface(udev, intf, true);
++			ret = 0;
++		} else {
++			ret = usb_set_interface(udev, desc-&gt;bInterfaceNumber,
++					desc-&gt;bAlternateSetting);
++		}
+ 		if (ret &lt; 0) {
+ 			dev_err(&amp;udev-&gt;dev, "failed to restore interface %d "
+ 				"altsetting %d (error=%d)\n",</pre><hr><pre>commit 7ea0a2bcfe40b1c525e63e931b7142ab22b64269
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Mar 5 11:01:11 2009 -0500
+
+    USB: uhci: don't use pseudo negative values
+    
+    The code in uhci-q.c doesn't have to use pseudo-negative values.  I did
+    it that way because it was easy and because it would give the expected
+    output during debugging.  But it doesn't have to work that way.  Here's
+    another approach.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Cc: Roel Kluin &lt;roel.kluin@gmail.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/host/uhci-debug.c b/drivers/usb/host/uhci-debug.c
+index 20cc58b97807..e52b954dda47 100644
+--- a/drivers/usb/host/uhci-debug.c
++++ b/drivers/usb/host/uhci-debug.c
+@@ -118,7 +118,9 @@ static int uhci_show_urbp(struct urb_priv *urbp, char *buf, int len, int space)
+ 	}
+ 
+ 	out += sprintf(out, "%s%s", ptype, (urbp-&gt;fsbr ? " FSBR" : ""));
+-	out += sprintf(out, " Actlen=%d", urbp-&gt;urb-&gt;actual_length);
++	out += sprintf(out, " Actlen=%d%s", urbp-&gt;urb-&gt;actual_length,
++			(urbp-&gt;qh-&gt;type == USB_ENDPOINT_XFER_CONTROL ?
++				"-8" : ""));
+ 
+ 	if (urbp-&gt;urb-&gt;unlinked)
+ 		out += sprintf(out, " Unlinked=%d", urbp-&gt;urb-&gt;unlinked);
+diff --git a/drivers/usb/host/uhci-q.c b/drivers/usb/host/uhci-q.c
+index 58f873679145..3e5807d14ffb 100644
+--- a/drivers/usb/host/uhci-q.c
++++ b/drivers/usb/host/uhci-q.c
+@@ -899,8 +899,6 @@ static int uhci_submit_control(struct uhci_hcd *uhci, struct urb *urb,
+ 	}
+ 	if (qh-&gt;state != QH_STATE_ACTIVE)
+ 		qh-&gt;skel = skel;
+-
+-	urb-&gt;actual_length = -8;	/* Account for the SETUP packet */
+ 	return 0;
+ 
+ nomem:
+@@ -1494,11 +1492,10 @@ __acquires(uhci-&gt;lock)
+ 
+ 	if (qh-&gt;type == USB_ENDPOINT_XFER_CONTROL) {
+ 
+-		/* urb-&gt;actual_length &lt; 0 means the setup transaction didn't
+-		 * complete successfully.  Either it failed or the URB was
+-		 * unlinked first.  Regardless, don't confuse people with a
+-		 * negative length. */
+-		urb-&gt;actual_length = max(urb-&gt;actual_length, 0);
++		/* Subtract off the length of the SETUP packet from
++		 * urb-&gt;actual_length.
++		 */
++		urb-&gt;actual_length -= min_t(u32, 8, urb-&gt;actual_length);
+ 	}
+ 
+ 	/* When giving back the first URB in an Isochronous queue,</pre><hr><pre>commit 9cfb95ef72c637bc9b90260e0f98a23f3f49b1bb
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Feb 12 14:48:33 2009 -0500
+
+    usb-storage: make onetouch a separate module
+    
+    This patch (as1217) converts usb-storage's onetouch subdriver into a
+    separate module.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/storage/Kconfig b/drivers/usb/storage/Kconfig
+index 8adece1dd294..8a372bac0e43 100644
+--- a/drivers/usb/storage/Kconfig
++++ b/drivers/usb/storage/Kconfig
+@@ -131,7 +131,7 @@ config USB_STORAGE_ALAUDA
+ 	  If this driver is compiled as a module, it will be named ums-alauda.
+ 
+ config USB_STORAGE_ONETOUCH
+-	bool "Support OneTouch Button on Maxtor Hard Drives"
++	tristate "Support OneTouch Button on Maxtor Hard Drives"
+ 	depends on USB_STORAGE
+ 	depends on INPUT=y || INPUT=USB_STORAGE
+ 	help
+@@ -143,6 +143,8 @@ config USB_STORAGE_ONETOUCH
+ 	  this input in any keybinding software. (e.g. gnome's keyboard short-
+ 	  cuts)
+ 
++	  If this driver is compiled as a module, it will be named ums-onetouch.
++
+ config USB_STORAGE_KARMA
+ 	tristate "Support for Rio Karma music player"
+ 	depends on USB_STORAGE
+diff --git a/drivers/usb/storage/Makefile b/drivers/usb/storage/Makefile
+index 870680ea3709..5be54c019662 100644
+--- a/drivers/usb/storage/Makefile
++++ b/drivers/usb/storage/Makefile
+@@ -10,7 +10,6 @@ EXTRA_CFLAGS	:= -Idrivers/scsi
+ obj-$(CONFIG_USB_STORAGE)	+= usb-storage.o
+ 
+ usb-storage-obj-$(CONFIG_USB_STORAGE_DEBUG)	+= debug.o
+-usb-storage-obj-$(CONFIG_USB_STORAGE_ONETOUCH)	+= onetouch.o
+ 
+ usb-storage-objs :=	scsiglue.o protocol.o transport.o usb.o \
+ 			initializers.o sierra_ms.o option_ms.o $(usb-storage-obj-y)
+@@ -28,6 +27,7 @@ obj-$(CONFIG_USB_STORAGE_FREECOM)	+= ums-freecom.o
+ obj-$(CONFIG_USB_STORAGE_ISD200)	+= ums-isd200.o
+ obj-$(CONFIG_USB_STORAGE_JUMPSHOT)	+= ums-jumpshot.o
+ obj-$(CONFIG_USB_STORAGE_KARMA)		+= ums-karma.o
++obj-$(CONFIG_USB_STORAGE_ONETOUCH)	+= ums-onetouch.o
+ obj-$(CONFIG_USB_STORAGE_SDDR09)	+= ums-sddr09.o
+ obj-$(CONFIG_USB_STORAGE_SDDR55)	+= ums-sddr55.o
+ obj-$(CONFIG_USB_STORAGE_USBAT)		+= ums-usbat.o
+@@ -39,6 +39,7 @@ ums-freecom-objs	:= freecom.o
+ ums-isd200-objs		:= isd200.o
+ ums-jumpshot-objs	:= jumpshot.o
+ ums-karma-objs		:= karma.o
++ums-onetouch-objs	:= onetouch.o
+ ums-sddr09-objs		:= sddr09.o
+ ums-sddr55-objs		:= sddr55.o
+ ums-usbat-objs		:= shuttle_usbat.o
+diff --git a/drivers/usb/storage/onetouch.c b/drivers/usb/storage/onetouch.c
+index c7bf8954b4e4..8bd095635a99 100644
+--- a/drivers/usb/storage/onetouch.c
++++ b/drivers/usb/storage/onetouch.c
+@@ -35,9 +35,12 @@
+ #include &lt;linux/module.h&gt;
+ #include &lt;linux/usb/input.h&gt;
+ #include "usb.h"
+-#include "onetouch.h"
+ #include "debug.h"
+ 
++#define ONETOUCH_PKT_LEN        0x02
++#define ONETOUCH_BUTTON         KEY_PROG1
++
++static int onetouch_connect_input(struct us_data *ss);
+ static void onetouch_release_input(void *onetouch_);
+ 
+ struct usb_onetouch {
+@@ -52,6 +55,46 @@ struct usb_onetouch {
+ 	unsigned int is_open:1;
+ };
+ 
++
++/*
++ * The table of devices
++ */
++#define UNUSUAL_DEV(id_vendor, id_product, bcdDeviceMin, bcdDeviceMax, \
++		    vendorName, productName, useProtocol, useTransport, \
++		    initFunction, flags) \
++{ USB_DEVICE_VER(id_vendor, id_product, bcdDeviceMin, bcdDeviceMax), \
++  .driver_info = (flags)|(USB_US_TYPE_STOR&lt;&lt;24) }
++
++struct usb_device_id onetouch_usb_ids[] = {
++#	include "unusual_onetouch.h"
++	{ }		/* Terminating entry */
++};
++MODULE_DEVICE_TABLE(usb, onetouch_usb_ids);
++
++#undef UNUSUAL_DEV
++
++/*
++ * The flags table
++ */
++#define UNUSUAL_DEV(idVendor, idProduct, bcdDeviceMin, bcdDeviceMax, \
++		    vendor_name, product_name, use_protocol, use_transport, \
++		    init_function, Flags) \
++{ \
++	.vendorName = vendor_name,	\
++	.productName = product_name,	\
++	.useProtocol = use_protocol,	\
++	.useTransport = use_transport,	\
++	.initFunction = init_function,	\
++}
++
++static struct us_unusual_dev onetouch_unusual_dev_list[] = {
++#	include "unusual_onetouch.h"
++	{ }		/* Terminating entry */
++};
++
++#undef UNUSUAL_DEV
++
++
+ static void usb_onetouch_irq(struct urb *urb)
+ {
+ 	struct usb_onetouch *onetouch = urb-&gt;context;
+@@ -127,7 +170,7 @@ static void usb_onetouch_pm_hook(struct us_data *us, int action)
+ }
+ #endif /* CONFIG_PM */
+ 
+-int onetouch_connect_input(struct us_data *ss)
++static int onetouch_connect_input(struct us_data *ss)
+ {
+ 	struct usb_device *udev = ss-&gt;pusb_dev;
+ 	struct usb_host_interface *interface;
+@@ -236,3 +279,46 @@ static void onetouch_release_input(void *onetouch_)
+ 				onetouch-&gt;data, onetouch-&gt;data_dma);
+ 	}
+ }
++
++static int onetouch_probe(struct usb_interface *intf,
++			 const struct usb_device_id *id)
++{
++	struct us_data *us;
++	int result;
++
++	result = usb_stor_probe1(&amp;us, intf, id,
++			(id - onetouch_usb_ids) + onetouch_unusual_dev_list);
++	if (result)
++		return result;
++
++	/* Use default transport and protocol */
++
++	result = usb_stor_probe2(us);
++	return result;
++}
++
++static struct usb_driver onetouch_driver = {
++	.name =		"ums-onetouch",
++	.probe =	onetouch_probe,
++	.disconnect =	usb_stor_disconnect,
++	.suspend =	usb_stor_suspend,
++	.resume =	usb_stor_resume,
++	.reset_resume =	usb_stor_reset_resume,
++	.pre_reset =	usb_stor_pre_reset,
++	.post_reset =	usb_stor_post_reset,
++	.id_table =	onetouch_usb_ids,
++	.soft_unbind =	1,
++};
++
++static int __init onetouch_init(void)
++{
++	return usb_register(&amp;onetouch_driver);
++}
++
++static void __exit onetouch_exit(void)
++{
++	usb_deregister(&amp;onetouch_driver);
++}
++
++module_init(onetouch_init);
++module_exit(onetouch_exit);
+diff --git a/drivers/usb/storage/onetouch.h b/drivers/usb/storage/onetouch.h
+deleted file mode 100644
+index 41c7aa8f0446..000000000000
+--- a/drivers/usb/storage/onetouch.h
++++ /dev/null
+@@ -1,9 +0,0 @@
+-#ifndef _ONETOUCH_H_
+-#define _ONETOUCH_H_
+-
+-#define ONETOUCH_PKT_LEN        0x02
+-#define ONETOUCH_BUTTON         KEY_PROG1
+-
+-int onetouch_connect_input(struct us_data *ss);
+-
+-#endif
+diff --git a/drivers/usb/storage/unusual_devs.h b/drivers/usb/storage/unusual_devs.h
+index 83e34a6ad59d..1c1f643e8a78 100644
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -1182,23 +1182,6 @@ UNUSUAL_DEV( 0x0c45, 0x1060, 0x0100, 0x0100,
+ 		US_SC_DEVICE, US_PR_DEVICE, NULL,
+ 		US_FL_SINGLE_LUN ),
+ 
+-/* Submitted by: Nick Sillik &lt;n.sillik@temple.edu&gt;
+- * Needed for OneTouch extension to usb-storage
+- *
+- */
+-#ifdef CONFIG_USB_STORAGE_ONETOUCH
+-	UNUSUAL_DEV(  0x0d49, 0x7000, 0x0000, 0x9999,
+-			"Maxtor",
+-			"OneTouch External Harddrive",
+-			US_SC_DEVICE, US_PR_DEVICE, onetouch_connect_input,
+-			0),
+-	UNUSUAL_DEV(  0x0d49, 0x7010, 0x0000, 0x9999,
+-			"Maxtor",
+-			"OneTouch External Harddrive",
+-			US_SC_DEVICE, US_PR_DEVICE, onetouch_connect_input,
+-			0),
+-#endif
+-
+ /* Submitted by Joris Struyve &lt;joris@struyve.be&gt; */
+ UNUSUAL_DEV( 0x0d96, 0x410a, 0x0001, 0xffff,
+ 		"Medion",
+diff --git a/drivers/usb/storage/unusual_onetouch.h b/drivers/usb/storage/unusual_onetouch.h
+new file mode 100644
+index 000000000000..bd9306b637df
+--- /dev/null
++++ b/drivers/usb/storage/unusual_onetouch.h
+@@ -0,0 +1,36 @@
++/* Unusual Devices File for the Maxtor OneTouch USB hard drive's button
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2, or (at your option) any
++ * later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#if defined(CONFIG_USB_STORAGE_ONETOUCH) || \
++		defined(CONFIG_USB_STORAGE_ONETOUCH_MODULE)
++
++/* Submitted by: Nick Sillik &lt;n.sillik@temple.edu&gt;
++ * Needed for OneTouch extension to usb-storage
++ */
++UNUSUAL_DEV(  0x0d49, 0x7000, 0x0000, 0x9999,
++		"Maxtor",
++		"OneTouch External Harddrive",
++		US_SC_DEVICE, US_PR_DEVICE, onetouch_connect_input,
++		0),
++
++UNUSUAL_DEV(  0x0d49, 0x7010, 0x0000, 0x9999,
++		"Maxtor",
++		"OneTouch External Harddrive",
++		US_SC_DEVICE, US_PR_DEVICE, onetouch_connect_input,
++		0),
++
++#endif /* defined(CONFIG_USB_STORAGE_ONETOUCH) || ... */
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index c5abf9bbce16..8060b85fe1a3 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -66,9 +66,6 @@
+ #include "debug.h"
+ #include "initializers.h"
+ 
+-#ifdef CONFIG_USB_STORAGE_ONETOUCH
+-#include "onetouch.h"
+-#endif
+ #include "sierra_ms.h"
+ #include "option_ms.h"
+ 
+diff --git a/drivers/usb/storage/usual-tables.c b/drivers/usb/storage/usual-tables.c
+index bce086fcef5e..468bde7d1971 100644
+--- a/drivers/usb/storage/usual-tables.c
++++ b/drivers/usb/storage/usual-tables.c
+@@ -84,6 +84,7 @@ static struct ignore_entry ignore_ids[] = {
+ #	include "unusual_isd200.h"
+ #	include "unusual_jumpshot.h"
+ #	include "unusual_karma.h"
++#	include "unusual_onetouch.h"
+ #	include "unusual_sddr09.h"
+ #	include "unusual_sddr55.h"
+ #	include "unusual_usbat.h"</pre><hr><pre>commit c10337846c93bd914dd3003ffb001adc583b313e
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Feb 12 14:48:26 2009 -0500
+
+    usb-storage: make karma a separate module
+    
+    This patch (as1216) converts usb-storage's karma subdriver into a
+    separate module.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/storage/Kconfig b/drivers/usb/storage/Kconfig
+index c56c2c6d37b7..8adece1dd294 100644
+--- a/drivers/usb/storage/Kconfig
++++ b/drivers/usb/storage/Kconfig
+@@ -144,7 +144,7 @@ config USB_STORAGE_ONETOUCH
+ 	  cuts)
+ 
+ config USB_STORAGE_KARMA
+-	bool "Support for Rio Karma music player"
++	tristate "Support for Rio Karma music player"
+ 	depends on USB_STORAGE
+ 	help
+ 	  Say Y here to include additional code to support the Rio Karma
+@@ -155,6 +155,8 @@ config USB_STORAGE_KARMA
+ 	  on the resulting scsi device node returns the Karma to normal
+ 	  operation.
+ 
++	  If this driver is compiled as a module, it will be named ums-karma.
++
+ config USB_STORAGE_CYPRESS_ATACB
+ 	tristate "SAT emulation on Cypress USB/ATA Bridge with ATACB"
+ 	depends on USB_STORAGE
+diff --git a/drivers/usb/storage/Makefile b/drivers/usb/storage/Makefile
+index fea05c0b6765..870680ea3709 100644
+--- a/drivers/usb/storage/Makefile
++++ b/drivers/usb/storage/Makefile
+@@ -11,7 +11,6 @@ obj-$(CONFIG_USB_STORAGE)	+= usb-storage.o
+ 
+ usb-storage-obj-$(CONFIG_USB_STORAGE_DEBUG)	+= debug.o
+ usb-storage-obj-$(CONFIG_USB_STORAGE_ONETOUCH)	+= onetouch.o
+-usb-storage-obj-$(CONFIG_USB_STORAGE_KARMA)	+= karma.o
+ 
+ usb-storage-objs :=	scsiglue.o protocol.o transport.o usb.o \
+ 			initializers.o sierra_ms.o option_ms.o $(usb-storage-obj-y)
+@@ -28,6 +27,7 @@ obj-$(CONFIG_USB_STORAGE_DATAFAB)	+= ums-datafab.o
+ obj-$(CONFIG_USB_STORAGE_FREECOM)	+= ums-freecom.o
+ obj-$(CONFIG_USB_STORAGE_ISD200)	+= ums-isd200.o
+ obj-$(CONFIG_USB_STORAGE_JUMPSHOT)	+= ums-jumpshot.o
++obj-$(CONFIG_USB_STORAGE_KARMA)		+= ums-karma.o
+ obj-$(CONFIG_USB_STORAGE_SDDR09)	+= ums-sddr09.o
+ obj-$(CONFIG_USB_STORAGE_SDDR55)	+= ums-sddr55.o
+ obj-$(CONFIG_USB_STORAGE_USBAT)		+= ums-usbat.o
+@@ -38,6 +38,7 @@ ums-datafab-objs	:= datafab.o
+ ums-freecom-objs	:= freecom.o
+ ums-isd200-objs		:= isd200.o
+ ums-jumpshot-objs	:= jumpshot.o
++ums-karma-objs		:= karma.o
+ ums-sddr09-objs		:= sddr09.o
+ ums-sddr55-objs		:= sddr55.o
+ ums-usbat-objs		:= shuttle_usbat.o
+diff --git a/drivers/usb/storage/karma.c b/drivers/usb/storage/karma.c
+index 0d79ae5683f7..cfb8e60866b8 100644
+--- a/drivers/usb/storage/karma.c
++++ b/drivers/usb/storage/karma.c
+@@ -18,6 +18,8 @@
+  * 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#include &lt;linux/module.h&gt;
++
+ #include &lt;scsi/scsi.h&gt;
+ #include &lt;scsi/scsi_cmnd.h&gt;
+ #include &lt;scsi/scsi_device.h&gt;
+@@ -25,7 +27,6 @@
+ #include "usb.h"
+ #include "transport.h"
+ #include "debug.h"
+-#include "karma.h"
+ 
+ #define RIO_PREFIX "RIOP\x00"
+ #define RIO_PREFIX_LEN 5
+@@ -36,13 +37,53 @@
+ #define RIO_LEAVE_STORAGE 0x2
+ #define RIO_RESET 0xC
+ 
+-extern int usb_stor_Bulk_transport(struct scsi_cmnd *, struct us_data *);
+-
+ struct karma_data {
+ 	int in_storage;
+ 	char *recv;
+ };
+ 
++static int rio_karma_init(struct us_data *us);
++
++
++/*
++ * The table of devices
++ */
++#define UNUSUAL_DEV(id_vendor, id_product, bcdDeviceMin, bcdDeviceMax, \
++		    vendorName, productName, useProtocol, useTransport, \
++		    initFunction, flags) \
++{ USB_DEVICE_VER(id_vendor, id_product, bcdDeviceMin, bcdDeviceMax), \
++  .driver_info = (flags)|(USB_US_TYPE_STOR&lt;&lt;24) }
++
++struct usb_device_id karma_usb_ids[] = {
++#	include "unusual_karma.h"
++	{ }		/* Terminating entry */
++};
++MODULE_DEVICE_TABLE(usb, karma_usb_ids);
++
++#undef UNUSUAL_DEV
++
++/*
++ * The flags table
++ */
++#define UNUSUAL_DEV(idVendor, idProduct, bcdDeviceMin, bcdDeviceMax, \
++		    vendor_name, product_name, use_protocol, use_transport, \
++		    init_function, Flags) \
++{ \
++	.vendorName = vendor_name,	\
++	.productName = product_name,	\
++	.useProtocol = use_protocol,	\
++	.useTransport = use_transport,	\
++	.initFunction = init_function,	\
++}
++
++static struct us_unusual_dev karma_unusual_dev_list[] = {
++#	include "unusual_karma.h"
++	{ }		/* Terminating entry */
++};
++
++#undef UNUSUAL_DEV
++
++
+ /*
+  * Send commands to Rio Karma.
+  *
+@@ -104,7 +145,7 @@ static int rio_karma_send_command(char cmd, struct us_data *us)
+  * Trap START_STOP and READ_10 to leave/re-enter storage mode.
+  * Everything else is propagated to the normal bulk layer.
+  */
+-int rio_karma_transport(struct scsi_cmnd *srb, struct us_data *us)
++static int rio_karma_transport(struct scsi_cmnd *srb, struct us_data *us)
+ {
+ 	int ret;
+ 	struct karma_data *data = (struct karma_data *) us-&gt;extra;
+@@ -133,7 +174,7 @@ static void rio_karma_destructor(void *extra)
+ 	kfree(data-&gt;recv);
+ }
+ 
+-int rio_karma_init(struct us_data *us)
++static int rio_karma_init(struct us_data *us)
+ {
+ 	int ret = 0;
+ 	struct karma_data *data = kzalloc(sizeof(struct karma_data), GFP_NOIO);
+@@ -153,3 +194,48 @@ int rio_karma_init(struct us_data *us)
+ out:
+ 	return ret;
+ }
++
++static int karma_probe(struct usb_interface *intf,
++			 const struct usb_device_id *id)
++{
++	struct us_data *us;
++	int result;
++
++	result = usb_stor_probe1(&amp;us, intf, id,
++			(id - karma_usb_ids) + karma_unusual_dev_list);
++	if (result)
++		return result;
++
++	us-&gt;transport_name = "Rio Karma/Bulk";
++	us-&gt;transport = rio_karma_transport;
++	us-&gt;transport_reset = usb_stor_Bulk_reset;
++
++	result = usb_stor_probe2(us);
++	return result;
++}
++
++static struct usb_driver karma_driver = {
++	.name =		"ums-karma",
++	.probe =	karma_probe,
++	.disconnect =	usb_stor_disconnect,
++	.suspend =	usb_stor_suspend,
++	.resume =	usb_stor_resume,
++	.reset_resume =	usb_stor_reset_resume,
++	.pre_reset =	usb_stor_pre_reset,
++	.post_reset =	usb_stor_post_reset,
++	.id_table =	karma_usb_ids,
++	.soft_unbind =	1,
++};
++
++static int __init karma_init(void)
++{
++	return usb_register(&amp;karma_driver);
++}
++
++static void __exit karma_exit(void)
++{
++	usb_deregister(&amp;karma_driver);
++}
++
++module_init(karma_init);
++module_exit(karma_exit);
+diff --git a/drivers/usb/storage/karma.h b/drivers/usb/storage/karma.h
+deleted file mode 100644
+index 8a60972af8c5..000000000000
+--- a/drivers/usb/storage/karma.h
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#ifndef _KARMA_USB_H
+-#define _KARMA_USB_H
+-
+-extern int rio_karma_init(struct us_data *us);
+-extern int rio_karma_transport(struct scsi_cmnd *srb, struct us_data *us);
+-
+-#endif
+diff --git a/drivers/usb/storage/unusual_devs.h b/drivers/usb/storage/unusual_devs.h
+index bcdb74dfa3db..83e34a6ad59d 100644
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -276,13 +276,6 @@ UNUSUAL_DEV(  0x0457, 0x0151, 0x0100, 0x0100,
+ 		US_SC_DEVICE, US_PR_DEVICE, NULL,
+ 		US_FL_NOT_LOCKABLE ),
+ 
+-#ifdef CONFIG_USB_STORAGE_KARMA
+-UNUSUAL_DEV(  0x045a, 0x5210, 0x0101, 0x0101,
+-		"Rio",
+-		"Rio Karma",
+-		US_SC_SCSI, US_PR_KARMA, rio_karma_init, 0),
+-#endif
+-
+ /* Reported by Tamas Kerecsen &lt;kerecsen@bigfoot.com&gt;
+  * Obviously the PROM has not been customized by the VAR;
+  * the Vendor and Product string descriptors are:
+diff --git a/drivers/usb/storage/unusual_karma.h b/drivers/usb/storage/unusual_karma.h
+new file mode 100644
+index 000000000000..12ae3a03e802
+--- /dev/null
++++ b/drivers/usb/storage/unusual_karma.h
+@@ -0,0 +1,26 @@
++/* Unusual Devices File for the Rio Karma
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2, or (at your option) any
++ * later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#if defined(CONFIG_USB_STORAGE_KARMA) || \
++		defined(CONFIG_USB_STORAGE_KARMA_MODULE)
++
++UNUSUAL_DEV(  0x045a, 0x5210, 0x0101, 0x0101,
++		"Rio",
++		"Rio Karma",
++		US_SC_SCSI, US_PR_KARMA, rio_karma_init, 0),
++
++#endif /* defined(CONFIG_USB_STORAGE_KARMA) || ... */
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index cd039c008462..c5abf9bbce16 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -69,9 +69,6 @@
+ #ifdef CONFIG_USB_STORAGE_ONETOUCH
+ #include "onetouch.h"
+ #endif
+-#ifdef CONFIG_USB_STORAGE_KARMA
+-#include "karma.h"
+-#endif
+ #include "sierra_ms.h"
+ #include "option_ms.h"
+ 
+@@ -594,15 +591,6 @@ static void get_transport(struct us_data *us)
+ 		us-&gt;transport = usb_stor_Bulk_transport;
+ 		us-&gt;transport_reset = usb_stor_Bulk_reset;
+ 		break;
+-
+-#ifdef CONFIG_USB_STORAGE_KARMA
+-	case US_PR_KARMA:
+-		us-&gt;transport_name = "Rio Karma/Bulk";
+-		us-&gt;transport = rio_karma_transport;
+-		us-&gt;transport_reset = usb_stor_Bulk_reset;
+-		break;
+-#endif
+-
+ 	}
+ }
+ 
+diff --git a/drivers/usb/storage/usual-tables.c b/drivers/usb/storage/usual-tables.c
+index ad102e8e191b..bce086fcef5e 100644
+--- a/drivers/usb/storage/usual-tables.c
++++ b/drivers/usb/storage/usual-tables.c
+@@ -83,6 +83,7 @@ static struct ignore_entry ignore_ids[] = {
+ #	include "unusual_freecom.h"
+ #	include "unusual_isd200.h"
+ #	include "unusual_jumpshot.h"
++#	include "unusual_karma.h"
+ #	include "unusual_sddr09.h"
+ #	include "unusual_sddr55.h"
+ #	include "unusual_usbat.h"</pre>
+    <div class="pagination">
+        <a href='2_78.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><span>[79]</span><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_80.html'>Next&gt;&gt;</a>
+    <div>
+</body>

@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Harvard University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Harvard University</h1>
+    <div class="pagination">
+        <a href='2_66.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><span>[67]</span><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_68.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 3b02ca3218cf878e206545041aa811073e4f6c79
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Apr 30 12:42:23 2010 -0400
+
+    USB: export the new ch11.h file to userspce
+    
+    This patch (as1374) cleans up a few loose ends in the
+    include/linux/usb/ch11.h header file and exports it to userspace.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Cc: Eric Lescouet &lt;Eric.Lescouet@virtuallogix.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/include/linux/usb/Kbuild b/include/linux/usb/Kbuild
+index 29fd73b0bffc..51410e0200cf 100644
+--- a/include/linux/usb/Kbuild
++++ b/include/linux/usb/Kbuild
+@@ -1,6 +1,7 @@
+ header-y += audio.h
+ header-y += cdc.h
+ header-y += ch9.h
++header-y += ch11.h
+ header-y += gadgetfs.h
+ header-y += midi.h
+ header-y += g_printer.h
+diff --git a/include/linux/usb/ch11.h b/include/linux/usb/ch11.h
+index bd3185aba4ee..119194c85d10 100644
+--- a/include/linux/usb/ch11.h
++++ b/include/linux/usb/ch11.h
+@@ -6,12 +6,10 @@
+  * drivers.
+  */
+ 
+-#ifndef __LINUX_HUB_H
+-#define __LINUX_HUB_H
++#ifndef __LINUX_CH11_H
++#define __LINUX_CH11_H
+ 
+-#include &lt;linux/list.h&gt;
+-#include &lt;linux/workqueue.h&gt;
+-#include &lt;linux/compiler.h&gt;	/* likely()/unlikely() */
++#include &lt;linux/types.h&gt;	/* __u8 etc */
+ 
+ /*
+  * Hub request types
+@@ -166,4 +164,4 @@ enum hub_led_mode {
+ #define HUB_TTTT_24_BITS	0x40
+ #define HUB_TTTT_32_BITS	0x60
+ 
+-#endif /* __LINUX_HUB_H */
++#endif /* __LINUX_CH11_H */</pre><hr><pre>commit beb7b04a09a9da8b12417f7b74fbcceedb087fc3
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Apr 30 12:14:04 2010 -0400
+
+    USB: remove leftover references to udev-&gt;autosuspend_disabled
+    
+    This patch (as1373) fixes a couple of drivers outside the USB
+    subtree.  Devices are now disabled or enabled for autosuspend by
+    calling a core function instead of setting a flag.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Cc: Stephen Rothwell &lt;sfr@canb.auug.org.au&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/media/video/tlg2300/pd-main.c b/drivers/media/video/tlg2300/pd-main.c
+index 2cf0ebf9f28b..a6400dad12ae 100644
+--- a/drivers/media/video/tlg2300/pd-main.c
++++ b/drivers/media/video/tlg2300/pd-main.c
+@@ -455,8 +455,8 @@ static int poseidon_probe(struct usb_interface *interface,
+ 
+ 	device_init_wakeup(&amp;udev-&gt;dev, 1);
+ #ifdef CONFIG_PM
+-	pd-&gt;udev-&gt;autosuspend_disabled = 0;
+ 	pd-&gt;udev-&gt;autosuspend_delay = HZ * PM_SUSPEND_DELAY;
++	usb_enable_autosuspend(pd-&gt;udev);
+ 
+ 	if (in_hibernation(pd)) {
+ 		INIT_WORK(&amp;pd-&gt;pm_work, hibernation_resume);
+diff --git a/drivers/net/wimax/i2400m/usb.c b/drivers/net/wimax/i2400m/usb.c
+index d8c4d6497fdf..d555e37a665c 100644
+--- a/drivers/net/wimax/i2400m/usb.c
++++ b/drivers/net/wimax/i2400m/usb.c
+@@ -505,7 +505,7 @@ int i2400mu_probe(struct usb_interface *iface,
+ 	iface-&gt;needs_remote_wakeup = 1;		/* autosuspend (15s delay) */
+ 	device_init_wakeup(dev, 1);
+ 	usb_dev-&gt;autosuspend_delay = 15 * HZ;
+-	usb_dev-&gt;autosuspend_disabled = 0;
++	usb_enable_autosuspend(usb_dev);
+ #endif
+ 
+ 	result = i2400m_setup(i2400m, I2400M_BRI_MAC_REINIT);</pre><hr><pre>commit a90309860b0935805d49e75499fb8dc59fea8e94
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Apr 2 13:22:16 2010 -0400
+
+    USB: deprecate the power/level sysfs attribute
+    
+    This patch (as1367) deprecates USB's power/level sysfs attribute in
+    favor of the power/control attribute provided by the runtime PM core.
+    The two attributes do the same thing.
+    
+    It would be nice to replace power/level with a symlink to
+    power/control, but at the moment sysfs doesn't offer any way to do so.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/Documentation/ABI/obsolete/sysfs-bus-usb b/Documentation/ABI/obsolete/sysfs-bus-usb
+new file mode 100644
+index 000000000000..bd096d33fbc7
+--- /dev/null
++++ b/Documentation/ABI/obsolete/sysfs-bus-usb
+@@ -0,0 +1,31 @@
++What:		/sys/bus/usb/devices/.../power/level
++Date:		March 2007
++KernelVersion:	2.6.21
++Contact:	Alan Stern &lt;stern@rowland.harvard.edu&gt;
++Description:
++		Each USB device directory will contain a file named
++		power/level.  This file holds a power-level setting for
++		the device, either "on" or "auto".
++
++		"on" means that the device is not allowed to autosuspend,
++		although normal suspends for system sleep will still
++		be honored.  "auto" means the device will autosuspend
++		and autoresume in the usual manner, according to the
++		capabilities of its driver.
++
++		During normal use, devices should be left in the "auto"
++		level.  The "on" level is meant for administrative uses.
++		If you want to suspend a device immediately but leave it
++		free to wake up in response to I/O requests, you should
++		write "0" to power/autosuspend.
++
++		Device not capable of proper suspend and resume should be
++		left in the "on" level.  Although the USB spec requires
++		devices to support suspend/resume, many of them do not.
++		In fact so many don't that by default, the USB core
++		initializes all non-hub devices in the "on" level.  Some
++		drivers may change this setting when they are bound.
++
++		This file is deprecated and will be removed after 2010.
++		Use the power/control file instead; it does exactly the
++		same thing.
+diff --git a/Documentation/ABI/testing/sysfs-bus-usb b/Documentation/ABI/testing/sysfs-bus-usb
+index bcebb9eaedce..294aa864a60a 100644
+--- a/Documentation/ABI/testing/sysfs-bus-usb
++++ b/Documentation/ABI/testing/sysfs-bus-usb
+@@ -14,34 +14,6 @@ Description:
+ 		The autosuspend delay for newly-created devices is set to
+ 		the value of the usbcore.autosuspend module parameter.
+ 
+-What:		/sys/bus/usb/devices/.../power/level
+-Date:		March 2007
+-KernelVersion:	2.6.21
+-Contact:	Alan Stern &lt;stern@rowland.harvard.edu&gt;
+-Description:
+-		Each USB device directory will contain a file named
+-		power/level.  This file holds a power-level setting for
+-		the device, either "on" or "auto".
+-
+-		"on" means that the device is not allowed to autosuspend,
+-		although normal suspends for system sleep will still
+-		be honored.  "auto" means the device will autosuspend
+-		and autoresume in the usual manner, according to the
+-		capabilities of its driver.
+-
+-		During normal use, devices should be left in the "auto"
+-		level.  The "on" level is meant for administrative uses.
+-		If you want to suspend a device immediately but leave it
+-		free to wake up in response to I/O requests, you should
+-		write "0" to power/autosuspend.
+-
+-		Device not capable of proper suspend and resume should be
+-		left in the "on" level.  Although the USB spec requires
+-		devices to support suspend/resume, many of them do not.
+-		In fact so many don't that by default, the USB core
+-		initializes all non-hub devices in the "on" level.  Some
+-		drivers may change this setting when they are bound.
+-
+ What:		/sys/bus/usb/devices/.../power/persist
+ Date:		May 2007
+ KernelVersion:	2.6.23
+diff --git a/Documentation/usb/power-management.txt b/Documentation/usb/power-management.txt
+index 2790ad48cfc2..b29d8e56cf28 100644
+--- a/Documentation/usb/power-management.txt
++++ b/Documentation/usb/power-management.txt
+@@ -107,7 +107,9 @@ allowed to issue dynamic suspends.
+ The user interface for controlling dynamic PM is located in the power/
+ subdirectory of each USB device's sysfs directory, that is, in
+ /sys/bus/usb/devices/.../power/ where "..." is the device's ID.  The
+-relevant attribute files are: wakeup, level, and autosuspend.
++relevant attribute files are: wakeup, control, and autosuspend.
++(There may also be a file named "level"; this file was deprecated
++as of the 2.6.35 kernel and replaced by the "control" file.)
+ 
+ 	power/wakeup
+ 
+@@ -120,7 +122,7 @@ relevant attribute files are: wakeup, level, and autosuspend.
+ 		while the device is suspended, the change won't take
+ 		effect until the following suspend.)
+ 
+-	power/level
++	power/control
+ 
+ 		This file contains one of two words: "on" or "auto".
+ 		You can write those words to the file to change the
+@@ -148,14 +150,15 @@ relevant attribute files are: wakeup, level, and autosuspend.
+ 		never to autosuspend.  You can write a number to the
+ 		file to change the autosuspend idle-delay time.
+ 
+-Writing "-1" to power/autosuspend and writing "on" to power/level do
++Writing "-1" to power/autosuspend and writing "on" to power/control do
+ essentially the same thing -- they both prevent the device from being
+ autosuspended.  Yes, this is a redundancy in the API.
+ 
+ (In 2.6.21 writing "0" to power/autosuspend would prevent the device
+ from being autosuspended; the behavior was changed in 2.6.22.  The
+ power/autosuspend attribute did not exist prior to 2.6.21, and the
+-power/level attribute did not exist prior to 2.6.22.)
++power/level attribute did not exist prior to 2.6.22.  power/control
++was added in 2.6.34.)
+ 
+ 
+ 	Changing the default idle-delay time
+@@ -212,7 +215,7 @@ among printers and scanners, but plenty of other types of device have
+ the same deficiency.
+ 
+ For this reason, by default the kernel disables autosuspend (the
+-power/level attribute is initialized to "on") for all devices other
++power/control attribute is initialized to "on") for all devices other
+ than hubs.  Hubs, at least, appear to be reasonably well-behaved in
+ this regard.
+ 
+@@ -373,7 +376,7 @@ usb_autopm_put_interface() in its close or release routine.  But other
+ patterns are possible.
+ 
+ The autosuspend attempts mentioned above will often fail for one
+-reason or another.  For example, the power/level attribute might be
++reason or another.  For example, the power/control attribute might be
+ set to "on", or another interface in the same device might not be
+ idle.  This is perfectly normal.  If the reason for failure was that
+ the device hasn't been idle for long enough, a timer is scheduled to
+@@ -394,12 +397,12 @@ Drivers can enable autosuspend for their devices by calling
+ 
+ in their probe() routine, if they know that the device is capable of
+ suspending and resuming correctly.  This is exactly equivalent to
+-writing "auto" to the device's power/level attribute.  Likewise,
++writing "auto" to the device's power/control attribute.  Likewise,
+ drivers can disable autosuspend by calling
+ 
+ 	usb_disable_autosuspend(struct usb_device *udev);
+ 
+-This is exactly the same as writing "on" to the power/level attribute.
++This is exactly the same as writing "on" to the power/control attribute.
+ 
+ Sometimes a driver needs to make sure that remote wakeup is enabled
+ during autosuspend.  For example, there's not much point
+diff --git a/drivers/usb/core/sysfs.c b/drivers/usb/core/sysfs.c
+index b65c1eaf3aba..06863befaf3a 100644
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -383,12 +383,23 @@ static DEVICE_ATTR(autosuspend, S_IRUGO | S_IWUSR,
+ static const char on_string[] = "on";
+ static const char auto_string[] = "auto";
+ 
++static void warn_level(void) {
++	static int level_warned;
++
++	if (!level_warned) {
++		level_warned = 1;
++		printk(KERN_WARNING "WARNING! power/level is deprecated; "
++				"use power/control instead\n");
++	}
++}
++
+ static ssize_t
+ show_level(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+ 	struct usb_device *udev = to_usb_device(dev);
+ 	const char *p = auto_string;
+ 
++	warn_level();
+ 	if (udev-&gt;state != USB_STATE_SUSPENDED &amp;&amp; !udev-&gt;dev.power.runtime_auto)
+ 		p = on_string;
+ 	return sprintf(buf, "%s\n", p);
+@@ -403,6 +414,7 @@ set_level(struct device *dev, struct device_attribute *attr,
+ 	char *cp;
+ 	int rc = count;
+ 
++	warn_level();
+ 	cp = memchr(buf, '\n', count);
+ 	if (cp)
+ 		len = cp - buf;</pre><hr><pre>commit 9e18c821659d836bd63f88df3c19729327728496
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Apr 2 13:22:09 2010 -0400
+
+    USB: use PM core routines to enable/disable autosuspend
+    
+    This patch (as1366) replaces the private routines
+    usb_enable_autosuspend() and usb_disable_autosuspend() with calls to
+    the standard pm_runtime_allow() and pm_runtime_forbid() functions in
+    the runtime PM framework.  They do the same thing.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index 271e857be0fa..207146743ea7 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -1356,13 +1356,9 @@ int usb_resume(struct device *dev, pm_message_t msg)
+  *
+  * The caller must hold @udev's device lock.
+  */
+-int usb_enable_autosuspend(struct usb_device *udev)
++void usb_enable_autosuspend(struct usb_device *udev)
+ {
+-	if (udev-&gt;autosuspend_disabled) {
+-		udev-&gt;autosuspend_disabled = 0;
+-		usb_autosuspend_device(udev);
+-	}
+-	return 0;
++	pm_runtime_allow(&amp;udev-&gt;dev);
+ }
+ EXPORT_SYMBOL_GPL(usb_enable_autosuspend);
+ 
+@@ -1375,16 +1371,9 @@ EXPORT_SYMBOL_GPL(usb_enable_autosuspend);
+  *
+  * The caller must hold @udev's device lock.
+  */
+-int usb_disable_autosuspend(struct usb_device *udev)
++void usb_disable_autosuspend(struct usb_device *udev)
+ {
+-	int rc = 0;
+-
+-	if (!udev-&gt;autosuspend_disabled) {
+-		rc = usb_autoresume_device(udev);
+-		if (rc == 0)
+-			udev-&gt;autosuspend_disabled = 1;
+-	}
+-	return rc;
++	pm_runtime_forbid(&amp;udev-&gt;dev);
+ }
+ EXPORT_SYMBOL_GPL(usb_disable_autosuspend);
+ 
+@@ -1528,7 +1517,7 @@ void usb_autopm_put_interface_async(struct usb_interface *intf)
+ 	atomic_dec(&amp;intf-&gt;pm_usage_cnt);
+ 	pm_runtime_put_noidle(&amp;intf-&gt;dev);
+ 
+-	if (!udev-&gt;autosuspend_disabled) {
++	if (udev-&gt;dev.power.runtime_auto) {
+ 		/* Optimization: Don't schedule a delayed autosuspend if
+ 		 * the timer is already running and the expiration time
+ 		 * wouldn't change.
+diff --git a/drivers/usb/core/sysfs.c b/drivers/usb/core/sysfs.c
+index 43c002e3a9aa..b65c1eaf3aba 100644
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -389,7 +389,7 @@ show_level(struct device *dev, struct device_attribute *attr, char *buf)
+ 	struct usb_device *udev = to_usb_device(dev);
+ 	const char *p = auto_string;
+ 
+-	if (udev-&gt;state != USB_STATE_SUSPENDED &amp;&amp; udev-&gt;autosuspend_disabled)
++	if (udev-&gt;state != USB_STATE_SUSPENDED &amp;&amp; !udev-&gt;dev.power.runtime_auto)
+ 		p = on_string;
+ 	return sprintf(buf, "%s\n", p);
+ }
+@@ -401,7 +401,7 @@ set_level(struct device *dev, struct device_attribute *attr,
+ 	struct usb_device *udev = to_usb_device(dev);
+ 	int len = count;
+ 	char *cp;
+-	int rc;
++	int rc = count;
+ 
+ 	cp = memchr(buf, '\n', count);
+ 	if (cp)
+@@ -411,17 +411,17 @@ set_level(struct device *dev, struct device_attribute *attr,
+ 
+ 	if (len == sizeof on_string - 1 &amp;&amp;
+ 			strncmp(buf, on_string, len) == 0)
+-		rc = usb_disable_autosuspend(udev);
++		usb_disable_autosuspend(udev);
+ 
+ 	else if (len == sizeof auto_string - 1 &amp;&amp;
+ 			strncmp(buf, auto_string, len) == 0)
+-		rc = usb_enable_autosuspend(udev);
++		usb_enable_autosuspend(udev);
+ 
+ 	else
+ 		rc = -EINVAL;
+ 
+ 	usb_unlock_device(udev);
+-	return (rc &lt; 0 ? rc : count);
++	return rc;
+ }
+ 
+ static DEVICE_ATTR(level, S_IRUGO | S_IWUSR, show_level, set_level);
+diff --git a/include/linux/usb.h b/include/linux/usb.h
+index 99833029e5a8..e32a849f81ce 100644
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -425,7 +425,6 @@ struct usb_tt;
+  * @connect_time: time device was first connected
+  * @do_remote_wakeup:  remote wakeup should be enabled
+  * @reset_resume: needs reset instead of resume
+- * @autosuspend_disabled: autosuspend disabled by the user
+  * @wusb_dev: if this is a Wireless USB device, link to the WUSB
+  *	specific data for the device.
+  * @slot_id: Slot ID assigned by xHCI
+@@ -501,7 +500,6 @@ struct usb_device {
+ 
+ 	unsigned do_remote_wakeup:1;
+ 	unsigned reset_resume:1;
+-	unsigned autosuspend_disabled:1;
+ #endif
+ 	struct wusb_dev *wusb_dev;
+ 	int slot_id;
+@@ -526,8 +524,8 @@ extern struct usb_device *usb_find_device(u16 vendor_id, u16 product_id);
+ 
+ /* USB autosuspend and autoresume */
+ #ifdef CONFIG_USB_SUSPEND
+-extern int usb_enable_autosuspend(struct usb_device *udev);
+-extern int usb_disable_autosuspend(struct usb_device *udev);
++extern void usb_enable_autosuspend(struct usb_device *udev);
++extern void usb_disable_autosuspend(struct usb_device *udev);
+ 
+ extern int usb_autopm_get_interface(struct usb_interface *intf);
+ extern void usb_autopm_put_interface(struct usb_interface *intf);</pre><hr><pre>commit 7aba8d014341341590ecb64050b7a026642a62eb
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Apr 2 13:21:33 2010 -0400
+
+    USB: don't enable remote wakeup by default
+    
+    This patch (as1364) avoids enabling remote wakeup by default on all
+    non-root-hub USB devices.  Individual drivers or userspace will have
+    to enable it wherever it is needed, such as for keyboards or network
+    interfaces.  Note: This affects only system sleep, not autosuspend.
+    
+    External hubs will continue to relay wakeup requests received from
+    downstream through their upstream port, even when remote wakeup is not
+    enabled for the hub itself.  Disabling remote wakeup on a hub merely
+    prevents it from generating wakeup requests in response to connect,
+    disconnect, and overcurrent events.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 497dbb29744d..2a767b3143a4 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1783,7 +1783,6 @@ int usb_new_device(struct usb_device *udev)
+ 		 * sysfs power/wakeup controls wakeup enabled/disabled
+ 		 */
+ 		device_init_wakeup(&amp;udev-&gt;dev, 0);
+-		device_set_wakeup_enable(&amp;udev-&gt;dev, 1);
+ 	}
+ 
+ 	/* Tell the runtime-PM framework the device is active */</pre><hr><pre>commit 7560d32ec70508a71f537a88e40f7717f15389ac
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Apr 2 13:18:50 2010 -0400
+
+    USB: improve runtime remote wakeup settings
+    
+    This patch (as1362) adjusts the way the USB autosuspend routines
+    handle remote-wakeup settings.  They aren't supposed to use
+    device_may_wakeup(); that test is intended only for system sleep, not
+    runtime power management.  Instead the code checks to see if any
+    interface drivers need remote wakeup; if they do then it is enabled,
+    provided the device is capable of it.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index edff55a32575..271e857be0fa 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -1486,9 +1486,6 @@ int usb_autoresume_device(struct usb_device *udev)
+  * 0, a delayed autosuspend request for @intf's device is attempted.  The
+  * attempt may fail (see autosuspend_check()).
+  *
+- * If the driver has set @intf-&gt;needs_remote_wakeup then autosuspend will
+- * take place only if the device's remote-wakeup facility is enabled.
+- *
+  * This routine can run only in process context.
+  */
+ void usb_autopm_put_interface(struct usb_interface *intf)
+@@ -1673,14 +1670,14 @@ EXPORT_SYMBOL_GPL(usb_autopm_get_interface_no_resume);
+ /* Internal routine to check whether we may autosuspend a device. */
+ static int autosuspend_check(struct usb_device *udev)
+ {
+-	int			i;
++	int			w, i;
+ 	struct usb_interface	*intf;
+ 	unsigned long		suspend_time, j;
+ 
+ 	/* Fail if autosuspend is disabled, or any interfaces are in use, or
+ 	 * any interface drivers require remote wakeup but it isn't available.
+ 	 */
+-	udev-&gt;do_remote_wakeup = device_may_wakeup(&amp;udev-&gt;dev);
++	w = 0;
+ 	if (udev-&gt;actconfig) {
+ 		for (i = 0; i &lt; udev-&gt;actconfig-&gt;desc.bNumInterfaces; i++) {
+ 			intf = udev-&gt;actconfig-&gt;interface[i];
+@@ -1694,12 +1691,7 @@ static int autosuspend_check(struct usb_device *udev)
+ 				continue;
+ 			if (atomic_read(&amp;intf-&gt;dev.power.usage_count) &gt; 0)
+ 				return -EBUSY;
+-			if (intf-&gt;needs_remote_wakeup &amp;&amp;
+-					!udev-&gt;do_remote_wakeup) {
+-				dev_dbg(&amp;udev-&gt;dev, "remote wakeup needed "
+-						"for autosuspend\n");
+-				return -EOPNOTSUPP;
+-			}
++			w |= intf-&gt;needs_remote_wakeup;
+ 
+ 			/* Don't allow autosuspend if the device will need
+ 			 * a reset-resume and any of its interface drivers
+@@ -1715,6 +1707,11 @@ static int autosuspend_check(struct usb_device *udev)
+ 			}
+ 		}
+ 	}
++	if (w &amp;&amp; !device_can_wakeup(&amp;udev-&gt;dev)) {
++		dev_dbg(&amp;udev-&gt;dev, "remote wakeup needed for autosuspend\n");
++		return -EOPNOTSUPP;
++	}
++	udev-&gt;do_remote_wakeup = w;
+ 
+ 	/* If everything is okay but the device hasn't been idle for long
+ 	 * enough, queue a delayed autosuspend request.</pre><hr><pre>commit ff9c895f07d36193c75533bda8193bde8ca99d02
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Apr 2 13:27:28 2010 -0400
+
+    USB: fix usbmon and DMA mapping for scatter-gather URBs
+    
+    This patch (as1368) fixes a rather obscure bug in usbmon: When tracing
+    URBs sent by the scatter-gather library, it accesses the data buffers
+    while they are still mapped for DMA.
+    
+    The solution is to move the mapping and unmapping out of the s-g
+    library and into the usual place in hcd.c.  This requires the addition
+    of new URB flag bits to describe the kind of mapping needed, since we
+    have to call dma_map_sg() if the HCD supports native scatter-gather
+    operation and dma_map_page() if it doesn't.  The nice thing about
+    having the new flags is that they simplify the testing for unmapping.
+    
+    The patch removes the only caller of usb_buffer_[un]map_sg(), so those
+    functions are #if'ed out.  A later patch will remove them entirely.
+    
+    As a result of this change, urb-&gt;sg will be set in situations where
+    it wasn't set previously.  Hence the xhci and whci drivers are
+    adjusted to test urb-&gt;num_sgs instead, which retains its original
+    meaning and is nonzero only when the HCD has to handle a scatterlist.
+    
+    Finally, even when a submission error occurs we don't want to hand
+    URBs to usbmon before they are unmapped.  The submission path is
+    rearranged so that map_urb_for_dma() is called only for non-root-hub
+    URBs and unmap_urb_for_dma() is called immediately after a submission
+    error.  This simplifies the error handling.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    CC: &lt;stable@kernel.org&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
+index 38d4700926f7..6a05e6934455 100644
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -1259,6 +1259,51 @@ static void hcd_free_coherent(struct usb_bus *bus, dma_addr_t *dma_handle,
+ 	*dma_handle = 0;
+ }
+ 
++static void unmap_urb_for_dma(struct usb_hcd *hcd, struct urb *urb)
++{
++	enum dma_data_direction dir;
++
++	if (urb-&gt;transfer_flags &amp; URB_SETUP_MAP_SINGLE)
++		dma_unmap_single(hcd-&gt;self.controller,
++				urb-&gt;setup_dma,
++				sizeof(struct usb_ctrlrequest),
++				DMA_TO_DEVICE);
++	else if (urb-&gt;transfer_flags &amp; URB_SETUP_MAP_LOCAL)
++		hcd_free_coherent(urb-&gt;dev-&gt;bus,
++				&amp;urb-&gt;setup_dma,
++				(void **) &amp;urb-&gt;setup_packet,
++				sizeof(struct usb_ctrlrequest),
++				DMA_TO_DEVICE);
++
++	dir = usb_urb_dir_in(urb) ? DMA_FROM_DEVICE : DMA_TO_DEVICE;
++	if (urb-&gt;transfer_flags &amp; URB_DMA_MAP_SG)
++		dma_unmap_sg(hcd-&gt;self.controller,
++				urb-&gt;sg-&gt;sg,
++				urb-&gt;num_sgs,
++				dir);
++	else if (urb-&gt;transfer_flags &amp; URB_DMA_MAP_PAGE)
++		dma_unmap_page(hcd-&gt;self.controller,
++				urb-&gt;transfer_dma,
++				urb-&gt;transfer_buffer_length,
++				dir);
++	else if (urb-&gt;transfer_flags &amp; URB_DMA_MAP_SINGLE)
++		dma_unmap_single(hcd-&gt;self.controller,
++				urb-&gt;transfer_dma,
++				urb-&gt;transfer_buffer_length,
++				dir);
++	else if (urb-&gt;transfer_flags &amp; URB_MAP_LOCAL)
++		hcd_free_coherent(urb-&gt;dev-&gt;bus,
++				&amp;urb-&gt;transfer_dma,
++				&amp;urb-&gt;transfer_buffer,
++				urb-&gt;transfer_buffer_length,
++				dir);
++
++	/* Make it safe to call this routine more than once */
++	urb-&gt;transfer_flags &amp;= ~(URB_SETUP_MAP_SINGLE | URB_SETUP_MAP_LOCAL |
++			URB_DMA_MAP_SG | URB_DMA_MAP_PAGE |
++			URB_DMA_MAP_SINGLE | URB_MAP_LOCAL);
++}
++
+ static int map_urb_for_dma(struct usb_hcd *hcd, struct urb *urb,
+ 			   gfp_t mem_flags)
+ {
+@@ -1270,8 +1315,6 @@ static int map_urb_for_dma(struct usb_hcd *hcd, struct urb *urb,
+ 	 * unless it uses pio or talks to another transport,
+ 	 * or uses the provided scatter gather list for bulk.
+ 	 */
+-	if (is_root_hub(urb-&gt;dev))
+-		return 0;
+ 
+ 	if (usb_endpoint_xfer_control(&amp;urb-&gt;ep-&gt;desc)
+ 	    &amp;&amp; !(urb-&gt;transfer_flags &amp; URB_NO_SETUP_DMA_MAP)) {
+@@ -1284,6 +1327,7 @@ static int map_urb_for_dma(struct usb_hcd *hcd, struct urb *urb,
+ 			if (dma_mapping_error(hcd-&gt;self.controller,
+ 						urb-&gt;setup_dma))
+ 				return -EAGAIN;
++			urb-&gt;transfer_flags |= URB_SETUP_MAP_SINGLE;
+ 		} else if (hcd-&gt;driver-&gt;flags &amp; HCD_LOCAL_MEM)
+ 			ret = hcd_alloc_coherent(
+ 					urb-&gt;dev-&gt;bus, mem_flags,
+@@ -1291,20 +1335,57 @@ static int map_urb_for_dma(struct usb_hcd *hcd, struct urb *urb,
+ 					(void **)&amp;urb-&gt;setup_packet,
+ 					sizeof(struct usb_ctrlrequest),
+ 					DMA_TO_DEVICE);
++			if (ret)
++				return ret;
++			urb-&gt;transfer_flags |= URB_SETUP_MAP_LOCAL;
+ 	}
+ 
+ 	dir = usb_urb_dir_in(urb) ? DMA_FROM_DEVICE : DMA_TO_DEVICE;
+-	if (ret == 0 &amp;&amp; urb-&gt;transfer_buffer_length != 0
++	if (urb-&gt;transfer_buffer_length != 0
+ 	    &amp;&amp; !(urb-&gt;transfer_flags &amp; URB_NO_TRANSFER_DMA_MAP)) {
+ 		if (hcd-&gt;self.uses_dma) {
+-			urb-&gt;transfer_dma = dma_map_single (
+-					hcd-&gt;self.controller,
+-					urb-&gt;transfer_buffer,
+-					urb-&gt;transfer_buffer_length,
+-					dir);
+-			if (dma_mapping_error(hcd-&gt;self.controller,
++			if (urb-&gt;num_sgs) {
++				int n = dma_map_sg(
++						hcd-&gt;self.controller,
++						urb-&gt;sg-&gt;sg,
++						urb-&gt;num_sgs,
++						dir);
++				if (n &lt;= 0)
++					ret = -EAGAIN;
++				else
++					urb-&gt;transfer_flags |= URB_DMA_MAP_SG;
++				if (n != urb-&gt;num_sgs) {
++					urb-&gt;num_sgs = n;
++					urb-&gt;transfer_flags |=
++							URB_DMA_SG_COMBINED;
++				}
++			} else if (urb-&gt;sg) {
++				struct scatterlist *sg;
++
++				sg = (struct scatterlist *) urb-&gt;sg;
++				urb-&gt;transfer_dma = dma_map_page(
++						hcd-&gt;self.controller,
++						sg_page(sg),
++						sg-&gt;offset,
++						urb-&gt;transfer_buffer_length,
++						dir);
++				if (dma_mapping_error(hcd-&gt;self.controller,
+ 						urb-&gt;transfer_dma))
+-				return -EAGAIN;
++					ret = -EAGAIN;
++				else
++					urb-&gt;transfer_flags |= URB_DMA_MAP_PAGE;
++			} else {
++				urb-&gt;transfer_dma = dma_map_single(
++						hcd-&gt;self.controller,
++						urb-&gt;transfer_buffer,
++						urb-&gt;transfer_buffer_length,
++						dir);
++				if (dma_mapping_error(hcd-&gt;self.controller,
++						urb-&gt;transfer_dma))
++					ret = -EAGAIN;
++				else
++					urb-&gt;transfer_flags |= URB_DMA_MAP_SINGLE;
++			}
+ 		} else if (hcd-&gt;driver-&gt;flags &amp; HCD_LOCAL_MEM) {
+ 			ret = hcd_alloc_coherent(
+ 					urb-&gt;dev-&gt;bus, mem_flags,
+@@ -1312,55 +1393,16 @@ static int map_urb_for_dma(struct usb_hcd *hcd, struct urb *urb,
+ 					&amp;urb-&gt;transfer_buffer,
+ 					urb-&gt;transfer_buffer_length,
+ 					dir);
+-
+-			if (ret &amp;&amp; usb_endpoint_xfer_control(&amp;urb-&gt;ep-&gt;desc)
+-			    &amp;&amp; !(urb-&gt;transfer_flags &amp; URB_NO_SETUP_DMA_MAP))
+-				hcd_free_coherent(urb-&gt;dev-&gt;bus,
+-					&amp;urb-&gt;setup_dma,
+-					(void **)&amp;urb-&gt;setup_packet,
+-					sizeof(struct usb_ctrlrequest),
+-					DMA_TO_DEVICE);
++			if (ret == 0)
++				urb-&gt;transfer_flags |= URB_MAP_LOCAL;
+ 		}
++		if (ret &amp;&amp; (urb-&gt;transfer_flags &amp; (URB_SETUP_MAP_SINGLE |
++				URB_SETUP_MAP_LOCAL)))
++			unmap_urb_for_dma(hcd, urb);
+ 	}
+ 	return ret;
+ }
+ 
+-static void unmap_urb_for_dma(struct usb_hcd *hcd, struct urb *urb)
+-{
+-	enum dma_data_direction dir;
+-
+-	if (is_root_hub(urb-&gt;dev))
+-		return;
+-
+-	if (usb_endpoint_xfer_control(&amp;urb-&gt;ep-&gt;desc)
+-	    &amp;&amp; !(urb-&gt;transfer_flags &amp; URB_NO_SETUP_DMA_MAP)) {
+-		if (hcd-&gt;self.uses_dma)
+-			dma_unmap_single(hcd-&gt;self.controller, urb-&gt;setup_dma,
+-					sizeof(struct usb_ctrlrequest),
+-					DMA_TO_DEVICE);
+-		else if (hcd-&gt;driver-&gt;flags &amp; HCD_LOCAL_MEM)
+-			hcd_free_coherent(urb-&gt;dev-&gt;bus, &amp;urb-&gt;setup_dma,
+-					(void **)&amp;urb-&gt;setup_packet,
+-					sizeof(struct usb_ctrlrequest),
+-					DMA_TO_DEVICE);
+-	}
+-
+-	dir = usb_urb_dir_in(urb) ? DMA_FROM_DEVICE : DMA_TO_DEVICE;
+-	if (urb-&gt;transfer_buffer_length != 0
+-	    &amp;&amp; !(urb-&gt;transfer_flags &amp; URB_NO_TRANSFER_DMA_MAP)) {
+-		if (hcd-&gt;self.uses_dma)
+-			dma_unmap_single(hcd-&gt;self.controller,
+-					urb-&gt;transfer_dma,
+-					urb-&gt;transfer_buffer_length,
+-					dir);
+-		else if (hcd-&gt;driver-&gt;flags &amp; HCD_LOCAL_MEM)
+-			hcd_free_coherent(urb-&gt;dev-&gt;bus, &amp;urb-&gt;transfer_dma,
+-					&amp;urb-&gt;transfer_buffer,
+-					urb-&gt;transfer_buffer_length,
+-					dir);
+-	}
+-}
+-
+ /*-------------------------------------------------------------------------*/
+ 
+ /* may be called in any context with a valid urb-&gt;dev usecount
+@@ -1389,21 +1431,20 @@ int usb_hcd_submit_urb (struct urb *urb, gfp_t mem_flags)
+ 	 * URBs must be submitted in process context with interrupts
+ 	 * enabled.
+ 	 */
+-	status = map_urb_for_dma(hcd, urb, mem_flags);
+-	if (unlikely(status)) {
+-		usbmon_urb_submit_error(&amp;hcd-&gt;self, urb, status);
+-		goto error;
+-	}
+ 
+-	if (is_root_hub(urb-&gt;dev))
++	if (is_root_hub(urb-&gt;dev)) {
+ 		status = rh_urb_enqueue(hcd, urb);
+-	else
+-		status = hcd-&gt;driver-&gt;urb_enqueue(hcd, urb, mem_flags);
++	} else {
++		status = map_urb_for_dma(hcd, urb, mem_flags);
++		if (likely(status == 0)) {
++			status = hcd-&gt;driver-&gt;urb_enqueue(hcd, urb, mem_flags);
++			if (unlikely(status))
++				unmap_urb_for_dma(hcd, urb);
++		}
++	}
+ 
+ 	if (unlikely(status)) {
+ 		usbmon_urb_submit_error(&amp;hcd-&gt;self, urb, status);
+-		unmap_urb_for_dma(hcd, urb);
+- error:
+ 		urb-&gt;hcpriv = NULL;
+ 		INIT_LIST_HEAD(&amp;urb-&gt;urb_list);
+ 		atomic_dec(&amp;urb-&gt;use_count);
+diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+index 619c44fb8a96..79d1cdf4a635 100644
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -259,9 +259,6 @@ static void sg_clean(struct usb_sg_request *io)
+ 		kfree(io-&gt;urbs);
+ 		io-&gt;urbs = NULL;
+ 	}
+-	if (io-&gt;dev-&gt;dev.dma_mask != NULL)
+-		usb_buffer_unmap_sg(io-&gt;dev, usb_pipein(io-&gt;pipe),
+-				    io-&gt;sg, io-&gt;nents);
+ 	io-&gt;dev = NULL;
+ }
+ 
+@@ -364,7 +361,6 @@ int usb_sg_init(struct usb_sg_request *io, struct usb_device *dev,
+ {
+ 	int i;
+ 	int urb_flags;
+-	int dma;
+ 	int use_sg;
+ 
+ 	if (!io || !dev || !sg
+@@ -378,21 +374,9 @@ int usb_sg_init(struct usb_sg_request *io, struct usb_device *dev,
+ 	io-&gt;pipe = pipe;
+ 	io-&gt;sg = sg;
+ 	io-&gt;nents = nents;
+-
+-	/* not all host controllers use DMA (like the mainstream pci ones);
+-	 * they can use PIO (sl811) or be software over another transport.
+-	 */
+-	dma = (dev-&gt;dev.dma_mask != NULL);
+-	if (dma)
+-		io-&gt;entries = usb_buffer_map_sg(dev, usb_pipein(pipe),
+-						sg, nents);
+-	else
+-		io-&gt;entries = nents;
++	io-&gt;entries = nents;
+ 
+ 	/* initialize all the urbs we'll use */
+-	if (io-&gt;entries &lt;= 0)
+-		return io-&gt;entries;
+-
+ 	if (dev-&gt;bus-&gt;sg_tablesize &gt; 0) {
+ 		io-&gt;urbs = kmalloc(sizeof *io-&gt;urbs, mem_flags);
+ 		use_sg = true;
+@@ -404,8 +388,6 @@ int usb_sg_init(struct usb_sg_request *io, struct usb_device *dev,
+ 		goto nomem;
+ 
+ 	urb_flags = 0;
+-	if (dma)
+-		urb_flags |= URB_NO_TRANSFER_DMA_MAP;
+ 	if (usb_pipein(pipe))
+ 		urb_flags |= URB_SHORT_NOT_OK;
+ 
+@@ -423,12 +405,13 @@ int usb_sg_init(struct usb_sg_request *io, struct usb_device *dev,
+ 
+ 		io-&gt;urbs[0]-&gt;complete = sg_complete;
+ 		io-&gt;urbs[0]-&gt;context = io;
++
+ 		/* A length of zero means transfer the whole sg list */
+ 		io-&gt;urbs[0]-&gt;transfer_buffer_length = length;
+ 		if (length == 0) {
+ 			for_each_sg(sg, sg, io-&gt;entries, i) {
+ 				io-&gt;urbs[0]-&gt;transfer_buffer_length +=
+-					sg_dma_len(sg);
++					sg-&gt;length;
+ 			}
+ 		}
+ 		io-&gt;urbs[0]-&gt;sg = io;
+@@ -454,26 +437,16 @@ int usb_sg_init(struct usb_sg_request *io, struct usb_device *dev,
+ 			io-&gt;urbs[i]-&gt;context = io;
+ 
+ 			/*
+-			 * Some systems need to revert to PIO when DMA is temporarily
+-			 * unavailable.  For their sakes, both transfer_buffer and
+-			 * transfer_dma are set when possible.
+-			 *
+-			 * Note that if IOMMU coalescing occurred, we cannot
+-			 * trust sg_page anymore, so check if S/G list shrunk.
++			 * Some systems can't use DMA; they use PIO instead.
++			 * For their sakes, transfer_buffer is set whenever
++			 * possible.
+ 			 */
+-			if (io-&gt;nents == io-&gt;entries &amp;&amp; !PageHighMem(sg_page(sg)))
++			if (!PageHighMem(sg_page(sg)))
+ 				io-&gt;urbs[i]-&gt;transfer_buffer = sg_virt(sg);
+ 			else
+ 				io-&gt;urbs[i]-&gt;transfer_buffer = NULL;
+ 
+-			if (dma) {
+-				io-&gt;urbs[i]-&gt;transfer_dma = sg_dma_address(sg);
+-				len = sg_dma_len(sg);
+-			} else {
+-				/* hc may use _only_ transfer_buffer */
+-				len = sg-&gt;length;
+-			}
+-
++			len = sg-&gt;length;
+ 			if (length) {
+ 				len = min_t(unsigned, len, length);
+ 				length -= len;
+@@ -481,6 +454,8 @@ int usb_sg_init(struct usb_sg_request *io, struct usb_device *dev,
+ 					io-&gt;entries = i + 1;
+ 			}
+ 			io-&gt;urbs[i]-&gt;transfer_buffer_length = len;
++
++			io-&gt;urbs[i]-&gt;sg = (struct usb_sg_request *) sg;
+ 		}
+ 		io-&gt;urbs[--i]-&gt;transfer_flags &amp;= ~URB_NO_INTERRUPT;
+ 	}
+diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
+index 2532a0917f8c..a760e46871c5 100644
+--- a/drivers/usb/core/urb.c
++++ b/drivers/usb/core/urb.c
+@@ -333,9 +333,12 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
+ 		is_out = usb_endpoint_dir_out(&amp;ep-&gt;desc);
+ 	}
+ 
+-	/* Cache the direction for later use */
+-	urb-&gt;transfer_flags = (urb-&gt;transfer_flags &amp; ~URB_DIR_MASK) |
+-			(is_out ? URB_DIR_OUT : URB_DIR_IN);
++	/* Clear the internal flags and cache the direction for later use */
++	urb-&gt;transfer_flags &amp;= ~(URB_DIR_MASK | URB_DMA_MAP_SINGLE |
++			URB_DMA_MAP_PAGE | URB_DMA_MAP_SG | URB_MAP_LOCAL |
++			URB_SETUP_MAP_SINGLE | URB_SETUP_MAP_LOCAL |
++			URB_DMA_SG_COMBINED);
++	urb-&gt;transfer_flags |= (is_out ? URB_DIR_OUT : URB_DIR_IN);
+ 
+ 	if (xfertype != USB_ENDPOINT_XFER_CONTROL &amp;&amp;
+ 			dev-&gt;state &lt; USB_STATE_CONFIGURED)
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 097172e2ba06..8180ce533ebf 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -881,6 +881,7 @@ void usb_buffer_unmap(struct urb *urb)
+ EXPORT_SYMBOL_GPL(usb_buffer_unmap);
+ #endif  /*  0  */
+ 
++#if 0
+ /**
+  * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint
+  * @dev: device to which the scatterlist will be mapped
+@@ -924,6 +925,7 @@ int usb_buffer_map_sg(const struct usb_device *dev, int is_in,
+ 			is_in ? DMA_FROM_DEVICE : DMA_TO_DEVICE) ? : -ENOMEM;
+ }
+ EXPORT_SYMBOL_GPL(usb_buffer_map_sg);
++#endif
+ 
+ /* XXX DISABLED, no users currently.  If you wish to re-enable this
+  * XXX please determine whether the sync is to transfer ownership of
+@@ -960,6 +962,7 @@ void usb_buffer_dmasync_sg(const struct usb_device *dev, int is_in,
+ EXPORT_SYMBOL_GPL(usb_buffer_dmasync_sg);
+ #endif
+ 
++#if 0
+ /**
+  * usb_buffer_unmap_sg - free DMA mapping(s) for a scatterlist
+  * @dev: device to which the scatterlist will be mapped
+@@ -985,6 +988,7 @@ void usb_buffer_unmap_sg(const struct usb_device *dev, int is_in,
+ 			is_in ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
+ }
+ EXPORT_SYMBOL_GPL(usb_buffer_unmap_sg);
++#endif
+ 
+ /* To disable USB, kernel command line is 'nousb' not 'usbcore.nousb' */
+ #ifdef MODULE
+diff --git a/drivers/usb/host/whci/qset.c b/drivers/usb/host/whci/qset.c
+index 141d049beb3e..b388dd1fb4c4 100644
+--- a/drivers/usb/host/whci/qset.c
++++ b/drivers/usb/host/whci/qset.c
+@@ -646,7 +646,7 @@ int qset_add_urb(struct whc *whc, struct whc_qset *qset, struct urb *urb,
+ 	wurb-&gt;urb = urb;
+ 	INIT_WORK(&amp;wurb-&gt;dequeue_work, urb_dequeue_work);
+ 
+-	if (urb-&gt;sg) {
++	if (urb-&gt;num_sgs) {
+ 		ret = qset_add_urb_sg(whc, qset, urb, mem_flags);
+ 		if (ret == -EINVAL) {
+ 			qset_free_stds(qset, urb);
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 407d33fb5e84..c1359ed310b5 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1962,7 +1962,7 @@ int xhci_queue_bulk_tx(struct xhci_hcd *xhci, gfp_t mem_flags,
+ 	int running_total, trb_buff_len, ret;
+ 	u64 addr;
+ 
+-	if (urb-&gt;sg)
++	if (urb-&gt;num_sgs)
+ 		return queue_bulk_sg_tx(xhci, mem_flags, urb, slot_id, ep_index);
+ 
+ 	ep_ring = xhci-&gt;devs[slot_id]-&gt;eps[ep_index].ring;
+diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
+index ddf7f9a1b336..8a7968df278f 100644
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -416,7 +416,7 @@ static unsigned int mon_bin_get_data(const struct mon_reader_bin *rp,
+ 
+ 	} else {
+ 		/* If IOMMU coalescing occurred, we cannot trust sg_page */
+-		if (urb-&gt;sg-&gt;nents != urb-&gt;num_sgs) {
++		if (urb-&gt;transfer_flags &amp; URB_DMA_SG_COMBINED) {
+ 			*flag = 'D';
+ 			return length;
+ 		}
+diff --git a/drivers/usb/mon/mon_text.c b/drivers/usb/mon/mon_text.c
+index 4d0be130f49b..d56260280f54 100644
+--- a/drivers/usb/mon/mon_text.c
++++ b/drivers/usb/mon/mon_text.c
+@@ -161,9 +161,7 @@ static inline char mon_text_get_data(struct mon_event_text *ep, struct urb *urb,
+ 	} else {
+ 		struct scatterlist *sg = urb-&gt;sg-&gt;sg;
+ 
+-		/* If IOMMU coalescing occurred, we cannot trust sg_page */
+-		if (urb-&gt;sg-&gt;nents != urb-&gt;num_sgs ||
+-				PageHighMem(sg_page(sg)))
++		if (PageHighMem(sg_page(sg)))
+ 			return 'D';
+ 
+ 		/* For the text interface we copy only the first sg buffer */
+diff --git a/include/linux/usb.h b/include/linux/usb.h
+index 739f1fd1cc15..99833029e5a8 100644
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -965,10 +965,19 @@ extern int usb_disabled(void);
+ 					 * needed */
+ #define URB_FREE_BUFFER		0x0100	/* Free transfer buffer with the URB */
+ 
++/* The following flags are used internally by usbcore and HCDs */
+ #define URB_DIR_IN		0x0200	/* Transfer from device to host */
+ #define URB_DIR_OUT		0
+ #define URB_DIR_MASK		URB_DIR_IN
+ 
++#define URB_DMA_MAP_SINGLE	0x00010000	/* Non-scatter-gather mapping */
++#define URB_DMA_MAP_PAGE	0x00020000	/* HCD-unsupported S-G */
++#define URB_DMA_MAP_SG		0x00040000	/* HCD-supported S-G */
++#define URB_MAP_LOCAL		0x00080000	/* HCD-local-memory mapping */
++#define URB_SETUP_MAP_SINGLE	0x00100000	/* Setup packet DMA mapped */
++#define URB_SETUP_MAP_LOCAL	0x00200000	/* HCD-local setup packet */
++#define URB_DMA_SG_COMBINED	0x00400000	/* S-G entries were combined */
++
+ struct usb_iso_packet_descriptor {
+ 	unsigned int offset;
+ 	unsigned int length;		/* expected length */</pre><hr><pre>commit 0ede76fcec5415ef82a423a95120286895822e2d
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Mar 5 15:10:17 2010 -0500
+
+    USB: remove uses of URB_NO_SETUP_DMA_MAP
+    
+    This patch (as1350) removes all usages of coherent buffers for USB
+    control-request setup-packet buffers.  There's no good reason to
+    reserve coherent memory for these things; control requests are hardly
+    ever used in large quantity (the major exception is firmware
+    transfers, and they aren't time-critical).  Furthermore, only seven
+    drivers used it.  We might as well always use streaming DMA mappings
+    for setup-packet buffers, and remove some extra complexity from
+    usbcore.
+    
+    The DMA-mapping portion of hcd.c is currently in flux.  A separate
+    patch will be submitted to remove support for URB_NO_SETUP_DMA_MAP
+    after everything else settles down.  The removal should go smoothly,
+    as by then nobody will be using it.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index 7b85b696fdab..6a510c9675fc 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -787,8 +787,7 @@ static int hid_alloc_buffers(struct usb_device *dev, struct hid_device *hid)
+ 			&amp;usbhid-&gt;inbuf_dma);
+ 	usbhid-&gt;outbuf = usb_buffer_alloc(dev, usbhid-&gt;bufsize, GFP_KERNEL,
+ 			&amp;usbhid-&gt;outbuf_dma);
+-	usbhid-&gt;cr = usb_buffer_alloc(dev, sizeof(*usbhid-&gt;cr), GFP_KERNEL,
+-			&amp;usbhid-&gt;cr_dma);
++	usbhid-&gt;cr = kmalloc(sizeof(*usbhid-&gt;cr), GFP_KERNEL);
+ 	usbhid-&gt;ctrlbuf = usb_buffer_alloc(dev, usbhid-&gt;bufsize, GFP_KERNEL,
+ 			&amp;usbhid-&gt;ctrlbuf_dma);
+ 	if (!usbhid-&gt;inbuf || !usbhid-&gt;outbuf || !usbhid-&gt;cr ||
+@@ -846,7 +845,7 @@ static void hid_free_buffers(struct usb_device *dev, struct hid_device *hid)
+ 
+ 	usb_buffer_free(dev, usbhid-&gt;bufsize, usbhid-&gt;inbuf, usbhid-&gt;inbuf_dma);
+ 	usb_buffer_free(dev, usbhid-&gt;bufsize, usbhid-&gt;outbuf, usbhid-&gt;outbuf_dma);
+-	usb_buffer_free(dev, sizeof(*(usbhid-&gt;cr)), usbhid-&gt;cr, usbhid-&gt;cr_dma);
++	kfree(usbhid-&gt;cr);
+ 	usb_buffer_free(dev, usbhid-&gt;bufsize, usbhid-&gt;ctrlbuf, usbhid-&gt;ctrlbuf_dma);
+ }
+ 
+@@ -1007,9 +1006,8 @@ static int usbhid_start(struct hid_device *hid)
+ 
+ 	usb_fill_control_urb(usbhid-&gt;urbctrl, dev, 0, (void *) usbhid-&gt;cr,
+ 			     usbhid-&gt;ctrlbuf, 1, hid_ctrl, hid);
+-	usbhid-&gt;urbctrl-&gt;setup_dma = usbhid-&gt;cr_dma;
+ 	usbhid-&gt;urbctrl-&gt;transfer_dma = usbhid-&gt;ctrlbuf_dma;
+-	usbhid-&gt;urbctrl-&gt;transfer_flags |= (URB_NO_TRANSFER_DMA_MAP | URB_NO_SETUP_DMA_MAP);
++	usbhid-&gt;urbctrl-&gt;transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
+ 
+ 	if (!(hid-&gt;quirks &amp; HID_QUIRK_NO_INIT_REPORTS))
+ 		usbhid_init_reports(hid);
+diff --git a/drivers/hid/usbhid/usbhid.h b/drivers/hid/usbhid/usbhid.h
+index ec20400c7f29..693fd3e720df 100644
+--- a/drivers/hid/usbhid/usbhid.h
++++ b/drivers/hid/usbhid/usbhid.h
+@@ -75,7 +75,6 @@ struct usbhid_device {
+ 
+ 	struct urb *urbctrl;                                            /* Control URB */
+ 	struct usb_ctrlrequest *cr;                                     /* Control request struct */
+-	dma_addr_t cr_dma;                                              /* Control request struct dma */
+ 	struct hid_control_fifo ctrl[HID_CONTROL_FIFO_SIZE];  		/* Control fifo */
+ 	unsigned char ctrlhead, ctrltail;                               /* Control fifo head &amp; tail */
+ 	char *ctrlbuf;                                                  /* Control buffer */
+diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
+index f843443ba5c3..bdc7b09e8670 100644
+--- a/drivers/hid/usbhid/usbkbd.c
++++ b/drivers/hid/usbhid/usbkbd.c
+@@ -74,7 +74,6 @@ struct usb_kbd {
+ 	unsigned char *new;
+ 	struct usb_ctrlrequest *cr;
+ 	unsigned char *leds;
+-	dma_addr_t cr_dma;
+ 	dma_addr_t new_dma;
+ 	dma_addr_t leds_dma;
+ };
+@@ -199,7 +198,7 @@ static int usb_kbd_alloc_mem(struct usb_device *dev, struct usb_kbd *kbd)
+ 		return -1;
+ 	if (!(kbd-&gt;new = usb_buffer_alloc(dev, 8, GFP_ATOMIC, &amp;kbd-&gt;new_dma)))
+ 		return -1;
+-	if (!(kbd-&gt;cr = usb_buffer_alloc(dev, sizeof(struct usb_ctrlrequest), GFP_ATOMIC, &amp;kbd-&gt;cr_dma)))
++	if (!(kbd-&gt;cr = kmalloc(sizeof(struct usb_ctrlrequest), GFP_KERNEL)))
+ 		return -1;
+ 	if (!(kbd-&gt;leds = usb_buffer_alloc(dev, 1, GFP_ATOMIC, &amp;kbd-&gt;leds_dma)))
+ 		return -1;
+@@ -212,7 +211,7 @@ static void usb_kbd_free_mem(struct usb_device *dev, struct usb_kbd *kbd)
+ 	usb_free_urb(kbd-&gt;irq);
+ 	usb_free_urb(kbd-&gt;led);
+ 	usb_buffer_free(dev, 8, kbd-&gt;new, kbd-&gt;new_dma);
+-	usb_buffer_free(dev, sizeof(struct usb_ctrlrequest), kbd-&gt;cr, kbd-&gt;cr_dma);
++	kfree(kbd-&gt;cr);
+ 	usb_buffer_free(dev, 1, kbd-&gt;leds, kbd-&gt;leds_dma);
+ }
+ 
+@@ -304,9 +303,8 @@ static int usb_kbd_probe(struct usb_interface *iface,
+ 	usb_fill_control_urb(kbd-&gt;led, dev, usb_sndctrlpipe(dev, 0),
+ 			     (void *) kbd-&gt;cr, kbd-&gt;leds, 1,
+ 			     usb_kbd_led, kbd);
+-	kbd-&gt;led-&gt;setup_dma = kbd-&gt;cr_dma;
+ 	kbd-&gt;led-&gt;transfer_dma = kbd-&gt;leds_dma;
+-	kbd-&gt;led-&gt;transfer_flags |= (URB_NO_TRANSFER_DMA_MAP | URB_NO_SETUP_DMA_MAP);
++	kbd-&gt;led-&gt;transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
+ 
+ 	error = input_register_device(kbd-&gt;dev);
+ 	if (error)
+diff --git a/drivers/input/misc/cm109.c b/drivers/input/misc/cm109.c
+index 86457feccfc4..8d2d291ee508 100644
+--- a/drivers/input/misc/cm109.c
++++ b/drivers/input/misc/cm109.c
+@@ -102,7 +102,6 @@ struct cm109_dev {
+ 	struct cm109_ctl_packet *ctl_data;
+ 	dma_addr_t ctl_dma;
+ 	struct usb_ctrlrequest *ctl_req;
+-	dma_addr_t ctl_req_dma;
+ 	struct urb *urb_ctl;
+ 	/*
+ 	 * The 3 bitfields below are protected by ctl_submit_lock.
+@@ -629,9 +628,7 @@ static const struct usb_device_id cm109_usb_table[] = {
+ 
+ static void cm109_usb_cleanup(struct cm109_dev *dev)
+ {
+-	if (dev-&gt;ctl_req)
+-		usb_buffer_free(dev-&gt;udev, sizeof(*(dev-&gt;ctl_req)),
+-				dev-&gt;ctl_req, dev-&gt;ctl_req_dma);
++	kfree(dev-&gt;ctl_req);
+ 	if (dev-&gt;ctl_data)
+ 		usb_buffer_free(dev-&gt;udev, USB_PKT_LEN,
+ 				dev-&gt;ctl_data, dev-&gt;ctl_dma);
+@@ -696,8 +693,7 @@ static int cm109_usb_probe(struct usb_interface *intf,
+ 	if (!dev-&gt;ctl_data)
+ 		goto err_out;
+ 
+-	dev-&gt;ctl_req = usb_buffer_alloc(udev, sizeof(*(dev-&gt;ctl_req)),
+-					GFP_KERNEL, &amp;dev-&gt;ctl_req_dma);
++	dev-&gt;ctl_req = kmalloc(sizeof(*(dev-&gt;ctl_req)), GFP_KERNEL);
+ 	if (!dev-&gt;ctl_req)
+ 		goto err_out;
+ 
+@@ -735,10 +731,8 @@ static int cm109_usb_probe(struct usb_interface *intf,
+ 	usb_fill_control_urb(dev-&gt;urb_ctl, udev, usb_sndctrlpipe(udev, 0),
+ 			     (void *)dev-&gt;ctl_req, dev-&gt;ctl_data, USB_PKT_LEN,
+ 			     cm109_urb_ctl_callback, dev);
+-	dev-&gt;urb_ctl-&gt;setup_dma = dev-&gt;ctl_req_dma;
+ 	dev-&gt;urb_ctl-&gt;transfer_dma = dev-&gt;ctl_dma;
+-	dev-&gt;urb_ctl-&gt;transfer_flags |= URB_NO_SETUP_DMA_MAP |
+-					URB_NO_TRANSFER_DMA_MAP;
++	dev-&gt;urb_ctl-&gt;transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
+ 	dev-&gt;urb_ctl-&gt;dev = udev;
+ 
+ 	/* find out the physical bus location */
+diff --git a/drivers/input/misc/powermate.c b/drivers/input/misc/powermate.c
+index 668913d12044..7ba4b5f53fc2 100644
+--- a/drivers/input/misc/powermate.c
++++ b/drivers/input/misc/powermate.c
+@@ -64,7 +64,6 @@ struct powermate_device {
+ 	dma_addr_t data_dma;
+ 	struct urb *irq, *config;
+ 	struct usb_ctrlrequest *configcr;
+-	dma_addr_t configcr_dma;
+ 	struct usb_device *udev;
+ 	struct input_dev *input;
+ 	spinlock_t lock;
+@@ -182,8 +181,6 @@ static void powermate_sync_state(struct powermate_device *pm)
+ 	usb_fill_control_urb(pm-&gt;config, pm-&gt;udev, usb_sndctrlpipe(pm-&gt;udev, 0),
+ 			     (void *) pm-&gt;configcr, NULL, 0,
+ 			     powermate_config_complete, pm);
+-	pm-&gt;config-&gt;setup_dma = pm-&gt;configcr_dma;
+-	pm-&gt;config-&gt;transfer_flags |= URB_NO_SETUP_DMA_MAP;
+ 
+ 	if (usb_submit_urb(pm-&gt;config, GFP_ATOMIC))
+ 		printk(KERN_ERR "powermate: usb_submit_urb(config) failed");
+@@ -281,8 +278,7 @@ static int powermate_alloc_buffers(struct usb_device *udev, struct powermate_dev
+ 	if (!pm-&gt;data)
+ 		return -1;
+ 
+-	pm-&gt;configcr = usb_buffer_alloc(udev, sizeof(*(pm-&gt;configcr)),
+-					GFP_ATOMIC, &amp;pm-&gt;configcr_dma);
++	pm-&gt;configcr = kmalloc(sizeof(*(pm-&gt;configcr)), GFP_KERNEL);
+ 	if (!pm-&gt;configcr)
+ 		return -1;
+ 
+@@ -293,8 +289,7 @@ static void powermate_free_buffers(struct usb_device *udev, struct powermate_dev
+ {
+ 	usb_buffer_free(udev, POWERMATE_PAYLOAD_SIZE_MAX,
+ 			pm-&gt;data, pm-&gt;data_dma);
+-	usb_buffer_free(udev, sizeof(*(pm-&gt;configcr)),
+-			pm-&gt;configcr, pm-&gt;configcr_dma);
++	kfree(pm-&gt;configcr);
+ }
+ 
+ /* Called whenever a USB device matching one in our supported devices table is connected */
+diff --git a/drivers/input/misc/yealink.c b/drivers/input/misc/yealink.c
+index 93a22ac0f88c..2828328e9dd0 100644
+--- a/drivers/input/misc/yealink.c
++++ b/drivers/input/misc/yealink.c
+@@ -111,7 +111,6 @@ struct yealink_dev {
+ 	struct yld_ctl_packet	*ctl_data;
+ 	dma_addr_t		ctl_dma;
+ 	struct usb_ctrlrequest	*ctl_req;
+-	dma_addr_t		ctl_req_dma;
+ 	struct urb		*urb_ctl;
+ 
+ 	char phys[64];			/* physical device path */
+@@ -836,8 +835,7 @@ static int usb_cleanup(struct yealink_dev *yld, int err)
+ 	usb_free_urb(yld-&gt;urb_irq);
+ 	usb_free_urb(yld-&gt;urb_ctl);
+ 
+-	usb_buffer_free(yld-&gt;udev, sizeof(*(yld-&gt;ctl_req)),
+-			yld-&gt;ctl_req, yld-&gt;ctl_req_dma);
++	kfree(yld-&gt;ctl_req);
+ 	usb_buffer_free(yld-&gt;udev, USB_PKT_LEN,
+ 			yld-&gt;ctl_data, yld-&gt;ctl_dma);
+ 	usb_buffer_free(yld-&gt;udev, USB_PKT_LEN,
+@@ -896,8 +894,7 @@ static int usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 	if (!yld-&gt;ctl_data)
+ 		return usb_cleanup(yld, -ENOMEM);
+ 
+-	yld-&gt;ctl_req = usb_buffer_alloc(udev, sizeof(*(yld-&gt;ctl_req)),
+-					GFP_ATOMIC, &amp;yld-&gt;ctl_req_dma);
++	yld-&gt;ctl_req = kmalloc(sizeof(*(yld-&gt;ctl_req)), GFP_KERNEL);
+ 	if (yld-&gt;ctl_req == NULL)
+ 		return usb_cleanup(yld, -ENOMEM);
+ 
+@@ -936,10 +933,8 @@ static int usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 	usb_fill_control_urb(yld-&gt;urb_ctl, udev, usb_sndctrlpipe(udev, 0),
+ 			(void *)yld-&gt;ctl_req, yld-&gt;ctl_data, USB_PKT_LEN,
+ 			urb_ctl_callback, yld);
+-	yld-&gt;urb_ctl-&gt;setup_dma	= yld-&gt;ctl_req_dma;
+ 	yld-&gt;urb_ctl-&gt;transfer_dma	= yld-&gt;ctl_dma;
+-	yld-&gt;urb_ctl-&gt;transfer_flags	|= URB_NO_SETUP_DMA_MAP |
+-					URB_NO_TRANSFER_DMA_MAP;
++	yld-&gt;urb_ctl-&gt;transfer_flags	|= URB_NO_TRANSFER_DMA_MAP;
+ 	yld-&gt;urb_ctl-&gt;dev = udev;
+ 
+ 	/* find out the physical bus location */
+diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
+index 09301f4b7225..2532a0917f8c 100644
+--- a/drivers/usb/core/urb.c
++++ b/drivers/usb/core/urb.c
+@@ -396,8 +396,8 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
+ 		return -EPIPE;		/* The most suitable error code :-) */
+ 
+ 	/* enforce simple/standard policy */
+-	allowed = (URB_NO_TRANSFER_DMA_MAP | URB_NO_SETUP_DMA_MAP |
+-			URB_NO_INTERRUPT | URB_DIR_MASK | URB_FREE_BUFFER);
++	allowed = (URB_NO_TRANSFER_DMA_MAP | URB_NO_INTERRUPT | URB_DIR_MASK |
++			URB_FREE_BUFFER);
+ 	switch (xfertype) {
+ 	case USB_ENDPOINT_XFER_BULK:
+ 		if (is_out)
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 1088abb4416c..097172e2ba06 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -775,7 +775,7 @@ EXPORT_SYMBOL_GPL(usb_free_coherent);
+  * @urb: urb whose transfer_buffer/setup_packet will be mapped
+  *
+  * Return value is either null (indicating no buffer could be mapped), or
+- * the parameter.  URB_NO_TRANSFER_DMA_MAP and URB_NO_SETUP_DMA_MAP are
++ * the parameter.  URB_NO_TRANSFER_DMA_MAP is
+  * added to urb-&gt;transfer_flags if the operation succeeds.  If the device
+  * is connected to this system through a non-DMA controller, this operation
+  * always succeeds.
+@@ -803,17 +803,11 @@ struct urb *usb_buffer_map(struct urb *urb)
+ 			urb-&gt;transfer_buffer, urb-&gt;transfer_buffer_length,
+ 			usb_pipein(urb-&gt;pipe)
+ 				? DMA_FROM_DEVICE : DMA_TO_DEVICE);
+-		if (usb_pipecontrol(urb-&gt;pipe))
+-			urb-&gt;setup_dma = dma_map_single(controller,
+-					urb-&gt;setup_packet,
+-					sizeof(struct usb_ctrlrequest),
+-					DMA_TO_DEVICE);
+ 	/* FIXME generic api broken like pci, can't report errors */
+ 	/* if (urb-&gt;transfer_dma == DMA_ADDR_INVALID) return 0; */
+ 	} else
+ 		urb-&gt;transfer_dma = ~0;
+-	urb-&gt;transfer_flags |= (URB_NO_TRANSFER_DMA_MAP
+-				| URB_NO_SETUP_DMA_MAP);
++	urb-&gt;transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
+ 	return urb;
+ }
+ EXPORT_SYMBOL_GPL(usb_buffer_map);
+@@ -881,14 +875,8 @@ void usb_buffer_unmap(struct urb *urb)
+ 			urb-&gt;transfer_dma, urb-&gt;transfer_buffer_length,
+ 			usb_pipein(urb-&gt;pipe)
+ 				? DMA_FROM_DEVICE : DMA_TO_DEVICE);
+-		if (usb_pipecontrol(urb-&gt;pipe))
+-			dma_unmap_single(controller,
+-					urb-&gt;setup_dma,
+-					sizeof(struct usb_ctrlrequest),
+-					DMA_TO_DEVICE);
+ 	}
+-	urb-&gt;transfer_flags &amp;= ~(URB_NO_TRANSFER_DMA_MAP
+-				| URB_NO_SETUP_DMA_MAP);
++	urb-&gt;transfer_flags &amp;= ~URB_NO_TRANSFER_DMA_MAP;
+ }
+ EXPORT_SYMBOL_GPL(usb_buffer_unmap);
+ #endif  /*  0  */
+diff --git a/drivers/usb/misc/usbtest.c b/drivers/usb/misc/usbtest.c
+index a21cce6f7403..9dcc82337ced 100644
+--- a/drivers/usb/misc/usbtest.c
++++ b/drivers/usb/misc/usbtest.c
+@@ -977,15 +977,13 @@ test_ctrl_queue (struct usbtest_dev *dev, struct usbtest_param *param)
+ 		if (!u)
+ 			goto cleanup;
+ 
+-		reqp = usb_buffer_alloc (udev, sizeof *reqp, GFP_KERNEL,
+-				&amp;u-&gt;setup_dma);
++		reqp = kmalloc(sizeof *reqp, GFP_KERNEL);
+ 		if (!reqp)
+ 			goto cleanup;
+ 		reqp-&gt;setup = req;
+ 		reqp-&gt;number = i % NUM_SUBCASES;
+ 		reqp-&gt;expected = expected;
+ 		u-&gt;setup_packet = (char *) &amp;reqp-&gt;setup;
+-		u-&gt;transfer_flags |= URB_NO_SETUP_DMA_MAP;
+ 
+ 		u-&gt;context = &amp;context;
+ 		u-&gt;complete = ctrl_complete;
+@@ -1017,10 +1015,7 @@ test_ctrl_queue (struct usbtest_dev *dev, struct usbtest_param *param)
+ 		if (!urb [i])
+ 			continue;
+ 		urb [i]-&gt;dev = udev;
+-		if (urb [i]-&gt;setup_packet)
+-			usb_buffer_free (udev, sizeof (struct usb_ctrlrequest),
+-					urb [i]-&gt;setup_packet,
+-					urb [i]-&gt;setup_dma);
++		kfree(urb[i]-&gt;setup_packet);
+ 		simple_free_urb (urb [i]);
+ 	}
+ 	kfree (urb);
+diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
+index f253edec3bb8..44716427c51c 100644
+--- a/drivers/usb/storage/transport.c
++++ b/drivers/usb/storage/transport.c
+@@ -147,11 +147,9 @@ static int usb_stor_msg_common(struct us_data *us, int timeout)
+ 	 * hasn't been mapped for DMA.  Yes, this is clunky, but it's
+ 	 * easier than always having the caller tell us whether the
+ 	 * transfer buffer has already been mapped. */
+-	us-&gt;current_urb-&gt;transfer_flags = URB_NO_SETUP_DMA_MAP;
+ 	if (us-&gt;current_urb-&gt;transfer_buffer == us-&gt;iobuf)
+ 		us-&gt;current_urb-&gt;transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
+ 	us-&gt;current_urb-&gt;transfer_dma = us-&gt;iobuf_dma;
+-	us-&gt;current_urb-&gt;setup_dma = us-&gt;cr_dma;
+ 
+ 	/* submit the URB */
+ 	status = usb_submit_urb(us-&gt;current_urb, GFP_NOIO);
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index bbeeb92a2131..c54a370c76c5 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -407,9 +407,8 @@ static int associate_dev(struct us_data *us, struct usb_interface *intf)
+ 	/* Store our private data in the interface */
+ 	usb_set_intfdata(intf, us);
+ 
+-	/* Allocate the device-related DMA-mapped buffers */
+-	us-&gt;cr = usb_buffer_alloc(us-&gt;pusb_dev, sizeof(*us-&gt;cr),
+-			GFP_KERNEL, &amp;us-&gt;cr_dma);
++	/* Allocate the control/setup and DMA-mapped buffers */
++	us-&gt;cr = kmalloc(sizeof(*us-&gt;cr), GFP_KERNEL);
+ 	if (!us-&gt;cr) {
+ 		US_DEBUGP("usb_ctrlrequest allocation failed\n");
+ 		return -ENOMEM;
+@@ -757,13 +756,9 @@ static void dissociate_dev(struct us_data *us)
+ {
+ 	US_DEBUGP("-- %s\n", __func__);
+ 
+-	/* Free the device-related DMA-mapped buffers */
+-	if (us-&gt;cr)
+-		usb_buffer_free(us-&gt;pusb_dev, sizeof(*us-&gt;cr), us-&gt;cr,
+-				us-&gt;cr_dma);
+-	if (us-&gt;iobuf)
+-		usb_buffer_free(us-&gt;pusb_dev, US_IOBUF_SIZE, us-&gt;iobuf,
+-				us-&gt;iobuf_dma);
++	/* Free the buffers */
++	kfree(us-&gt;cr);
++	usb_buffer_free(us-&gt;pusb_dev, US_IOBUF_SIZE, us-&gt;iobuf, us-&gt;iobuf_dma);
+ 
+ 	/* Remove our private data from the interface */
+ 	usb_set_intfdata(us-&gt;pusb_intf, NULL);
+diff --git a/drivers/usb/storage/usb.h b/drivers/usb/storage/usb.h
+index 69717134231b..89d3bfff98df 100644
+--- a/drivers/usb/storage/usb.h
++++ b/drivers/usb/storage/usb.h
+@@ -139,8 +139,7 @@ struct us_data {
+ 	struct usb_ctrlrequest	*cr;		 /* control requests	 */
+ 	struct usb_sg_request	current_sg;	 /* scatter-gather req.  */
+ 	unsigned char		*iobuf;		 /* I/O buffer		 */
+-	dma_addr_t		cr_dma;		 /* buffer DMA addresses */
+-	dma_addr_t		iobuf_dma;
++	dma_addr_t		iobuf_dma;	 /* buffer DMA addresses */
+ 	struct task_struct	*ctl_thread;	 /* the control thread   */
+ 
+ 	/* mutual exclusion and synchronization structures */
+diff --git a/drivers/usb/wusbcore/wa-xfer.c b/drivers/usb/wusbcore/wa-xfer.c
+index 112ef7e26f6b..2ce6b7eccc6a 100644
+--- a/drivers/usb/wusbcore/wa-xfer.c
++++ b/drivers/usb/wusbcore/wa-xfer.c
+@@ -474,8 +474,6 @@ static void __wa_xfer_setup_hdr0(struct wa_xfer *xfer,
+ 		struct wa_xfer_ctl *xfer_ctl =
+ 			container_of(xfer_hdr0, struct wa_xfer_ctl, hdr);
+ 		xfer_ctl-&gt;bmAttribute = xfer-&gt;is_inbound ? 1 : 0;
+-		BUG_ON(xfer-&gt;urb-&gt;transfer_flags &amp; URB_NO_SETUP_DMA_MAP
+-		       &amp;&amp; xfer-&gt;urb-&gt;setup_packet == NULL);
+ 		memcpy(&amp;xfer_ctl-&gt;baSetupData, xfer-&gt;urb-&gt;setup_packet,
+ 		       sizeof(xfer_ctl-&gt;baSetupData));
+ 		break;</pre><hr><pre>commit 749da5f82fe33ff68dd4aa1a5e35cd9aa6246dab
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Mar 4 17:05:08 2010 -0500
+
+    USB: straighten out port feature vs. port status usage
+    
+    This patch (as1349b) clears up the confusion in many USB host
+    controller drivers between port features and port statuses.  In mosty
+    cases it's true that the status bit is in the position given by the
+    corresponding feature value, but that's not always true and it's not
+    guaranteed in the USB spec.
+    
+    There's no functional change, just replacing expressions of the form
+    (1 &lt;&lt; USB_PORT_FEAT_x) with USB_PORT_STAT_x, which has the same value.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 5ac27ed0c635..497dbb29744d 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -3037,7 +3037,7 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
+ 
+ 		/* maybe switch power back on (e.g. root hub was reset) */
+ 		if ((wHubCharacteristics &amp; HUB_CHAR_LPSM) &lt; 2
+-				&amp;&amp; !(portstatus &amp; (1 &lt;&lt; USB_PORT_FEAT_POWER)))
++				&amp;&amp; !(portstatus &amp; USB_PORT_STAT_POWER))
+ 			set_port_feature(hdev, port1, USB_PORT_FEAT_POWER);
+ 
+ 		if (portstatus &amp; USB_PORT_STAT_ENABLE)
+diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
+index c7178bcde67a..c44018109a13 100644
+--- a/drivers/usb/host/ehci-hub.c
++++ b/drivers/usb/host/ehci-hub.c
+@@ -659,7 +659,7 @@ static int ehci_hub_control (
+ 		 * Even if OWNER is set, so the port is owned by the
+ 		 * companion controller, khubd needs to be able to clear
+ 		 * the port-change status bits (especially
+-		 * USB_PORT_FEAT_C_CONNECTION).
++		 * USB_PORT_STAT_C_CONNECTION).
+ 		 */
+ 
+ 		switch (wValue) {
+@@ -729,12 +729,12 @@ static int ehci_hub_control (
+ 
+ 		// wPortChange bits
+ 		if (temp &amp; PORT_CSC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION;
++			status |= USB_PORT_STAT_C_CONNECTION &lt;&lt; 16;
+ 		if (temp &amp; PORT_PEC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_ENABLE;
++			status |= USB_PORT_STAT_C_ENABLE &lt;&lt; 16;
+ 
+ 		if ((temp &amp; PORT_OCC) &amp;&amp; !ignore_oc){
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_OVER_CURRENT;
++			status |= USB_PORT_STAT_C_OVERCURRENT &lt;&lt; 16;
+ 
+ 			/*
+ 			 * Hubs should disable port power on over-current.
+@@ -791,7 +791,7 @@ static int ehci_hub_control (
+ 		if ((temp &amp; PORT_RESET)
+ 				&amp;&amp; time_after_eq(jiffies,
+ 					ehci-&gt;reset_done[wIndex])) {
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_RESET;
++			status |= USB_PORT_STAT_C_RESET &lt;&lt; 16;
+ 			ehci-&gt;reset_done [wIndex] = 0;
+ 
+ 			/* force reset to complete */
+@@ -833,7 +833,7 @@ static int ehci_hub_control (
+ 		 */
+ 
+ 		if (temp &amp; PORT_CONNECT) {
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_CONNECTION;
++			status |= USB_PORT_STAT_CONNECTION;
+ 			// status may be from integrated TT
+ 			if (ehci-&gt;has_hostpc) {
+ 				temp1 = ehci_readl(ehci, hostpc_reg);
+@@ -842,11 +842,11 @@ static int ehci_hub_control (
+ 				status |= ehci_port_speed(ehci, temp);
+ 		}
+ 		if (temp &amp; PORT_PE)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_ENABLE;
++			status |= USB_PORT_STAT_ENABLE;
+ 
+ 		/* maybe the port was unsuspended without our knowledge */
+ 		if (temp &amp; (PORT_SUSPEND|PORT_RESUME)) {
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_SUSPEND;
++			status |= USB_PORT_STAT_SUSPEND;
+ 		} else if (test_bit(wIndex, &amp;ehci-&gt;suspended_ports)) {
+ 			clear_bit(wIndex, &amp;ehci-&gt;suspended_ports);
+ 			ehci-&gt;reset_done[wIndex] = 0;
+@@ -855,13 +855,13 @@ static int ehci_hub_control (
+ 		}
+ 
+ 		if (temp &amp; PORT_OC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_OVER_CURRENT;
++			status |= USB_PORT_STAT_OVERCURRENT;
+ 		if (temp &amp; PORT_RESET)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_RESET;
++			status |= USB_PORT_STAT_RESET;
+ 		if (temp &amp; PORT_POWER)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_POWER;
++			status |= USB_PORT_STAT_POWER;
+ 		if (test_bit(wIndex, &amp;ehci-&gt;port_c_suspend))
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_SUSPEND;
++			status |= USB_PORT_STAT_C_SUSPEND &lt;&lt; 16;
+ 
+ #ifndef	VERBOSE_DEBUG
+ 	if (status &amp; ~0xffff)	/* only if wPortChange is interesting */
+diff --git a/drivers/usb/host/isp1362-hcd.c b/drivers/usb/host/isp1362-hcd.c
+index acc157da7275..6a6a50849bfe 100644
+--- a/drivers/usb/host/isp1362-hcd.c
++++ b/drivers/usb/host/isp1362-hcd.c
+@@ -1265,7 +1265,7 @@ static int isp1362_urb_enqueue(struct usb_hcd *hcd,
+ 
+ 	/* don't submit to a dead or disabled port */
+ 	if (!((isp1362_hcd-&gt;rhport[0] | isp1362_hcd-&gt;rhport[1]) &amp;
+-	      (1 &lt;&lt; USB_PORT_FEAT_ENABLE)) ||
++	      USB_PORT_STAT_ENABLE) ||
+ 	    !HC_IS_RUNNING(hcd-&gt;state)) {
+ 		kfree(ep);
+ 		retval = -ENODEV;
+diff --git a/drivers/usb/host/isp1760-hcd.c b/drivers/usb/host/isp1760-hcd.c
+index cfdac6da9556..13f7d1200bc0 100644
+--- a/drivers/usb/host/isp1760-hcd.c
++++ b/drivers/usb/host/isp1760-hcd.c
+@@ -1923,7 +1923,7 @@ static int isp1760_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 		 * Even if OWNER is set, so the port is owned by the
+ 		 * companion controller, khubd needs to be able to clear
+ 		 * the port-change status bits (especially
+-		 * USB_PORT_FEAT_C_CONNECTION).
++		 * USB_PORT_STAT_C_CONNECTION).
+ 		 */
+ 
+ 		switch (wValue) {
+@@ -1987,7 +1987,7 @@ static int isp1760_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 
+ 		/* wPortChange bits */
+ 		if (temp &amp; PORT_CSC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION;
++			status |= USB_PORT_STAT_C_CONNECTION &lt;&lt; 16;
+ 
+ 
+ 		/* whoever resumes must GetPortStatus to complete it!! */
+@@ -2007,7 +2007,7 @@ static int isp1760_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 			/* resume completed? */
+ 			else if (time_after_eq(jiffies,
+ 					priv-&gt;reset_done)) {
+-				status |= 1 &lt;&lt; USB_PORT_FEAT_C_SUSPEND;
++				status |= USB_PORT_STAT_C_SUSPEND &lt;&lt; 16;
+ 				priv-&gt;reset_done = 0;
+ 
+ 				/* stop resume signaling */
+@@ -2031,7 +2031,7 @@ static int isp1760_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 		if ((temp &amp; PORT_RESET)
+ 				&amp;&amp; time_after_eq(jiffies,
+ 					priv-&gt;reset_done)) {
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_RESET;
++			status |= USB_PORT_STAT_C_RESET &lt;&lt; 16;
+ 			priv-&gt;reset_done = 0;
+ 
+ 			/* force reset to complete */
+@@ -2062,18 +2062,18 @@ static int isp1760_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 			printk(KERN_ERR "Warning: PORT_OWNER is set\n");
+ 
+ 		if (temp &amp; PORT_CONNECT) {
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_CONNECTION;
++			status |= USB_PORT_STAT_CONNECTION;
+ 			/* status may be from integrated TT */
+ 			status |= ehci_port_speed(priv, temp);
+ 		}
+ 		if (temp &amp; PORT_PE)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_ENABLE;
++			status |= USB_PORT_STAT_ENABLE;
+ 		if (temp &amp; (PORT_SUSPEND|PORT_RESUME))
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_SUSPEND;
++			status |= USB_PORT_STAT_SUSPEND;
+ 		if (temp &amp; PORT_RESET)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_RESET;
++			status |= USB_PORT_STAT_RESET;
+ 		if (temp &amp; PORT_POWER)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_POWER;
++			status |= USB_PORT_STAT_POWER;
+ 
+ 		put_unaligned(cpu_to_le32(status), (__le32 *) buf);
+ 		break;
+diff --git a/drivers/usb/host/oxu210hp-hcd.c b/drivers/usb/host/oxu210hp-hcd.c
+index 8f04c0afa59f..f608dfd09a8a 100644
+--- a/drivers/usb/host/oxu210hp-hcd.c
++++ b/drivers/usb/host/oxu210hp-hcd.c
+@@ -3201,7 +3201,7 @@ static int oxu_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 		 * Even if OWNER is set, so the port is owned by the
+ 		 * companion controller, khubd needs to be able to clear
+ 		 * the port-change status bits (especially
+-		 * USB_PORT_FEAT_C_CONNECTION).
++		 * USB_PORT_STAT_C_CONNECTION).
+ 		 */
+ 
+ 		switch (wValue) {
+@@ -3263,11 +3263,11 @@ static int oxu_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 
+ 		/* wPortChange bits */
+ 		if (temp &amp; PORT_CSC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION;
++			status |= USB_PORT_STAT_C_CONNECTION &lt;&lt; 16;
+ 		if (temp &amp; PORT_PEC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_ENABLE;
++			status |= USB_PORT_STAT_C_ENABLE &lt;&lt; 16;
+ 		if ((temp &amp; PORT_OCC) &amp;&amp; !ignore_oc)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_OVER_CURRENT;
++			status |= USB_PORT_STAT_C_OVERCURRENT &lt;&lt; 16;
+ 
+ 		/* whoever resumes must GetPortStatus to complete it!! */
+ 		if (temp &amp; PORT_RESUME) {
+@@ -3285,7 +3285,7 @@ static int oxu_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 			/* resume completed? */
+ 			else if (time_after_eq(jiffies,
+ 					oxu-&gt;reset_done[wIndex])) {
+-				status |= 1 &lt;&lt; USB_PORT_FEAT_C_SUSPEND;
++				status |= USB_PORT_STAT_C_SUSPEND &lt;&lt; 16;
+ 				oxu-&gt;reset_done[wIndex] = 0;
+ 
+ 				/* stop resume signaling */
+@@ -3308,7 +3308,7 @@ static int oxu_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 		if ((temp &amp; PORT_RESET)
+ 				&amp;&amp; time_after_eq(jiffies,
+ 					oxu-&gt;reset_done[wIndex])) {
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_RESET;
++			status |= USB_PORT_STAT_C_RESET &lt;&lt; 16;
+ 			oxu-&gt;reset_done[wIndex] = 0;
+ 
+ 			/* force reset to complete */
+@@ -3347,20 +3347,20 @@ static int oxu_hub_control(struct usb_hcd *hcd, u16 typeReq,
+ 		 */
+ 
+ 		if (temp &amp; PORT_CONNECT) {
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_CONNECTION;
++			status |= USB_PORT_STAT_CONNECTION;
+ 			/* status may be from integrated TT */
+ 			status |= oxu_port_speed(oxu, temp);
+ 		}
+ 		if (temp &amp; PORT_PE)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_ENABLE;
++			status |= USB_PORT_STAT_ENABLE;
+ 		if (temp &amp; (PORT_SUSPEND|PORT_RESUME))
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_SUSPEND;
++			status |= USB_PORT_STAT_SUSPEND;
+ 		if (temp &amp; PORT_OC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_OVER_CURRENT;
++			status |= USB_PORT_STAT_OVERCURRENT;
+ 		if (temp &amp; PORT_RESET)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_RESET;
++			status |= USB_PORT_STAT_RESET;
+ 		if (temp &amp; PORT_POWER)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_POWER;
++			status |= USB_PORT_STAT_POWER;
+ 
+ #ifndef	OXU_VERBOSE_DEBUG
+ 	if (status &amp; ~0xffff)	/* only if wPortChange is interesting */
+diff --git a/drivers/usb/host/r8a66597-hcd.c b/drivers/usb/host/r8a66597-hcd.c
+index a004a1220848..6db57ab6079d 100644
+--- a/drivers/usb/host/r8a66597-hcd.c
++++ b/drivers/usb/host/r8a66597-hcd.c
+@@ -1018,10 +1018,10 @@ static void start_root_hub_sampling(struct r8a66597 *r8a66597, int port,
+ 	rh-&gt;old_syssts = r8a66597_read(r8a66597, get_syssts_reg(port)) &amp; LNST;
+ 	rh-&gt;scount = R8A66597_MAX_SAMPLING;
+ 	if (connect)
+-		rh-&gt;port |= 1 &lt;&lt; USB_PORT_FEAT_CONNECTION;
++		rh-&gt;port |= USB_PORT_STAT_CONNECTION;
+ 	else
+-		rh-&gt;port &amp;= ~(1 &lt;&lt; USB_PORT_FEAT_CONNECTION);
+-	rh-&gt;port |= 1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION;
++		rh-&gt;port &amp;= ~USB_PORT_STAT_CONNECTION;
++	rh-&gt;port |= USB_PORT_STAT_C_CONNECTION &lt;&lt; 16;
+ 
+ 	r8a66597_root_hub_start_polling(r8a66597);
+ }
+@@ -1065,8 +1065,8 @@ static void r8a66597_usb_connect(struct r8a66597 *r8a66597, int port)
+ 	else if (speed == LSMODE)
+ 		rh-&gt;port |= USB_PORT_STAT_LOW_SPEED;
+ 
+-	rh-&gt;port &amp;= ~(1 &lt;&lt; USB_PORT_FEAT_RESET);
+-	rh-&gt;port |= 1 &lt;&lt; USB_PORT_FEAT_ENABLE;
++	rh-&gt;port &amp;= USB_PORT_STAT_RESET;
++	rh-&gt;port |= USB_PORT_STAT_ENABLE;
+ }
+ 
+ /* this function must be called with interrupt disabled */
+@@ -1705,7 +1705,7 @@ static void r8a66597_root_hub_control(struct r8a66597 *r8a66597, int port)
+ 	u16 tmp;
+ 	struct r8a66597_root_hub *rh = &amp;r8a66597-&gt;root_hub[port];
+ 
+-	if (rh-&gt;port &amp; (1 &lt;&lt; USB_PORT_FEAT_RESET)) {
++	if (rh-&gt;port &amp; USB_PORT_STAT_RESET) {
+ 		unsigned long dvstctr_reg = get_dvstctr_reg(port);
+ 
+ 		tmp = r8a66597_read(r8a66597, dvstctr_reg);
+@@ -1717,7 +1717,7 @@ static void r8a66597_root_hub_control(struct r8a66597 *r8a66597, int port)
+ 			r8a66597_usb_connect(r8a66597, port);
+ 	}
+ 
+-	if (!(rh-&gt;port &amp; (1 &lt;&lt; USB_PORT_FEAT_CONNECTION))) {
++	if (!(rh-&gt;port &amp; USB_PORT_STAT_CONNECTION)) {
+ 		r8a66597_write(r8a66597, ~ATTCH, get_intsts_reg(port));
+ 		r8a66597_bset(r8a66597, ATTCHE, get_intenb_reg(port));
+ 	}
+@@ -2185,7 +2185,7 @@ static int r8a66597_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
+ 
+ 		switch (wValue) {
+ 		case USB_PORT_FEAT_ENABLE:
+-			rh-&gt;port &amp;= ~(1 &lt;&lt; USB_PORT_FEAT_POWER);
++			rh-&gt;port &amp;= ~USB_PORT_STAT_POWER;
+ 			break;
+ 		case USB_PORT_FEAT_SUSPEND:
+ 			break;
+@@ -2226,12 +2226,12 @@ static int r8a66597_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
+ 			break;
+ 		case USB_PORT_FEAT_POWER:
+ 			r8a66597_port_power(r8a66597, port, 1);
+-			rh-&gt;port |= (1 &lt;&lt; USB_PORT_FEAT_POWER);
++			rh-&gt;port |= USB_PORT_STAT_POWER;
+ 			break;
+ 		case USB_PORT_FEAT_RESET: {
+ 			struct r8a66597_device *dev = rh-&gt;dev;
+ 
+-			rh-&gt;port |= (1 &lt;&lt; USB_PORT_FEAT_RESET);
++			rh-&gt;port |= USB_PORT_STAT_RESET;
+ 
+ 			disable_r8a66597_pipe_all(r8a66597, dev);
+ 			free_usb_address(r8a66597, dev, 1);
+@@ -2269,12 +2269,12 @@ static int r8a66597_bus_suspend(struct usb_hcd *hcd)
+ 		struct r8a66597_root_hub *rh = &amp;r8a66597-&gt;root_hub[port];
+ 		unsigned long dvstctr_reg = get_dvstctr_reg(port);
+ 
+-		if (!(rh-&gt;port &amp; (1 &lt;&lt; USB_PORT_FEAT_ENABLE)))
++		if (!(rh-&gt;port &amp; USB_PORT_STAT_ENABLE))
+ 			continue;
+ 
+ 		dbg("suspend port = %d", port);
+ 		r8a66597_bclr(r8a66597, UACT, dvstctr_reg);	/* suspend */
+-		rh-&gt;port |= 1 &lt;&lt; USB_PORT_FEAT_SUSPEND;
++		rh-&gt;port |= USB_PORT_STAT_SUSPEND;
+ 
+ 		if (rh-&gt;dev-&gt;udev-&gt;do_remote_wakeup) {
+ 			msleep(3);	/* waiting last SOF */
+@@ -2300,12 +2300,12 @@ static int r8a66597_bus_resume(struct usb_hcd *hcd)
+ 		struct r8a66597_root_hub *rh = &amp;r8a66597-&gt;root_hub[port];
+ 		unsigned long dvstctr_reg = get_dvstctr_reg(port);
+ 
+-		if (!(rh-&gt;port &amp; (1 &lt;&lt; USB_PORT_FEAT_SUSPEND)))
++		if (!(rh-&gt;port &amp; USB_PORT_STAT_SUSPEND))
+ 			continue;
+ 
+ 		dbg("resume port = %d", port);
+-		rh-&gt;port &amp;= ~(1 &lt;&lt; USB_PORT_FEAT_SUSPEND);
+-		rh-&gt;port |= 1 &lt;&lt; USB_PORT_FEAT_C_SUSPEND;
++		rh-&gt;port &amp;= ~USB_PORT_STAT_SUSPEND;
++		rh-&gt;port |= USB_PORT_STAT_C_SUSPEND &lt; 16;
+ 		r8a66597_mdfy(r8a66597, RESUME, RESUME | UACT, dvstctr_reg);
+ 		msleep(50);
+ 		r8a66597_mdfy(r8a66597, UACT, RESUME | UACT, dvstctr_reg);
+diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
+index dcd7fab7179c..bcf9f0e809de 100644
+--- a/drivers/usb/host/sl811-hcd.c
++++ b/drivers/usb/host/sl811-hcd.c
+@@ -90,10 +90,10 @@ static void port_power(struct sl811 *sl811, int is_on)
+ 
+ 	/* hub is inactive unless the port is powered */
+ 	if (is_on) {
+-		if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_POWER))
++		if (sl811-&gt;port1 &amp; USB_PORT_STAT_POWER)
+ 			return;
+ 
+-		sl811-&gt;port1 = (1 &lt;&lt; USB_PORT_FEAT_POWER);
++		sl811-&gt;port1 = USB_PORT_STAT_POWER;
+ 		sl811-&gt;irq_enable = SL11H_INTMASK_INSRMV;
+ 	} else {
+ 		sl811-&gt;port1 = 0;
+@@ -407,7 +407,7 @@ static struct sl811h_ep	*start(struct sl811 *sl811, u8 bank)
+ 
+ static inline void start_transfer(struct sl811 *sl811)
+ {
+-	if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_SUSPEND))
++	if (sl811-&gt;port1 &amp; USB_PORT_STAT_SUSPEND)
+ 		return;
+ 	if (sl811-&gt;active_a == NULL) {
+ 		sl811-&gt;active_a = start(sl811, SL811_EP_A(SL811_HOST_BUF));
+@@ -721,23 +721,23 @@ static irqreturn_t sl811h_irq(struct usb_hcd *hcd)
+ 		 * force the reset and make khubd clean up later.
+ 		 */
+ 		if (irqstat &amp; SL11H_INTMASK_RD)
+-			sl811-&gt;port1 &amp;= ~(1 &lt;&lt; USB_PORT_FEAT_CONNECTION);
++			sl811-&gt;port1 &amp;= ~USB_PORT_STAT_CONNECTION;
+ 		else
+-			sl811-&gt;port1 |= 1 &lt;&lt; USB_PORT_FEAT_CONNECTION;
++			sl811-&gt;port1 |= USB_PORT_STAT_CONNECTION;
+ 
+-		sl811-&gt;port1 |= 1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION;
++		sl811-&gt;port1 |= USB_PORT_STAT_C_CONNECTION &lt;&lt; 16;
+ 
+ 	} else if (irqstat &amp; SL11H_INTMASK_RD) {
+-		if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_SUSPEND)) {
++		if (sl811-&gt;port1 &amp; USB_PORT_STAT_SUSPEND) {
+ 			DBG("wakeup\n");
+-			sl811-&gt;port1 |= 1 &lt;&lt; USB_PORT_FEAT_C_SUSPEND;
++			sl811-&gt;port1 |= USB_PORT_STAT_C_SUSPEND &lt;&lt; 16;
+ 			sl811-&gt;stat_wake++;
+ 		} else
+ 			irqstat &amp;= ~SL11H_INTMASK_RD;
+ 	}
+ 
+ 	if (irqstat) {
+-		if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_ENABLE))
++		if (sl811-&gt;port1 &amp; USB_PORT_STAT_ENABLE)
+ 			start_transfer(sl811);
+ 		ret = IRQ_HANDLED;
+ 		if (retries--)
+@@ -819,7 +819,7 @@ static int sl811h_urb_enqueue(
+ 	spin_lock_irqsave(&amp;sl811-&gt;lock, flags);
+ 
+ 	/* don't submit to a dead or disabled port */
+-	if (!(sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_ENABLE))
++	if (!(sl811-&gt;port1 &amp; USB_PORT_STAT_ENABLE)
+ 			|| !HC_IS_RUNNING(hcd-&gt;state)) {
+ 		retval = -ENODEV;
+ 		kfree(ep);
+@@ -1119,8 +1119,8 @@ sl811h_timer(unsigned long _sl811)
+ 	unsigned long	flags;
+ 	u8		irqstat;
+ 	u8		signaling = sl811-&gt;ctrl1 &amp; SL11H_CTL1MASK_FORCE;
+-	const u32	mask = (1 &lt;&lt; USB_PORT_FEAT_CONNECTION)
+-				| (1 &lt;&lt; USB_PORT_FEAT_ENABLE)
++	const u32	mask = USB_PORT_STAT_CONNECTION
++				| USB_PORT_STAT_ENABLE
+ 				| USB_PORT_STAT_LOW_SPEED;
+ 
+ 	spin_lock_irqsave(&amp;sl811-&gt;lock, flags);
+@@ -1135,8 +1135,8 @@ sl811h_timer(unsigned long _sl811)
+ 	switch (signaling) {
+ 	case SL11H_CTL1MASK_SE0:
+ 		DBG("end reset\n");
+-		sl811-&gt;port1 = (1 &lt;&lt; USB_PORT_FEAT_C_RESET)
+-				| (1 &lt;&lt; USB_PORT_FEAT_POWER);
++		sl811-&gt;port1 = (USB_PORT_STAT_C_RESET &lt;&lt; 16)
++				 | USB_PORT_STAT_POWER;
+ 		sl811-&gt;ctrl1 = 0;
+ 		/* don't wrongly ack RD */
+ 		if (irqstat &amp; SL11H_INTMASK_INSRMV)
+@@ -1144,7 +1144,7 @@ sl811h_timer(unsigned long _sl811)
+ 		break;
+ 	case SL11H_CTL1MASK_K:
+ 		DBG("end resume\n");
+-		sl811-&gt;port1 &amp;= ~(1 &lt;&lt; USB_PORT_FEAT_SUSPEND);
++		sl811-&gt;port1 &amp;= ~USB_PORT_STAT_SUSPEND;
+ 		break;
+ 	default:
+ 		DBG("odd timer signaling: %02x\n", signaling);
+@@ -1154,9 +1154,9 @@ sl811h_timer(unsigned long _sl811)
+ 
+ 	if (irqstat &amp; SL11H_INTMASK_RD) {
+ 		/* usbcore nukes all pending transactions on disconnect */
+-		if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_CONNECTION))
+-			sl811-&gt;port1 |= (1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION)
+-					| (1 &lt;&lt; USB_PORT_FEAT_C_ENABLE);
++		if (sl811-&gt;port1 &amp; USB_PORT_STAT_CONNECTION)
++			sl811-&gt;port1 |= (USB_PORT_STAT_C_CONNECTION &lt;&lt; 16)
++					| (USB_PORT_STAT_C_ENABLE &lt;&lt; 16);
+ 		sl811-&gt;port1 &amp;= ~mask;
+ 		sl811-&gt;irq_enable = SL11H_INTMASK_INSRMV;
+ 	} else {
+@@ -1166,7 +1166,7 @@ sl811h_timer(unsigned long _sl811)
+ 		sl811-&gt;irq_enable = SL11H_INTMASK_INSRMV | SL11H_INTMASK_RD;
+ 	}
+ 
+-	if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_CONNECTION)) {
++	if (sl811-&gt;port1 &amp; USB_PORT_STAT_CONNECTION) {
+ 		u8	ctrl2 = SL811HS_CTL2_INIT;
+ 
+ 		sl811-&gt;irq_enable |= SL11H_INTMASK_DONE_A;
+@@ -1233,7 +1233,7 @@ sl811h_hub_control(
+ 
+ 		switch (wValue) {
+ 		case USB_PORT_FEAT_ENABLE:
+-			sl811-&gt;port1 &amp;= (1 &lt;&lt; USB_PORT_FEAT_POWER);
++			sl811-&gt;port1 &amp;= USB_PORT_STAT_POWER;
+ 			sl811-&gt;ctrl1 = 0;
+ 			sl811_write(sl811, SL11H_CTLREG1, sl811-&gt;ctrl1);
+ 			sl811-&gt;irq_enable = SL11H_INTMASK_INSRMV;
+@@ -1241,7 +1241,7 @@ sl811h_hub_control(
+ 						sl811-&gt;irq_enable);
+ 			break;
+ 		case USB_PORT_FEAT_SUSPEND:
+-			if (!(sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_SUSPEND)))
++			if (!(sl811-&gt;port1 &amp; USB_PORT_STAT_SUSPEND))
+ 				break;
+ 
+ 			/* 20 msec of resume/K signaling, other irqs blocked */
+@@ -1290,9 +1290,9 @@ sl811h_hub_control(
+ 			goto error;
+ 		switch (wValue) {
+ 		case USB_PORT_FEAT_SUSPEND:
+-			if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_RESET))
++			if (sl811-&gt;port1 &amp; USB_PORT_STAT_RESET)
+ 				goto error;
+-			if (!(sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_ENABLE)))
++			if (!(sl811-&gt;port1 &amp; USB_PORT_STAT_ENABLE))
+ 				goto error;
+ 
+ 			DBG("suspend...\n");
+@@ -1303,9 +1303,9 @@ sl811h_hub_control(
+ 			port_power(sl811, 1);
+ 			break;
+ 		case USB_PORT_FEAT_RESET:
+-			if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_SUSPEND))
++			if (sl811-&gt;port1 &amp; USB_PORT_STAT_SUSPEND)
+ 				goto error;
+-			if (!(sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_POWER)))
++			if (!(sl811-&gt;port1 &amp; USB_PORT_STAT_POWER))
+ 				break;
+ 
+ 			/* 50 msec of reset/SE0 signaling, irqs blocked */
+@@ -1314,7 +1314,7 @@ sl811h_hub_control(
+ 						sl811-&gt;irq_enable);
+ 			sl811-&gt;ctrl1 = SL11H_CTL1MASK_SE0;
+ 			sl811_write(sl811, SL11H_CTLREG1, sl811-&gt;ctrl1);
+-			sl811-&gt;port1 |= (1 &lt;&lt; USB_PORT_FEAT_RESET);
++			sl811-&gt;port1 |= USB_PORT_STAT_RESET;
+ 			mod_timer(&amp;sl811-&gt;timer, jiffies
+ 					+ msecs_to_jiffies(50));
+ 			break;
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index dd69df1e4558..325b47a267b9 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -205,27 +205,27 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
+ 
+ 		/* wPortChange bits */
+ 		if (temp &amp; PORT_CSC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION;
++			status |= USB_PORT_STAT_C_CONNECTION &lt;&lt; 16;
+ 		if (temp &amp; PORT_PEC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_ENABLE;
++			status |= USB_PORT_STAT_C_ENABLE &lt;&lt; 16;
+ 		if ((temp &amp; PORT_OCC))
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_C_OVER_CURRENT;
++			status |= USB_PORT_STAT_C_OVERCURRENT &lt;&lt; 16;
+ 		/*
+ 		 * FIXME ignoring suspend, reset, and USB 2.1/3.0 specific
+ 		 * changes
+ 		 */
+ 		if (temp &amp; PORT_CONNECT) {
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_CONNECTION;
++			status |= USB_PORT_STAT_CONNECTION;
+ 			status |= xhci_port_speed(temp);
+ 		}
+ 		if (temp &amp; PORT_PE)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_ENABLE;
++			status |= USB_PORT_STAT_ENABLE;
+ 		if (temp &amp; PORT_OC)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_OVER_CURRENT;
++			status |= USB_PORT_STAT_OVERCURRENT;
+ 		if (temp &amp; PORT_RESET)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_RESET;
++			status |= USB_PORT_STAT_RESET;
+ 		if (temp &amp; PORT_POWER)
+-			status |= 1 &lt;&lt; USB_PORT_FEAT_POWER;
++			status |= USB_PORT_STAT_POWER;
+ 		xhci_dbg(xhci, "Get port status returned 0x%x\n", status);
+ 		put_unaligned(cpu_to_le32(status), (__le32 *) buf);
+ 		break;
+diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
+index 705cc4ad8737..ced6d9ea9af3 100644
+--- a/drivers/usb/musb/musb_core.c
++++ b/drivers/usb/musb/musb_core.c
+@@ -353,8 +353,7 @@ void musb_hnp_stop(struct musb *musb)
+ 	 * which cause occasional OPT A "Did not receive reset after connect"
+ 	 * errors.
+ 	 */
+-	musb-&gt;port1_status &amp;=
+-		~(1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION);
++	musb-&gt;port1_status &amp;= ~(USB_PORT_STAT_C_CONNECTION &lt;&lt; 16);
+ }
+ 
+ #endif
+@@ -530,8 +529,8 @@ static irqreturn_t musb_stage0_irq(struct musb *musb, u8 int_usb,
+ 				musb_writeb(mbase, MUSB_DEVCTL, devctl);
+ 			} else {
+ 				musb-&gt;port1_status |=
+-					  (1 &lt;&lt; USB_PORT_FEAT_OVER_CURRENT)
+-					| (1 &lt;&lt; USB_PORT_FEAT_C_OVER_CURRENT);
++					  USB_PORT_STAT_OVERCURRENT
++					| (USB_PORT_STAT_C_OVERCURRENT &lt;&lt; 16);
+ 			}
+ 			break;
+ 		default:
+diff --git a/drivers/usb/musb/musb_virthub.c b/drivers/usb/musb/musb_virthub.c
+index 7775e1c0a215..92e85e027cfb 100644
+--- a/drivers/usb/musb/musb_virthub.c
++++ b/drivers/usb/musb/musb_virthub.c
+@@ -183,8 +183,8 @@ static void musb_port_reset(struct musb *musb, bool do_reset)
+ 
+ void musb_root_disconnect(struct musb *musb)
+ {
+-	musb-&gt;port1_status = (1 &lt;&lt; USB_PORT_FEAT_POWER)
+-			| (1 &lt;&lt; USB_PORT_FEAT_C_CONNECTION);
++	musb-&gt;port1_status = USB_PORT_STAT_POWER
++			| (USB_PORT_STAT_C_CONNECTION &lt;&lt; 16);
+ 
+ 	usb_hcd_poll_rh_status(musb_to_hcd(musb));
+ 	musb-&gt;is_active = 0;</pre><hr><pre>commit 288ead45fa6637e959015d055304f521cbbc0575
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Mar 4 11:32:30 2010 -0500
+
+    USB: remove bogus USB_PORT_FEAT_*_SPEED symbols
+    
+    This patch (as1348) removes the bogus
+    USB_PORT_FEAT_{HIGHSPEED,SUPERSPEED} symbols from ch11.h.  No such
+    features are defined by the USB spec.  (There is a PORT_LOWSPEED
+    feature, but the spec doesn't mention it except to say that host
+    software should never use it.)  The speed indicators are port
+    statuses, not port features.
+    
+    As a temporary workaround for the xhci-hcd driver, a fictional
+    USB_PORT_STAT_SUPER_SPEED symbol is added.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    CC: Sarah Sharp &lt;sarah.a.sharp@linux.intel.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 1883c3c7b69b..5ac27ed0c635 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -153,11 +153,11 @@ static int usb_reset_and_verify_device(struct usb_device *udev);
+ 
+ static inline char *portspeed(int portstatus)
+ {
+-	if (portstatus &amp; (1 &lt;&lt; USB_PORT_FEAT_HIGHSPEED))
++	if (portstatus &amp; USB_PORT_STAT_HIGH_SPEED)
+     		return "480 Mb/s";
+-	else if (portstatus &amp; (1 &lt;&lt; USB_PORT_FEAT_LOWSPEED))
++	else if (portstatus &amp; USB_PORT_STAT_LOW_SPEED)
+ 		return "1.5 Mb/s";
+-	else if (portstatus &amp; (1 &lt;&lt; USB_PORT_FEAT_SUPERSPEED))
++	else if (portstatus &amp; USB_PORT_STAT_SUPER_SPEED)
+ 		return "5.0 Gb/s";
+ 	else
+ 		return "12 Mb/s";
+@@ -3075,7 +3075,7 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
+ 		if (!(hcd-&gt;driver-&gt;flags &amp; HCD_USB3))
+ 			udev-&gt;speed = USB_SPEED_UNKNOWN;
+ 		else if ((hdev-&gt;parent == NULL) &amp;&amp;
+-				(portstatus &amp; (1 &lt;&lt; USB_PORT_FEAT_SUPERSPEED)))
++				(portstatus &amp; USB_PORT_STAT_SUPER_SPEED))
+ 			udev-&gt;speed = USB_SPEED_SUPER;
+ 		else
+ 			udev-&gt;speed = USB_SPEED_UNKNOWN;
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 556c0b48f3ab..4ebe9ad209e4 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -556,20 +556,20 @@ ehci_port_speed(struct ehci_hcd *ehci, unsigned int portsc)
+ 		case 0:
+ 			return 0;
+ 		case 1:
+-			return (1&lt;&lt;USB_PORT_FEAT_LOWSPEED);
++			return USB_PORT_STAT_LOW_SPEED;
+ 		case 2:
+ 		default:
+-			return (1&lt;&lt;USB_PORT_FEAT_HIGHSPEED);
++			return USB_PORT_STAT_HIGH_SPEED;
+ 		}
+ 	}
+-	return (1&lt;&lt;USB_PORT_FEAT_HIGHSPEED);
++	return USB_PORT_STAT_HIGH_SPEED;
+ }
+ 
+ #else
+ 
+ #define	ehci_is_TDI(e)			(0)
+ 
+-#define	ehci_port_speed(ehci, portsc)	(1&lt;&lt;USB_PORT_FEAT_HIGHSPEED)
++#define	ehci_port_speed(ehci, portsc)	USB_PORT_STAT_HIGH_SPEED
+ #endif
+ 
+ /*-------------------------------------------------------------------------*/
+diff --git a/drivers/usb/host/isp1760-hcd.c b/drivers/usb/host/isp1760-hcd.c
+index c7ac1d97d176..cfdac6da9556 100644
+--- a/drivers/usb/host/isp1760-hcd.c
++++ b/drivers/usb/host/isp1760-hcd.c
+@@ -111,7 +111,7 @@ struct isp1760_qh {
+ 	u32 ping;
+ };
+ 
+-#define ehci_port_speed(priv, portsc) (1 &lt;&lt; USB_PORT_FEAT_HIGHSPEED)
++#define ehci_port_speed(priv, portsc) USB_PORT_STAT_HIGH_SPEED
+ 
+ static unsigned int isp1760_readl(__u32 __iomem *regs)
+ {
+diff --git a/drivers/usb/host/oxu210hp-hcd.c b/drivers/usb/host/oxu210hp-hcd.c
+index 2891203200ce..8f04c0afa59f 100644
+--- a/drivers/usb/host/oxu210hp-hcd.c
++++ b/drivers/usb/host/oxu210hp-hcd.c
+@@ -3153,10 +3153,10 @@ static inline unsigned int oxu_port_speed(struct oxu_hcd *oxu,
+ 	case 0:
+ 		return 0;
+ 	case 1:
+-		return 1 &lt;&lt; USB_PORT_FEAT_LOWSPEED;
++		return USB_PORT_STAT_LOW_SPEED;
+ 	case 2:
+ 	default:
+-		return 1 &lt;&lt; USB_PORT_FEAT_HIGHSPEED;
++		return USB_PORT_STAT_HIGH_SPEED;
+ 	}
+ }
+ 
+diff --git a/drivers/usb/host/r8a66597-hcd.c b/drivers/usb/host/r8a66597-hcd.c
+index 1398de140ead..a004a1220848 100644
+--- a/drivers/usb/host/r8a66597-hcd.c
++++ b/drivers/usb/host/r8a66597-hcd.c
+@@ -1059,12 +1059,11 @@ static void r8a66597_usb_connect(struct r8a66597 *r8a66597, int port)
+ 	u16 speed = get_rh_usb_speed(r8a66597, port);
+ 	struct r8a66597_root_hub *rh = &amp;r8a66597-&gt;root_hub[port];
+ 
+-	rh-&gt;port &amp;= ~((1 &lt;&lt; USB_PORT_FEAT_HIGHSPEED) |
+-		      (1 &lt;&lt; USB_PORT_FEAT_LOWSPEED));
++	rh-&gt;port &amp;= ~(USB_PORT_STAT_HIGH_SPEED | USB_PORT_STAT_LOW_SPEED);
+ 	if (speed == HSMODE)
+-		rh-&gt;port |= (1 &lt;&lt; USB_PORT_FEAT_HIGHSPEED);
++		rh-&gt;port |= USB_PORT_STAT_HIGH_SPEED;
+ 	else if (speed == LSMODE)
+-		rh-&gt;port |= (1 &lt;&lt; USB_PORT_FEAT_LOWSPEED);
++		rh-&gt;port |= USB_PORT_STAT_LOW_SPEED;
+ 
+ 	rh-&gt;port &amp;= ~(1 &lt;&lt; USB_PORT_FEAT_RESET);
+ 	rh-&gt;port |= 1 &lt;&lt; USB_PORT_FEAT_ENABLE;
+diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
+index 8f2f477890c4..dcd7fab7179c 100644
+--- a/drivers/usb/host/sl811-hcd.c
++++ b/drivers/usb/host/sl811-hcd.c
+@@ -1121,7 +1121,7 @@ sl811h_timer(unsigned long _sl811)
+ 	u8		signaling = sl811-&gt;ctrl1 &amp; SL11H_CTL1MASK_FORCE;
+ 	const u32	mask = (1 &lt;&lt; USB_PORT_FEAT_CONNECTION)
+ 				| (1 &lt;&lt; USB_PORT_FEAT_ENABLE)
+-				| (1 &lt;&lt; USB_PORT_FEAT_LOWSPEED);
++				| USB_PORT_STAT_LOW_SPEED;
+ 
+ 	spin_lock_irqsave(&amp;sl811-&gt;lock, flags);
+ 
+@@ -1162,7 +1162,7 @@ sl811h_timer(unsigned long _sl811)
+ 	} else {
+ 		sl811-&gt;port1 |= mask;
+ 		if (irqstat &amp; SL11H_INTMASK_DP)
+-			sl811-&gt;port1 &amp;= ~(1 &lt;&lt; USB_PORT_FEAT_LOWSPEED);
++			sl811-&gt;port1 &amp;= ~USB_PORT_STAT_LOW_SPEED;
+ 		sl811-&gt;irq_enable = SL11H_INTMASK_INSRMV | SL11H_INTMASK_RD;
+ 	}
+ 
+@@ -1173,7 +1173,7 @@ sl811h_timer(unsigned long _sl811)
+ #ifdef USE_B
+ 		sl811-&gt;irq_enable |= SL11H_INTMASK_DONE_B;
+ #endif
+-		if (sl811-&gt;port1 &amp; (1 &lt;&lt; USB_PORT_FEAT_LOWSPEED)) {
++		if (sl811-&gt;port1 &amp; USB_PORT_STAT_LOW_SPEED) {
+ 			sl811-&gt;ctrl1 |= SL11H_CTL1MASK_LSPD;
+ 			ctrl2 |= SL811HS_CTL2MASK_DSWAP;
+ 		}
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index 208b805b80eb..dd69df1e4558 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -64,15 +64,15 @@ static void xhci_hub_descriptor(struct xhci_hcd *xhci,
+ static unsigned int xhci_port_speed(unsigned int port_status)
+ {
+ 	if (DEV_LOWSPEED(port_status))
+-		return 1 &lt;&lt; USB_PORT_FEAT_LOWSPEED;
++		return USB_PORT_STAT_LOW_SPEED;
+ 	if (DEV_HIGHSPEED(port_status))
+-		return 1 &lt;&lt; USB_PORT_FEAT_HIGHSPEED;
++		return USB_PORT_STAT_HIGH_SPEED;
+ 	if (DEV_SUPERSPEED(port_status))
+-		return 1 &lt;&lt; USB_PORT_FEAT_SUPERSPEED;
++		return USB_PORT_STAT_SUPER_SPEED;
+ 	/*
+ 	 * FIXME: Yes, we should check for full speed, but the core uses that as
+ 	 * a default in portspeed() in usb/core/hub.c (which is the only place
+-	 * USB_PORT_FEAT_*SPEED is used).
++	 * USB_PORT_STAT_*_SPEED is used).
+ 	 */
+ 	return 0;
+ }
+diff --git a/include/linux/usb/ch11.h b/include/linux/usb/ch11.h
+index 35cb7357ff72..bd3185aba4ee 100644
+--- a/include/linux/usb/ch11.h
++++ b/include/linux/usb/ch11.h
+@@ -47,11 +47,7 @@
+ #define USB_PORT_FEAT_RESET		4
+ #define USB_PORT_FEAT_L1		5	/* L1 suspend */
+ #define USB_PORT_FEAT_POWER		8
+-#define USB_PORT_FEAT_LOWSPEED		9
+-/* This value was never in Table 11-17 */
+-#define USB_PORT_FEAT_HIGHSPEED		10
+-/* This value is also fake */
+-#define USB_PORT_FEAT_SUPERSPEED	11
++#define USB_PORT_FEAT_LOWSPEED		9	/* Should never be used */
+ #define USB_PORT_FEAT_C_CONNECTION	16
+ #define USB_PORT_FEAT_C_ENABLE		17
+ #define USB_PORT_FEAT_C_SUSPEND		18
+@@ -87,6 +83,7 @@ struct usb_port_status {
+ #define USB_PORT_STAT_TEST              0x0800
+ #define USB_PORT_STAT_INDICATOR         0x1000
+ /* bits 13 to 15 are reserved */
++#define USB_PORT_STAT_SUPER_SPEED	0x8000	/* Linux-internal */
+ 
+ /*
+  * wPortChange bit field</pre>
+    <div class="pagination">
+        <a href='2_66.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><span>[67]</span><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_68.html'>Next&gt;&gt;</a>
+    <div>
+</body>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Zhejiang University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Zhejiang University</h1>
+    <div class="pagination">
+        <a href='6.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><span>[2]</span><a href='6_3.html'>3</a><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_3.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 467324bcfe1a31ec65d0cf4aa59421d6b7a7d52b
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Apr 19 10:04:56 2024 +0800
+
+    ax25: Fix netdev refcount issue
+    
+    The dev_tracker is added to ax25_cb in ax25_bind(). When the
+    ax25 device is detaching, the dev_tracker of ax25_cb should be
+    deallocated in ax25_kill_by_device() instead of the dev_tracker
+    of ax25_dev. The log reported by ref_tracker is shown below:
+    
+    [   80.884935] ref_tracker: reference already released.
+    [   80.885150] ref_tracker: allocated in:
+    [   80.885349]  ax25_dev_device_up+0x105/0x540
+    [   80.885730]  ax25_device_event+0xa4/0x420
+    [   80.885730]  notifier_call_chain+0xc9/0x1e0
+    [   80.885730]  __dev_notify_flags+0x138/0x280
+    [   80.885730]  dev_change_flags+0xd7/0x180
+    [   80.885730]  dev_ifsioc+0x6a9/0xa30
+    [   80.885730]  dev_ioctl+0x4d8/0xd90
+    [   80.885730]  sock_do_ioctl+0x1c2/0x2d0
+    [   80.885730]  sock_ioctl+0x38b/0x4f0
+    [   80.885730]  __se_sys_ioctl+0xad/0xf0
+    [   80.885730]  do_syscall_64+0xc4/0x1b0
+    [   80.885730]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
+    [   80.885730] ref_tracker: freed in:
+    [   80.885730]  ax25_device_event+0x272/0x420
+    [   80.885730]  notifier_call_chain+0xc9/0x1e0
+    [   80.885730]  dev_close_many+0x272/0x370
+    [   80.885730]  unregister_netdevice_many_notify+0x3b5/0x1180
+    [   80.885730]  unregister_netdev+0xcf/0x120
+    [   80.885730]  sixpack_close+0x11f/0x1b0
+    [   80.885730]  tty_ldisc_kill+0xcb/0x190
+    [   80.885730]  tty_ldisc_hangup+0x338/0x3d0
+    [   80.885730]  __tty_hangup+0x504/0x740
+    [   80.885730]  tty_release+0x46e/0xd80
+    [   80.885730]  __fput+0x37f/0x770
+    [   80.885730]  __x64_sys_close+0x7b/0xb0
+    [   80.885730]  do_syscall_64+0xc4/0x1b0
+    [   80.885730]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
+    [   80.893739] ------------[ cut here ]------------
+    [   80.894030] WARNING: CPU: 2 PID: 140 at lib/ref_tracker.c:255 ref_tracker_free+0x47b/0x6b0
+    [   80.894297] Modules linked in:
+    [   80.894929] CPU: 2 PID: 140 Comm: ax25_conn_rel_6 Not tainted 6.9.0-rc4-g8cd26fd90c1a #11
+    [   80.895190] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qem4
+    [   80.895514] RIP: 0010:ref_tracker_free+0x47b/0x6b0
+    [   80.895808] Code: 83 c5 18 4c 89 eb 48 c1 eb 03 8a 04 13 84 c0 0f 85 df 01 00 00 41 83 7d 00 00 75 4b 4c 89 ff 9
+    [   80.896171] RSP: 0018:ffff888009edf8c0 EFLAGS: 00000286
+    [   80.896339] RAX: 1ffff1100141ac00 RBX: 1ffff1100149463b RCX: dffffc0000000000
+    [   80.896502] RDX: 0000000000000001 RSI: 0000000000000246 RDI: ffff88800a0d6518
+    [   80.896925] RBP: ffff888009edf9b0 R08: ffff88806d3288d3 R09: 1ffff1100da6511a
+    [   80.897212] R10: dffffc0000000000 R11: ffffed100da6511b R12: ffff88800a4a31d4
+    [   80.897859] R13: ffff88800a4a31d8 R14: dffffc0000000000 R15: ffff88800a0d6518
+    [   80.898279] FS:  00007fd88b7fe700(0000) GS:ffff88806d300000(0000) knlGS:0000000000000000
+    [   80.899436] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [   80.900181] CR2: 00007fd88c001d48 CR3: 000000000993e000 CR4: 00000000000006f0
+    ...
+    [   80.935774] ref_tracker: sp%d@000000000bb9df3d has 1/1 users at
+    [   80.935774]      ax25_bind+0x424/0x4e0
+    [   80.935774]      __sys_bind+0x1d9/0x270
+    [   80.935774]      __x64_sys_bind+0x75/0x80
+    [   80.935774]      do_syscall_64+0xc4/0x1b0
+    [   80.935774]      entry_SYSCALL_64_after_hwframe+0x67/0x6f
+    
+    Change ax25_dev-&gt;dev_tracker to the dev_tracker of ax25_cb
+    in order to mitigate the bug.
+    
+    Fixes: feef318c855a ("ax25: fix UAF bugs of net_device caused by rebinding operation")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240419020456.29826-1-duoming@zju.edu.cn
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
+index 558e158c98d0..9169efb2f43a 100644
+--- a/net/ax25/af_ax25.c
++++ b/net/ax25/af_ax25.c
+@@ -103,7 +103,7 @@ static void ax25_kill_by_device(struct net_device *dev)
+ 			s-&gt;ax25_dev = NULL;
+ 			if (sk-&gt;sk_socket) {
+ 				netdev_put(ax25_dev-&gt;dev,
+-					   &amp;ax25_dev-&gt;dev_tracker);
++					   &amp;s-&gt;dev_tracker);
+ 				ax25_dev_put(ax25_dev);
+ 			}
+ 			ax25_cb_del(s);</pre><hr><pre>commit 31a5990ed253a66712d7ddc29c92d297a991fdf2
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Mar 6 17:12:59 2024 +0800
+
+    um: Fix return value in ubd_init()
+    
+    When kmalloc_array() fails to allocate memory, the ubd_init()
+    should return -ENOMEM instead of -1. So, fix it.
+    
+    Fixes: f88f0bdfc32f ("um: UBD Improvements")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Johannes Berg &lt;johannes@sipsolutions.net&gt;
+    Signed-off-by: Richard Weinberger &lt;richard@nod.at&gt;
+
+diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
+index 63fc062add70..ef805eaa9e01 100644
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -1092,7 +1092,7 @@ static int __init ubd_init(void)
+ 
+ 	if (irq_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
+ 				      sizeof(struct io_thread_req *),
+@@ -1103,7 +1103,7 @@ static int __init ubd_init(void)
+ 
+ 	if (io_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	platform_driver_register(&amp;ubd_driver);
+ 	mutex_lock(&amp;ubd_lock);</pre><hr><pre>commit a799de0e598583c18c03ce438648783b92c653de
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Wed Apr 10 11:48:46 2024 +0800
+
+    net: nfc: remove inappropriate attrs check
+    
+    Revert "NFC: fix attrs checks in netlink interface"
+    This reverts commit 18917d51472fe3b126a3a8f756c6b18085eb8130.
+    
+    Our checks found weird attrs present check in function
+    nfc_genl_dep_link_down() and nfc_genl_llc_get_params(), which are
+    introduced by commit 18917d51472f ("NFC: fix attrs checks in netlink
+    interface").
+    
+    According to its message, it should add checks for functions
+    nfc_genl_deactivate_target() and nfc_genl_fw_download(). However, it
+    didn't do that. In fact, the expected checks are added by
+    (1) commit 385097a36757 ("nfc: Ensure presence of required attributes in
+    the deactivate_target handler") and
+    (2) commit 280e3ebdafb8 ("nfc: Ensure presence of NFC_ATTR_FIRMWARE_NAME
+    attribute in nfc_genl_fw_download()"). Perhaps something went wrong.
+    
+    Anyway, the attr NFC_ATTR_TARGET_INDEX is never accessed in callback
+    nfc_genl_dep_link_down() and same for NFC_ATTR_FIRMWARE_NAME and
+    nfc_genl_llc_get_params(). Thus, remove those checks.
+    
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240410034846.167421-1-linma@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/nfc/netlink.c b/net/nfc/netlink.c
+index aa1dbf654c3e..dd2ce73a24fb 100644
+--- a/net/nfc/netlink.c
++++ b/net/nfc/netlink.c
+@@ -969,8 +969,7 @@ static int nfc_genl_dep_link_down(struct sk_buff *skb, struct genl_info *info)
+ 	int rc;
+ 	u32 idx;
+ 
+-	if (!info-&gt;attrs[NFC_ATTR_DEVICE_INDEX] ||
+-	    !info-&gt;attrs[NFC_ATTR_TARGET_INDEX])
++	if (!info-&gt;attrs[NFC_ATTR_DEVICE_INDEX])
+ 		return -EINVAL;
+ 
+ 	idx = nla_get_u32(info-&gt;attrs[NFC_ATTR_DEVICE_INDEX]);
+@@ -1018,8 +1017,7 @@ static int nfc_genl_llc_get_params(struct sk_buff *skb, struct genl_info *info)
+ 	struct sk_buff *msg = NULL;
+ 	u32 idx;
+ 
+-	if (!info-&gt;attrs[NFC_ATTR_DEVICE_INDEX] ||
+-	    !info-&gt;attrs[NFC_ATTR_FIRMWARE_NAME])
++	if (!info-&gt;attrs[NFC_ATTR_DEVICE_INDEX])
+ 		return -EINVAL;
+ 
+ 	idx = nla_get_u32(info-&gt;attrs[NFC_ATTR_DEVICE_INDEX]);</pre><hr><pre>commit 3b621e9e9e148c0928ab109ac3d4b81487469acb
+Author: Zhipeng Lu &lt;alexious@zju.edu.cn&gt;
+Date:   Thu Jan 18 16:13:00 2024 +0100
+
+    media: atomisp: ssh_css: Fix a null-pointer dereference in load_video_binaries
+    
+    The allocation failure of mycs-&gt;yuv_scaler_binary in load_video_binaries()
+    is followed with a dereference of mycs-&gt;yuv_scaler_binary after the
+    following call chain:
+    
+    sh_css_pipe_load_binaries()
+      |-&gt; load_video_binaries(mycs-&gt;yuv_scaler_binary == NULL)
+      |
+      |-&gt; sh_css_pipe_unload_binaries()
+            |-&gt; unload_video_binaries()
+    
+    In unload_video_binaries(), it calls to ia_css_binary_unload with argument
+    &amp;pipe-&gt;pipe_settings.video.yuv_scaler_binary[i], which refers to the
+    same memory slot as mycs-&gt;yuv_scaler_binary. Thus, a null-pointer
+    dereference is triggered.
+    
+    Link: https://lore.kernel.org/r/20240118151303.3828292-1-alexious@zju.edu.cn
+    
+    Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
+    Signed-off-by: Zhipeng Lu &lt;alexious@zju.edu.cn&gt;
+    Reviewed-by: Andy Shevchenko &lt;andy.shevchenko@gmail.com&gt;
+    Signed-off-by: Hans de Goede &lt;hdegoede@redhat.com&gt;
+    Signed-off-by: Mauro Carvalho Chehab &lt;mchehab@kernel.org&gt;
+
+diff --git a/drivers/staging/media/atomisp/pci/sh_css.c b/drivers/staging/media/atomisp/pci/sh_css.c
+index 938a4ea89c59..8c30191b21a7 100644
+--- a/drivers/staging/media/atomisp/pci/sh_css.c
++++ b/drivers/staging/media/atomisp/pci/sh_css.c
+@@ -4690,6 +4690,7 @@ static int load_video_binaries(struct ia_css_pipe *pipe)
+ 						  sizeof(struct ia_css_binary),
+ 						  GFP_KERNEL);
+ 		if (!mycs-&gt;yuv_scaler_binary) {
++			mycs-&gt;num_yuv_scaler = 0;
+ 			err = -ENOMEM;
+ 			return err;
+ 		}</pre><hr><pre>commit fd819ad3ecf6f3c232a06b27423ce9ed8c20da89
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Mar 29 09:50:23 2024 +0800
+
+    ax25: fix use-after-free bugs caused by ax25_ds_del_timer
+    
+    When the ax25 device is detaching, the ax25_dev_device_down()
+    calls ax25_ds_del_timer() to cleanup the slave_timer. When
+    the timer handler is running, the ax25_ds_del_timer() that
+    calls del_timer() in it will return directly. As a result,
+    the use-after-free bugs could happen, one of the scenarios
+    is shown below:
+    
+          (Thread 1)          |      (Thread 2)
+                              | ax25_ds_timeout()
+    ax25_dev_device_down()    |
+      ax25_ds_del_timer()     |
+        del_timer()           |
+      ax25_dev_put() //FREE   |
+                              |  ax25_dev-&gt; //USE
+    
+    In order to mitigate bugs, when the device is detaching, use
+    timer_shutdown_sync() to stop the timer.
+    
+    Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Simon Horman &lt;horms@kernel.org&gt;
+    Link: https://lore.kernel.org/r/20240329015023.9223-1-duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index c5462486dbca..282ec581c072 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -105,7 +105,7 @@ void ax25_dev_device_down(struct net_device *dev)
+ 	spin_lock_bh(&amp;ax25_dev_lock);
+ 
+ #ifdef CONFIG_AX25_DAMA_SLAVE
+-	ax25_ds_del_timer(ax25_dev);
++	timer_shutdown_sync(&amp;ax25_dev-&gt;dama.slave_timer);
+ #endif
+ 
+ 	/*</pre><hr><pre>commit 051e0840ffa8ab25554d6b14b62c9ab9e4901457
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Mar 26 17:42:38 2024 +0800
+
+    ALSA: sh: aica: reorder cleanup operations to avoid UAF bugs
+    
+    The dreamcastcard-&gt;timer could schedule the spu_dma_work and the
+    spu_dma_work could also arm the dreamcastcard-&gt;timer.
+    
+    When the snd_pcm_substream is closing, the aica_channel will be
+    deallocated. But it could still be dereferenced in the worker
+    thread. The reason is that del_timer() will return directly
+    regardless of whether the timer handler is running or not and
+    the worker could be rescheduled in the timer handler. As a result,
+    the UAF bug will happen. The racy situation is shown below:
+    
+          (Thread 1)                 |      (Thread 2)
+    snd_aicapcm_pcm_close()          |
+     ...                             |  run_spu_dma() //worker
+                                     |    mod_timer()
+      flush_work()                   |
+      del_timer()                    |  aica_period_elapsed() //timer
+      kfree(dreamcastcard-&gt;channel)  |    schedule_work()
+                                     |  run_spu_dma() //worker
+      ...                            |    dreamcastcard-&gt;channel-&gt; //USE
+    
+    In order to mitigate this bug and other possible corner cases,
+    call mod_timer() conditionally in run_spu_dma(), then implement
+    PCM sync_stop op to cancel both the timer and worker. The sync_stop
+    op will be called from PCM core appropriately when needed.
+    
+    Fixes: 198de43d758c ("[ALSA] Add ALSA support for the SEGA Dreamcast PCM device")
+    Suggested-by: Takashi Iwai &lt;tiwai@suse.de&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Message-ID: &lt;20240326094238.95442-1-duoming@zju.edu.cn&gt;
+    Signed-off-by: Takashi Iwai &lt;tiwai@suse.de&gt;
+
+diff --git a/sound/sh/aica.c b/sound/sh/aica.c
+index 320ac792c7fe..3182c634464d 100644
+--- a/sound/sh/aica.c
++++ b/sound/sh/aica.c
+@@ -278,7 +278,8 @@ static void run_spu_dma(struct work_struct *work)
+ 		dreamcastcard-&gt;clicks++;
+ 		if (unlikely(dreamcastcard-&gt;clicks &gt;= AICA_PERIOD_NUMBER))
+ 			dreamcastcard-&gt;clicks %= AICA_PERIOD_NUMBER;
+-		mod_timer(&amp;dreamcastcard-&gt;timer, jiffies + 1);
++		if (snd_pcm_running(dreamcastcard-&gt;substream))
++			mod_timer(&amp;dreamcastcard-&gt;timer, jiffies + 1);
+ 	}
+ }
+ 
+@@ -290,6 +291,8 @@ static void aica_period_elapsed(struct timer_list *t)
+ 	/*timer function - so cannot sleep */
+ 	int play_period;
+ 	struct snd_pcm_runtime *runtime;
++	if (!snd_pcm_running(substream))
++		return;
+ 	runtime = substream-&gt;runtime;
+ 	dreamcastcard = substream-&gt;pcm-&gt;private_data;
+ 	/* Have we played out an additional period? */
+@@ -350,12 +353,19 @@ static int snd_aicapcm_pcm_open(struct snd_pcm_substream
+ 	return 0;
+ }
+ 
++static int snd_aicapcm_pcm_sync_stop(struct snd_pcm_substream *substream)
++{
++	struct snd_card_aica *dreamcastcard = substream-&gt;pcm-&gt;private_data;
++
++	del_timer_sync(&amp;dreamcastcard-&gt;timer);
++	cancel_work_sync(&amp;dreamcastcard-&gt;spu_dma_work);
++	return 0;
++}
++
+ static int snd_aicapcm_pcm_close(struct snd_pcm_substream
+ 				 *substream)
+ {
+ 	struct snd_card_aica *dreamcastcard = substream-&gt;pcm-&gt;private_data;
+-	flush_work(&amp;(dreamcastcard-&gt;spu_dma_work));
+-	del_timer(&amp;dreamcastcard-&gt;timer);
+ 	dreamcastcard-&gt;substream = NULL;
+ 	kfree(dreamcastcard-&gt;channel);
+ 	spu_disable();
+@@ -401,6 +411,7 @@ static const struct snd_pcm_ops snd_aicapcm_playback_ops = {
+ 	.prepare = snd_aicapcm_pcm_prepare,
+ 	.trigger = snd_aicapcm_pcm_trigger,
+ 	.pointer = snd_aicapcm_pcm_pointer,
++	.sync_stop = snd_aicapcm_pcm_sync_stop,
+ };
+ 
+ /* TO DO: set up to handle more than one pcm instance */</pre><hr><pre>commit 316f790ebcf94bdf59f794b7cdea4068dc676d4c
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Mar 6 22:04:37 2024 +0800
+
+    wifi: brcmfmac: pcie: handle randbuf allocation failure
+    
+    The kzalloc() in brcmf_pcie_download_fw_nvram() will return null
+    if the physical memory has run out. As a result, if we use
+    get_random_bytes() to generate random bytes in the randbuf, the
+    null pointer dereference bug will happen.
+    
+    In order to prevent allocation failure, this patch adds a separate
+    function using buffer on kernel stack to generate random bytes in
+    the randbuf, which could prevent the kernel stack from overflow.
+    
+    Fixes: 91918ce88d9f ("wifi: brcmfmac: pcie: Provide a buffer of random bytes to the device")
+    Suggested-by: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Kalle Valo &lt;kvalo@kernel.org&gt;
+    Link: https://msgid.link/20240306140437.18177-1-duoming@zju.edu.cn
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index d7fb88bb6ae1..06698a714b52 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -1675,6 +1675,15 @@ struct brcmf_random_seed_footer {
+ #define BRCMF_RANDOM_SEED_MAGIC		0xfeedc0de
+ #define BRCMF_RANDOM_SEED_LENGTH	0x100
+ 
++static noinline_for_stack void
++brcmf_pcie_provide_random_bytes(struct brcmf_pciedev_info *devinfo, u32 address)
++{
++	u8 randbuf[BRCMF_RANDOM_SEED_LENGTH];
++
++	get_random_bytes(randbuf, BRCMF_RANDOM_SEED_LENGTH);
++	memcpy_toio(devinfo-&gt;tcm + address, randbuf, BRCMF_RANDOM_SEED_LENGTH);
++}
++
+ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 					const struct firmware *fw, void *nvram,
+ 					u32 nvram_len)
+@@ -1717,7 +1726,6 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 				.length = cpu_to_le32(rand_len),
+ 				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
+ 			};
+-			void *randbuf;
+ 
+ 			/* Some Apple chips/firmwares expect a buffer of random
+ 			 * data to be present before NVRAM
+@@ -1729,10 +1737,7 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 				    sizeof(footer));
+ 
+ 			address -= rand_len;
+-			randbuf = kzalloc(rand_len, GFP_KERNEL);
+-			get_random_bytes(randbuf, rand_len);
+-			memcpy_toio(devinfo-&gt;tcm + address, randbuf, rand_len);
+-			kfree(randbuf);
++			brcmf_pcie_provide_random_bytes(devinfo, address);
+ 		}
+ 	} else {
+ 		brcmf_dbg(PCIE, "No matching NVRAM file found %s\n",</pre><hr><pre>commit 84e95149bd341705f0eca6a7fcb955c548805002
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Mar 8 22:25:40 2024 +0800
+
+    nfp: flower: handle acti_netdevs allocation failure
+    
+    The kmalloc_array() in nfp_fl_lag_do_work() will return null, if
+    the physical memory has run out. As a result, if we dereference
+    the acti_netdevs, the null pointer dereference bugs will happen.
+    
+    This patch adds a check to judge whether allocation failure occurs.
+    If it happens, the delayed work will be rescheduled and try again.
+    
+    Fixes: bb9a8d031140 ("nfp: flower: monitor and offload LAG groups")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Louis Peens &lt;louis.peens@corigine.com&gt;
+    Link: https://lore.kernel.org/r/20240308142540.9674-1-duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/lag_conf.c b/drivers/net/ethernet/netronome/nfp/flower/lag_conf.c
+index 361d7c495e2d..2c7bd6e80d99 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/lag_conf.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/lag_conf.c
+@@ -337,6 +337,11 @@ static void nfp_fl_lag_do_work(struct work_struct *work)
+ 
+ 		acti_netdevs = kmalloc_array(entry-&gt;slave_cnt,
+ 					     sizeof(*acti_netdevs), GFP_KERNEL);
++		if (!acti_netdevs) {
++			schedule_delayed_work(&amp;lag-&gt;work,
++					      NFP_FL_LAG_DELAY);
++			continue;
++		}
+ 
+ 		/* Include sanity check in the loop. It may be that a bond has
+ 		 * changed between processing the last notification and the</pre><hr><pre>commit 7938e9ce39d6779d2f85d822cc930f73420e54a6
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Mar 1 16:44:37 2024 +0800
+
+    clk: zynq: Prevent null pointer dereference caused by kmalloc failure
+    
+    The kmalloc() in zynq_clk_setup() will return null if the
+    physical memory has run out. As a result, if we use snprintf()
+    to write data to the null address, the null pointer dereference
+    bug will happen.
+    
+    This patch uses a stack variable to replace the kmalloc().
+    
+    Fixes: 0ee52b157b8e ("clk: zynq: Add clock controller driver")
+    Suggested-by: Michal Simek &lt;michal.simek@amd.com&gt;
+    Suggested-by: Stephen Boyd &lt;sboyd@kernel.org&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240301084437.16084-1-duoming@zju.edu.cn
+    Acked-by: Michal Simek &lt;michal.simek@amd.com&gt;
+    Signed-off-by: Stephen Boyd &lt;sboyd@kernel.org&gt;
+
+diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
+index 7bdeaff2bfd6..c28d3dacf0fb 100644
+--- a/drivers/clk/zynq/clkc.c
++++ b/drivers/clk/zynq/clkc.c
+@@ -42,6 +42,7 @@ static void __iomem *zynq_clkc_base;
+ #define SLCR_SWDT_CLK_SEL		(zynq_clkc_base + 0x204)
+ 
+ #define NUM_MIO_PINS	54
++#define CLK_NAME_LEN	16
+ 
+ #define DBG_CLK_CTRL_CLKACT_TRC		BIT(0)
+ #define DBG_CLK_CTRL_CPU_1XCLKACT	BIT(1)
+@@ -215,7 +216,7 @@ static void __init zynq_clk_setup(struct device_node *np)
+ 	int i;
+ 	u32 tmp;
+ 	int ret;
+-	char *clk_name;
++	char clk_name[CLK_NAME_LEN];
+ 	unsigned int fclk_enable = 0;
+ 	const char *clk_output_name[clk_max];
+ 	const char *cpu_parents[4];
+@@ -426,12 +427,10 @@ static void __init zynq_clk_setup(struct device_node *np)
+ 			"gem1_emio_mux", CLK_SET_RATE_PARENT,
+ 			SLCR_GEM1_CLK_CTRL, 0, 0, &amp;gem1clk_lock);
+ 
+-	tmp = strlen("mio_clk_00x");
+-	clk_name = kmalloc(tmp, GFP_KERNEL);
+ 	for (i = 0; i &lt; NUM_MIO_PINS; i++) {
+ 		int idx;
+ 
+-		snprintf(clk_name, tmp, "mio_clk_%2.2d", i);
++		snprintf(clk_name, CLK_NAME_LEN, "mio_clk_%2.2d", i);
+ 		idx = of_property_match_string(np, "clock-names", clk_name);
+ 		if (idx &gt;= 0)
+ 			can_mio_mux_parents[i] = of_clk_get_parent_name(np,
+@@ -439,7 +438,6 @@ static void __init zynq_clk_setup(struct device_node *np)
+ 		else
+ 			can_mio_mux_parents[i] = dummy_nm;
+ 	}
+-	kfree(clk_name);
+ 	clk_register_mux(NULL, "can_mux", periph_parents, 4,
+ 			CLK_SET_RATE_NO_REPARENT, SLCR_CAN_CLK_CTRL, 4, 2, 0,
+ 			&amp;canclk_lock);</pre><hr><pre>commit 16e87fe23d4af6df920406494ced5c0f4354567b
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Mar 6 13:01:04 2024 +0800
+
+    nouveau/dmem: handle kcalloc() allocation failure
+    
+    The kcalloc() in nouveau_dmem_evict_chunk() will return null if
+    the physical memory has run out. As a result, if we dereference
+    src_pfns, dst_pfns or dma_addrs, the null pointer dereference bugs
+    will happen.
+    
+    Moreover, the GPU is going away. If the kcalloc() fails, we could not
+    evict all pages mapping a chunk. So this patch adds a __GFP_NOFAIL
+    flag in kcalloc().
+    
+    Finally, as there is no need to have physically contiguous memory,
+    this patch switches kcalloc() to kvcalloc() in order to avoid
+    failing allocations.
+    
+    CC: &lt;stable@vger.kernel.org&gt; # v6.1
+    Fixes: 249881232e14 ("nouveau/dmem: evict device private memory during release")
+    Suggested-by: Danilo Krummrich &lt;dakr@redhat.com&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Danilo Krummrich &lt;dakr@redhat.com&gt;
+    Link: https://patchwork.freedesktop.org/patch/msgid/20240306050104.11259-1-duoming@zju.edu.cn
+
+diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+index 12feecf71e75..6fb65b01d778 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -378,9 +378,9 @@ nouveau_dmem_evict_chunk(struct nouveau_dmem_chunk *chunk)
+ 	dma_addr_t *dma_addrs;
+ 	struct nouveau_fence *fence;
+ 
+-	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
+-	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
+-	dma_addrs = kcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL);
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dma_addrs = kvcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL | __GFP_NOFAIL);
+ 
+ 	migrate_device_range(src_pfns, chunk-&gt;pagemap.range.start &gt;&gt; PAGE_SHIFT,
+ 			npages);
+@@ -406,11 +406,11 @@ nouveau_dmem_evict_chunk(struct nouveau_dmem_chunk *chunk)
+ 	migrate_device_pages(src_pfns, dst_pfns, npages);
+ 	nouveau_dmem_fence_done(&amp;fence);
+ 	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ 	for (i = 0; i &lt; npages; i++)
+ 		dma_unmap_page(chunk-&gt;drm-&gt;dev-&gt;dev, dma_addrs[i], PAGE_SIZE, DMA_BIDIRECTIONAL);
+-	kfree(dma_addrs);
++	kvfree(dma_addrs);
+ }
+ 
+ void</pre>
+    <div class="pagination">
+        <a href='6.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><span>[2]</span><a href='6_3.html'>3</a><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_3.html'>Next&gt;&gt;</a>
+    <div>
+</body>

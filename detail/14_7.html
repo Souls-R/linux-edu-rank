@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Huazhong University of Science and Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Huazhong University of Science and Technology</h1>
+    <div class="pagination">
+        <a href='14_6.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><span>[7]</span><a href='14_8.html'>8</a><a href='14_8.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 4d5a2a7d2c97dbd658533eea5f79dab1ad5dc0ee
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Thu Mar 9 12:01:05 2023 +0800
+
+    platform/x86/intel: tpmi: Fix double free in tpmi_create_device()
+    
+    The previous commit 6a192c0cbf38 ("platform/x86/intel/tpmi: Fix
+    double free reported by Smatch") incorrectly handle the deallocation of
+    res variable. As shown in the comment, intel_vsec_add_aux handles all
+    the deallocation of res and feature_vsec_dev. Therefore, kfree(res) can
+    still cause double free if intel_vsec_add_aux returns error.
+    
+    Fix this by adjusting the error handling part in tpmi_create_device,
+    following the function intel_vsec_add_dev.
+    
+    Fixes: 6a192c0cbf38 ("platform/x86/intel/tpmi: Fix double free reported by Smatch")
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230309040107.534716-2-dzm91@hust.edu.cn
+    Reviewed-by: Hans de Goede &lt;hdegoede@redhat.com&gt;
+    Signed-off-by: Hans de Goede &lt;hdegoede@redhat.com&gt;
+
+diff --git a/drivers/platform/x86/intel/tpmi.c b/drivers/platform/x86/intel/tpmi.c
+index c999732b0f1e..a8733c43e4ab 100644
+--- a/drivers/platform/x86/intel/tpmi.c
++++ b/drivers/platform/x86/intel/tpmi.c
+@@ -203,7 +203,7 @@ static int tpmi_create_device(struct intel_tpmi_info *tpmi_info,
+ 	struct intel_vsec_device *feature_vsec_dev;
+ 	struct resource *res, *tmp;
+ 	const char *name;
+-	int ret, i;
++	int i;
+ 
+ 	name = intel_tpmi_name(pfs-&gt;pfs_header.tpmi_id);
+ 	if (!name)
+@@ -215,8 +215,8 @@ static int tpmi_create_device(struct intel_tpmi_info *tpmi_info,
+ 
+ 	feature_vsec_dev = kzalloc(sizeof(*feature_vsec_dev), GFP_KERNEL);
+ 	if (!feature_vsec_dev) {
+-		ret = -ENOMEM;
+-		goto free_res;
++		kfree(res);
++		return -ENOMEM;
+ 	}
+ 
+ 	snprintf(feature_id_name, sizeof(feature_id_name), "tpmi-%s", name);
+@@ -242,17 +242,8 @@ static int tpmi_create_device(struct intel_tpmi_info *tpmi_info,
+ 	 * feature_vsec_dev memory is also freed as part of device
+ 	 * delete.
+ 	 */
+-	ret = intel_vsec_add_aux(vsec_dev-&gt;pcidev, &amp;vsec_dev-&gt;auxdev.dev,
+-				 feature_vsec_dev, feature_id_name);
+-	if (ret)
+-		goto free_res;
+-
+-	return 0;
+-
+-free_res:
+-	kfree(res);
+-
+-	return ret;
++	return intel_vsec_add_aux(vsec_dev-&gt;pcidev, &amp;vsec_dev-&gt;auxdev.dev,
++				  feature_vsec_dev, feature_id_name);
+ }
+ 
+ static int tpmi_create_devices(struct intel_tpmi_info *tpmi_info)</pre><hr><pre>commit da0ba0ccce54059d6c6b788a75099bfce95126da
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Thu Mar 9 12:01:07 2023 +0800
+
+    platform/x86/intel: vsec: Fix a memory leak in intel_vsec_add_aux
+    
+    The first error handling code in intel_vsec_add_aux misses the
+    deallocation of intel_vsec_dev-&gt;resource.
+    
+    Fix this by adding kfree(intel_vsec_dev-&gt;resource) in the error handling
+    code.
+    
+    Reviewed-by: David E. Box &lt;david.e.box@linux.intel.com&gt;
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230309040107.534716-4-dzm91@hust.edu.cn
+    Reviewed-by: Hans de Goede &lt;hdegoede@redhat.com&gt;
+    Signed-off-by: Hans de Goede &lt;hdegoede@redhat.com&gt;
+
+diff --git a/drivers/platform/x86/intel/vsec.c b/drivers/platform/x86/intel/vsec.c
+index 13decf36c6de..2311c16cb975 100644
+--- a/drivers/platform/x86/intel/vsec.c
++++ b/drivers/platform/x86/intel/vsec.c
+@@ -154,6 +154,7 @@ int intel_vsec_add_aux(struct pci_dev *pdev, struct device *parent,
+ 	ret = ida_alloc(intel_vsec_dev-&gt;ida, GFP_KERNEL);
+ 	mutex_unlock(&amp;vsec_ida_lock);
+ 	if (ret &lt; 0) {
++		kfree(intel_vsec_dev-&gt;resource);
+ 		kfree(intel_vsec_dev);
+ 		return ret;
+ 	}</pre><hr><pre>commit fb37fdd02856e45e78209d32522029c9f77fe7b7
+Author: Cheng Ziqiu &lt;chengziqiu@hust.edu.cn&gt;
+Date:   Tue Mar 14 15:01:30 2023 +0800
+
+    iio: adc: at91-sama5d2_adc: remove dead code in at91_adc_probe()
+    
+    From the comment of platform_get_irq(), it only returns non-zero IRQ
+    number and negative error number, other than zero.
+    
+    Fix this by removing the if condition.
+    
+    Signed-off-by: Cheng Ziqiu &lt;chengziqiu@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Claudiu Beznea &lt;claudiu.beznea@microchip.com&gt;
+    Link: https://lore.kernel.org/r/20230314070130.60581-1-chengziqiu@hust.edu.cn
+    Signed-off-by: Jonathan Cameron &lt;Jonathan.Cameron@huawei.com&gt;
+
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index b5d0c9ee284c..30554026a7fe 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -2400,12 +2400,8 @@ static int at91_adc_probe(struct platform_device *pdev)
+ 	st-&gt;dma_st.phys_addr = res-&gt;start;
+ 
+ 	st-&gt;irq = platform_get_irq(pdev, 0);
+-	if (st-&gt;irq &lt;= 0) {
+-		if (!st-&gt;irq)
+-			st-&gt;irq = -ENXIO;
+-
++	if (st-&gt;irq &lt; 0)
+ 		return st-&gt;irq;
+-	}
+ 
+ 	st-&gt;per_clk = devm_clk_get(&amp;pdev-&gt;dev, "adc_clk");
+ 	if (IS_ERR(st-&gt;per_clk))</pre><hr><pre>commit 984cfd55e0c99e80b2e5b1dc6b2bf98608af7ff9
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Wed Mar 8 16:32:31 2023 +0800
+
+    net: ieee802154: remove an unnecessary null pointer check
+    
+    llsec_parse_seclevel has the null pointer check at its begining. Compared
+    with nl802154_add_llsec_seclevel, nl802154_del_llsec_seclevel has a
+    redundant null pointer check of info-&gt;attrs[NL802154_ATTR_SEC_LEVEL]
+    before llsec_parse_seclevel.
+    
+    Fix this issue by removing the null pointer check in
+    nl802154_del_llsec_seclevel.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230308083231.460015-1-dzm91@hust.edu.cn
+    Signed-off-by: Stefan Schmidt &lt;stefan@datenfreihafen.org&gt;
+
+diff --git a/net/ieee802154/nl802154.c b/net/ieee802154/nl802154.c
+index d8f4379d4fa6..832e3c50816c 100644
+--- a/net/ieee802154/nl802154.c
++++ b/net/ieee802154/nl802154.c
+@@ -2488,8 +2488,7 @@ static int nl802154_del_llsec_seclevel(struct sk_buff *skb,
+ 	if (wpan_dev-&gt;iftype == NL802154_IFTYPE_MONITOR)
+ 		return -EOPNOTSUPP;
+ 
+-	if (!info-&gt;attrs[NL802154_ATTR_SEC_LEVEL] ||
+-	    llsec_parse_seclevel(info-&gt;attrs[NL802154_ATTR_SEC_LEVEL],
++	if (llsec_parse_seclevel(info-&gt;attrs[NL802154_ATTR_SEC_LEVEL],
+ 				 &amp;sl) &lt; 0)
+ 		return -EINVAL;
+ </pre><hr><pre>commit cbffe6b3b2bdf6064135f715242feb2f9094190f
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Mon Mar 6 10:45:23 2023 +0800
+
+    i2c: davinci: remove dead code in probe
+    
+    From the comment of platform_get_irq, it only returns non-zero IRQ
+    number and negative error number, other than zero.
+    
+    Fix this by removing the if condition.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Bartosz Golaszewski &lt;bartosz.golaszewski@linaro.org&gt;
+    Signed-off-by: Wolfram Sang &lt;wsa@kernel.org&gt;
+
+diff --git a/drivers/i2c/busses/i2c-davinci.c b/drivers/i2c/busses/i2c-davinci.c
+index c836cf884185..9750310f2c96 100644
+--- a/drivers/i2c/busses/i2c-davinci.c
++++ b/drivers/i2c/busses/i2c-davinci.c
+@@ -764,11 +764,8 @@ static int davinci_i2c_probe(struct platform_device *pdev)
+ 	int r, irq;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq &lt;= 0) {
+-		if (!irq)
+-			irq = -ENXIO;
++	if (irq &lt; 0)
+ 		return dev_err_probe(&amp;pdev-&gt;dev, irq, "can't get irq resource\n");
+-	}
+ 
+ 	dev = devm_kzalloc(&amp;pdev-&gt;dev, sizeof(struct davinci_i2c_dev),
+ 			GFP_KERNEL);</pre><hr><pre>commit 4fa1387261e725a418066f8f46ea87a6ba0e5be1
+Author: Yalong Zou &lt;yalongz@hust.edu.cn&gt;
+Date:   Thu Mar 9 23:08:15 2023 +0800
+
+    usb: remove dead code in dwc3_gadget_get_irq
+    
+    platform_get_irq() only return non-zero irq number on success, or
+    negative error number on failure.
+    
+    There is no need to check the return value of platform_get_irq()
+    to determine the return value of dwc3_gadget_get_irq(), removing
+    them to solve this problem.
+    
+    Signed-off-by: Yalong Zou &lt;yalongz@hust.edu.cn&gt;
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230309150815.1884260-1-yalongz@hust.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 07989c645a94..a1ebb30c15fa 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4402,11 +4402,6 @@ static int dwc3_gadget_get_irq(struct dwc3 *dwc)
+ 		goto out;
+ 
+ 	irq = platform_get_irq(dwc3_pdev, 0);
+-	if (irq &gt; 0)
+-		goto out;
+-
+-	if (!irq)
+-		irq = -EINVAL;
+ 
+ out:
+ 	return irq;</pre><hr><pre>commit 48181d285623198c33bb9698992502687b258efa
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Thu Mar 9 10:16:36 2023 +0800
+
+    wifi: rtw88: fix memory leak in rtw_usb_probe()
+    
+    drivers/net/wireless/realtek/rtw88/usb.c:876 rtw_usb_probe()
+    warn: 'hw' from ieee80211_alloc_hw() not released on lines: 811
+    
+    Fix this by modifying return to a goto statement.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Ping-Ke Shih &lt;pkshih@realtek.com&gt;
+    Signed-off-by: Kalle Valo &lt;kvalo@kernel.org&gt;
+    Link: https://lore.kernel.org/r/20230309021636.528601-1-dzm91@hust.edu.cn
+
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index 2a8336b1847a..68e1b782d199 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -808,7 +808,7 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 
+ 	ret = rtw_usb_alloc_rx_bufs(rtwusb);
+ 	if (ret)
+-		return ret;
++		goto err_release_hw;
+ 
+ 	ret = rtw_core_init(rtwdev);
+ 	if (ret)</pre><hr><pre>commit cd53860edd5e66f2faaf1bfbaef81d4be9109c82
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Nov 18 22:14:06 2022 +0800
+
+    fbdev: da8xx-fb: add missing regulator_disable() in fb_probe
+    
+    The error handling code in fb_probe misses regulator_disable if
+    regulator_enable is called successfully. The previous commit only
+    adds regulator_disable in the .remove(), forgetting the error
+    handling code in the .probe.
+    
+    Fix this by adding a new error label to call regulator_disable.
+    
+    Fixes: 611097d5daea("fbdev: da8xx: add support for a regulator")
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Helge Deller &lt;deller@gmx.de&gt;
+
+diff --git a/drivers/video/fbdev/da8xx-fb.c b/drivers/video/fbdev/da8xx-fb.c
+index 11922b009ed7..cd07e401b326 100644
+--- a/drivers/video/fbdev/da8xx-fb.c
++++ b/drivers/video/fbdev/da8xx-fb.c
+@@ -1431,7 +1431,7 @@ static int fb_probe(struct platform_device *device)
+ 		dev_err(&amp;device-&gt;dev,
+ 			"GLCD: kmalloc for frame buffer failed\n");
+ 		ret = -EINVAL;
+-		goto err_release_fb;
++		goto err_disable_reg;
+ 	}
+ 
+ 	da8xx_fb_info-&gt;screen_base = (char __iomem *) par-&gt;vram_virt;
+@@ -1475,7 +1475,7 @@ static int fb_probe(struct platform_device *device)
+ 
+ 	ret = fb_alloc_cmap(&amp;da8xx_fb_info-&gt;cmap, PALETTE_SIZE, 0);
+ 	if (ret)
+-		goto err_release_fb;
++		goto err_disable_reg;
+ 	da8xx_fb_info-&gt;cmap.len = par-&gt;palette_sz;
+ 
+ 	/* initialize var_screeninfo */
+@@ -1529,6 +1529,9 @@ static int fb_probe(struct platform_device *device)
+ err_dealloc_cmap:
+ 	fb_dealloc_cmap(&amp;da8xx_fb_info-&gt;cmap);
+ 
++err_disable_reg:
++	if (par-&gt;lcd_supply)
++		regulator_disable(par-&gt;lcd_supply);
+ err_release_fb:
+ 	framebuffer_release(da8xx_fb_info);
+ </pre><hr><pre>commit b76449ee75e21acfe9fa4c653d8598f191ed7d68
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Nov 11 13:49:49 2022 +0800
+
+    fbdev: smscufx: fix error handling code in ufx_usb_probe
+    
+    The current error handling code in ufx_usb_probe have many unmatching
+    issues, e.g., missing ufx_free_usb_list, destroy_modedb label should
+    only include framebuffer_release, fb_dealloc_cmap only matches
+    fb_alloc_cmap.
+    
+    My local syzkaller reports a memory leak bug:
+    
+    memory leak in ufx_usb_probe
+    
+    BUG: memory leak
+    unreferenced object 0xffff88802f879580 (size 128):
+      comm "kworker/0:7", pid 17416, jiffies 4295067474 (age 46.710s)
+      hex dump (first 32 bytes):
+        80 21 7c 2e 80 88 ff ff 18 d0 d0 0c 80 88 ff ff  .!|.............
+        00 d0 d0 0c 80 88 ff ff e0 ff ff ff 0f 00 00 00  ................
+      backtrace:
+        [&lt;ffffffff814c99a0&gt;] kmalloc_trace+0x20/0x90 mm/slab_common.c:1045
+        [&lt;ffffffff824d219c&gt;] kmalloc include/linux/slab.h:553 [inline]
+        [&lt;ffffffff824d219c&gt;] kzalloc include/linux/slab.h:689 [inline]
+        [&lt;ffffffff824d219c&gt;] ufx_alloc_urb_list drivers/video/fbdev/smscufx.c:1873 [inline]
+        [&lt;ffffffff824d219c&gt;] ufx_usb_probe+0x11c/0x15a0 drivers/video/fbdev/smscufx.c:1655
+        [&lt;ffffffff82d17927&gt;] usb_probe_interface+0x177/0x370 drivers/usb/core/driver.c:396
+        [&lt;ffffffff82712f0d&gt;] call_driver_probe drivers/base/dd.c:560 [inline]
+        [&lt;ffffffff82712f0d&gt;] really_probe+0x12d/0x390 drivers/base/dd.c:639
+        [&lt;ffffffff8271322f&gt;] __driver_probe_device+0xbf/0x140 drivers/base/dd.c:778
+        [&lt;ffffffff827132da&gt;] driver_probe_device+0x2a/0x120 drivers/base/dd.c:808
+        [&lt;ffffffff82713c27&gt;] __device_attach_driver+0xf7/0x150 drivers/base/dd.c:936
+        [&lt;ffffffff82710137&gt;] bus_for_each_drv+0xb7/0x100 drivers/base/bus.c:427
+        [&lt;ffffffff827136b5&gt;] __device_attach+0x105/0x2d0 drivers/base/dd.c:1008
+        [&lt;ffffffff82711d36&gt;] bus_probe_device+0xc6/0xe0 drivers/base/bus.c:487
+        [&lt;ffffffff8270e242&gt;] device_add+0x642/0xdc0 drivers/base/core.c:3517
+        [&lt;ffffffff82d14d5f&gt;] usb_set_configuration+0x8ef/0xb80 drivers/usb/core/message.c:2170
+        [&lt;ffffffff82d2576c&gt;] usb_generic_driver_probe+0x8c/0xc0 drivers/usb/core/generic.c:238
+        [&lt;ffffffff82d16ffc&gt;] usb_probe_device+0x5c/0x140 drivers/usb/core/driver.c:293
+        [&lt;ffffffff82712f0d&gt;] call_driver_probe drivers/base/dd.c:560 [inline]
+        [&lt;ffffffff82712f0d&gt;] really_probe+0x12d/0x390 drivers/base/dd.c:639
+        [&lt;ffffffff8271322f&gt;] __driver_probe_device+0xbf/0x140 drivers/base/dd.c:778
+    
+    Fix this bug by rewriting the error handling code in ufx_usb_probe.
+    
+    Reported-by: syzkaller &lt;syzkaller@googlegroups.com&gt;
+    Tested-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Helge Deller &lt;deller@gmx.de&gt;
+
+diff --git a/drivers/video/fbdev/smscufx.c b/drivers/video/fbdev/smscufx.c
+index 9343b7a4ac89..2ad6e98ce10d 100644
+--- a/drivers/video/fbdev/smscufx.c
++++ b/drivers/video/fbdev/smscufx.c
+@@ -1622,7 +1622,7 @@ static int ufx_usb_probe(struct usb_interface *interface,
+ 	struct usb_device *usbdev;
+ 	struct ufx_data *dev;
+ 	struct fb_info *info;
+-	int retval;
++	int retval = -ENOMEM;
+ 	u32 id_rev, fpga_rev;
+ 
+ 	/* usb initialization */
+@@ -1654,15 +1654,17 @@ static int ufx_usb_probe(struct usb_interface *interface,
+ 
+ 	if (!ufx_alloc_urb_list(dev, WRITES_IN_FLIGHT, MAX_TRANSFER)) {
+ 		dev_err(dev-&gt;gdev, "ufx_alloc_urb_list failed\n");
+-		goto e_nomem;
++		goto put_ref;
+ 	}
+ 
+ 	/* We don't register a new USB class. Our client interface is fbdev */
+ 
+ 	/* allocates framebuffer driver structure, not framebuffer memory */
+ 	info = framebuffer_alloc(0, &amp;usbdev-&gt;dev);
+-	if (!info)
+-		goto e_nomem;
++	if (!info) {
++		dev_err(dev-&gt;gdev, "framebuffer_alloc failed\n");
++		goto free_urb_list;
++	}
+ 
+ 	dev-&gt;info = info;
+ 	info-&gt;par = dev;
+@@ -1705,22 +1707,34 @@ static int ufx_usb_probe(struct usb_interface *interface,
+ 	check_warn_goto_error(retval, "unable to find common mode for display and adapter");
+ 
+ 	retval = ufx_reg_set_bits(dev, 0x4000, 0x00000001);
+-	check_warn_goto_error(retval, "error %d enabling graphics engine", retval);
++	if (retval &lt; 0) {
++		dev_err(dev-&gt;gdev, "error %d enabling graphics engine", retval);
++		goto setup_modes;
++	}
+ 
+ 	/* ready to begin using device */
+ 	atomic_set(&amp;dev-&gt;usb_active, 1);
+ 
+ 	dev_dbg(dev-&gt;gdev, "checking var");
+ 	retval = ufx_ops_check_var(&amp;info-&gt;var, info);
+-	check_warn_goto_error(retval, "error %d ufx_ops_check_var", retval);
++	if (retval &lt; 0) {
++		dev_err(dev-&gt;gdev, "error %d ufx_ops_check_var", retval);
++		goto reset_active;
++	}
+ 
+ 	dev_dbg(dev-&gt;gdev, "setting par");
+ 	retval = ufx_ops_set_par(info);
+-	check_warn_goto_error(retval, "error %d ufx_ops_set_par", retval);
++	if (retval &lt; 0) {
++		dev_err(dev-&gt;gdev, "error %d ufx_ops_set_par", retval);
++		goto reset_active;
++	}
+ 
+ 	dev_dbg(dev-&gt;gdev, "registering framebuffer");
+ 	retval = register_framebuffer(info);
+-	check_warn_goto_error(retval, "error %d register_framebuffer", retval);
++	if (retval &lt; 0) {
++		dev_err(dev-&gt;gdev, "error %d register_framebuffer", retval);
++		goto reset_active;
++	}
+ 
+ 	dev_info(dev-&gt;gdev, "SMSC UDX USB device /dev/fb%d attached. %dx%d resolution."
+ 		" Using %dK framebuffer memory\n", info-&gt;node,
+@@ -1728,21 +1742,23 @@ static int ufx_usb_probe(struct usb_interface *interface,
+ 
+ 	return 0;
+ 
+-error:
+-	fb_dealloc_cmap(&amp;info-&gt;cmap);
+-destroy_modedb:
++reset_active:
++	atomic_set(&amp;dev-&gt;usb_active, 0);
++setup_modes:
+ 	fb_destroy_modedb(info-&gt;monspecs.modedb);
+ 	vfree(info-&gt;screen_base);
+ 	fb_destroy_modelist(&amp;info-&gt;modelist);
++error:
++	fb_dealloc_cmap(&amp;info-&gt;cmap);
++destroy_modedb:
+ 	framebuffer_release(info);
++free_urb_list:
++	if (dev-&gt;urbs.count &gt; 0)
++		ufx_free_urb_list(dev);
+ put_ref:
+ 	kref_put(&amp;dev-&gt;kref, ufx_free); /* ref for framebuffer */
+ 	kref_put(&amp;dev-&gt;kref, ufx_free); /* last ref from kref_init */
+ 	return retval;
+-
+-e_nomem:
+-	retval = -ENOMEM;
+-	goto put_ref;
+ }
+ 
+ static void ufx_usb_disconnect(struct usb_interface *interface)</pre><hr><pre>commit aa9832e4501264a43db671bba09fe4d8bc39fcff
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Mon Oct 24 19:00:30 2022 +0800
+
+    can: ucan: ucan_disconnect(): change unregister_netdev() to unregister_candev()
+    
+    From API pairing, change unregister_netdev() to unregister_candev()
+    since the registration function is register_candev(). Actually, they
+    are the same.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/all/20221024110033.727542-1-dzm91@hust.edu.cn
+    [mkl: adjust subject + commit message]
+    Signed-off-by: Marc Kleine-Budde &lt;mkl@pengutronix.de&gt;
+
+diff --git a/drivers/net/can/usb/ucan.c b/drivers/net/can/usb/ucan.c
+index b53e709943bc..a1734f1c0148 100644
+--- a/drivers/net/can/usb/ucan.c
++++ b/drivers/net/can/usb/ucan.c
+@@ -1582,7 +1582,7 @@ static void ucan_disconnect(struct usb_interface *intf)
+ 	usb_set_intfdata(intf, NULL);
+ 
+ 	if (up) {
+-		unregister_netdev(up-&gt;netdev);
++		unregister_candev(up-&gt;netdev);
+ 		free_candev(up-&gt;netdev);
+ 	}
+ }</pre>
+    <div class="pagination">
+        <a href='14_6.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><span>[7]</span><a href='14_8.html'>8</a><a href='14_8.html'>Next&gt;&gt;</a>
+    <div>
+</body>

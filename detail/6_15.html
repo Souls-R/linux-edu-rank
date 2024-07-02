@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Zhejiang University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Zhejiang University</h1>
+    <div class="pagination">
+        <a href='6_14.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><a href='6_2.html'>2</a><a href='6_3.html'>3</a><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><span>[15]</span><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_16.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 175302f6b79ebbb207c2d58d6d3e679465de23b0
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Sun Oct 9 14:37:31 2022 +0800
+
+    mISDN: hfcpci: Fix use-after-free bug in hfcpci_softirq
+    
+    The function hfcpci_softirq() is a timer handler. If it
+    is running, the timer_pending() will return 0 and the
+    del_timer_sync() in HFC_cleanup() will not be executed.
+    As a result, the use-after-free bug will happen. The
+    process is shown below:
+    
+        (cleanup routine)          |        (timer handler)
+    HFC_cleanup()                  | hfcpci_softirq()
+     if (timer_pending(&amp;hfc_tl))   |
+       del_timer_sync()            |
+     ...                           | ...
+     pci_unregister_driver(hc)     |
+      driver_unregister            |  driver_for_each_device
+       bus_remove_driver           |   _hfcpci_softirq
+        driver_detach              |   ...
+         put_device(dev) //[1]FREE |
+                                   |    dev_get_drvdata(dev) //[2]USE
+    
+    The device is deallocated is position [1] and used in
+    position [2].
+    
+    Fix by removing the "timer_pending" check in HFC_cleanup(),
+    which makes sure that the hfcpci_softirq() have finished
+    before the resource is deallocated.
+    
+    Fixes: 009fc857c5f6 ("mISDN: fix possible use-after-free in HFC_cleanup()")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/drivers/isdn/hardware/mISDN/hfcpci.c b/drivers/isdn/hardware/mISDN/hfcpci.c
+index af17459c1a5c..e964a8dd8512 100644
+--- a/drivers/isdn/hardware/mISDN/hfcpci.c
++++ b/drivers/isdn/hardware/mISDN/hfcpci.c
+@@ -2345,8 +2345,7 @@ HFC_init(void)
+ static void __exit
+ HFC_cleanup(void)
+ {
+-	if (timer_pending(&amp;hfc_tl))
+-		del_timer_sync(&amp;hfc_tl);
++	del_timer_sync(&amp;hfc_tl);
+ 
+ 	pci_unregister_driver(&amp;hfc_driver);
+ }</pre><hr><pre>commit 2568a7e0832ee30b0a351016d03062ab4e0e0a3f
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Sep 28 21:39:38 2022 +0800
+
+    mISDN: fix use-after-free bugs in l1oip timer handlers
+    
+    The l1oip_cleanup() traverses the l1oip_ilist and calls
+    release_card() to cleanup module and stack. However,
+    release_card() calls del_timer() to delete the timers
+    such as keep_tl and timeout_tl. If the timer handler is
+    running, the del_timer() will not stop it and result in
+    UAF bugs. One of the processes is shown below:
+    
+        (cleanup routine)          |        (timer handler)
+    release_card()                 | l1oip_timeout()
+     ...                           |
+     del_timer()                   | ...
+     ...                           |
+     kfree(hc) //FREE              |
+                                   | hc-&gt;timeout_on = 0 //USE
+    
+    Fix by calling del_timer_sync() in release_card(), which
+    makes sure the timer handlers have finished before the
+    resources, such as l1oip and so on, have been deallocated.
+    
+    What's more, the hc-&gt;workq and hc-&gt;socket_thread can kick
+    those timers right back in. We add a bool flag to show
+    if card is released. Then, check this flag in hc-&gt;workq
+    and hc-&gt;socket_thread.
+    
+    Fixes: 3712b42d4b1b ("Add layer1 over IP support")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Leon Romanovsky &lt;leonro@nvidia.com&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/drivers/isdn/mISDN/l1oip.h b/drivers/isdn/mISDN/l1oip.h
+index 7ea10db20e3a..48133d022812 100644
+--- a/drivers/isdn/mISDN/l1oip.h
++++ b/drivers/isdn/mISDN/l1oip.h
+@@ -59,6 +59,7 @@ struct l1oip {
+ 	int			bundle;		/* bundle channels in one frm */
+ 	int			codec;		/* codec to use for transmis. */
+ 	int			limit;		/* limit number of bchannels */
++	bool			shutdown;	/* if card is released */
+ 
+ 	/* timer */
+ 	struct timer_list	keep_tl;
+diff --git a/drivers/isdn/mISDN/l1oip_core.c b/drivers/isdn/mISDN/l1oip_core.c
+index 2c40412466e6..a77195e378b7 100644
+--- a/drivers/isdn/mISDN/l1oip_core.c
++++ b/drivers/isdn/mISDN/l1oip_core.c
+@@ -275,7 +275,7 @@ l1oip_socket_send(struct l1oip *hc, u8 localcodec, u8 channel, u32 chanmask,
+ 	p = frame;
+ 
+ 	/* restart timer */
+-	if (time_before(hc-&gt;keep_tl.expires, jiffies + 5 * HZ))
++	if (time_before(hc-&gt;keep_tl.expires, jiffies + 5 * HZ) &amp;&amp; !hc-&gt;shutdown)
+ 		mod_timer(&amp;hc-&gt;keep_tl, jiffies + L1OIP_KEEPALIVE * HZ);
+ 	else
+ 		hc-&gt;keep_tl.expires = jiffies + L1OIP_KEEPALIVE * HZ;
+@@ -601,7 +601,9 @@ l1oip_socket_parse(struct l1oip *hc, struct sockaddr_in *sin, u8 *buf, int len)
+ 		goto multiframe;
+ 
+ 	/* restart timer */
+-	if (time_before(hc-&gt;timeout_tl.expires, jiffies + 5 * HZ) || !hc-&gt;timeout_on) {
++	if ((time_before(hc-&gt;timeout_tl.expires, jiffies + 5 * HZ) ||
++	     !hc-&gt;timeout_on) &amp;&amp;
++	    !hc-&gt;shutdown) {
+ 		hc-&gt;timeout_on = 1;
+ 		mod_timer(&amp;hc-&gt;timeout_tl, jiffies + L1OIP_TIMEOUT * HZ);
+ 	} else /* only adjust timer */
+@@ -1232,11 +1234,10 @@ release_card(struct l1oip *hc)
+ {
+ 	int	ch;
+ 
+-	if (timer_pending(&amp;hc-&gt;keep_tl))
+-		del_timer(&amp;hc-&gt;keep_tl);
++	hc-&gt;shutdown = true;
+ 
+-	if (timer_pending(&amp;hc-&gt;timeout_tl))
+-		del_timer(&amp;hc-&gt;timeout_tl);
++	del_timer_sync(&amp;hc-&gt;keep_tl);
++	del_timer_sync(&amp;hc-&gt;timeout_tl);
+ 
+ 	cancel_work_sync(&amp;hc-&gt;workq);
+ </pre><hr><pre>commit 46ba53c30666717cb06c2b3c5d896301cd00d0c0
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Sep 20 22:42:13 2022 +0800
+
+    scsi: libsas: Fix use-after-free bug in smp_execute_task_sg()
+    
+    When executing SMP task failed, the smp_execute_task_sg() calls del_timer()
+    to delete "slow_task-&gt;timer". However, if the timer handler
+    sas_task_internal_timedout() is running, the del_timer() in
+    smp_execute_task_sg() will not stop it and a UAF will happen. The process
+    is shown below:
+    
+          (thread 1)               |        (thread 2)
+    smp_execute_task_sg()          | sas_task_internal_timedout()
+     ...                           |
+     del_timer()                   |
+     ...                           |  ...
+     sas_free_task(task)           |
+      kfree(task-&gt;slow_task) //FREE|
+                                   |  task-&gt;slow_task-&gt;... //USE
+    
+    Fix by calling del_timer_sync() in smp_execute_task_sg(), which makes sure
+    the timer handler have finished before the "task-&gt;slow_task" is
+    deallocated.
+    
+    Link: https://lore.kernel.org/r/20220920144213.10536-1-duoming@zju.edu.cn
+    Fixes: 2908d778ab3e ("[SCSI] aic94xx: new driver")
+    Reviewed-by: Jason Yan &lt;yanaijie@huawei.com&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Martin K. Petersen &lt;martin.petersen@oracle.com&gt;
+
+diff --git a/drivers/scsi/libsas/sas_expander.c b/drivers/scsi/libsas/sas_expander.c
+index fa2209080cc2..5ce251830104 100644
+--- a/drivers/scsi/libsas/sas_expander.c
++++ b/drivers/scsi/libsas/sas_expander.c
+@@ -67,7 +67,7 @@ static int smp_execute_task_sg(struct domain_device *dev,
+ 		res = i-&gt;dft-&gt;lldd_execute_task(task, GFP_KERNEL);
+ 
+ 		if (res) {
+-			del_timer(&amp;task-&gt;slow_task-&gt;timer);
++			del_timer_sync(&amp;task-&gt;slow_task-&gt;timer);
+ 			pr_notice("executing SMP task failed:%d\n", res);
+ 			break;
+ 		}</pre><hr><pre>commit 551e4745c7f218da7070b36a06318592913676ff
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Aug 23 19:21:27 2022 +0800
+
+    mwifiex: fix sleep in atomic context bugs caused by dev_coredumpv
+    
+    There are sleep in atomic context bugs when uploading device dump
+    data in mwifiex. The root cause is that dev_coredumpv could not
+    be used in atomic contexts, because it calls dev_set_name which
+    include operations that may sleep. The call tree shows execution
+    paths that could lead to bugs:
+    
+       (Interrupt context)
+    fw_dump_timer_fn
+      mwifiex_upload_device_dump
+        dev_coredumpv(..., GFP_KERNEL)
+          dev_coredumpm()
+            kzalloc(sizeof(*devcd), gfp); //may sleep
+            dev_set_name
+              kobject_set_name_vargs
+                kvasprintf_const(GFP_KERNEL, ...); //may sleep
+                kstrdup(s, GFP_KERNEL); //may sleep
+    
+    The corresponding fail log is shown below:
+    
+    [  135.275938] usb 1-1: == mwifiex dump information to /sys/class/devcoredump start
+    [  135.281029] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:265
+    ...
+    [  135.293613] Call Trace:
+    [  135.293613]  &lt;IRQ&gt;
+    [  135.293613]  dump_stack_lvl+0x57/0x7d
+    [  135.293613]  __might_resched.cold+0x138/0x173
+    [  135.293613]  ? dev_coredumpm+0xca/0x2e0
+    [  135.293613]  kmem_cache_alloc_trace+0x189/0x1f0
+    [  135.293613]  ? devcd_match_failing+0x30/0x30
+    [  135.293613]  dev_coredumpm+0xca/0x2e0
+    [  135.293613]  ? devcd_freev+0x10/0x10
+    [  135.293613]  dev_coredumpv+0x1c/0x20
+    [  135.293613]  ? devcd_match_failing+0x30/0x30
+    [  135.293613]  mwifiex_upload_device_dump+0x65/0xb0
+    [  135.293613]  ? mwifiex_dnld_fw+0x1b0/0x1b0
+    [  135.293613]  call_timer_fn+0x122/0x3d0
+    [  135.293613]  ? msleep_interruptible+0xb0/0xb0
+    [  135.293613]  ? lock_downgrade+0x3c0/0x3c0
+    [  135.293613]  ? __next_timer_interrupt+0x13c/0x160
+    [  135.293613]  ? lockdep_hardirqs_on_prepare+0xe/0x220
+    [  135.293613]  ? mwifiex_dnld_fw+0x1b0/0x1b0
+    [  135.293613]  __run_timers.part.0+0x3f8/0x540
+    [  135.293613]  ? call_timer_fn+0x3d0/0x3d0
+    [  135.293613]  ? arch_restore_msi_irqs+0x10/0x10
+    [  135.293613]  ? lapic_next_event+0x31/0x40
+    [  135.293613]  run_timer_softirq+0x4f/0xb0
+    [  135.293613]  __do_softirq+0x1c2/0x651
+    ...
+    [  135.293613] RIP: 0010:default_idle+0xb/0x10
+    [  135.293613] RSP: 0018:ffff888006317e68 EFLAGS: 00000246
+    [  135.293613] RAX: ffffffff82ad8d10 RBX: ffff888006301cc0 RCX: ffffffff82ac90e1
+    [  135.293613] RDX: ffffed100d9ff1b4 RSI: ffffffff831ad140 RDI: ffffffff82ad8f20
+    [  135.293613] RBP: 0000000000000003 R08: 0000000000000000 R09: ffff88806cff8d9b
+    [  135.293613] R10: ffffed100d9ff1b3 R11: 0000000000000001 R12: ffffffff84593410
+    [  135.293613] R13: 0000000000000000 R14: 0000000000000000 R15: 1ffff11000c62fd2
+    ...
+    [  135.389205] usb 1-1: == mwifiex dump information to /sys/class/devcoredump end
+    
+    This patch uses delayed work to replace timer and moves the operations
+    that may sleep into a delayed work in order to mitigate bugs, it was
+    tested on Marvell 88W8801 chip whose port is usb and the firmware is
+    usb8801_uapsta.bin. The following is the result after using delayed
+    work to replace timer.
+    
+    [  134.936453] usb 1-1: == mwifiex dump information to /sys/class/devcoredump start
+    [  135.043344] usb 1-1: == mwifiex dump information to /sys/class/devcoredump end
+    
+    As we can see, there is no bug now.
+    
+    Fixes: f5ecd02a8b20 ("mwifiex: device dump support for usb interface")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Brian Norris &lt;briannorris@chromium.org&gt;
+    Acked-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+    Signed-off-by: Kalle Valo &lt;kvalo@kernel.org&gt;
+    Link: https://lore.kernel.org/r/5cfa5c473ff6d069cb67760ffa04a2f84ef450a8.1661252818.git.duoming@zju.edu.cn
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
+index fc77489cc511..7dddb4b5dea1 100644
+--- a/drivers/net/wireless/marvell/mwifiex/init.c
++++ b/drivers/net/wireless/marvell/mwifiex/init.c
+@@ -51,9 +51,10 @@ static void wakeup_timer_fn(struct timer_list *t)
+ 		adapter-&gt;if_ops.card_reset(adapter);
+ }
+ 
+-static void fw_dump_timer_fn(struct timer_list *t)
++static void fw_dump_work(struct work_struct *work)
+ {
+-	struct mwifiex_adapter *adapter = from_timer(adapter, t, devdump_timer);
++	struct mwifiex_adapter *adapter =
++		container_of(work, struct mwifiex_adapter, devdump_work.work);
+ 
+ 	mwifiex_upload_device_dump(adapter);
+ }
+@@ -309,7 +310,7 @@ static void mwifiex_init_adapter(struct mwifiex_adapter *adapter)
+ 	adapter-&gt;active_scan_triggered = false;
+ 	timer_setup(&amp;adapter-&gt;wakeup_timer, wakeup_timer_fn, 0);
+ 	adapter-&gt;devdump_len = 0;
+-	timer_setup(&amp;adapter-&gt;devdump_timer, fw_dump_timer_fn, 0);
++	INIT_DELAYED_WORK(&amp;adapter-&gt;devdump_work, fw_dump_work);
+ }
+ 
+ /*
+@@ -388,7 +389,7 @@ static void
+ mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
+ {
+ 	del_timer(&amp;adapter-&gt;wakeup_timer);
+-	del_timer_sync(&amp;adapter-&gt;devdump_timer);
++	cancel_delayed_work_sync(&amp;adapter-&gt;devdump_work);
+ 	mwifiex_cancel_all_pending_cmd(adapter);
+ 	wake_up_interruptible(&amp;adapter-&gt;cmd_wait_q.wait);
+ 	wake_up_interruptible(&amp;adapter-&gt;hs_activate_wait_q);
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 87729d251fed..63f861e6b28a 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -37,6 +37,7 @@
+ #include &lt;linux/pm_runtime.h&gt;
+ #include &lt;linux/slab.h&gt;
+ #include &lt;linux/of_irq.h&gt;
++#include &lt;linux/workqueue.h&gt;
+ 
+ #include "decl.h"
+ #include "ioctl.h"
+@@ -1043,7 +1044,7 @@ struct mwifiex_adapter {
+ 	/* Device dump data/length */
+ 	void *devdump_data;
+ 	int devdump_len;
+-	struct timer_list devdump_timer;
++	struct delayed_work devdump_work;
+ 
+ 	bool ignore_btcoex_events;
+ };
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_event.c b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+index b6315fccd1bb..df9cdd10a494 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_event.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+@@ -611,8 +611,8 @@ mwifiex_fw_dump_info_event(struct mwifiex_private *priv,
+ 		 * transmission event get lost, in this cornel case,
+ 		 * user would still get partial of the dump.
+ 		 */
+-		mod_timer(&amp;adapter-&gt;devdump_timer,
+-			  jiffies + msecs_to_jiffies(MWIFIEX_TIMER_10S));
++		schedule_delayed_work(&amp;adapter-&gt;devdump_work,
++				      msecs_to_jiffies(MWIFIEX_TIMER_10S));
+ 	}
+ 
+ 	/* Overflow check */
+@@ -631,7 +631,7 @@ mwifiex_fw_dump_info_event(struct mwifiex_private *priv,
+ 	return;
+ 
+ upload_dump:
+-	del_timer_sync(&amp;adapter-&gt;devdump_timer);
++	cancel_delayed_work_sync(&amp;adapter-&gt;devdump_work);
+ 	mwifiex_upload_device_dump(adapter);
+ }
+ </pre><hr><pre>commit c0955bf957be4bead01fae1d791476260da7325d
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Sat Aug 27 23:38:15 2022 +0800
+
+    ethernet: rocker: fix sleep in atomic context bug in neigh_timer_handler
+    
+    The function neigh_timer_handler() is a timer handler that runs in an
+    atomic context. When used by rocker, neigh_timer_handler() calls
+    "kzalloc(.., GFP_KERNEL)" that may sleep. As a result, the sleep in
+    atomic context bug will happen. One of the processes is shown below:
+    
+    ofdpa_fib4_add()
+     ...
+     neigh_add_timer()
+    
+    (wait a timer)
+    
+    neigh_timer_handler()
+     neigh_release()
+      neigh_destroy()
+       rocker_port_neigh_destroy()
+        rocker_world_port_neigh_destroy()
+         ofdpa_port_neigh_destroy()
+          ofdpa_port_ipv4_neigh()
+           kzalloc(sizeof(.., GFP_KERNEL) //may sleep
+    
+    This patch changes the gfp_t parameter of kzalloc() from GFP_KERNEL to
+    GFP_ATOMIC in order to mitigate the bug.
+    
+    Fixes: 00fc0c51e35b ("rocker: Change world_ops API and implementation to be switchdev independant")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/drivers/net/ethernet/rocker/rocker_ofdpa.c b/drivers/net/ethernet/rocker/rocker_ofdpa.c
+index bc70c6abd6a5..58cf7cc54f40 100644
+--- a/drivers/net/ethernet/rocker/rocker_ofdpa.c
++++ b/drivers/net/ethernet/rocker/rocker_ofdpa.c
+@@ -1273,7 +1273,7 @@ static int ofdpa_port_ipv4_neigh(struct ofdpa_port *ofdpa_port,
+ 	bool removing;
+ 	int err = 0;
+ 
+-	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
++	entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
+ 	if (!entry)
+ 		return -ENOMEM;
+ </pre><hr><pre>commit afe7116f6d3b888778ed6d95e3cf724767b9aedf
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Mon Aug 8 11:42:24 2022 +0800
+
+    ieee802154/adf7242: defer destroy_workqueue call
+    
+    There is a possible race condition (use-after-free) like below
+    
+      (FREE)                     |  (USE)
+      adf7242_remove             |  adf7242_channel
+       cancel_delayed_work_sync  |
+        destroy_workqueue (1)    |   adf7242_cmd_rx
+                                 |    mod_delayed_work (2)
+                                 |
+    
+    The root cause for this race is that the upper layer (ieee802154) is
+    unaware of this detaching event and the function adf7242_channel can
+    be called without any checks.
+    
+    To fix this, we can add a flag write at the beginning of adf7242_remove
+    and add flag check in adf7242_channel. Or we can just defer the
+    destructive operation like other commit 3e0588c291d6 ("hamradio: defer
+    ax25 kfree after unregister_netdev") which let the
+    ieee802154_unregister_hw() to handle the synchronization. This patch
+    takes the second option.
+    
+    Fixes: 58e9683d1475 ("net: ieee802154: adf7242: Fix OCL calibration
+    runs")
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Acked-by: Michael Hennerich &lt;michael.hennerich@analog.com&gt;
+    Link: https://lore.kernel.org/r/20220808034224.12642-1-linma@zju.edu.cn
+    Signed-off-by: Stefan Schmidt &lt;stefan@datenfreihafen.org&gt;
+
+diff --git a/drivers/net/ieee802154/adf7242.c b/drivers/net/ieee802154/adf7242.c
+index 6afdf1622944..5cf218c674a5 100644
+--- a/drivers/net/ieee802154/adf7242.c
++++ b/drivers/net/ieee802154/adf7242.c
+@@ -1310,10 +1310,11 @@ static void adf7242_remove(struct spi_device *spi)
+ 
+ 	debugfs_remove_recursive(lp-&gt;debugfs_root);
+ 
++	ieee802154_unregister_hw(lp-&gt;hw);
++
+ 	cancel_delayed_work_sync(&amp;lp-&gt;work);
+ 	destroy_workqueue(lp-&gt;wqueue);
+ 
+-	ieee802154_unregister_hw(lp-&gt;hw);
+ 	mutex_destroy(&amp;lp-&gt;bmux);
+ 	ieee802154_free_hw(lp-&gt;hw);
+ }</pre><hr><pre>commit f1e941dbf80a9b8bab0bffbc4cbe41cc7f4c6fb6
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Thu Aug 18 17:06:21 2022 +0800
+
+    nfc: pn533: Fix use-after-free bugs caused by pn532_cmd_timeout
+    
+    When the pn532 uart device is detaching, the pn532_uart_remove()
+    is called. But there are no functions in pn532_uart_remove() that
+    could delete the cmd_timeout timer, which will cause use-after-free
+    bugs. The process is shown below:
+    
+        (thread 1)                  |        (thread 2)
+                                    |  pn532_uart_send_frame
+    pn532_uart_remove               |    mod_timer(&amp;pn532-&gt;cmd_timeout,...)
+      ...                           |    (wait a time)
+      kfree(pn532) //FREE           |    pn532_cmd_timeout
+                                    |      pn532_uart_send_frame
+                                    |        pn532-&gt;... //USE
+    
+    This patch adds del_timer_sync() in pn532_uart_remove() in order to
+    prevent the use-after-free bugs. What's more, the pn53x_unregister_nfc()
+    is well synchronized, it sets nfc_dev-&gt;shutting_down to true and there
+    are no syscalls could restart the cmd_timeout timer.
+    
+    Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/drivers/nfc/pn533/uart.c b/drivers/nfc/pn533/uart.c
+index 2caf997f9bc9..07596bf5f7d6 100644
+--- a/drivers/nfc/pn533/uart.c
++++ b/drivers/nfc/pn533/uart.c
+@@ -310,6 +310,7 @@ static void pn532_uart_remove(struct serdev_device *serdev)
+ 	pn53x_unregister_nfc(pn532-&gt;priv);
+ 	serdev_device_close(serdev);
+ 	pn53x_common_clean(pn532-&gt;priv);
++	del_timer_sync(&amp;pn532-&gt;cmd_timeout);
+ 	kfree_skb(pn532-&gt;recv_skb);
+ 	kfree(pn532);
+ }</pre><hr><pre>commit 6faee3d4ee8be0f0367d0c3d826afb3571b7a5e0
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Wed Aug 17 11:49:21 2022 -0700
+
+    igb: Add lock to avoid data race
+    
+    The commit c23d92b80e0b ("igb: Teardown SR-IOV before
+    unregister_netdev()") places the unregister_netdev() call after the
+    igb_disable_sriov() call to avoid functionality issue.
+    
+    However, it introduces several race conditions when detaching a device.
+    For example, when .remove() is called, the below interleaving leads to
+    use-after-free.
+    
+     (FREE from device detaching)      |   (USE from netdev core)
+    igb_remove                         |  igb_ndo_get_vf_config
+     igb_disable_sriov                 |  vf &gt;= adapter-&gt;vfs_allocated_count?
+      kfree(adapter-&gt;vf_data)          |
+      adapter-&gt;vfs_allocated_count = 0 |
+                                       |    memcpy(... adapter-&gt;vf_data[vf]
+    
+    Moreover, the igb_disable_sriov() also suffers from data race with the
+    requests from VF driver.
+    
+     (FREE from device detaching)      |   (USE from requests)
+    igb_remove                         |  igb_msix_other
+     igb_disable_sriov                 |   igb_msg_task
+      kfree(adapter-&gt;vf_data)          |    vf &lt; adapter-&gt;vfs_allocated_count
+      adapter-&gt;vfs_allocated_count = 0 |
+    
+    To this end, this commit first eliminates the data races from netdev
+    core by using rtnl_lock (similar to commit 719479230893 ("dpaa2-eth: add
+    MAC/PHY support through phylink")). And then adds a spinlock to
+    eliminate races from driver requests. (similar to commit 1e53834ce541
+    ("ixgbe: Add locking to prevent panic when setting sriov_numvfs to zero")
+    
+    Fixes: c23d92b80e0b ("igb: Teardown SR-IOV before unregister_netdev()")
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Tested-by: Konrad Jankowski &lt;konrad0.jankowski@intel.com&gt;
+    Signed-off-by: Tony Nguyen &lt;anthony.l.nguyen@intel.com&gt;
+    Link: https://lore.kernel.org/r/20220817184921.735244-1-anthony.l.nguyen@intel.com
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/net/ethernet/intel/igb/igb.h b/drivers/net/ethernet/intel/igb/igb.h
+index 2d3daf022651..015b78144114 100644
+--- a/drivers/net/ethernet/intel/igb/igb.h
++++ b/drivers/net/ethernet/intel/igb/igb.h
+@@ -664,6 +664,8 @@ struct igb_adapter {
+ 	struct igb_mac_addr *mac_table;
+ 	struct vf_mac_filter vf_macs;
+ 	struct vf_mac_filter *vf_mac_list;
++	/* lock for VF resources */
++	spinlock_t vfs_lock;
+ };
+ 
+ /* flags controlling PTP/1588 function */
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index d8b836a85cc3..2796e81d2726 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -3637,6 +3637,7 @@ static int igb_disable_sriov(struct pci_dev *pdev)
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
+ 	struct e1000_hw *hw = &amp;adapter-&gt;hw;
++	unsigned long flags;
+ 
+ 	/* reclaim resources allocated to VFs */
+ 	if (adapter-&gt;vf_data) {
+@@ -3649,12 +3650,13 @@ static int igb_disable_sriov(struct pci_dev *pdev)
+ 			pci_disable_sriov(pdev);
+ 			msleep(500);
+ 		}
+-
++		spin_lock_irqsave(&amp;adapter-&gt;vfs_lock, flags);
+ 		kfree(adapter-&gt;vf_mac_list);
+ 		adapter-&gt;vf_mac_list = NULL;
+ 		kfree(adapter-&gt;vf_data);
+ 		adapter-&gt;vf_data = NULL;
+ 		adapter-&gt;vfs_allocated_count = 0;
++		spin_unlock_irqrestore(&amp;adapter-&gt;vfs_lock, flags);
+ 		wr32(E1000_IOVCTL, E1000_IOVCTL_REUSE_VFQ);
+ 		wrfl();
+ 		msleep(100);
+@@ -3814,7 +3816,9 @@ static void igb_remove(struct pci_dev *pdev)
+ 	igb_release_hw_control(adapter);
+ 
+ #ifdef CONFIG_PCI_IOV
++	rtnl_lock();
+ 	igb_disable_sriov(pdev);
++	rtnl_unlock();
+ #endif
+ 
+ 	unregister_netdev(netdev);
+@@ -3974,6 +3978,9 @@ static int igb_sw_init(struct igb_adapter *adapter)
+ 
+ 	spin_lock_init(&amp;adapter-&gt;nfc_lock);
+ 	spin_lock_init(&amp;adapter-&gt;stats64_lock);
++
++	/* init spinlock to avoid concurrency of VF resources */
++	spin_lock_init(&amp;adapter-&gt;vfs_lock);
+ #ifdef CONFIG_PCI_IOV
+ 	switch (hw-&gt;mac.type) {
+ 	case e1000_82576:
+@@ -7958,8 +7965,10 @@ static void igb_rcv_msg_from_vf(struct igb_adapter *adapter, u32 vf)
+ static void igb_msg_task(struct igb_adapter *adapter)
+ {
+ 	struct e1000_hw *hw = &amp;adapter-&gt;hw;
++	unsigned long flags;
+ 	u32 vf;
+ 
++	spin_lock_irqsave(&amp;adapter-&gt;vfs_lock, flags);
+ 	for (vf = 0; vf &lt; adapter-&gt;vfs_allocated_count; vf++) {
+ 		/* process any reset requests */
+ 		if (!igb_check_for_rst(hw, vf))
+@@ -7973,6 +7982,7 @@ static void igb_msg_task(struct igb_adapter *adapter)
+ 		if (!igb_check_for_ack(hw, vf))
+ 			igb_rcv_ack_from_vf(adapter, vf);
+ 	}
++	spin_unlock_irqrestore(&amp;adapter-&gt;vfs_lock, flags);
+ }
+ 
+ /**</pre><hr><pre>commit 3f4093e2bf4673f218c0bf17d8362337c400e77b
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Aug 5 15:00:08 2022 +0800
+
+    atm: idt77252: fix use-after-free bugs caused by tst_timer
+    
+    There are use-after-free bugs caused by tst_timer. The root cause
+    is that there are no functions to stop tst_timer in idt77252_exit().
+    One of the possible race conditions is shown below:
+    
+        (thread 1)          |        (thread 2)
+                            |  idt77252_init_one
+                            |    init_card
+                            |      fill_tst
+                            |        mod_timer(&amp;card-&gt;tst_timer, ...)
+    idt77252_exit           |  (wait a time)
+                            |  tst_timer
+                            |
+                            |    ...
+      kfree(card) // FREE   |
+                            |    card-&gt;soft_tst[e] // USE
+    
+    The idt77252_dev is deallocated in idt77252_exit() and used in
+    timer handler.
+    
+    This patch adds del_timer_sync() in idt77252_exit() in order that
+    the timer handler could be stopped before the idt77252_dev is
+    deallocated.
+    
+    Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20220805070008.18007-1-duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index 81ce81a75fc6..681cb3786794 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -3752,6 +3752,7 @@ static void __exit idt77252_exit(void)
+ 		card = idt77252_chain;
+ 		dev = card-&gt;atmdev;
+ 		idt77252_chain = card-&gt;next;
++		del_timer_sync(&amp;card-&gt;tst_timer);
+ 
+ 		if (dev-&gt;phy-&gt;stop)
+ 			dev-&gt;phy-&gt;stop(dev);</pre><hr><pre>commit b89fc26f741d9f9efb51cba3e9b241cf1380ec5a
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Sat Jul 23 09:58:09 2022 +0800
+
+    sctp: fix sleep in atomic context bug in timer handlers
+    
+    There are sleep in atomic context bugs in timer handlers of sctp
+    such as sctp_generate_t3_rtx_event(), sctp_generate_probe_event(),
+    sctp_generate_t1_init_event(), sctp_generate_timeout_event(),
+    sctp_generate_t3_rtx_event() and so on.
+    
+    The root cause is sctp_sched_prio_init_sid() with GFP_KERNEL parameter
+    that may sleep could be called by different timer handlers which is in
+    interrupt context.
+    
+    One of the call paths that could trigger bug is shown below:
+    
+          (interrupt context)
+    sctp_generate_probe_event
+      sctp_do_sm
+        sctp_side_effects
+          sctp_cmd_interpreter
+            sctp_outq_teardown
+              sctp_outq_init
+                sctp_sched_set_sched
+                  n-&gt;init_sid(..,GFP_KERNEL)
+                    sctp_sched_prio_init_sid //may sleep
+    
+    This patch changes gfp_t parameter of init_sid in sctp_sched_set_sched()
+    from GFP_KERNEL to GFP_ATOMIC in order to prevent sleep in atomic
+    context bugs.
+    
+    Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Acked-by: Marcelo Ricardo Leitner &lt;marcelo.leitner@gmail.com&gt;
+    Link: https://lore.kernel.org/r/20220723015809.11553-1-duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/sctp/stream_sched.c b/net/sctp/stream_sched.c
+index 518b1b9bf89d..1ad565ed5627 100644
+--- a/net/sctp/stream_sched.c
++++ b/net/sctp/stream_sched.c
+@@ -160,7 +160,7 @@ int sctp_sched_set_sched(struct sctp_association *asoc,
+ 		if (!SCTP_SO(&amp;asoc-&gt;stream, i)-&gt;ext)
+ 			continue;
+ 
+-		ret = n-&gt;init_sid(&amp;asoc-&gt;stream, i, GFP_KERNEL);
++		ret = n-&gt;init_sid(&amp;asoc-&gt;stream, i, GFP_ATOMIC);
+ 		if (ret)
+ 			goto err;
+ 	}</pre>
+    <div class="pagination">
+        <a href='6_14.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><a href='6_2.html'>2</a><a href='6_3.html'>3</a><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><span>[15]</span><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_16.html'>Next&gt;&gt;</a>
+    <div>
+</body>

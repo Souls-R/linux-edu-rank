@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Harvard University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Harvard University</h1>
+    <div class="pagination">
+        <a href='2_90.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><span>[91]</span><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_92.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 543f7810fba2a62e412efa9473ad08167b691f09
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu May 8 11:55:59 2008 -0400
+
+    usb-storage: implement "soft" unbinding
+    
+    This patch (as1092) implements "soft" unbinding for usb-storage.  When
+    the disconnect routine is called, all commands and reset delays are
+    allowed to complete normally until after scsi_remove_host() returns.
+    This means that the commands needed for an orderly shutdown will be
+    sent through to the device.
+    
+    Unlike before, the driver will now execute every command that it
+    accepts.  Hence there's no need for special code to catch unexecuted
+    commands and fail them.
+    
+    The new sequence of events when disconnect runs goes as follows:
+    
+            If the device is truly unplugged, set the DISCONNECTING
+            flag so we won't try to access it any more.
+    
+            If the SCSI-scanning thread hasn't started up yet, prevent
+            it from doing anything by setting the new DONT_SCAN flag.
+            Then wake it up and wait for it to terminate.
+    
+            Remove the SCSI host.  This unbinds the upper-level drivers,
+            doing an orderly shutdown.  Commands sent to quiesce the
+            device will be transmitted normally, unless the device is
+            unplugged.
+    
+            Set the DISCONNECTING flag so that we won't accept any new
+            commands that might get submitted (there aren't supposed to be
+            any) and we won't try to access the device for resets.
+    
+            Tell the control thread to exit by waking it up with no
+            pending command, and wait for it to terminate.
+    
+            Go on to do all the other normal stuff: releasing resources,
+            freeing memory, and so on.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
+index 2f88bb958bad..94138df557b9 100644
+--- a/drivers/usb/storage/transport.c
++++ b/drivers/usb/storage/transport.c
+@@ -127,8 +127,8 @@ static int usb_stor_msg_common(struct us_data *us, int timeout)
+ 	long timeleft;
+ 	int status;
+ 
+-	/* don't submit URBs during abort/disconnect processing */
+-	if (us-&gt;dflags &amp; ABORTING_OR_DISCONNECTING)
++	/* don't submit URBs during abort processing */
++	if (test_bit(US_FLIDX_ABORTING, &amp;us-&gt;dflags))
+ 		return -EIO;
+ 
+ 	/* set up data structures for the wakeup system */
+@@ -161,8 +161,8 @@ static int usb_stor_msg_common(struct us_data *us, int timeout)
+ 	 * to cancel it */
+ 	set_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;dflags);
+ 
+-	/* did an abort/disconnect occur during the submission? */
+-	if (us-&gt;dflags &amp; ABORTING_OR_DISCONNECTING) {
++	/* did an abort occur during the submission? */
++	if (test_bit(US_FLIDX_ABORTING, &amp;us-&gt;dflags)) {
+ 
+ 		/* cancel the URB, if it hasn't been cancelled already */
+ 		if (test_and_clear_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;dflags)) {
+@@ -419,8 +419,8 @@ static int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
+ {
+ 	int result;
+ 
+-	/* don't submit s-g requests during abort/disconnect processing */
+-	if (us-&gt;dflags &amp; ABORTING_OR_DISCONNECTING)
++	/* don't submit s-g requests during abort processing */
++	if (test_bit(US_FLIDX_ABORTING, &amp;us-&gt;dflags))
+ 		return USB_STOR_XFER_ERROR;
+ 
+ 	/* initialize the scatter-gather request block */
+@@ -437,8 +437,8 @@ static int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
+ 	 * okay to cancel it */
+ 	set_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;dflags);
+ 
+-	/* did an abort/disconnect occur during the submission? */
+-	if (us-&gt;dflags &amp; ABORTING_OR_DISCONNECTING) {
++	/* did an abort occur during the submission? */
++	if (test_bit(US_FLIDX_ABORTING, &amp;us-&gt;dflags)) {
+ 
+ 		/* cancel the request, if it hasn't been cancelled already */
+ 		if (test_and_clear_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;dflags)) {
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index 6b14f8d253f1..6bfd99dd57aa 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -320,16 +320,17 @@ static int usb_stor_control_thread(void * __us)
+ 		/* lock the device pointers */
+ 		mutex_lock(&amp;(us-&gt;dev_mutex));
+ 
+-		/* if the device has disconnected, we are free to exit */
+-		if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags)) {
+-			US_DEBUGP("-- exiting\n");
++		/* lock access to the state */
++		scsi_lock(host);
++
++		/* When we are called with no command pending, we're done */
++		if (us-&gt;srb == NULL) {
++			scsi_unlock(host);
+ 			mutex_unlock(&amp;us-&gt;dev_mutex);
++			US_DEBUGP("-- exiting\n");
+ 			break;
+ 		}
+ 
+-		/* lock access to the state */
+-		scsi_lock(host);
+-
+ 		/* has the command timed out *already* ? */
+ 		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags)) {
+ 			us-&gt;srb-&gt;result = DID_ABORT &lt;&lt; 16;
+@@ -384,12 +385,8 @@ static int usb_stor_control_thread(void * __us)
+ 		/* lock access to the state */
+ 		scsi_lock(host);
+ 
+-		/* did the command already complete because of a disconnect? */
+-		if (!us-&gt;srb)
+-			;		/* nothing to do */
+-
+ 		/* indicate that the command is done */
+-		else if (us-&gt;srb-&gt;result != DID_ABORT &lt;&lt; 16) {
++		if (us-&gt;srb-&gt;result != DID_ABORT &lt;&lt; 16) {
+ 			US_DEBUGP("scsi cmd done, result=0x%x\n", 
+ 				   us-&gt;srb-&gt;result);
+ 			us-&gt;srb-&gt;scsi_done(us-&gt;srb);
+@@ -820,11 +817,10 @@ static void usb_stor_release_resources(struct us_data *us)
+ 	US_DEBUGP("-- %s\n", __func__);
+ 
+ 	/* Tell the control thread to exit.  The SCSI host must
+-	 * already have been removed so it won't try to queue
+-	 * any more commands.
++	 * already have been removed and the DISCONNECTING flag set
++	 * so that we won't accept any more commands.
+ 	 */
+ 	US_DEBUGP("-- sending exit command to thread\n");
+-	set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags);
+ 	complete(&amp;us-&gt;cmnd_ready);
+ 	if (us-&gt;ctl_thread)
+ 		kthread_stop(us-&gt;ctl_thread);
+@@ -859,39 +855,36 @@ static void dissociate_dev(struct us_data *us)
+ 	usb_set_intfdata(us-&gt;pusb_intf, NULL);
+ }
+ 
+-/* First stage of disconnect processing: stop all commands and remove
+- * the host */
++/* First stage of disconnect processing: stop SCSI scanning,
++ * remove the host, and stop accepting new commands
++ */
+ static void quiesce_and_remove_host(struct us_data *us)
+ {
+ 	struct Scsi_Host *host = us_to_host(us);
+ 
+-	/* Prevent new USB transfers, stop the current command, and
+-	 * interrupt a SCSI-scan or device-reset delay */
+-	scsi_lock(host);
+-	set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags);
+-	scsi_unlock(host);
+-	usb_stor_stop_transport(us);
+-	wake_up(&amp;us-&gt;delay_wait);
++	/* If the device is really gone, cut short reset delays */
++	if (us-&gt;pusb_dev-&gt;state == USB_STATE_NOTATTACHED)
++		set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags);
+ 
+-	/* queuecommand won't accept any new commands and the control
+-	 * thread won't execute a previously-queued command.  If there
+-	 * is such a command pending, complete it with an error. */
+-	mutex_lock(&amp;us-&gt;dev_mutex);
+-	if (us-&gt;srb) {
+-		us-&gt;srb-&gt;result = DID_NO_CONNECT &lt;&lt; 16;
+-		scsi_lock(host);
+-		us-&gt;srb-&gt;scsi_done(us-&gt;srb);
+-		us-&gt;srb = NULL;
+-		complete(&amp;us-&gt;notify);		/* in case of an abort */
+-		scsi_unlock(host);
+-	}
+-	mutex_unlock(&amp;us-&gt;dev_mutex);
++	/* Prevent SCSI-scanning (if it hasn't started yet)
++	 * and wait for the SCSI-scanning thread to stop.
++	 */
++	set_bit(US_FLIDX_DONT_SCAN, &amp;us-&gt;dflags);
++	wake_up(&amp;us-&gt;delay_wait);
++	wait_for_completion(&amp;us-&gt;scanning_done);
+ 
+-	/* Now we own no commands so it's safe to remove the SCSI host */
++	/* Removing the host will perform an orderly shutdown: caches
++	 * synchronized, disks spun down, etc.
++	 */
+ 	scsi_remove_host(host);
+ 
+-	/* Wait for the SCSI-scanning thread to stop */
+-	wait_for_completion(&amp;us-&gt;scanning_done);
++	/* Prevent any new commands from being accepted and cut short
++	 * reset delays.
++	 */
++	scsi_lock(host);
++	set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags);
++	scsi_unlock(host);
++	wake_up(&amp;us-&gt;delay_wait);
+ }
+ 
+ /* Second stage of disconnect processing: deallocate all resources */
+@@ -919,12 +912,12 @@ static int usb_stor_scan_thread(void * __us)
+ 		printk(KERN_DEBUG "usb-storage: waiting for device "
+ 				"to settle before scanning\n");
+ 		wait_event_freezable_timeout(us-&gt;delay_wait,
+-				test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags),
++				test_bit(US_FLIDX_DONT_SCAN, &amp;us-&gt;dflags),
+ 				delay_use * HZ);
+ 	}
+ 
+ 	/* If the device is still connected, perform the scanning */
+-	if (!test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags)) {
++	if (!test_bit(US_FLIDX_DONT_SCAN, &amp;us-&gt;dflags)) {
+ 
+ 		/* For bulk-only devices, determine the max LUN value */
+ 		if (us-&gt;protocol == US_PR_BULK &amp;&amp;
+@@ -1023,6 +1016,7 @@ static int storage_probe(struct usb_interface *intf,
+ 	if (IS_ERR(th)) {
+ 		printk(KERN_WARNING USB_STORAGE 
+ 		       "Unable to start the device-scanning thread\n");
++		complete(&amp;us-&gt;scanning_done);
+ 		quiesce_and_remove_host(us);
+ 		result = PTR_ERR(th);
+ 		goto BadDevice;
+@@ -1065,6 +1059,7 @@ static struct usb_driver usb_storage_driver = {
+ 	.pre_reset =	storage_pre_reset,
+ 	.post_reset =	storage_post_reset,
+ 	.id_table =	storage_usb_ids,
++	.soft_unbind =	1,
+ };
+ 
+ static int __init usb_stor_init(void)
+diff --git a/drivers/usb/storage/usb.h b/drivers/usb/storage/usb.h
+index 8da96da5875d..47906dc620db 100644
+--- a/drivers/usb/storage/usb.h
++++ b/drivers/usb/storage/usb.h
+@@ -72,11 +72,9 @@ struct us_unusual_dev {
+ #define US_FLIDX_SG_ACTIVE	1	/* current_sg is in use     */
+ #define US_FLIDX_ABORTING	2	/* abort is in progress     */
+ #define US_FLIDX_DISCONNECTING	3	/* disconnect in progress   */
+-#define ABORTING_OR_DISCONNECTING	((1UL &lt;&lt; US_FLIDX_ABORTING) | \
+-					 (1UL &lt;&lt; US_FLIDX_DISCONNECTING))
+ #define US_FLIDX_RESETTING	4	/* device reset in progress */
+ #define US_FLIDX_TIMED_OUT	5	/* SCSI midlayer timed out  */
+-
++#define US_FLIDX_DONT_SCAN	6	/* don't scan (disconnect)  */
+ 
+ #define USB_STOR_STRING_LEN 32
+ </pre><hr><pre>commit 9da82bd4649334817ef0e752a69eb99051645dad
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu May 8 11:54:37 2008 -0400
+
+    USB: implement "soft" unbinding
+    
+    This patch (as1091) changes the way usbcore handles interface
+    unbinding.  If the interface's driver supports "soft" unbinding (a new
+    flag in the driver structure) then in-flight URBs are not cancelled
+    and endpoints are not disabled.  Instead the driver is allowed to
+    continue communicating with the device (although of course it should
+    stop before its disconnect routine returns).
+    
+    The purpose of this change is to allow drivers to do a clean shutdown
+    when they get unbound from a device that is still plugged in.  Killing
+    all the URBs and disabling the endpoints before calling the driver's
+    disconnect method doesn't give the driver any control over what
+    happens, and it can leave devices in indeterminate states.  For
+    example, when usb-storage unbinds it doesn't want to stop while in the
+    middle of transmitting a SCSI command.
+    
+    The soft_unbind flag is added because in the past, a number of drivers
+    have experienced problems related to ongoing I/O after their disconnect
+    routine returned.  Hence "soft" unbinding is made available only to
+    drivers that claim to support it.
+    
+    The patch also replaces "interface_to_usbdev(intf)" with "udev" in a
+    couple of places, a minor simplification.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index 0a0e8cea0afc..8da1a56659be 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -257,15 +257,16 @@ static int usb_unbind_interface(struct device *dev)
+ 	udev = interface_to_usbdev(intf);
+ 	error = usb_autoresume_device(udev);
+ 
+-	/* release all urbs for this interface */
+-	usb_disable_interface(interface_to_usbdev(intf), intf);
++	/* Terminate all URBs for this interface unless the driver
++	 * supports "soft" unbinding.
++	 */
++	if (!driver-&gt;soft_unbind)
++		usb_disable_interface(udev, intf);
+ 
+ 	driver-&gt;disconnect(intf);
+ 
+ 	/* reset other interface state */
+-	usb_set_interface(interface_to_usbdev(intf),
+-			intf-&gt;altsetting[0].desc.bInterfaceNumber,
+-			0);
++	usb_set_interface(udev, intf-&gt;altsetting[0].desc.bInterfaceNumber, 0);
+ 	usb_set_intfdata(intf, NULL);
+ 
+ 	intf-&gt;condition = USB_INTERFACE_UNBOUND;
+diff --git a/include/linux/usb.h b/include/linux/usb.h
+index cee7fbb2b605..8429d08bd2fd 100644
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -972,6 +972,8 @@ struct usbdrv_wrap {
+  *	added to this driver by preventing the sysfs file from being created.
+  * @supports_autosuspend: if set to 0, the USB core will not allow autosuspend
+  *	for interfaces bound to this driver.
++ * @soft_unbind: if set to 1, the USB core will not kill URBs and disable
++ *	endpoints before calling the driver's disconnect method.
+  *
+  * USB interface drivers must provide a name, probe() and disconnect()
+  * methods, and an id_table.  Other driver fields are optional.
+@@ -1012,6 +1014,7 @@ struct usb_driver {
+ 	struct usbdrv_wrap drvwrap;
+ 	unsigned int no_dynamic_id:1;
+ 	unsigned int supports_autosuspend:1;
++	unsigned int soft_unbind:1;
+ };
+ #define	to_usb_driver(d) container_of(d, struct usb_driver, drvwrap.driver)
+ </pre><hr><pre>commit 7119e3c37fbf7c27adb5929f344c826ecb8c7859
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu May 1 15:36:13 2008 -0400
+
+    usb-storage: change remaining semaphore to completion
+    
+    This patch (as1090) converts the one remaining semaphore in
+    usb-storage into a completion.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Cc: Matthew Dharm &lt;mdharm-usb@one-eyed-alien.net&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/storage/scsiglue.c b/drivers/usb/storage/scsiglue.c
+index 1caf3f7af349..043b60b2ad17 100644
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -248,7 +248,7 @@ static int queuecommand(struct scsi_cmnd *srb,
+ 	/* enqueue the command and wake up the control thread */
+ 	srb-&gt;scsi_done = done;
+ 	us-&gt;srb = srb;
+-	up(&amp;(us-&gt;sema));
++	complete(&amp;us-&gt;cmnd_ready);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index 78c0c7ee6b99..6b14f8d253f1 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -312,9 +312,9 @@ static int usb_stor_control_thread(void * __us)
+ 
+ 	for(;;) {
+ 		US_DEBUGP("*** thread sleeping.\n");
+-		if(down_interruptible(&amp;us-&gt;sema))
++		if (wait_for_completion_interruptible(&amp;us-&gt;cmnd_ready))
+ 			break;
+-			
++
+ 		US_DEBUGP("*** thread awakened.\n");
+ 
+ 		/* lock the device pointers */
+@@ -825,7 +825,7 @@ static void usb_stor_release_resources(struct us_data *us)
+ 	 */
+ 	US_DEBUGP("-- sending exit command to thread\n");
+ 	set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags);
+-	up(&amp;us-&gt;sema);
++	complete(&amp;us-&gt;cmnd_ready);
+ 	if (us-&gt;ctl_thread)
+ 		kthread_stop(us-&gt;ctl_thread);
+ 
+@@ -975,7 +975,7 @@ static int storage_probe(struct usb_interface *intf,
+ 	us = host_to_us(host);
+ 	memset(us, 0, sizeof(struct us_data));
+ 	mutex_init(&amp;(us-&gt;dev_mutex));
+-	init_MUTEX_LOCKED(&amp;(us-&gt;sema));
++	init_completion(&amp;us-&gt;cmnd_ready);
+ 	init_completion(&amp;(us-&gt;notify));
+ 	init_waitqueue_head(&amp;us-&gt;delay_wait);
+ 	init_completion(&amp;us-&gt;scanning_done);
+diff --git a/drivers/usb/storage/usb.h b/drivers/usb/storage/usb.h
+index b169132f021b..8da96da5875d 100644
+--- a/drivers/usb/storage/usb.h
++++ b/drivers/usb/storage/usb.h
+@@ -148,7 +148,7 @@ struct us_data {
+ 	struct task_struct	*ctl_thread;	 /* the control thread   */
+ 
+ 	/* mutual exclusion and synchronization structures */
+-	struct semaphore	sema;		 /* to sleep thread on	    */
++	struct completion	cmnd_ready;	 /* to sleep thread on	    */
+ 	struct completion	notify;		 /* thread begin/end	    */
+ 	wait_queue_head_t	delay_wait;	 /* wait during scan, reset */
+ 	struct completion	scanning_done;	 /* wait for scan thread    */</pre><hr><pre>commit 7e4d6c387994294ac8198b624ee71e75de60dfd2
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu May 1 15:35:18 2008 -0400
+
+    usb-storage: separate dynamic flags from fixed flags
+    
+    This patch (as1089) separates out the dynamic atomic bitflags and the
+    static bitfields in usb-storage.  Until now the two sorts of flags
+    have been sharing the same word; this has always been awkward.
+    
+    To help prevent possible confusion, the two new fields each have a
+    different name from the original.  us-&gt;fflags contains the fixed
+    bitfields (mostly taken from the USB ID table in unusual_devs.h), and
+    us-&gt;dflags contains the dynamic atomic bitflags (used with set_bit,
+    test_bit, and so on).
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Cc: Matthew Dharm &lt;mdharm-usb@one-eyed-alien.net&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/storage/isd200.c b/drivers/usb/storage/isd200.c
+index 3addcd8f827b..a153335f3648 100644
+--- a/drivers/usb/storage/isd200.c
++++ b/drivers/usb/storage/isd200.c
+@@ -586,7 +586,7 @@ static void isd200_invoke_transport( struct us_data *us,
+ 	/* if the command gets aborted by the higher layers, we need to
+ 	 * short-circuit all other processing
+ 	 */
+-	if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;flags)) {
++	if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags)) {
+ 		US_DEBUGP("-- command was aborted\n");
+ 		goto Handle_Abort;
+ 	}
+@@ -633,7 +633,7 @@ static void isd200_invoke_transport( struct us_data *us,
+ 
+ 	if (need_auto_sense) {
+ 		result = isd200_read_regs(us);
+-		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;flags)) {
++		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags)) {
+ 			US_DEBUGP("-- auto-sense aborted\n");
+ 			goto Handle_Abort;
+ 		}
+@@ -663,7 +663,7 @@ static void isd200_invoke_transport( struct us_data *us,
+ 	srb-&gt;result = DID_ABORT &lt;&lt; 16;
+ 
+ 	/* permit the reset transfer to take place */
+-	clear_bit(US_FLIDX_ABORTING, &amp;us-&gt;flags);
++	clear_bit(US_FLIDX_ABORTING, &amp;us-&gt;dflags);
+ 	/* Need reset here */
+ }
+ 
+diff --git a/drivers/usb/storage/scsiglue.c b/drivers/usb/storage/scsiglue.c
+index 3fcde9f0fa5f..1caf3f7af349 100644
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -116,10 +116,10 @@ static int slave_configure(struct scsi_device *sdev)
+ 	 * while others have trouble with more than 64K. At this time we
+ 	 * are limiting both to 32K (64 sectores).
+ 	 */
+-	if (us-&gt;flags &amp; (US_FL_MAX_SECTORS_64 | US_FL_MAX_SECTORS_MIN)) {
++	if (us-&gt;fflags &amp; (US_FL_MAX_SECTORS_64 | US_FL_MAX_SECTORS_MIN)) {
+ 		unsigned int max_sectors = 64;
+ 
+-		if (us-&gt;flags &amp; US_FL_MAX_SECTORS_MIN)
++		if (us-&gt;fflags &amp; US_FL_MAX_SECTORS_MIN)
+ 			max_sectors = PAGE_CACHE_SIZE &gt;&gt; 9;
+ 		if (sdev-&gt;request_queue-&gt;max_sectors &gt; max_sectors)
+ 			blk_queue_max_sectors(sdev-&gt;request_queue,
+@@ -148,7 +148,7 @@ static int slave_configure(struct scsi_device *sdev)
+ 		 * majority of devices work fine, but a few still can't
+ 		 * handle it.  The sd driver will simply assume those
+ 		 * devices are write-enabled. */
+-		if (us-&gt;flags &amp; US_FL_NO_WP_DETECT)
++		if (us-&gt;fflags &amp; US_FL_NO_WP_DETECT)
+ 			sdev-&gt;skip_ms_page_3f = 1;
+ 
+ 		/* A number of devices have problems with MODE SENSE for
+@@ -158,13 +158,13 @@ static int slave_configure(struct scsi_device *sdev)
+ 		/* Some disks return the total number of blocks in response
+ 		 * to READ CAPACITY rather than the highest block number.
+ 		 * If this device makes that mistake, tell the sd driver. */
+-		if (us-&gt;flags &amp; US_FL_FIX_CAPACITY)
++		if (us-&gt;fflags &amp; US_FL_FIX_CAPACITY)
+ 			sdev-&gt;fix_capacity = 1;
+ 
+ 		/* A few disks have two indistinguishable version, one of
+ 		 * which reports the correct capacity and the other does not.
+ 		 * The sd driver has to guess which is the case. */
+-		if (us-&gt;flags &amp; US_FL_CAPACITY_HEURISTICS)
++		if (us-&gt;fflags &amp; US_FL_CAPACITY_HEURISTICS)
+ 			sdev-&gt;guess_capacity = 1;
+ 
+ 		/* Some devices report a SCSI revision level above 2 but are
+@@ -213,7 +213,7 @@ static int slave_configure(struct scsi_device *sdev)
+ 
+ 	/* Some devices choke when they receive a PREVENT-ALLOW MEDIUM
+ 	 * REMOVAL command, so suppress those commands. */
+-	if (us-&gt;flags &amp; US_FL_NOT_LOCKABLE)
++	if (us-&gt;fflags &amp; US_FL_NOT_LOCKABLE)
+ 		sdev-&gt;lockable = 0;
+ 
+ 	/* this is to satisfy the compiler, tho I don't think the 
+@@ -238,7 +238,7 @@ static int queuecommand(struct scsi_cmnd *srb,
+ 	}
+ 
+ 	/* fail the command if we are disconnecting */
+-	if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags)) {
++	if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags)) {
+ 		US_DEBUGP("Fail command during disconnect\n");
+ 		srb-&gt;result = DID_NO_CONNECT &lt;&lt; 16;
+ 		done(srb);
+@@ -280,9 +280,9 @@ static int command_abort(struct scsi_cmnd *srb)
+ 	 * with the reset).  Note that we must retain the host lock while
+ 	 * calling usb_stor_stop_transport(); otherwise it might interfere
+ 	 * with an auto-reset that begins as soon as we release the lock. */
+-	set_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;flags);
+-	if (!test_bit(US_FLIDX_RESETTING, &amp;us-&gt;flags)) {
+-		set_bit(US_FLIDX_ABORTING, &amp;us-&gt;flags);
++	set_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags);
++	if (!test_bit(US_FLIDX_RESETTING, &amp;us-&gt;dflags)) {
++		set_bit(US_FLIDX_ABORTING, &amp;us-&gt;dflags);
+ 		usb_stor_stop_transport(us);
+ 	}
+ 	scsi_unlock(us_to_host(us));
+@@ -329,7 +329,7 @@ void usb_stor_report_device_reset(struct us_data *us)
+ 	struct Scsi_Host *host = us_to_host(us);
+ 
+ 	scsi_report_device_reset(host, 0, 0);
+-	if (us-&gt;flags &amp; US_FL_SCM_MULT_TARG) {
++	if (us-&gt;fflags &amp; US_FL_SCM_MULT_TARG) {
+ 		for (i = 1; i &lt; host-&gt;max_id; ++i)
+ 			scsi_report_device_reset(host, 0, i);
+ 	}
+@@ -400,7 +400,7 @@ static int proc_info (struct Scsi_Host *host, char *buffer,
+ 		pos += sprintf(pos, "       Quirks:");
+ 
+ #define US_FLAG(name, value) \
+-	if (us-&gt;flags &amp; value) pos += sprintf(pos, " " #name);
++	if (us-&gt;fflags &amp; value) pos += sprintf(pos, " " #name);
+ US_DO_ALL_FLAGS
+ #undef US_FLAG
+ 
+diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
+index 6610d2dd1e7f..2f88bb958bad 100644
+--- a/drivers/usb/storage/transport.c
++++ b/drivers/usb/storage/transport.c
+@@ -75,14 +75,14 @@
+  * by a separate code path.)
+  *
+  * The abort function (usb_storage_command_abort() in scsiglue.c) first
+- * sets the machine state and the ABORTING bit in us-&gt;flags to prevent
++ * sets the machine state and the ABORTING bit in us-&gt;dflags to prevent
+  * new URBs from being submitted.  It then calls usb_stor_stop_transport()
+- * below, which atomically tests-and-clears the URB_ACTIVE bit in us-&gt;flags
++ * below, which atomically tests-and-clears the URB_ACTIVE bit in us-&gt;dflags
+  * to see if the current_urb needs to be stopped.  Likewise, the SG_ACTIVE
+  * bit is tested to see if the current_sg scatter-gather request needs to be
+  * stopped.  The timeout callback routine does much the same thing.
+  *
+- * When a disconnect occurs, the DISCONNECTING bit in us-&gt;flags is set to
++ * When a disconnect occurs, the DISCONNECTING bit in us-&gt;dflags is set to
+  * prevent new URBs from being submitted, and usb_stor_stop_transport() is
+  * called to stop any ongoing requests.
+  *
+@@ -128,7 +128,7 @@ static int usb_stor_msg_common(struct us_data *us, int timeout)
+ 	int status;
+ 
+ 	/* don't submit URBs during abort/disconnect processing */
+-	if (us-&gt;flags &amp; ABORTING_OR_DISCONNECTING)
++	if (us-&gt;dflags &amp; ABORTING_OR_DISCONNECTING)
+ 		return -EIO;
+ 
+ 	/* set up data structures for the wakeup system */
+@@ -159,13 +159,13 @@ static int usb_stor_msg_common(struct us_data *us, int timeout)
+ 
+ 	/* since the URB has been submitted successfully, it's now okay
+ 	 * to cancel it */
+-	set_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;flags);
++	set_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;dflags);
+ 
+ 	/* did an abort/disconnect occur during the submission? */
+-	if (us-&gt;flags &amp; ABORTING_OR_DISCONNECTING) {
++	if (us-&gt;dflags &amp; ABORTING_OR_DISCONNECTING) {
+ 
+ 		/* cancel the URB, if it hasn't been cancelled already */
+-		if (test_and_clear_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;flags)) {
++		if (test_and_clear_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;dflags)) {
+ 			US_DEBUGP("-- cancelling URB\n");
+ 			usb_unlink_urb(us-&gt;current_urb);
+ 		}
+@@ -175,7 +175,7 @@ static int usb_stor_msg_common(struct us_data *us, int timeout)
+ 	timeleft = wait_for_completion_interruptible_timeout(
+ 			&amp;urb_done, timeout ? : MAX_SCHEDULE_TIMEOUT);
+  
+-	clear_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;flags);
++	clear_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;dflags);
+ 
+ 	if (timeleft &lt;= 0) {
+ 		US_DEBUGP("%s -- cancelling URB\n",
+@@ -420,7 +420,7 @@ static int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
+ 	int result;
+ 
+ 	/* don't submit s-g requests during abort/disconnect processing */
+-	if (us-&gt;flags &amp; ABORTING_OR_DISCONNECTING)
++	if (us-&gt;dflags &amp; ABORTING_OR_DISCONNECTING)
+ 		return USB_STOR_XFER_ERROR;
+ 
+ 	/* initialize the scatter-gather request block */
+@@ -435,13 +435,13 @@ static int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
+ 
+ 	/* since the block has been initialized successfully, it's now
+ 	 * okay to cancel it */
+-	set_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;flags);
++	set_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;dflags);
+ 
+ 	/* did an abort/disconnect occur during the submission? */
+-	if (us-&gt;flags &amp; ABORTING_OR_DISCONNECTING) {
++	if (us-&gt;dflags &amp; ABORTING_OR_DISCONNECTING) {
+ 
+ 		/* cancel the request, if it hasn't been cancelled already */
+-		if (test_and_clear_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;flags)) {
++		if (test_and_clear_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;dflags)) {
+ 			US_DEBUGP("-- cancelling sg request\n");
+ 			usb_sg_cancel(&amp;us-&gt;current_sg);
+ 		}
+@@ -449,7 +449,7 @@ static int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
+ 
+ 	/* wait for the completion of the transfer */
+ 	usb_sg_wait(&amp;us-&gt;current_sg);
+-	clear_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;flags);
++	clear_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;dflags);
+ 
+ 	result = us-&gt;current_sg.status;
+ 	if (act_len)
+@@ -530,7 +530,7 @@ void usb_stor_invoke_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 	/* if the command gets aborted by the higher layers, we need to
+ 	 * short-circuit all other processing
+ 	 */
+-	if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;flags)) {
++	if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags)) {
+ 		US_DEBUGP("-- command was aborted\n");
+ 		srb-&gt;result = DID_ABORT &lt;&lt; 16;
+ 		goto Handle_Errors;
+@@ -616,7 +616,7 @@ void usb_stor_invoke_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 		/* let's clean up right away */
+ 		scsi_eh_restore_cmnd(srb, &amp;ses);
+ 
+-		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;flags)) {
++		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags)) {
+ 			US_DEBUGP("-- auto-sense aborted\n");
+ 			srb-&gt;result = DID_ABORT &lt;&lt; 16;
+ 			goto Handle_Errors;
+@@ -629,7 +629,7 @@ void usb_stor_invoke_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 			 * auto-sense is perfectly valid
+ 			 */
+ 			srb-&gt;result = DID_ERROR &lt;&lt; 16;
+-			if (!(us-&gt;flags &amp; US_FL_SCM_MULT_TARG))
++			if (!(us-&gt;fflags &amp; US_FL_SCM_MULT_TARG))
+ 				goto Handle_Errors;
+ 			return;
+ 		}
+@@ -679,8 +679,8 @@ void usb_stor_invoke_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 	/* Set the RESETTING bit, and clear the ABORTING bit so that
+ 	 * the reset may proceed. */
+ 	scsi_lock(us_to_host(us));
+-	set_bit(US_FLIDX_RESETTING, &amp;us-&gt;flags);
+-	clear_bit(US_FLIDX_ABORTING, &amp;us-&gt;flags);
++	set_bit(US_FLIDX_RESETTING, &amp;us-&gt;dflags);
++	clear_bit(US_FLIDX_ABORTING, &amp;us-&gt;dflags);
+ 	scsi_unlock(us_to_host(us));
+ 
+ 	/* We must release the device lock because the pre_reset routine
+@@ -695,7 +695,7 @@ void usb_stor_invoke_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 		scsi_unlock(us_to_host(us));
+ 		us-&gt;transport_reset(us);
+ 	}
+-	clear_bit(US_FLIDX_RESETTING, &amp;us-&gt;flags);
++	clear_bit(US_FLIDX_RESETTING, &amp;us-&gt;dflags);
+ }
+ 
+ /* Stop the current URB transfer */
+@@ -707,13 +707,13 @@ void usb_stor_stop_transport(struct us_data *us)
+ 	 * let's wake it up.  The test_and_clear_bit() call
+ 	 * guarantees that if a URB has just been submitted,
+ 	 * it won't be cancelled more than once. */
+-	if (test_and_clear_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;flags)) {
++	if (test_and_clear_bit(US_FLIDX_URB_ACTIVE, &amp;us-&gt;dflags)) {
+ 		US_DEBUGP("-- cancelling URB\n");
+ 		usb_unlink_urb(us-&gt;current_urb);
+ 	}
+ 
+ 	/* If we are waiting for a scatter-gather operation, cancel it. */
+-	if (test_and_clear_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;flags)) {
++	if (test_and_clear_bit(US_FLIDX_SG_ACTIVE, &amp;us-&gt;dflags)) {
+ 		US_DEBUGP("-- cancelling sg request\n");
+ 		usb_sg_cancel(&amp;us-&gt;current_sg);
+ 	}
+@@ -914,7 +914,7 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 	unsigned int cbwlen = US_BULK_CB_WRAP_LEN;
+ 
+ 	/* Take care of BULK32 devices; set extra byte to 0 */
+-	if ( unlikely(us-&gt;flags &amp; US_FL_BULK32)) {
++	if (unlikely(us-&gt;fflags &amp; US_FL_BULK32)) {
+ 		cbwlen = 32;
+ 		us-&gt;iobuf[31] = 0;
+ 	}
+@@ -925,7 +925,7 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 	bcb-&gt;Flags = srb-&gt;sc_data_direction == DMA_FROM_DEVICE ? 1 &lt;&lt; 7 : 0;
+ 	bcb-&gt;Tag = ++us-&gt;tag;
+ 	bcb-&gt;Lun = srb-&gt;device-&gt;lun;
+-	if (us-&gt;flags &amp; US_FL_SCM_MULT_TARG)
++	if (us-&gt;fflags &amp; US_FL_SCM_MULT_TARG)
+ 		bcb-&gt;Lun |= srb-&gt;device-&gt;id &lt;&lt; 4;
+ 	bcb-&gt;Length = srb-&gt;cmd_len;
+ 
+@@ -951,7 +951,7 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 	/* Some USB-IDE converter chips need a 100us delay between the
+ 	 * command phase and the data phase.  Some devices need a little
+ 	 * more than that, probably because of clock rate inaccuracies. */
+-	if (unlikely(us-&gt;flags &amp; US_FL_GO_SLOW))
++	if (unlikely(us-&gt;fflags &amp; US_FL_GO_SLOW))
+ 		udelay(125);
+ 
+ 	if (transfer_length) {
+@@ -1010,7 +1010,7 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 	US_DEBUGP("Bulk Status S 0x%x T 0x%x R %u Stat 0x%x\n",
+ 			le32_to_cpu(bcs-&gt;Signature), bcs-&gt;Tag, 
+ 			residue, bcs-&gt;Status);
+-	if (!(bcs-&gt;Tag == us-&gt;tag || (us-&gt;flags &amp; US_FL_BULK_IGNORE_TAG)) ||
++	if (!(bcs-&gt;Tag == us-&gt;tag || (us-&gt;fflags &amp; US_FL_BULK_IGNORE_TAG)) ||
+ 		bcs-&gt;Status &gt; US_BULK_STAT_PHASE) {
+ 		US_DEBUGP("Bulk logical error\n");
+ 		return USB_STOR_TRANSPORT_ERROR;
+@@ -1035,7 +1035,7 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
+ 	/* try to compute the actual residue, based on how much data
+ 	 * was really transferred and what the device tells us */
+ 	if (residue) {
+-		if (!(us-&gt;flags &amp; US_FL_IGNORE_RESIDUE)) {
++		if (!(us-&gt;fflags &amp; US_FL_IGNORE_RESIDUE)) {
+ 			residue = min(residue, transfer_length);
+ 			scsi_set_resid(srb, max(scsi_get_resid(srb),
+ 			                                       (int) residue));
+@@ -1090,7 +1090,7 @@ static int usb_stor_reset_common(struct us_data *us,
+ 	int result;
+ 	int result2;
+ 
+-	if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags)) {
++	if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags)) {
+ 		US_DEBUGP("No reset during disconnect\n");
+ 		return -EIO;
+ 	}
+@@ -1103,12 +1103,12 @@ static int usb_stor_reset_common(struct us_data *us,
+ 		return result;
+ 	}
+ 
+- 	/* Give the device some time to recover from the reset,
+- 	 * but don't delay disconnect processing. */
+- 	wait_event_interruptible_timeout(us-&gt;delay_wait,
+- 			test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags),
+- 			HZ*6);
+-	if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags)) {
++	/* Give the device some time to recover from the reset,
++	 * but don't delay disconnect processing. */
++	wait_event_interruptible_timeout(us-&gt;delay_wait,
++			test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags),
++			HZ*6);
++	if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags)) {
+ 		US_DEBUGP("Reset interrupted by disconnect\n");
+ 		return -EIO;
+ 	}
+@@ -1170,7 +1170,7 @@ int usb_stor_port_reset(struct us_data *us)
+ 		US_DEBUGP("unable to lock device for reset: %d\n", result);
+ 	else {
+ 		/* Were we disconnected while waiting for the lock? */
+-		if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags)) {
++		if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags)) {
+ 			result = -EIO;
+ 			US_DEBUGP("No reset during disconnect\n");
+ 		} else {
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index e268aacb773a..78c0c7ee6b99 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -321,7 +321,7 @@ static int usb_stor_control_thread(void * __us)
+ 		mutex_lock(&amp;(us-&gt;dev_mutex));
+ 
+ 		/* if the device has disconnected, we are free to exit */
+-		if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags)) {
++		if (test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags)) {
+ 			US_DEBUGP("-- exiting\n");
+ 			mutex_unlock(&amp;us-&gt;dev_mutex);
+ 			break;
+@@ -331,7 +331,7 @@ static int usb_stor_control_thread(void * __us)
+ 		scsi_lock(host);
+ 
+ 		/* has the command timed out *already* ? */
+-		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;flags)) {
++		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags)) {
+ 			us-&gt;srb-&gt;result = DID_ABORT &lt;&lt; 16;
+ 			goto SkipForAbort;
+ 		}
+@@ -350,7 +350,7 @@ static int usb_stor_control_thread(void * __us)
+ 		 * the maximum known LUN
+ 		 */
+ 		else if (us-&gt;srb-&gt;device-&gt;id &amp;&amp; 
+-				!(us-&gt;flags &amp; US_FL_SCM_MULT_TARG)) {
++				!(us-&gt;fflags &amp; US_FL_SCM_MULT_TARG)) {
+ 			US_DEBUGP("Bad target number (%d:%d)\n",
+ 				  us-&gt;srb-&gt;device-&gt;id, us-&gt;srb-&gt;device-&gt;lun);
+ 			us-&gt;srb-&gt;result = DID_BAD_TARGET &lt;&lt; 16;
+@@ -365,7 +365,7 @@ static int usb_stor_control_thread(void * __us)
+ 		/* Handle those devices which need us to fake 
+ 		 * their inquiry data */
+ 		else if ((us-&gt;srb-&gt;cmnd[0] == INQUIRY) &amp;&amp;
+-			    (us-&gt;flags &amp; US_FL_FIX_INQUIRY)) {
++			    (us-&gt;fflags &amp; US_FL_FIX_INQUIRY)) {
+ 			unsigned char data_ptr[36] = {
+ 			    0x00, 0x80, 0x02, 0x02,
+ 			    0x1F, 0x00, 0x00, 0x00};
+@@ -403,12 +403,12 @@ static int usb_stor_control_thread(void * __us)
+ 		 * the TIMED_OUT flag, not srb-&gt;result == DID_ABORT, because
+ 		 * the timeout might have occurred after the command had
+ 		 * already completed with a different result code. */
+-		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;flags)) {
++		if (test_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags)) {
+ 			complete(&amp;(us-&gt;notify));
+ 
+ 			/* Allow USB transfers to resume */
+-			clear_bit(US_FLIDX_ABORTING, &amp;us-&gt;flags);
+-			clear_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;flags);
++			clear_bit(US_FLIDX_ABORTING, &amp;us-&gt;dflags);
++			clear_bit(US_FLIDX_TIMED_OUT, &amp;us-&gt;dflags);
+ 		}
+ 
+ 		/* finished working on this command */
+@@ -500,9 +500,9 @@ static int get_device_info(struct us_data *us, const struct usb_device_id *id)
+ 	us-&gt;protocol = (unusual_dev-&gt;useTransport == US_PR_DEVICE) ?
+ 			idesc-&gt;bInterfaceProtocol :
+ 			unusual_dev-&gt;useTransport;
+-	us-&gt;flags = USB_US_ORIG_FLAGS(id-&gt;driver_info);
++	us-&gt;fflags = USB_US_ORIG_FLAGS(id-&gt;driver_info);
+ 
+-	if (us-&gt;flags &amp; US_FL_IGNORE_DEVICE) {
++	if (us-&gt;fflags &amp; US_FL_IGNORE_DEVICE) {
+ 		printk(KERN_INFO USB_STORAGE "device ignored\n");
+ 		return -ENODEV;
+ 	}
+@@ -512,7 +512,7 @@ static int get_device_info(struct us_data *us, const struct usb_device_id *id)
+ 	 * disable it if we're in full-speed
+ 	 */
+ 	if (dev-&gt;speed != USB_SPEED_HIGH)
+-		us-&gt;flags &amp;= ~US_FL_GO_SLOW;
++		us-&gt;fflags &amp;= ~US_FL_GO_SLOW;
+ 
+ 	/* Log a message if a non-generic unusual_dev entry contains an
+ 	 * unnecessary subclass or protocol override.  This may stimulate
+@@ -533,7 +533,7 @@ static int get_device_info(struct us_data *us, const struct usb_device_id *id)
+ 		if (unusual_dev-&gt;useTransport != US_PR_DEVICE &amp;&amp;
+ 			us-&gt;protocol == idesc-&gt;bInterfaceProtocol)
+ 			msg += 2;
+-		if (msg &gt;= 0 &amp;&amp; !(us-&gt;flags &amp; US_FL_NEED_OVERRIDE))
++		if (msg &gt;= 0 &amp;&amp; !(us-&gt;fflags &amp; US_FL_NEED_OVERRIDE))
+ 			printk(KERN_NOTICE USB_STORAGE "This device "
+ 				"(%04x,%04x,%04x S %02x P %02x)"
+ 				" has %s in unusual_devs.h (kernel"
+@@ -663,7 +663,7 @@ static int get_transport(struct us_data *us)
+ 	US_DEBUGP("Transport: %s\n", us-&gt;transport_name);
+ 
+ 	/* fix for single-lun devices */
+-	if (us-&gt;flags &amp; US_FL_SINGLE_LUN)
++	if (us-&gt;fflags &amp; US_FL_SINGLE_LUN)
+ 		us-&gt;max_lun = 0;
+ 	return 0;
+ }
+@@ -824,7 +824,7 @@ static void usb_stor_release_resources(struct us_data *us)
+ 	 * any more commands.
+ 	 */
+ 	US_DEBUGP("-- sending exit command to thread\n");
+-	set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags);
++	set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags);
+ 	up(&amp;us-&gt;sema);
+ 	if (us-&gt;ctl_thread)
+ 		kthread_stop(us-&gt;ctl_thread);
+@@ -868,7 +868,7 @@ static void quiesce_and_remove_host(struct us_data *us)
+ 	/* Prevent new USB transfers, stop the current command, and
+ 	 * interrupt a SCSI-scan or device-reset delay */
+ 	scsi_lock(host);
+-	set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags);
++	set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags);
+ 	scsi_unlock(host);
+ 	usb_stor_stop_transport(us);
+ 	wake_up(&amp;us-&gt;delay_wait);
+@@ -919,16 +919,16 @@ static int usb_stor_scan_thread(void * __us)
+ 		printk(KERN_DEBUG "usb-storage: waiting for device "
+ 				"to settle before scanning\n");
+ 		wait_event_freezable_timeout(us-&gt;delay_wait,
+-				test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags),
++				test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags),
+ 				delay_use * HZ);
+ 	}
+ 
+ 	/* If the device is still connected, perform the scanning */
+-	if (!test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;flags)) {
++	if (!test_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags)) {
+ 
+ 		/* For bulk-only devices, determine the max LUN value */
+ 		if (us-&gt;protocol == US_PR_BULK &amp;&amp;
+-				!(us-&gt;flags &amp; US_FL_SINGLE_LUN)) {
++				!(us-&gt;fflags &amp; US_FL_SINGLE_LUN)) {
+ 			mutex_lock(&amp;us-&gt;dev_mutex);
+ 			us-&gt;max_lun = usb_stor_Bulk_max_lun(us);
+ 			mutex_unlock(&amp;us-&gt;dev_mutex);
+diff --git a/drivers/usb/storage/usb.h b/drivers/usb/storage/usb.h
+index 8d87503e2560..b169132f021b 100644
+--- a/drivers/usb/storage/usb.h
++++ b/drivers/usb/storage/usb.h
+@@ -67,15 +67,15 @@ struct us_unusual_dev {
+ };
+ 
+ 
+-/* Dynamic flag definitions: used in set_bit() etc. */
+-#define US_FLIDX_URB_ACTIVE	18  /* 0x00040000  current_urb is in use  */
+-#define US_FLIDX_SG_ACTIVE	19  /* 0x00080000  current_sg is in use   */
+-#define US_FLIDX_ABORTING	20  /* 0x00100000  abort is in progress   */
+-#define US_FLIDX_DISCONNECTING	21  /* 0x00200000  disconnect in progress */
++/* Dynamic bitflag definitions (us-&gt;dflags): used in set_bit() etc. */
++#define US_FLIDX_URB_ACTIVE	0	/* current_urb is in use    */
++#define US_FLIDX_SG_ACTIVE	1	/* current_sg is in use     */
++#define US_FLIDX_ABORTING	2	/* abort is in progress     */
++#define US_FLIDX_DISCONNECTING	3	/* disconnect in progress   */
+ #define ABORTING_OR_DISCONNECTING	((1UL &lt;&lt; US_FLIDX_ABORTING) | \
+ 					 (1UL &lt;&lt; US_FLIDX_DISCONNECTING))
+-#define US_FLIDX_RESETTING	22  /* 0x00400000  device reset in progress */
+-#define US_FLIDX_TIMED_OUT	23  /* 0x00800000  SCSI midlayer timed out  */
++#define US_FLIDX_RESETTING	4	/* device reset in progress */
++#define US_FLIDX_TIMED_OUT	5	/* SCSI midlayer timed out  */
+ 
+ 
+ #define USB_STOR_STRING_LEN 32
+@@ -109,7 +109,8 @@ struct us_data {
+ 	struct usb_device	*pusb_dev;	 /* this usb_device */
+ 	struct usb_interface	*pusb_intf;	 /* this interface */
+ 	struct us_unusual_dev   *unusual_dev;	 /* device-filter entry     */
+-	unsigned long		flags;		 /* from filter initially */
++	unsigned long		fflags;		 /* fixed flags from filter */
++	unsigned long		dflags;		 /* dynamic atomic bitflags */
+ 	unsigned int		send_bulk_pipe;	 /* cached pipe values */
+ 	unsigned int		recv_bulk_pipe;
+ 	unsigned int		send_ctrl_pipe;</pre><hr><pre>commit 4330354f7660828d97834598633054b413f6264d
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Apr 28 11:07:31 2008 -0400
+
+    USB: combine hub_quiesce and hub_stop
+    
+    This patch (as1083) combines hub_quiesce() and hub_stop() into a
+    single routine.  There's no point keeping them separate since they are
+    usually called together.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 4c629a036aed..e678ed8bd8c2 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -538,19 +538,6 @@ static void hub_power_on(struct usb_hub *hub)
+ 	msleep(max(pgood_delay, (unsigned) 100));
+ }
+ 
+-static void hub_quiesce(struct usb_hub *hub)
+-{
+-	/* (nonblocking) khubd and related activity won't re-trigger */
+-	hub-&gt;quiescing = 1;
+-
+-	/* (blocking) stop khubd and related activity */
+-	usb_kill_urb(hub-&gt;urb);
+-	if (hub-&gt;has_indicators)
+-		cancel_delayed_work_sync(&amp;hub-&gt;leds);
+-	if (hub-&gt;tt.hub)
+-		cancel_work_sync(&amp;hub-&gt;tt.kevent);
+-}
+-
+ static int hub_hub_status(struct usb_hub *hub,
+ 		u16 *status, u16 *change)
+ {
+@@ -609,20 +596,6 @@ static void hub_port_logical_disconnect(struct usb_hub *hub, int port1)
+  	kick_khubd(hub);
+ }
+ 
+-/* caller has locked the hub device */
+-static void hub_stop(struct usb_hub *hub)
+-{
+-	struct usb_device *hdev = hub-&gt;hdev;
+-	int i;
+-
+-	/* Disconnect all the children */
+-	for (i = 0; i &lt; hdev-&gt;maxchild; ++i) {
+-		if (hdev-&gt;children[i])
+-			usb_disconnect(&amp;hdev-&gt;children[i]);
+-	}
+-	hub_quiesce(hub);
+-}
+-
+ enum hub_activation_type {
+ 	HUB_INIT, HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME
+ };
+@@ -732,12 +705,40 @@ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+ 	kick_khubd(hub);
+ }
+ 
++enum hub_quiescing_type {
++	HUB_DISCONNECT, HUB_PRE_RESET, HUB_SUSPEND
++};
++
++static void hub_quiesce(struct usb_hub *hub, enum hub_quiescing_type type)
++{
++	struct usb_device *hdev = hub-&gt;hdev;
++	int i;
++
++	/* khubd and related activity won't re-trigger */
++	hub-&gt;quiescing = 1;
++
++	if (type != HUB_SUSPEND) {
++		/* Disconnect all the children */
++		for (i = 0; i &lt; hdev-&gt;maxchild; ++i) {
++			if (hdev-&gt;children[i])
++				usb_disconnect(&amp;hdev-&gt;children[i]);
++		}
++	}
++
++	/* Stop khubd and related activity */
++	usb_kill_urb(hub-&gt;urb);
++	if (hub-&gt;has_indicators)
++		cancel_delayed_work_sync(&amp;hub-&gt;leds);
++	if (hub-&gt;tt.hub)
++		cancel_work_sync(&amp;hub-&gt;tt.kevent);
++}
++
+ /* caller has locked the hub device */
+ static int hub_pre_reset(struct usb_interface *intf)
+ {
+ 	struct usb_hub *hub = usb_get_intfdata(intf);
+ 
+-	hub_stop(hub);
++	hub_quiesce(hub, HUB_PRE_RESET);
+ 	return 0;
+ }
+ 
+@@ -1024,7 +1025,7 @@ static void hub_disconnect(struct usb_interface *intf)
+ 
+ 	/* Disconnect all children and quiesce the hub */
+ 	hub-&gt;error = 0;
+-	hub_stop(hub);
++	hub_quiesce(hub, HUB_DISCONNECT);
+ 
+ 	usb_set_intfdata (intf, NULL);
+ 
+@@ -2167,7 +2168,7 @@ static int hub_suspend(struct usb_interface *intf, pm_message_t msg)
+ 	dev_dbg(&amp;intf-&gt;dev, "%s\n", __func__);
+ 
+ 	/* stop khubd and related activity */
+-	hub_quiesce(hub);
++	hub_quiesce(hub, HUB_SUSPEND);
+ 	return 0;
+ }
+ 
+@@ -2914,7 +2915,7 @@ static void hub_events(void)
+ 		/* If the hub has died, clean up after it */
+ 		if (hdev-&gt;state == USB_STATE_NOTATTACHED) {
+ 			hub-&gt;error = -ENODEV;
+-			hub_stop(hub);
++			hub_quiesce(hub, HUB_DISCONNECT);
+ 			goto loop;
+ 		}
+ </pre><hr><pre>commit f2835219ed5e29ec959a0e635af4339d6174b2a7
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Apr 28 11:07:17 2008 -0400
+
+    USB: combine hub_activate and hub_restart
+    
+    This patch (as1071) combines hub_activate() and hub_restart() into a
+    single routine.  There's no point keeping them separate, since they
+    are always called together.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index bc80168957b8..4c629a036aed 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -551,22 +551,6 @@ static void hub_quiesce(struct usb_hub *hub)
+ 		cancel_work_sync(&amp;hub-&gt;tt.kevent);
+ }
+ 
+-static void hub_activate(struct usb_hub *hub)
+-{
+-	int	status;
+-
+-	hub-&gt;quiescing = 0;
+-
+-	status = usb_submit_urb(hub-&gt;urb, GFP_NOIO);
+-	if (status &lt; 0)
+-		dev_err(hub-&gt;intfdev, "activate --&gt; %d\n", status);
+-	if (hub-&gt;has_indicators &amp;&amp; blinkenlights)
+-		schedule_delayed_work(&amp;hub-&gt;leds, LED_CYCLE_PERIOD);
+-
+-	/* scan all ports ASAP */
+-	kick_khubd(hub);
+-}
+-
+ static int hub_hub_status(struct usb_hub *hub,
+ 		u16 *status, u16 *change)
+ {
+@@ -643,18 +627,24 @@ enum hub_activation_type {
+ 	HUB_INIT, HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME
+ };
+ 
+-static void hub_restart(struct usb_hub *hub, enum hub_activation_type type)
++static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+ {
+ 	struct usb_device *hdev = hub-&gt;hdev;
+ 	int port1;
++	int status;
+ 	bool need_debounce_delay = false;
+ 
++	/* After a resume, port power should still be on.
++	 * For any other type of activation, turn it on.
++	 */
++	if (type != HUB_RESUME)
++		hub_power_on(hub);
++
+ 	/* Check each port and set hub-&gt;change_bits to let khubd know
+ 	 * which ports need attention.
+ 	 */
+ 	for (port1 = 1; port1 &lt;= hdev-&gt;maxchild; ++port1) {
+ 		struct usb_device *udev = hdev-&gt;children[port1-1];
+-		int status;
+ 		u16 portstatus, portchange;
+ 
+ 		portstatus = portchange = 0;
+@@ -729,7 +719,17 @@ static void hub_restart(struct usb_hub *hub, enum hub_activation_type type)
+ 	 */
+ 	if (need_debounce_delay)
+ 		msleep(HUB_DEBOUNCE_STABLE);
+-	hub_activate(hub);
++
++	hub-&gt;quiescing = 0;
++
++	status = usb_submit_urb(hub-&gt;urb, GFP_NOIO);
++	if (status &lt; 0)
++		dev_err(hub-&gt;intfdev, "activate --&gt; %d\n", status);
++	if (hub-&gt;has_indicators &amp;&amp; blinkenlights)
++		schedule_delayed_work(&amp;hub-&gt;leds, LED_CYCLE_PERIOD);
++
++	/* Scan all ports that need attention */
++	kick_khubd(hub);
+ }
+ 
+ /* caller has locked the hub device */
+@@ -746,8 +746,7 @@ static int hub_post_reset(struct usb_interface *intf)
+ {
+ 	struct usb_hub *hub = usb_get_intfdata(intf);
+ 
+-	hub_power_on(hub);
+-	hub_restart(hub, HUB_POST_RESET);
++	hub_activate(hub, HUB_POST_RESET);
+ 	return 0;
+ }
+ 
+@@ -993,8 +992,7 @@ static int hub_configure(struct usb_hub *hub,
+ 	if (hub-&gt;has_indicators &amp;&amp; blinkenlights)
+ 		hub-&gt;indicator [0] = INDICATOR_CYCLE;
+ 
+-	hub_power_on(hub);
+-	hub_activate(hub);
++	hub_activate(hub, HUB_INIT);
+ 	return 0;
+ 
+ fail:
+@@ -2178,7 +2176,7 @@ static int hub_resume(struct usb_interface *intf)
+ 	struct usb_hub *hub = usb_get_intfdata(intf);
+ 
+ 	dev_dbg(&amp;intf-&gt;dev, "%s\n", __func__);
+-	hub_restart(hub, HUB_RESUME);
++	hub_activate(hub, HUB_RESUME);
+ 	return 0;
+ }
+ 
+@@ -2187,8 +2185,7 @@ static int hub_reset_resume(struct usb_interface *intf)
+ 	struct usb_hub *hub = usb_get_intfdata(intf);
+ 
+ 	dev_dbg(&amp;intf-&gt;dev, "%s\n", __func__);
+-	hub_power_on(hub);
+-	hub_restart(hub, HUB_RESET_RESUME);
++	hub_activate(hub, HUB_RESET_RESUME);
+ 	return 0;
+ }
+ </pre><hr><pre>commit 948fea37dcebfef8f0f2faf00930e7ec7e756e07
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Apr 28 11:07:07 2008 -0400
+
+    USB: optimize port debouncing during hub activation
+    
+    This patch (as1082) makes a small optimization to the way the hub
+    driver carries out port debouncing immediately after a hub is
+    activated (i.e., initialized, reset, or resumed).  If any port-change
+    statuses are observed, the code will delay for a minimal debounce
+    period -- thereby making a good start at debouncing all the ports at
+    once.
+    
+    If this wasn't sufficient then khubd will debounce any port that still
+    requires attention.  But in most cases it should suffice; it's rare
+    for a device to need more than a minimal debounce delay.  (In the
+    cases of hub initialization or reset even that is most likely not
+    needed, since any devices plugged in at such times have probably been
+    attached for a while.)
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 8ea095e59099..bc80168957b8 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -130,6 +130,10 @@ MODULE_PARM_DESC(use_both_schemes,
+ DECLARE_RWSEM(ehci_cf_port_reset_rwsem);
+ EXPORT_SYMBOL_GPL(ehci_cf_port_reset_rwsem);
+ 
++#define HUB_DEBOUNCE_TIMEOUT	1500
++#define HUB_DEBOUNCE_STEP	  25
++#define HUB_DEBOUNCE_STABLE	 100
++
+ 
+ static inline char *portspeed(int portstatus)
+ {
+@@ -643,6 +647,7 @@ static void hub_restart(struct usb_hub *hub, enum hub_activation_type type)
+ {
+ 	struct usb_device *hdev = hub-&gt;hdev;
+ 	int port1;
++	bool need_debounce_delay = false;
+ 
+ 	/* Check each port and set hub-&gt;change_bits to let khubd know
+ 	 * which ports need attention.
+@@ -673,6 +678,18 @@ static void hub_restart(struct usb_hub *hub, enum hub_activation_type type)
+ 			portstatus &amp;= ~USB_PORT_STAT_ENABLE;
+ 		}
+ 
++		/* Clear status-change flags; we'll debounce later */
++		if (portchange &amp; USB_PORT_STAT_C_CONNECTION) {
++			need_debounce_delay = true;
++			clear_port_feature(hub-&gt;hdev, port1,
++					USB_PORT_FEAT_C_CONNECTION);
++		}
++		if (portchange &amp; USB_PORT_STAT_C_ENABLE) {
++			need_debounce_delay = true;
++			clear_port_feature(hub-&gt;hdev, port1,
++					USB_PORT_FEAT_C_ENABLE);
++		}
++
+ 		if (!udev || udev-&gt;state == USB_STATE_NOTATTACHED) {
+ 			/* Tell khubd to disconnect the device or
+ 			 * check for a new connection
+@@ -702,6 +719,16 @@ static void hub_restart(struct usb_hub *hub, enum hub_activation_type type)
+ 		}
+ 	}
+ 
++	/* If no port-status-change flags were set, we don't need any
++	 * debouncing.  If flags were set we can try to debounce the
++	 * ports all at once right now, instead of letting khubd do them
++	 * one at a time later on.
++	 *
++	 * If any port-status changes do occur during this delay, khubd
++	 * will see them later and handle them normally.
++	 */
++	if (need_debounce_delay)
++		msleep(HUB_DEBOUNCE_STABLE);
+ 	hub_activate(hub);
+ }
+ 
+@@ -2211,11 +2238,6 @@ static inline int remote_wakeup(struct usb_device *udev)
+  * every 25ms for transient disconnects.  When the port status has been
+  * unchanged for 100ms it returns the port status.
+  */
+-
+-#define HUB_DEBOUNCE_TIMEOUT	1500
+-#define HUB_DEBOUNCE_STEP	  25
+-#define HUB_DEBOUNCE_STABLE	 100
+-
+ static int hub_port_debounce(struct usb_hub *hub, int port1)
+ {
+ 	int ret;</pre><hr><pre>commit 8808f00c7adfc8dc0b797c34ec03490b237fce4e
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Apr 28 11:06:55 2008 -0400
+
+    USB: try to salvage lost power sessions
+    
+    This patch (as1073) adds to khubd a way to recover from power-session
+    interruption caused by transient connect-change or enable-change
+    events.  After the debouncing period, khubd attempts to do a
+    USB-Persist-style reset or reset-resume.  If it works, the connection
+    will remain unscathed.
+    
+    The upshot is that we will be more immune to noise caused by EMI.  The
+    grace period is on the order of 100 ms, so this won't permit recovery
+    from the "accidentally knocked the USB cable out of its socket" type
+    of event, but it's a start.
+    
+    As an added bonus, if a device was suspended when the system goes to
+    sleep then we no longer need to check for power-session interruptions
+    when the system wakes up.  Khubd will naturally see the status change
+    while processing the device's parent hub and will do the right thing.
+    
+    The remote_wakeup() routine is changed; now it expects the caller to
+    acquire the device lock rather than acquiring the lock itself.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index bf1585b203ca..0a0e8cea0afc 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -1537,14 +1537,11 @@ static int usb_resume(struct device *dev)
+ 	udev = to_usb_device(dev);
+ 
+ 	/* If udev-&gt;skip_sys_resume is set then udev was already suspended
+-	 * when the system suspend started, so we don't want to resume
+-	 * udev during this system wakeup.  However a reset-resume counts
+-	 * as a wakeup event, so allow a reset-resume to occur if remote
+-	 * wakeup is enabled. */
+-	if (udev-&gt;skip_sys_resume) {
+-		if (!(udev-&gt;reset_resume &amp;&amp; udev-&gt;do_remote_wakeup))
+-			return -EHOSTUNREACH;
+-	}
++	 * when the system sleep started, so we don't want to resume it
++	 * during this system wakeup.
++	 */
++	if (udev-&gt;skip_sys_resume)
++		return 0;
+ 	return usb_external_resume_device(udev);
+ }
+ 
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 054a76dc5d5b..8ea095e59099 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -690,18 +690,11 @@ static void hub_restart(struct usb_hub *hub, enum hub_activation_type type)
+ 				set_bit(port1, hub-&gt;change_bits);
+ 
+ 		} else if (udev-&gt;persist_enabled) {
+-			/* Turn off the status changes to prevent khubd
+-			 * from disconnecting the device.
+-			 */
+-			if (portchange &amp; USB_PORT_STAT_C_ENABLE)
+-				clear_port_feature(hub-&gt;hdev, port1,
+-						USB_PORT_FEAT_C_ENABLE);
+-			if (portchange &amp; USB_PORT_STAT_C_CONNECTION)
+-				clear_port_feature(hub-&gt;hdev, port1,
+-						USB_PORT_FEAT_C_CONNECTION);
+ #ifdef CONFIG_PM
+ 			udev-&gt;reset_resume = 1;
+ #endif
++			set_bit(port1, hub-&gt;change_bits);
++
+ 		} else {
+ 			/* The power session is gone; tell khubd */
+ 			usb_set_device_state(udev, USB_STATE_NOTATTACHED);
+@@ -2075,17 +2068,16 @@ int usb_port_resume(struct usb_device *udev)
+ 	return status;
+ }
+ 
++/* caller has locked udev */
+ static int remote_wakeup(struct usb_device *udev)
+ {
+ 	int	status = 0;
+ 
+-	usb_lock_device(udev);
+ 	if (udev-&gt;state == USB_STATE_SUSPENDED) {
+ 		dev_dbg(&amp;udev-&gt;dev, "usb %sresume\n", "wakeup-");
+ 		usb_mark_last_busy(udev);
+ 		status = usb_external_resume_device(udev);
+ 	}
+-	usb_unlock_device(udev);
+ 	return status;
+ }
+ 
+@@ -2632,6 +2624,7 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
+ 	struct usb_hcd *hcd = bus_to_hcd(hdev-&gt;bus);
+ 	unsigned wHubCharacteristics =
+ 			le16_to_cpu(hub-&gt;descriptor-&gt;wHubCharacteristics);
++	struct usb_device *udev;
+ 	int status, i;
+ 
+ 	dev_dbg (hub_dev,
+@@ -2666,8 +2659,45 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
+ 		}
+ 	}
+ 
++	/* Try to resuscitate an existing device */
++	udev = hdev-&gt;children[port1-1];
++	if ((portstatus &amp; USB_PORT_STAT_CONNECTION) &amp;&amp; udev &amp;&amp;
++			udev-&gt;state != USB_STATE_NOTATTACHED) {
++
++		usb_lock_device(udev);
++		if (portstatus &amp; USB_PORT_STAT_ENABLE) {
++			status = 0;		/* Nothing to do */
++		} else if (!udev-&gt;persist_enabled) {
++			status = -ENODEV;	/* Mustn't resuscitate */
++
++#ifdef CONFIG_USB_SUSPEND
++		} else if (udev-&gt;state == USB_STATE_SUSPENDED) {
++			/* For a suspended device, treat this as a
++			 * remote wakeup event.
++			 */
++			if (udev-&gt;do_remote_wakeup)
++				status = remote_wakeup(udev);
++
++			/* Otherwise leave it be; devices can't tell the
++			 * difference between suspended and disabled.
++			 */
++			else
++				status = 0;
++#endif
++
++		} else {
++			status = usb_reset_composite_device(udev, NULL);
++		}
++		usb_unlock_device(udev);
++
++		if (status == 0) {
++			clear_bit(port1, hub-&gt;change_bits);
++			return;
++		}
++	}
++
+ 	/* Disconnect any existing devices under this port */
+-	if (hdev-&gt;children[port1-1])
++	if (udev)
+ 		usb_disconnect(&amp;hdev-&gt;children[port1-1]);
+ 	clear_bit(port1, hub-&gt;change_bits);
+ 
+@@ -2685,7 +2715,6 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
+ 	}
+ 
+ 	for (i = 0; i &lt; SET_CONFIG_TRIES; i++) {
+-		struct usb_device *udev;
+ 
+ 		/* reallocate for each attempt, since references
+ 		 * to the previous one can escape in various ways
+@@ -2944,11 +2973,16 @@ static void hub_events(void)
+ 			}
+ 
+ 			if (portchange &amp; USB_PORT_STAT_C_SUSPEND) {
++				struct usb_device *udev;
++
+ 				clear_port_feature(hdev, i,
+ 					USB_PORT_FEAT_C_SUSPEND);
+-				if (hdev-&gt;children[i-1]) {
++				udev = hdev-&gt;children[i-1];
++				if (udev) {
++					usb_lock_device(udev);
+ 					ret = remote_wakeup(hdev-&gt;
+ 							children[i-1]);
++					usb_unlock_device(udev);
+ 					if (ret &lt; 0)
+ 						connect_change = 1;
+ 				} else {</pre><hr><pre>commit 6ee0b270c733027b2b716b1c80b9aced41e08d20
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Apr 28 11:06:42 2008 -0400
+
+    USB: simplify hub_restart() logic
+    
+    This patch (as1081) straightens out the logic of the hub_restart()
+    routine.  Each port of the hub is scanned and the driver makes sure
+    that ports which are supposed to be disabled really _are_ disabled.
+    Any ports with a significant change in status are flagged in
+    hub-&gt;change_bits, so that khubd can focus on them without the need to
+    scan all the ports a second time -- which means the hub-&gt;activating
+    flag is no longer needed.
+    
+    Also, it is now recognized explicitly that the only reason for
+    resuming a port which was not suspended is to carry out a reset-resume
+    operation, which happens only in a non-CONFIG_USB_SUSPEND setting.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index d0b37d776afe..bf1585b203ca 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -805,8 +805,6 @@ static int usb_resume_device(struct usb_device *udev)
+ 
+ 	if (udev-&gt;state == USB_STATE_NOTATTACHED)
+ 		goto done;
+-	if (udev-&gt;state != USB_STATE_SUSPENDED &amp;&amp; !udev-&gt;reset_resume)
+-		goto done;
+ 
+ 	/* Can't resume it if it doesn't have a driver. */
+ 	if (udev-&gt;dev.driver == NULL) {
+@@ -1173,11 +1171,8 @@ static int usb_resume_both(struct usb_device *udev)
+ 			 * then we're stuck. */
+ 			status = usb_resume_device(udev);
+ 		}
+-	} else {
+-
+-		/* Needed for reset-resume */
++	} else if (udev-&gt;reset_resume)
+ 		status = usb_resume_device(udev);
+-	}
+ 
+ 	if (status == 0 &amp;&amp; udev-&gt;actconfig) {
+ 		for (i = 0; i &lt; udev-&gt;actconfig-&gt;desc.bNumInterfaces; i++) {
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 976da1c4919b..054a76dc5d5b 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -72,7 +72,6 @@ struct usb_hub {
+ 
+ 	unsigned		limited_power:1;
+ 	unsigned		quiescing:1;
+-	unsigned		activating:1;
+ 	unsigned		disconnected:1;
+ 
+ 	unsigned		has_indicators:1;
+@@ -539,7 +538,6 @@ static void hub_quiesce(struct usb_hub *hub)
+ {
+ 	/* (nonblocking) khubd and related activity won't re-trigger */
+ 	hub-&gt;quiescing = 1;
+-	hub-&gt;activating = 0;
+ 
+ 	/* (blocking) stop khubd and related activity */
+ 	usb_kill_urb(hub-&gt;urb);
+@@ -554,7 +552,6 @@ static void hub_activate(struct usb_hub *hub)
+ 	int	status;
+ 
+ 	hub-&gt;quiescing = 0;
+-	hub-&gt;activating = 1;
+ 
+ 	status = usb_submit_urb(hub-&gt;urb, GFP_NOIO);
+ 	if (status &lt; 0)
+@@ -638,81 +635,83 @@ static void hub_stop(struct usb_hub *hub)
+ 	hub_quiesce(hub);
+ }
+ 
+-#define HUB_RESET		1
+-#define HUB_RESUME		2
+-#define HUB_RESET_RESUME	3
+-
+-#ifdef CONFIG_PM
++enum hub_activation_type {
++	HUB_INIT, HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME
++};
+ 
+-static void hub_restart(struct usb_hub *hub, int type)
++static void hub_restart(struct usb_hub *hub, enum hub_activation_type type)
+ {
+ 	struct usb_device *hdev = hub-&gt;hdev;
+ 	int port1;
+ 
+-	/* Check each of the children to see if they require
+-	 * USB-PERSIST handling or disconnection.  Also check
+-	 * each unoccupied port to make sure it is still disabled.
++	/* Check each port and set hub-&gt;change_bits to let khubd know
++	 * which ports need attention.
+ 	 */
+ 	for (port1 = 1; port1 &lt;= hdev-&gt;maxchild; ++port1) {
+ 		struct usb_device *udev = hdev-&gt;children[port1-1];
+-		int status = 0;
++		int status;
+ 		u16 portstatus, portchange;
+ 
+-		if (!udev || udev-&gt;state == USB_STATE_NOTATTACHED) {
+-			if (type != HUB_RESET) {
+-				status = hub_port_status(hub, port1,
+-						&amp;portstatus, &amp;portchange);
+-				if (status == 0 &amp;&amp; (portstatus &amp;
+-						USB_PORT_STAT_ENABLE))
+-					clear_port_feature(hdev, port1,
+-							USB_PORT_FEAT_ENABLE);
+-			}
+-			continue;
++		portstatus = portchange = 0;
++		status = hub_port_status(hub, port1, &amp;portstatus, &amp;portchange);
++		if (udev || (portstatus &amp; USB_PORT_STAT_CONNECTION))
++			dev_dbg(hub-&gt;intfdev,
++					"port %d: status %04x change %04x\n",
++					port1, portstatus, portchange);
++
++		/* After anything other than HUB_RESUME (i.e., initialization
++		 * or any sort of reset), every port should be disabled.
++		 * Unconnected ports should likewise be disabled (paranoia),
++		 * and so should ports for which we have no usb_device.
++		 */
++		if ((portstatus &amp; USB_PORT_STAT_ENABLE) &amp;&amp; (
++				type != HUB_RESUME ||
++				!(portstatus &amp; USB_PORT_STAT_CONNECTION) ||
++				!udev ||
++				udev-&gt;state == USB_STATE_NOTATTACHED)) {
++			clear_port_feature(hdev, port1, USB_PORT_FEAT_ENABLE);
++			portstatus &amp;= ~USB_PORT_STAT_ENABLE;
+ 		}
+ 
+-		/* Was the power session lost while we were suspended? */
+-		switch (type) {
+-		case HUB_RESET_RESUME:
+-			portstatus = 0;
+-			portchange = USB_PORT_STAT_C_CONNECTION;
+-			break;
+-
+-		case HUB_RESET:
+-		case HUB_RESUME:
+-			status = hub_port_status(hub, port1,
+-					&amp;portstatus, &amp;portchange);
+-			break;
+-		}
++		if (!udev || udev-&gt;state == USB_STATE_NOTATTACHED) {
++			/* Tell khubd to disconnect the device or
++			 * check for a new connection
++			 */
++			if (udev || (portstatus &amp; USB_PORT_STAT_CONNECTION))
++				set_bit(port1, hub-&gt;change_bits);
++
++		} else if (portstatus &amp; USB_PORT_STAT_ENABLE) {
++			/* The power session apparently survived the resume.
++			 * If there was an overcurrent or suspend change
++			 * (i.e., remote wakeup request), have khubd
++			 * take care of it.
++			 */
++			if (portchange)
++				set_bit(port1, hub-&gt;change_bits);
+ 
+-		/* For "USB_PERSIST"-enabled children we must
+-		 * mark the child device for reset-resume and
+-		 * turn off the various status changes to prevent
+-		 * khubd from disconnecting it later.
+-		 */
+-		if (udev-&gt;persist_enabled &amp;&amp; status == 0 &amp;&amp;
+-				!(portstatus &amp; USB_PORT_STAT_ENABLE)) {
++		} else if (udev-&gt;persist_enabled) {
++			/* Turn off the status changes to prevent khubd
++			 * from disconnecting the device.
++			 */
+ 			if (portchange &amp; USB_PORT_STAT_C_ENABLE)
+ 				clear_port_feature(hub-&gt;hdev, port1,
+ 						USB_PORT_FEAT_C_ENABLE);
+ 			if (portchange &amp; USB_PORT_STAT_C_CONNECTION)
+ 				clear_port_feature(hub-&gt;hdev, port1,
+ 						USB_PORT_FEAT_C_CONNECTION);
++#ifdef CONFIG_PM
+ 			udev-&gt;reset_resume = 1;
++#endif
++		} else {
++			/* The power session is gone; tell khubd */
++			usb_set_device_state(udev, USB_STATE_NOTATTACHED);
++			set_bit(port1, hub-&gt;change_bits);
+ 		}
+-
+-		/* Otherwise for a reset_resume we must disconnect the child,
+-		 * but as we may not lock the child device here
+-		 * we have to do a "logical" disconnect.
+-		 */
+-		else if (type == HUB_RESET_RESUME)
+-			hub_port_logical_disconnect(hub, port1);
+ 	}
+ 
+ 	hub_activate(hub);
+ }
+ 
+-#endif	/* CONFIG_PM */
+-
+ /* caller has locked the hub device */
+ static int hub_pre_reset(struct usb_interface *intf)
+ {
+@@ -728,7 +727,7 @@ static int hub_post_reset(struct usb_interface *intf)
+ 	struct usb_hub *hub = usb_get_intfdata(intf);
+ 
+ 	hub_power_on(hub);
+-	hub_activate(hub);
++	hub_restart(hub, HUB_POST_RESET);
+ 	return 0;
+ }
+ 
+@@ -2903,7 +2902,7 @@ static void hub_events(void)
+ 				continue;
+ 			connect_change = test_bit(i, hub-&gt;change_bits);
+ 			if (!test_and_clear_bit(i, hub-&gt;event_bits) &amp;&amp;
+-					!connect_change &amp;&amp; !hub-&gt;activating)
++					!connect_change)
+ 				continue;
+ 
+ 			ret = hub_port_status(hub, i,
+@@ -2911,11 +2910,6 @@ static void hub_events(void)
+ 			if (ret &lt; 0)
+ 				continue;
+ 
+-			if (hub-&gt;activating &amp;&amp; !hdev-&gt;children[i-1] &amp;&amp;
+-					(portstatus &amp;
+-						USB_PORT_STAT_CONNECTION))
+-				connect_change = 1;
+-
+ 			if (portchange &amp; USB_PORT_STAT_C_CONNECTION) {
+ 				clear_port_feature(hdev, i,
+ 					USB_PORT_FEAT_C_CONNECTION);
+@@ -3011,8 +3005,6 @@ static void hub_events(void)
+ 			}
+ 		}
+ 
+-		hub-&gt;activating = 0;
+-
+ 		/* If this is a root hub, tell the HCD it's okay to
+ 		 * re-enable port-change interrupts now. */
+ 		if (!hdev-&gt;parent &amp;&amp; !hub-&gt;busy_bits[0])</pre><hr><pre>commit 24618b0cd42f936cda461bdf6144670a5c925178
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Apr 28 11:06:28 2008 -0400
+
+    USB: debounce before unregistering
+    
+    This patch (as1080) makes a significant change to the way khubd
+    handles port connect-change and enable-change events.  Both types of
+    event are now debounced, and the debouncing is carried out _before_ an
+    existing usb_device is unregistered, instead of afterward.
+    
+    This means that drivers will have to deal with longer runs of errors
+    when a device is unplugged, but they are supposed to be prepared for
+    that in any case.
+    
+    The advantage is that when an enable-change occurs (caused for example
+    by electromagnetic interference), the debouncing period will provide
+    time for the cause of the problem to die away.  A simple port reset
+    (added in a forthcoming patch) will then allow us to recover from the
+    fault.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index d14da2123eb5..d741b9457427 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2673,9 +2673,10 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
+ 	struct usb_device *hdev = hub-&gt;hdev;
+ 	struct device *hub_dev = hub-&gt;intfdev;
+ 	struct usb_hcd *hcd = bus_to_hcd(hdev-&gt;bus);
+-	u16 wHubCharacteristics = le16_to_cpu(hub-&gt;descriptor-&gt;wHubCharacteristics);
++	unsigned wHubCharacteristics =
++			le16_to_cpu(hub-&gt;descriptor-&gt;wHubCharacteristics);
+ 	int status, i;
+- 
++
+ 	dev_dbg (hub_dev,
+ 		"port %d, status %04x, change %04x, %s\n",
+ 		port1, portstatus, portchange, portspeed (portstatus));
+@@ -2684,30 +2685,36 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
+ 		set_port_led(hub, port1, HUB_LED_AUTO);
+ 		hub-&gt;indicator[port1-1] = INDICATOR_AUTO;
+ 	}
+- 
+-	/* Disconnect any existing devices under this port */
+-	if (hdev-&gt;children[port1-1])
+-		usb_disconnect(&amp;hdev-&gt;children[port1-1]);
+-	clear_bit(port1, hub-&gt;change_bits);
+ 
+ #ifdef	CONFIG_USB_OTG
+ 	/* during HNP, don't repeat the debounce */
+ 	if (hdev-&gt;bus-&gt;is_b_host)
+-		portchange &amp;= ~USB_PORT_STAT_C_CONNECTION;
++		portchange &amp;= ~(USB_PORT_STAT_C_CONNECTION |
++				USB_PORT_STAT_C_ENABLE);
+ #endif
+ 
+-	if (portchange &amp; USB_PORT_STAT_C_CONNECTION) {
++	/* Try to use the debounce delay for protection against
++	 * port-enable changes caused, for example, by EMI.
++	 */
++	if (portchange &amp; (USB_PORT_STAT_C_CONNECTION |
++				USB_PORT_STAT_C_ENABLE)) {
+ 		status = hub_port_debounce(hub, port1);
+ 		if (status &lt; 0) {
+ 			if (printk_ratelimit())
+ 				dev_err (hub_dev, "connect-debounce failed, "
+ 						"port %d disabled\n", port1);
+-			goto done;
++			portstatus &amp;= ~USB_PORT_STAT_CONNECTION;
++		} else {
++			portstatus = status;
+ 		}
+-		portstatus = status;
+ 	}
+ 
+-	/* Return now if nothing is connected */
++	/* Disconnect any existing devices under this port */
++	if (hdev-&gt;children[port1-1])
++		usb_disconnect(&amp;hdev-&gt;children[port1-1]);
++	clear_bit(port1, hub-&gt;change_bits);
++
++	/* Return now if debouncing failed or nothing is connected */
+ 	if (!(portstatus &amp; USB_PORT_STAT_CONNECTION)) {
+ 
+ 		/* maybe switch power back on (e.g. root hub was reset) */</pre>
+    <div class="pagination">
+        <a href='2_90.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><span>[91]</span><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_92.html'>Next&gt;&gt;</a>
+    <div>
+</body>

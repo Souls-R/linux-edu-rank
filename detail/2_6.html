@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Harvard University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Harvard University</h1>
+    <div class="pagination">
+        <a href='2_5.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><span>[6]</span><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_7.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit e9b667a82cdcfe21d590344447d65daed52b353b
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Mar 3 16:00:17 2022 -0500
+
+    usb: usbtmc: Fix bug in pipe direction for control transfers
+    
+    The syzbot fuzzer reported a minor bug in the usbtmc driver:
+    
+    usb 5-1: BOGUS control dir, pipe 80001e80 doesn't match bRequestType 0
+    WARNING: CPU: 0 PID: 3813 at drivers/usb/core/urb.c:412
+    usb_submit_urb+0x13a5/0x1970 drivers/usb/core/urb.c:410
+    Modules linked in:
+    CPU: 0 PID: 3813 Comm: syz-executor122 Not tainted
+    5.17.0-rc5-syzkaller-00306-g2293be58d6a1 #0
+    ...
+    Call Trace:
+     &lt;TASK&gt;
+     usb_start_wait_urb+0x113/0x530 drivers/usb/core/message.c:58
+     usb_internal_control_msg drivers/usb/core/message.c:102 [inline]
+     usb_control_msg+0x2a5/0x4b0 drivers/usb/core/message.c:153
+     usbtmc_ioctl_request drivers/usb/class/usbtmc.c:1947 [inline]
+    
+    The problem is that usbtmc_ioctl_request() uses usb_rcvctrlpipe() for
+    all of its transfers, whether they are in or out.  It's easy to fix.
+    
+    CC: &lt;stable@vger.kernel.org&gt;
+    Reported-and-tested-by: syzbot+a48e3d1a875240cab5de@syzkaller.appspotmail.com
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Link: https://lore.kernel.org/r/YiEsYTPEE6lOCOA5@rowland.harvard.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
+index 73f419adce61..4bb6d304eb4b 100644
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -1919,6 +1919,7 @@ static int usbtmc_ioctl_request(struct usbtmc_device_data *data,
+ 	struct usbtmc_ctrlrequest request;
+ 	u8 *buffer = NULL;
+ 	int rv;
++	unsigned int is_in, pipe;
+ 	unsigned long res;
+ 
+ 	res = copy_from_user(&amp;request, arg, sizeof(struct usbtmc_ctrlrequest));
+@@ -1928,12 +1929,14 @@ static int usbtmc_ioctl_request(struct usbtmc_device_data *data,
+ 	if (request.req.wLength &gt; USBTMC_BUFSIZE)
+ 		return -EMSGSIZE;
+ 
++	is_in = request.req.bRequestType &amp; USB_DIR_IN;
++
+ 	if (request.req.wLength) {
+ 		buffer = kmalloc(request.req.wLength, GFP_KERNEL);
+ 		if (!buffer)
+ 			return -ENOMEM;
+ 
+-		if ((request.req.bRequestType &amp; USB_DIR_IN) == 0) {
++		if (!is_in) {
+ 			/* Send control data to device */
+ 			res = copy_from_user(buffer, request.data,
+ 					     request.req.wLength);
+@@ -1944,8 +1947,12 @@ static int usbtmc_ioctl_request(struct usbtmc_device_data *data,
+ 		}
+ 	}
+ 
++	if (is_in)
++		pipe = usb_rcvctrlpipe(data-&gt;usb_dev, 0);
++	else
++		pipe = usb_sndctrlpipe(data-&gt;usb_dev, 0);
+ 	rv = usb_control_msg(data-&gt;usb_dev,
+-			usb_rcvctrlpipe(data-&gt;usb_dev, 0),
++			pipe,
+ 			request.req.bRequest,
+ 			request.req.bRequestType,
+ 			request.req.wValue,
+@@ -1957,7 +1964,7 @@ static int usbtmc_ioctl_request(struct usbtmc_device_data *data,
+ 		goto exit;
+ 	}
+ 
+-	if (rv &amp;&amp; (request.req.bRequestType &amp; USB_DIR_IN)) {
++	if (rv &amp;&amp; is_in) {
+ 		/* Read control data from device */
+ 		res = copy_to_user(request.data, buffer, rv);
+ 		if (res)</pre><hr><pre>commit f6a9a2d64dd168b7d71076c0e6b2be7db7cb7399
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Feb 25 09:38:25 2022 -0500
+
+    USB: core: Update kerneldoc for usb_get_dev() and usb_get_intf()
+    
+    The kerneldoc for usb_get_dev() and usb_get_intf() says that drivers
+    should always refcount the references they hold for the usb_device or
+    usb_interface structure, respectively.  But this is an overstatement:
+    In many cases drivers do not access these references after they have
+    been unbound, and in such cases refcounting is unnecessary.
+    
+    This patch updates the kerneldoc for the two routines, explaining when
+    a driver does not need to increment and decrement the refcount.  This
+    should help dispel misconceptions which might otherwise afflict
+    programmers new to the USB subsystem.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Link: https://lore.kernel.org/r/Yhjp4Rp9Alipmwtq@rowland.harvard.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 2ce3667ec6fa..2f71636af6e1 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -688,6 +688,10 @@ EXPORT_SYMBOL_GPL(usb_alloc_dev);
+  * Drivers for USB interfaces should normally record such references in
+  * their probe() methods, when they bind to an interface, and release
+  * them by calling usb_put_dev(), in their disconnect() methods.
++ * However, if a driver does not access the usb_device structure after
++ * its disconnect() method returns then refcounting is not necessary,
++ * because the USB core guarantees that a usb_device will not be
++ * deallocated until after all of its interface drivers have been unbound.
+  *
+  * Return: A pointer to the device with the incremented reference counter.
+  */
+@@ -722,6 +726,10 @@ EXPORT_SYMBOL_GPL(usb_put_dev);
+  * Drivers for USB interfaces should normally record such references in
+  * their probe() methods, when they bind to an interface, and release
+  * them by calling usb_put_intf(), in their disconnect() methods.
++ * However, if a driver does not access the usb_interface structure after
++ * its disconnect() method returns then refcounting is not necessary,
++ * because the USB core guarantees that a usb_interface will not be
++ * deallocated until after its driver has been unbound.
+  *
+  * Return: A pointer to the interface with the incremented reference counter.
+  */</pre><hr><pre>commit e2b665f612ca2ddc61c3d54817a3a780aee6b251
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Feb 1 14:00:08 2022 -0500
+
+    tools/memory-model: Explain syntactic and semantic dependencies
+    
+    Paul Heidekrüger pointed out that the Linux Kernel Memory Model
+    documentation doesn't mention the distinction between syntactic and
+    semantic dependencies.  This is an important difference, because the
+    compiler can easily break dependencies that are only syntactic, not
+    semantic.
+    
+    This patch adds a few paragraphs to the LKMM documentation explaining
+    these issues and illustrating how they can matter.
+    
+    Suggested-by: Paul Heidekrüger &lt;paul.heidekrueger@in.tum.de&gt;
+    Reviewed-by: Akira Yokosawa &lt;akiyks@gmail.com&gt;
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Paul E. McKenney &lt;paulmck@kernel.org&gt;
+
+diff --git a/tools/memory-model/Documentation/explanation.txt b/tools/memory-model/Documentation/explanation.txt
+index 394ee57d58f2..ee819a402b69 100644
+--- a/tools/memory-model/Documentation/explanation.txt
++++ b/tools/memory-model/Documentation/explanation.txt
+@@ -485,6 +485,57 @@ have R -&gt;po X.  It wouldn't make sense for a computation to depend
+ somehow on a value that doesn't get loaded from shared memory until
+ later in the code!
+ 
++Here's a trick question: When is a dependency not a dependency?  Answer:
++When it is purely syntactic rather than semantic.  We say a dependency
++between two accesses is purely syntactic if the second access doesn't
++actually depend on the result of the first.  Here is a trivial example:
++
++	r1 = READ_ONCE(x);
++	WRITE_ONCE(y, r1 * 0);
++
++There appears to be a data dependency from the load of x to the store
++of y, since the value to be stored is computed from the value that was
++loaded.  But in fact, the value stored does not really depend on
++anything since it will always be 0.  Thus the data dependency is only
++syntactic (it appears to exist in the code) but not semantic (the
++second access will always be the same, regardless of the value of the
++first access).  Given code like this, a compiler could simply discard
++the value returned by the load from x, which would certainly destroy
++any dependency.  (The compiler is not permitted to eliminate entirely
++the load generated for a READ_ONCE() -- that's one of the nice
++properties of READ_ONCE() -- but it is allowed to ignore the load's
++value.)
++
++It's natural to object that no one in their right mind would write
++code like the above.  However, macro expansions can easily give rise
++to this sort of thing, in ways that often are not apparent to the
++programmer.
++
++Another mechanism that can lead to purely syntactic dependencies is
++related to the notion of "undefined behavior".  Certain program
++behaviors are called "undefined" in the C language specification,
++which means that when they occur there are no guarantees at all about
++the outcome.  Consider the following example:
++
++	int a[1];
++	int i;
++
++	r1 = READ_ONCE(i);
++	r2 = READ_ONCE(a[r1]);
++
++Access beyond the end or before the beginning of an array is one kind
++of undefined behavior.  Therefore the compiler doesn't have to worry
++about what will happen if r1 is nonzero, and it can assume that r1
++will always be zero regardless of the value actually loaded from i.
++(If the assumption turns out to be wrong the resulting behavior will
++be undefined anyway, so the compiler doesn't care!)  Thus the value
++from the load can be discarded, breaking the address dependency.
++
++The LKMM is unaware that purely syntactic dependencies are different
++from semantic dependencies and therefore mistakenly predicts that the
++accesses in the two examples above will be ordered.  This is another
++example of how the compiler can undermine the memory model.  Be warned.
++
+ 
+ THE READS-FROM RELATION: rf, rfi, and rfe
+ -----------------------------------------</pre><hr><pre>commit 26fbe9772b8c459687930511444ce443011f86bf
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Jan 24 15:23:45 2022 -0500
+
+    USB: core: Fix hang in usb_kill_urb by adding memory barriers
+    
+    The syzbot fuzzer has identified a bug in which processes hang waiting
+    for usb_kill_urb() to return.  It turns out the issue is not unlinking
+    the URB; that works just fine.  Rather, the problem arises when the
+    wakeup notification that the URB has completed is not received.
+    
+    The reason is memory-access ordering on SMP systems.  In outline form,
+    usb_kill_urb() and __usb_hcd_giveback_urb() operating concurrently on
+    different CPUs perform the following actions:
+    
+    CPU 0                                   CPU 1
+    ----------------------------            ---------------------------------
+    usb_kill_urb():                         __usb_hcd_giveback_urb():
+      ...                                     ...
+      atomic_inc(&amp;urb-&gt;reject);               atomic_dec(&amp;urb-&gt;use_count);
+      ...                                     ...
+      wait_event(usb_kill_urb_queue,
+            atomic_read(&amp;urb-&gt;use_count) == 0);
+                                              if (atomic_read(&amp;urb-&gt;reject))
+                                                    wake_up(&amp;usb_kill_urb_queue);
+    
+    Confining your attention to urb-&gt;reject and urb-&gt;use_count, you can
+    see that the overall pattern of accesses on CPU 0 is:
+    
+            write urb-&gt;reject, then read urb-&gt;use_count;
+    
+    whereas the overall pattern of accesses on CPU 1 is:
+    
+            write urb-&gt;use_count, then read urb-&gt;reject.
+    
+    This pattern is referred to in memory-model circles as SB (for "Store
+    Buffering"), and it is well known that without suitable enforcement of
+    the desired order of accesses -- in the form of memory barriers -- it
+    is entirely possible for one or both CPUs to execute their reads ahead
+    of their writes.  The end result will be that sometimes CPU 0 sees the
+    old un-decremented value of urb-&gt;use_count while CPU 1 sees the old
+    un-incremented value of urb-&gt;reject.  Consequently CPU 0 ends up on
+    the wait queue and never gets woken up, leading to the observed hang
+    in usb_kill_urb().
+    
+    The same pattern of accesses occurs in usb_poison_urb() and the
+    failure pathway of usb_hcd_submit_urb().
+    
+    The problem is fixed by adding suitable memory barriers.  To provide
+    proper memory-access ordering in the SB pattern, a full barrier is
+    required on both CPUs.  The atomic_inc() and atomic_dec() accesses
+    themselves don't provide any memory ordering, but since they are
+    present, we can use the optimized smp_mb__after_atomic() memory
+    barrier in the various routines to obtain the desired effect.
+    
+    This patch adds the necessary memory barriers.
+    
+    CC: &lt;stable@vger.kernel.org&gt;
+    Reported-and-tested-by: syzbot+76629376e06e2c2ad626@syzkaller.appspotmail.com
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Link: https://lore.kernel.org/r/Ye8K0QYee0Q0Nna2@rowland.harvard.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
+index 3e01dd6e509b..d9712c2602af 100644
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -1563,6 +1563,13 @@ int usb_hcd_submit_urb (struct urb *urb, gfp_t mem_flags)
+ 		urb-&gt;hcpriv = NULL;
+ 		INIT_LIST_HEAD(&amp;urb-&gt;urb_list);
+ 		atomic_dec(&amp;urb-&gt;use_count);
++		/*
++		 * Order the write of urb-&gt;use_count above before the read
++		 * of urb-&gt;reject below.  Pairs with the memory barriers in
++		 * usb_kill_urb() and usb_poison_urb().
++		 */
++		smp_mb__after_atomic();
++
+ 		atomic_dec(&amp;urb-&gt;dev-&gt;urbnum);
+ 		if (atomic_read(&amp;urb-&gt;reject))
+ 			wake_up(&amp;usb_kill_urb_queue);
+@@ -1665,6 +1672,13 @@ static void __usb_hcd_giveback_urb(struct urb *urb)
+ 
+ 	usb_anchor_resume_wakeups(anchor);
+ 	atomic_dec(&amp;urb-&gt;use_count);
++	/*
++	 * Order the write of urb-&gt;use_count above before the read
++	 * of urb-&gt;reject below.  Pairs with the memory barriers in
++	 * usb_kill_urb() and usb_poison_urb().
++	 */
++	smp_mb__after_atomic();
++
+ 	if (unlikely(atomic_read(&amp;urb-&gt;reject)))
+ 		wake_up(&amp;usb_kill_urb_queue);
+ 	usb_put_urb(urb);
+diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
+index 30727729a44c..33d62d7e3929 100644
+--- a/drivers/usb/core/urb.c
++++ b/drivers/usb/core/urb.c
+@@ -715,6 +715,12 @@ void usb_kill_urb(struct urb *urb)
+ 	if (!(urb &amp;&amp; urb-&gt;dev &amp;&amp; urb-&gt;ep))
+ 		return;
+ 	atomic_inc(&amp;urb-&gt;reject);
++	/*
++	 * Order the write of urb-&gt;reject above before the read
++	 * of urb-&gt;use_count below.  Pairs with the barriers in
++	 * __usb_hcd_giveback_urb() and usb_hcd_submit_urb().
++	 */
++	smp_mb__after_atomic();
+ 
+ 	usb_hcd_unlink_urb(urb, -ENOENT);
+ 	wait_event(usb_kill_urb_queue, atomic_read(&amp;urb-&gt;use_count) == 0);
+@@ -756,6 +762,12 @@ void usb_poison_urb(struct urb *urb)
+ 	if (!urb)
+ 		return;
+ 	atomic_inc(&amp;urb-&gt;reject);
++	/*
++	 * Order the write of urb-&gt;reject above before the read
++	 * of urb-&gt;use_count below.  Pairs with the barriers in
++	 * __usb_hcd_giveback_urb() and usb_hcd_submit_urb().
++	 */
++	smp_mb__after_atomic();
+ 
+ 	if (!urb-&gt;dev || !urb-&gt;ep)
+ 		return;</pre><hr><pre>commit 5b67b315037250a61861119683e7fcb509deea25
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Jan 24 15:14:40 2022 -0500
+
+    usb-storage: Add unusual-devs entry for VL817 USB-SATA bridge
+    
+    Two people have reported (and mentioned numerous other reports on the
+    web) that VIA's VL817 USB-SATA bridge does not work with the uas
+    driver.  Typical log messages are:
+    
+    [ 3606.232149] sd 14:0:0:0: [sdg] tag#2 uas_zap_pending 0 uas-tag 1 inflight: CMD
+    [ 3606.232154] sd 14:0:0:0: [sdg] tag#2 CDB: Write(16) 8a 00 00 00 00 00 18 0c c9 80 00 00 00 80 00 00
+    [ 3606.306257] usb 4-4.4: reset SuperSpeed Plus Gen 2x1 USB device number 11 using xhci_hcd
+    [ 3606.328584] scsi host14: uas_eh_device_reset_handler success
+    
+    Surprisingly, the devices do seem to work okay for some other people.
+    The cause of the differing behaviors is not known.
+    
+    In the hope of getting the devices to work for the most users, even at
+    the possible cost of degraded performance for some, this patch adds an
+    unusual_devs entry for the VL817 to block it from binding to the uas
+    driver by default.  Users will be able to override this entry by means
+    of a module parameter, if they want.
+    
+    CC: &lt;stable@vger.kernel.org&gt;
+    Reported-by: DocMAX &lt;mail@vacharakis.de&gt;
+    Reported-and-tested-by: Thomas Weißschuh &lt;linux@weissschuh.net&gt;
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Link: https://lore.kernel.org/r/Ye8IsK2sjlEv1rqU@rowland.harvard.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/storage/unusual_devs.h b/drivers/usb/storage/unusual_devs.h
+index 29191d33c0e3..1a05e3dcfec8 100644
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -2301,6 +2301,16 @@ UNUSUAL_DEV(  0x2027, 0xa001, 0x0000, 0x9999,
+ 		USB_SC_DEVICE, USB_PR_DEVICE, usb_stor_euscsi_init,
+ 		US_FL_SCM_MULT_TARG ),
+ 
++/*
++ * Reported by DocMAX &lt;mail@vacharakis.de&gt;
++ * and Thomas Weißschuh &lt;linux@weissschuh.net&gt;
++ */
++UNUSUAL_DEV( 0x2109, 0x0715, 0x9999, 0x9999,
++		"VIA Labs, Inc.",
++		"VL817 SATA Bridge",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_UAS),
++
+ UNUSUAL_DEV( 0x2116, 0x0320, 0x0001, 0x0001,
+ 		"ST",
+ 		"2A",</pre><hr><pre>commit 0f663729bb4afc92a9986b66131ebd5b8a9254d1
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Sat Jan 1 14:52:14 2022 -0500
+
+    USB: core: Fix bug in resuming hub's handling of wakeup requests
+    
+    Bugzilla #213839 reports a 7-port hub that doesn't work properly when
+    devices are plugged into some of the ports; the kernel goes into an
+    unending disconnect/reinitialize loop as shown in the bug report.
+    
+    This "7-port hub" comprises two four-port hubs with one plugged into
+    the other; the failures occur when a device is plugged into one of the
+    downstream hub's ports.  (These hubs have other problems too.  For
+    example, they bill themselves as USB-2.0 compliant but they only run
+    at full speed.)
+    
+    It turns out that the failures are caused by bugs in both the kernel
+    and the hub.  The hub's bug is that it reports a different
+    bmAttributes value in its configuration descriptor following a remote
+    wakeup (0xe0 before, 0xc0 after -- the wakeup-support bit has
+    changed).
+    
+    The kernel's bug is inside the hub driver's resume handler.  When
+    hub_activate() sees that one of the hub's downstream ports got a
+    wakeup request from a child device, it notes this fact by setting the
+    corresponding bit in the hub-&gt;change_bits variable.  But this variable
+    is meant for connection changes, not wakeup events; setting it causes
+    the driver to believe the downstream port has been disconnected and
+    then connected again (in addition to having received a wakeup
+    request).
+    
+    Because of this, the hub driver then tries to check whether the device
+    currently plugged into the downstream port is the same as the device
+    that had been attached there before.  Normally this check succeeds and
+    wakeup handling continues with no harm done (which is why the bug
+    remained undetected until now).  But with these dodgy hubs, the check
+    fails because the config descriptor has changed.  This causes the hub
+    driver to reinitialize the child device, leading to the
+    disconnect/reinitialize loop described in the bug report.
+    
+    The proper way to note reception of a downstream wakeup request is
+    to set a bit in the hub-&gt;event_bits variable instead of
+    hub-&gt;change_bits.  That way the hub driver will realize that something
+    has happened to the port but will not think the port and child device
+    have been disconnected.  This patch makes that change.
+    
+    Cc: &lt;stable@vger.kernel.org&gt;
+    Tested-by: Jonathan McDowell &lt;noodles@earth.li&gt;
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Link: https://lore.kernel.org/r/YdCw7nSfWYPKWQoD@rowland.harvard.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 721794f0f494..47a1c8bddf86 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1228,7 +1228,7 @@ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+ 			 */
+ 			if (portchange || (hub_is_superspeed(hub-&gt;hdev) &amp;&amp;
+ 						port_resumed))
+-				set_bit(port1, hub-&gt;change_bits);
++				set_bit(port1, hub-&gt;event_bits);
+ 
+ 		} else if (udev-&gt;persist_enabled) {
+ #ifdef CONFIG_PM</pre><hr><pre>commit 1d7d4c07932e04355d6e6528d44a2f2c9e354346
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Dec 31 21:07:12 2021 -0500
+
+    USB: Fix "slab-out-of-bounds Write" bug in usb_hcd_poll_rh_status
+    
+    When the USB core code for getting root-hub status reports was
+    originally written, it was assumed that the hub driver would be its
+    only caller.  But this isn't true now; user programs can use usbfs to
+    communicate with root hubs and get status reports.  When they do this,
+    they may use a transfer_buffer that is smaller than the data returned
+    by the HCD, which will lead to a buffer overflow error when
+    usb_hcd_poll_rh_status() tries to store the status data.  This was
+    discovered by syzbot:
+    
+    BUG: KASAN: slab-out-of-bounds in memcpy include/linux/fortify-string.h:225 [inline]
+    BUG: KASAN: slab-out-of-bounds in usb_hcd_poll_rh_status+0x5f4/0x780 drivers/usb/core/hcd.c:776
+    Write of size 2 at addr ffff88801da403c0 by task syz-executor133/4062
+    
+    This patch fixes the bug by reducing the amount of status data if it
+    won't fit in the transfer_buffer.  If some data gets discarded then
+    the URB's completion status is set to -EOVERFLOW rather than 0, to let
+    the user know what happened.
+    
+    Reported-and-tested-by: syzbot+3ae6a2b06f131ab9849f@syzkaller.appspotmail.com
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Cc: &lt;stable@vger.kernel.org&gt;
+    Link: https://lore.kernel.org/r/Yc+3UIQJ2STbxNua@rowland.harvard.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
+index 9ffc63ae65ac..3e01dd6e509b 100644
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -753,6 +753,7 @@ void usb_hcd_poll_rh_status(struct usb_hcd *hcd)
+ {
+ 	struct urb	*urb;
+ 	int		length;
++	int		status;
+ 	unsigned long	flags;
+ 	char		buffer[6];	/* Any root hubs with &gt; 31 ports? */
+ 
+@@ -770,11 +771,17 @@ void usb_hcd_poll_rh_status(struct usb_hcd *hcd)
+ 		if (urb) {
+ 			clear_bit(HCD_FLAG_POLL_PENDING, &amp;hcd-&gt;flags);
+ 			hcd-&gt;status_urb = NULL;
++			if (urb-&gt;transfer_buffer_length &gt;= length) {
++				status = 0;
++			} else {
++				status = -EOVERFLOW;
++				length = urb-&gt;transfer_buffer_length;
++			}
+ 			urb-&gt;actual_length = length;
+ 			memcpy(urb-&gt;transfer_buffer, buffer, length);
+ 
+ 			usb_hcd_unlink_urb_from_ep(hcd, urb);
+-			usb_hcd_giveback_urb(hcd, urb, 0);
++			usb_hcd_giveback_urb(hcd, urb, status);
+ 		} else {
+ 			length = 0;
+ 			set_bit(HCD_FLAG_POLL_PENDING, &amp;hcd-&gt;flags);</pre><hr><pre>commit 6e1fcab00a23f7fe9f4fe9704905a790efa1eeab
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Mon Dec 20 19:21:26 2021 +0800
+
+    scsi: block: pm: Always set request queue runtime active in blk_post_runtime_resume()
+    
+    John Garry reported a deadlock that occurs when trying to access a
+    runtime-suspended SATA device.  For obscure reasons, the rescan procedure
+    causes the link to be hard-reset, which disconnects the device.
+    
+    The rescan tries to carry out a runtime resume when accessing the device.
+    scsi_rescan_device() holds the SCSI device lock and won't release it until
+    it can put commands onto the device's block queue.  This can't happen until
+    the queue is successfully runtime-resumed or the device is unregistered.
+    But the runtime resume fails because the device is disconnected, and
+    __scsi_remove_device() can't do the unregistration because it can't get the
+    device lock.
+    
+    The best way to resolve this deadlock appears to be to allow the block
+    queue to start running again even after an unsuccessful runtime resume.
+    The idea is that the driver or the SCSI error handler will need to be able
+    to use the queue to resolve the runtime resume failure.
+    
+    This patch removes the err argument to blk_post_runtime_resume() and makes
+    the routine act as though the resume was successful always.  This fixes the
+    deadlock.
+    
+    Link: https://lore.kernel.org/r/1639999298-244569-4-git-send-email-chenxiang66@hisilicon.com
+    Fixes: e27829dc92e5 ("scsi: serialize -&gt;rescan against -&gt;remove")
+    Reported-and-tested-by: John Garry &lt;john.garry@huawei.com&gt;
+    Reviewed-by: Bart Van Assche &lt;bvanassche@acm.org&gt;
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Xiang Chen &lt;chenxiang66@hisilicon.com&gt;
+    Signed-off-by: Martin K. Petersen &lt;martin.petersen@oracle.com&gt;
+
+diff --git a/block/blk-pm.c b/block/blk-pm.c
+index 17bd020268d4..2dad62cc1572 100644
+--- a/block/blk-pm.c
++++ b/block/blk-pm.c
+@@ -163,27 +163,19 @@ EXPORT_SYMBOL(blk_pre_runtime_resume);
+ /**
+  * blk_post_runtime_resume - Post runtime resume processing
+  * @q: the queue of the device
+- * @err: return value of the device's runtime_resume function
+  *
+  * Description:
+- *    Update the queue's runtime status according to the return value of the
+- *    device's runtime_resume function. If the resume was successful, call
+- *    blk_set_runtime_active() to do the real work of restarting the queue.
++ *    For historical reasons, this routine merely calls blk_set_runtime_active()
++ *    to do the real work of restarting the queue.  It does this regardless of
++ *    whether the device's runtime-resume succeeded; even if it failed the
++ *    driver or error handler will need to communicate with the device.
+  *
+  *    This function should be called near the end of the device's
+  *    runtime_resume callback.
+  */
+-void blk_post_runtime_resume(struct request_queue *q, int err)
++void blk_post_runtime_resume(struct request_queue *q)
+ {
+-	if (!q-&gt;dev)
+-		return;
+-	if (!err) {
+-		blk_set_runtime_active(q);
+-	} else {
+-		spin_lock_irq(&amp;q-&gt;queue_lock);
+-		q-&gt;rpm_status = RPM_SUSPENDED;
+-		spin_unlock_irq(&amp;q-&gt;queue_lock);
+-	}
++	blk_set_runtime_active(q);
+ }
+ EXPORT_SYMBOL(blk_post_runtime_resume);
+ 
+@@ -201,7 +193,7 @@ EXPORT_SYMBOL(blk_post_runtime_resume);
+  * runtime PM status and re-enable peeking requests from the queue. It
+  * should be called before first request is added to the queue.
+  *
+- * This function is also called by blk_post_runtime_resume() for successful
++ * This function is also called by blk_post_runtime_resume() for
+  * runtime resumes.  It does everything necessary to restart the queue.
+  */
+ void blk_set_runtime_active(struct request_queue *q)
+diff --git a/drivers/scsi/scsi_pm.c b/drivers/scsi/scsi_pm.c
+index 0e841e8761c5..d581613d87c7 100644
+--- a/drivers/scsi/scsi_pm.c
++++ b/drivers/scsi/scsi_pm.c
+@@ -180,7 +180,7 @@ static int sdev_runtime_resume(struct device *dev)
+ 	blk_pre_runtime_resume(sdev-&gt;request_queue);
+ 	if (pm &amp;&amp; pm-&gt;runtime_resume)
+ 		err = pm-&gt;runtime_resume(dev);
+-	blk_post_runtime_resume(sdev-&gt;request_queue, err);
++	blk_post_runtime_resume(sdev-&gt;request_queue);
+ 
+ 	return err;
+ }
+diff --git a/include/linux/blk-pm.h b/include/linux/blk-pm.h
+index b80c65aba249..2580e05a8ab6 100644
+--- a/include/linux/blk-pm.h
++++ b/include/linux/blk-pm.h
+@@ -14,7 +14,7 @@ extern void blk_pm_runtime_init(struct request_queue *q, struct device *dev);
+ extern int blk_pre_runtime_suspend(struct request_queue *q);
+ extern void blk_post_runtime_suspend(struct request_queue *q, int err);
+ extern void blk_pre_runtime_resume(struct request_queue *q);
+-extern void blk_post_runtime_resume(struct request_queue *q, int err);
++extern void blk_post_runtime_resume(struct request_queue *q);
+ extern void blk_set_runtime_active(struct request_queue *q);
+ #else
+ static inline void blk_pm_runtime_init(struct request_queue *q,</pre><hr><pre>commit 846cbf98cbef20376b1a95fa3734c435543f3519
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Sat Oct 2 15:02:17 2021 -0400
+
+    USB: EHCI: Improve port index sanitizing
+    
+    Now that Kees Cook has added a definition for HCS_N_PORTS_MAX in
+    commit 72dd1843232c ("USB: EHCI: Add register array bounds to HCS
+    ports"), the code in ehci_hub_control() which sanitizes port index
+    values can be improved a little.
+    
+    The idea behind this change is that it prevents a possible
+    out-of-bounds pointer computation, which the compiler might be able to
+    detect since the port_status[] array now has a fixed length rather
+    than a variable length.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Link: https://lore.kernel.org/r/20211002190217.GA537967@rowland.harvard.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
+index c4f6a2559a98..efe30e3be22f 100644
+--- a/drivers/usb/host/ehci-hub.c
++++ b/drivers/usb/host/ehci-hub.c
+@@ -745,12 +745,13 @@ int ehci_hub_control(
+ 	unsigned	selector;
+ 
+ 	/*
+-	 * Avoid underflow while calculating (wIndex &amp; 0xff) - 1.
+-	 * The compiler might deduce that wIndex can never be 0 and then
+-	 * optimize away the tests for !wIndex below.
++	 * Avoid out-of-bounds values while calculating the port index
++	 * from wIndex.  The compiler doesn't like pointers to invalid
++	 * addresses, even if they are never used.
+ 	 */
+-	temp = wIndex &amp; 0xff;
+-	temp -= (temp &gt; 0);
++	temp = (wIndex - 1) &amp; 0xff;
++	if (temp &gt;= HCS_N_PORTS_MAX)
++		temp = 0;
+ 	status_reg = &amp;ehci-&gt;regs-&gt;port_status[temp];
+ 	hostpc_reg = &amp;ehci-&gt;regs-&gt;hostpc[temp];
+ </pre><hr><pre>commit ae8709b296d80c7f45aa1f35c0e7659ad69edce1
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Sep 3 13:53:12 2021 -0400
+
+    USB: core: Make do_proc_control() and do_proc_bulk() killable
+    
+    The USBDEVFS_CONTROL and USBDEVFS_BULK ioctls invoke
+    usb_start_wait_urb(), which contains an uninterruptible wait with a
+    user-specified timeout value.  If timeout value is very large and the
+    device being accessed does not respond in a reasonable amount of time,
+    the kernel will complain about "Task X blocked for more than N
+    seconds", as found in testing by syzbot:
+    
+    INFO: task syz-executor.0:8700 blocked for more than 143 seconds.
+          Not tainted 5.14.0-rc7-syzkaller #0
+    "echo 0 &gt; /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+    task:syz-executor.0  state:D stack:23192 pid: 8700 ppid:  8455 flags:0x00004004
+    Call Trace:
+     context_switch kernel/sched/core.c:4681 [inline]
+     __schedule+0xc07/0x11f0 kernel/sched/core.c:5938
+     schedule+0x14b/0x210 kernel/sched/core.c:6017
+     schedule_timeout+0x98/0x2f0 kernel/time/timer.c:1857
+     do_wait_for_common+0x2da/0x480 kernel/sched/completion.c:85
+     __wait_for_common kernel/sched/completion.c:106 [inline]
+     wait_for_common kernel/sched/completion.c:117 [inline]
+     wait_for_completion_timeout+0x46/0x60 kernel/sched/completion.c:157
+     usb_start_wait_urb+0x167/0x550 drivers/usb/core/message.c:63
+     do_proc_bulk+0x978/0x1080 drivers/usb/core/devio.c:1236
+     proc_bulk drivers/usb/core/devio.c:1273 [inline]
+     usbdev_do_ioctl drivers/usb/core/devio.c:2547 [inline]
+     usbdev_ioctl+0x3441/0x6b10 drivers/usb/core/devio.c:2713
+    ...
+    
+    To fix this problem, this patch replaces usbfs's calls to
+    usb_control_msg() and usb_bulk_msg() with special-purpose code that
+    does essentially the same thing (as recommended in the comment for
+    usb_start_wait_urb()), except that it always uses a killable wait and
+    it uses GFP_KERNEL rather than GFP_NOIO.
+    
+    Reported-and-tested-by: syzbot+ada0f7d3d9fd2016d927@syzkaller.appspotmail.com
+    Suggested-by: Oliver Neukum &lt;oneukum@suse.com&gt;
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Link: https://lore.kernel.org/r/20210903175312.GA468440@rowland.harvard.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
+index 9618ba622a2d..fa66e6e58792 100644
+--- a/drivers/usb/core/devio.c
++++ b/drivers/usb/core/devio.c
+@@ -32,6 +32,7 @@
+ #include &lt;linux/usb.h&gt;
+ #include &lt;linux/usbdevice_fs.h&gt;
+ #include &lt;linux/usb/hcd.h&gt;	/* for usbcore internals */
++#include &lt;linux/usb/quirks.h&gt;
+ #include &lt;linux/cdev.h&gt;
+ #include &lt;linux/notifier.h&gt;
+ #include &lt;linux/security.h&gt;
+@@ -1102,14 +1103,55 @@ static int usbdev_release(struct inode *inode, struct file *file)
+ 	return 0;
+ }
+ 
++static void usbfs_blocking_completion(struct urb *urb)
++{
++	complete((struct completion *) urb-&gt;context);
++}
++
++/*
++ * Much like usb_start_wait_urb, but returns status separately from
++ * actual_length and uses a killable wait.
++ */
++static int usbfs_start_wait_urb(struct urb *urb, int timeout,
++		unsigned int *actlen)
++{
++	DECLARE_COMPLETION_ONSTACK(ctx);
++	unsigned long expire;
++	int rc;
++
++	urb-&gt;context = &amp;ctx;
++	urb-&gt;complete = usbfs_blocking_completion;
++	*actlen = 0;
++	rc = usb_submit_urb(urb, GFP_KERNEL);
++	if (unlikely(rc))
++		return rc;
++
++	expire = (timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT);
++	rc = wait_for_completion_killable_timeout(&amp;ctx, expire);
++	if (rc &lt;= 0) {
++		usb_kill_urb(urb);
++		*actlen = urb-&gt;actual_length;
++		if (urb-&gt;status != -ENOENT)
++			;	/* Completed before it was killed */
++		else if (rc &lt; 0)
++			return -EINTR;
++		else
++			return -ETIMEDOUT;
++	}
++	*actlen = urb-&gt;actual_length;
++	return urb-&gt;status;
++}
++
+ static int do_proc_control(struct usb_dev_state *ps,
+ 		struct usbdevfs_ctrltransfer *ctrl)
+ {
+ 	struct usb_device *dev = ps-&gt;dev;
+ 	unsigned int tmo;
+ 	unsigned char *tbuf;
+-	unsigned wLength;
++	unsigned int wLength, actlen;
+ 	int i, pipe, ret;
++	struct urb *urb = NULL;
++	struct usb_ctrlrequest *dr = NULL;
+ 
+ 	ret = check_ctrlrecip(ps, ctrl-&gt;bRequestType, ctrl-&gt;bRequest,
+ 			      ctrl-&gt;wIndex);
+@@ -1122,51 +1164,63 @@ static int do_proc_control(struct usb_dev_state *ps,
+ 			sizeof(struct usb_ctrlrequest));
+ 	if (ret)
+ 		return ret;
++
++	ret = -ENOMEM;
+ 	tbuf = (unsigned char *)__get_free_page(GFP_KERNEL);
+-	if (!tbuf) {
+-		ret = -ENOMEM;
++	if (!tbuf)
+ 		goto done;
+-	}
++	urb = usb_alloc_urb(0, GFP_NOIO);
++	if (!urb)
++		goto done;
++	dr = kmalloc(sizeof(struct usb_ctrlrequest), GFP_NOIO);
++	if (!dr)
++		goto done;
++
++	dr-&gt;bRequestType = ctrl-&gt;bRequestType;
++	dr-&gt;bRequest = ctrl-&gt;bRequest;
++	dr-&gt;wValue = cpu_to_le16(ctrl-&gt;wValue);
++	dr-&gt;wIndex = cpu_to_le16(ctrl-&gt;wIndex);
++	dr-&gt;wLength = cpu_to_le16(ctrl-&gt;wLength);
++
+ 	tmo = ctrl-&gt;timeout;
+ 	snoop(&amp;dev-&gt;dev, "control urb: bRequestType=%02x "
+ 		"bRequest=%02x wValue=%04x "
+ 		"wIndex=%04x wLength=%04x\n",
+ 		ctrl-&gt;bRequestType, ctrl-&gt;bRequest, ctrl-&gt;wValue,
+ 		ctrl-&gt;wIndex, ctrl-&gt;wLength);
+-	if ((ctrl-&gt;bRequestType &amp; USB_DIR_IN) &amp;&amp; ctrl-&gt;wLength) {
++
++	if ((ctrl-&gt;bRequestType &amp; USB_DIR_IN) &amp;&amp; wLength) {
+ 		pipe = usb_rcvctrlpipe(dev, 0);
+-		snoop_urb(dev, NULL, pipe, ctrl-&gt;wLength, tmo, SUBMIT, NULL, 0);
++		usb_fill_control_urb(urb, dev, pipe, (unsigned char *) dr, tbuf,
++				wLength, NULL, NULL);
++		snoop_urb(dev, NULL, pipe, wLength, tmo, SUBMIT, NULL, 0);
+ 
+ 		usb_unlock_device(dev);
+-		i = usb_control_msg(dev, pipe, ctrl-&gt;bRequest,
+-				    ctrl-&gt;bRequestType, ctrl-&gt;wValue, ctrl-&gt;wIndex,
+-				    tbuf, ctrl-&gt;wLength, tmo);
++		i = usbfs_start_wait_urb(urb, tmo, &amp;actlen);
+ 		usb_lock_device(dev);
+-		snoop_urb(dev, NULL, pipe, max(i, 0), min(i, 0), COMPLETE,
+-			  tbuf, max(i, 0));
+-		if ((i &gt; 0) &amp;&amp; ctrl-&gt;wLength) {
+-			if (copy_to_user(ctrl-&gt;data, tbuf, i)) {
++		snoop_urb(dev, NULL, pipe, actlen, i, COMPLETE, tbuf, actlen);
++		if (!i &amp;&amp; actlen) {
++			if (copy_to_user(ctrl-&gt;data, tbuf, actlen)) {
+ 				ret = -EFAULT;
+-				goto done;
++				goto recv_fault;
+ 			}
+ 		}
+ 	} else {
+-		if (ctrl-&gt;wLength) {
+-			if (copy_from_user(tbuf, ctrl-&gt;data, ctrl-&gt;wLength)) {
++		if (wLength) {
++			if (copy_from_user(tbuf, ctrl-&gt;data, wLength)) {
+ 				ret = -EFAULT;
+ 				goto done;
+ 			}
+ 		}
+ 		pipe = usb_sndctrlpipe(dev, 0);
+-		snoop_urb(dev, NULL, pipe, ctrl-&gt;wLength, tmo, SUBMIT,
+-			tbuf, ctrl-&gt;wLength);
++		usb_fill_control_urb(urb, dev, pipe, (unsigned char *) dr, tbuf,
++				wLength, NULL, NULL);
++		snoop_urb(dev, NULL, pipe, wLength, tmo, SUBMIT, tbuf, wLength);
+ 
+ 		usb_unlock_device(dev);
+-		i = usb_control_msg(dev, pipe, ctrl-&gt;bRequest,
+-				    ctrl-&gt;bRequestType, ctrl-&gt;wValue, ctrl-&gt;wIndex,
+-				    tbuf, ctrl-&gt;wLength, tmo);
++		i = usbfs_start_wait_urb(urb, tmo, &amp;actlen);
+ 		usb_lock_device(dev);
+-		snoop_urb(dev, NULL, pipe, max(i, 0), min(i, 0), COMPLETE, NULL, 0);
++		snoop_urb(dev, NULL, pipe, actlen, i, COMPLETE, NULL, 0);
+ 	}
+ 	if (i &lt; 0 &amp;&amp; i != -EPIPE) {
+ 		dev_printk(KERN_DEBUG, &amp;dev-&gt;dev, "usbfs: USBDEVFS_CONTROL "
+@@ -1174,8 +1228,15 @@ static int do_proc_control(struct usb_dev_state *ps,
+ 			   current-&gt;comm, ctrl-&gt;bRequestType, ctrl-&gt;bRequest,
+ 			   ctrl-&gt;wLength, i);
+ 	}
+-	ret = i;
++	ret = (i &lt; 0 ? i : actlen);
++
++ recv_fault:
++	/* Linger a bit, prior to the next control message. */
++	if (dev-&gt;quirks &amp; USB_QUIRK_DELAY_CTRL_MSG)
++		msleep(200);
+  done:
++	kfree(dr);
++	usb_free_urb(urb);
+ 	free_page((unsigned long) tbuf);
+ 	usbfs_decrease_memory_usage(PAGE_SIZE + sizeof(struct urb) +
+ 			sizeof(struct usb_ctrlrequest));
+@@ -1195,10 +1256,11 @@ static int do_proc_bulk(struct usb_dev_state *ps,
+ 		struct usbdevfs_bulktransfer *bulk)
+ {
+ 	struct usb_device *dev = ps-&gt;dev;
+-	unsigned int tmo, len1, pipe;
+-	int len2;
++	unsigned int tmo, len1, len2, pipe;
+ 	unsigned char *tbuf;
+ 	int i, ret;
++	struct urb *urb = NULL;
++	struct usb_host_endpoint *ep;
+ 
+ 	ret = findintfep(ps-&gt;dev, bulk-&gt;ep);
+ 	if (ret &lt; 0)
+@@ -1206,14 +1268,17 @@ static int do_proc_bulk(struct usb_dev_state *ps,
+ 	ret = checkintf(ps, ret);
+ 	if (ret)
+ 		return ret;
++
++	len1 = bulk-&gt;len;
++	if (len1 &lt; 0 || len1 &gt;= (INT_MAX - sizeof(struct urb)))
++		return -EINVAL;
++
+ 	if (bulk-&gt;ep &amp; USB_DIR_IN)
+ 		pipe = usb_rcvbulkpipe(dev, bulk-&gt;ep &amp; 0x7f);
+ 	else
+ 		pipe = usb_sndbulkpipe(dev, bulk-&gt;ep &amp; 0x7f);
+-	if (!usb_maxpacket(dev, pipe, !(bulk-&gt;ep &amp; USB_DIR_IN)))
+-		return -EINVAL;
+-	len1 = bulk-&gt;len;
+-	if (len1 &gt;= (INT_MAX - sizeof(struct urb)))
++	ep = usb_pipe_endpoint(dev, pipe);
++	if (!ep || !usb_endpoint_maxp(&amp;ep-&gt;desc))
+ 		return -EINVAL;
+ 	ret = usbfs_increase_memory_usage(len1 + sizeof(struct urb));
+ 	if (ret)
+@@ -1223,17 +1288,29 @@ static int do_proc_bulk(struct usb_dev_state *ps,
+ 	 * len1 can be almost arbitrarily large.  Don't WARN if it's
+ 	 * too big, just fail the request.
+ 	 */
++	ret = -ENOMEM;
+ 	tbuf = kmalloc(len1, GFP_KERNEL | __GFP_NOWARN);
+-	if (!tbuf) {
+-		ret = -ENOMEM;
++	if (!tbuf)
++		goto done;
++	urb = usb_alloc_urb(0, GFP_KERNEL);
++	if (!urb)
+ 		goto done;
++
++	if ((ep-&gt;desc.bmAttributes &amp; USB_ENDPOINT_XFERTYPE_MASK) ==
++			USB_ENDPOINT_XFER_INT) {
++		pipe = (pipe &amp; ~(3 &lt;&lt; 30)) | (PIPE_INTERRUPT &lt;&lt; 30);
++		usb_fill_int_urb(urb, dev, pipe, tbuf, len1,
++				NULL, NULL, ep-&gt;desc.bInterval);
++	} else {
++		usb_fill_bulk_urb(urb, dev, pipe, tbuf, len1, NULL, NULL);
+ 	}
++
+ 	tmo = bulk-&gt;timeout;
+ 	if (bulk-&gt;ep &amp; 0x80) {
+ 		snoop_urb(dev, NULL, pipe, len1, tmo, SUBMIT, NULL, 0);
+ 
+ 		usb_unlock_device(dev);
+-		i = usb_bulk_msg(dev, pipe, tbuf, len1, &amp;len2, tmo);
++		i = usbfs_start_wait_urb(urb, tmo, &amp;len2);
+ 		usb_lock_device(dev);
+ 		snoop_urb(dev, NULL, pipe, len2, i, COMPLETE, tbuf, len2);
+ 
+@@ -1253,12 +1330,13 @@ static int do_proc_bulk(struct usb_dev_state *ps,
+ 		snoop_urb(dev, NULL, pipe, len1, tmo, SUBMIT, tbuf, len1);
+ 
+ 		usb_unlock_device(dev);
+-		i = usb_bulk_msg(dev, pipe, tbuf, len1, &amp;len2, tmo);
++		i = usbfs_start_wait_urb(urb, tmo, &amp;len2);
+ 		usb_lock_device(dev);
+ 		snoop_urb(dev, NULL, pipe, len2, i, COMPLETE, NULL, 0);
+ 	}
+ 	ret = (i &lt; 0 ? i : len2);
+  done:
++	usb_free_urb(urb);
+ 	kfree(tbuf);
+ 	usbfs_decrease_memory_usage(len1 + sizeof(struct urb));
+ 	return ret;</pre>
+    <div class="pagination">
+        <a href='2_5.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><span>[6]</span><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_7.html'>Next&gt;&gt;</a>
+    <div>
+</body>

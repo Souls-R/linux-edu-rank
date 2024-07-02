@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Huazhong University of Science and Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Huazhong University of Science and Technology</h1>
+    <div class="pagination">
+        <a href='14.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><span>[2]</span><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_3.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 1d40165047456923fa4343d519353d9440cd68df
+Author: Guoqing Cai &lt;u202112087@hust.edu.cn&gt;
+Date:   Thu Apr 13 17:57:39 2023 +0800
+
+    fs: jbd2: fix an incorrect warn log
+    
+    In jbd2_journal_load(), when journal_reset fails, it prints an incorrect
+    warn log.
+    
+    Fix this by changing the goto statement to return statement.
+    
+    Also, return actual error code from jbd2_journal_recover() and journal_reset().
+    
+    Signed-off-by: Guoqing Cai &lt;u202112087@hust.edu.cn&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+    Link: https://lore.kernel.org/r/20230413095740.2222066-1-u202112087@hust.edu.cn
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index fbce16fedaa4..5c223032f77a 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -2089,8 +2089,11 @@ int jbd2_journal_load(journal_t *journal)
+ 
+ 	/* Let the recovery code check whether it needs to recover any
+ 	 * data from the journal. */
+-	if (jbd2_journal_recover(journal))
+-		goto recovery_error;
++	err = jbd2_journal_recover(journal);
++	if (err) {
++		pr_warn("JBD2: journal recovery failed\n");
++		return err;
++	}
+ 
+ 	if (journal-&gt;j_failed_commit) {
+ 		printk(KERN_ERR "JBD2: journal transaction %u on %s "
+@@ -2107,15 +2110,14 @@ int jbd2_journal_load(journal_t *journal)
+ 	/* OK, we've finished with the dynamic journal bits:
+ 	 * reinitialise the dynamic contents of the superblock in memory
+ 	 * and reset them on disk. */
+-	if (journal_reset(journal))
+-		goto recovery_error;
++	err = journal_reset(journal);
++	if (err) {
++		pr_warn("JBD2: journal reset failed\n");
++		return err;
++	}
+ 
+ 	journal-&gt;j_flags |= JBD2_LOADED;
+ 	return 0;
+-
+-recovery_error:
+-	printk(KERN_WARNING "JBD2: recovery failed\n");
+-	return -EIO;
+ }
+ 
+ /**</pre><hr><pre>commit 061115fbfb2ce5870c9a004d68dc63138c07c782
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sun Jul 23 12:04:02 2023 +0800
+
+    wifi: ath9k: fix printk specifier
+    
+    Smatch reports:
+    
+    ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
+    ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
+    
+    Fix it by modifying %lx to %p in the printk format string.
+    
+    Note that with this change, the pointer address will be printed as a
+    hashed value by default. This is appropriate because the kernel
+    should not leak kernel pointers to user space in an informational
+    message. If someone wants to see the real address for debugging
+    purposes, this can be achieved with the no_hash_pointers kernel option.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Acked-by: Toke Høiland-Jørgensen &lt;toke@toke.dk&gt;
+    Signed-off-by: Kalle Valo &lt;quic_kvalo@quicinc.com&gt;
+    Link: https://lore.kernel.org/r/20230723040403.296723-1-dzm91@hust.edu.cn
+
+diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
+index 9cd12b20b18d..9bfaadfa6c00 100644
+--- a/drivers/net/wireless/ath/ath9k/ahb.c
++++ b/drivers/net/wireless/ath/ath9k/ahb.c
+@@ -132,8 +132,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
+ 
+ 	ah = sc-&gt;sc_ah;
+ 	ath9k_hw_name(ah, hw_name, sizeof(hw_name));
+-	wiphy_info(hw-&gt;wiphy, "%s mem=0x%lx, irq=%d\n",
+-		   hw_name, (unsigned long)mem, irq);
++	wiphy_info(hw-&gt;wiphy, "%s mem=0x%p, irq=%d\n",
++		   hw_name, mem, irq);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
+index a09f9d223f3d..0633589b85c2 100644
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
+@@ -988,8 +988,8 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	sc-&gt;sc_ah-&gt;msi_reg = 0;
+ 
+ 	ath9k_hw_name(sc-&gt;sc_ah, hw_name, sizeof(hw_name));
+-	wiphy_info(hw-&gt;wiphy, "%s mem=0x%lx, irq=%d\n",
+-		   hw_name, (unsigned long)sc-&gt;mem, pdev-&gt;irq);
++	wiphy_info(hw-&gt;wiphy, "%s mem=0x%p, irq=%d\n",
++		   hw_name, sc-&gt;mem, pdev-&gt;irq);
+ 
+ 	return 0;
+ </pre><hr><pre>commit b9c7141f384097fa4fa67d2f72e5731d628aef7c
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Mon Feb 27 18:24:08 2023 +0800
+
+    drivers: usb: smsusb: fix error handling code in smsusb_init_device
+    
+    The previous commit 4b208f8b561f ("[media] siano: register media controller
+    earlier")moves siano_media_device_register before smscore_register_device,
+    and adds corresponding error handling code if smscore_register_device
+    fails. However, it misses the following error handling code of
+    smsusb_init_device.
+    
+    Fix this by moving error handling code at the end of smsusb_init_device
+    and adding a goto statement in the following error handling parts.
+    
+    Fixes: 4b208f8b561f ("[media] siano: register media controller earlier")
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Hans Verkuil &lt;hverkuil-cisco@xs4all.nl&gt;
+
+diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
+index 640737d3b8ae..8a39cac76c58 100644
+--- a/drivers/media/usb/siano/smsusb.c
++++ b/drivers/media/usb/siano/smsusb.c
+@@ -455,12 +455,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
+ 	rc = smscore_register_device(&amp;params, &amp;dev-&gt;coredev, 0, mdev);
+ 	if (rc &lt; 0) {
+ 		pr_err("smscore_register_device(...) failed, rc %d\n", rc);
+-		smsusb_term_device(intf);
+-#ifdef CONFIG_MEDIA_CONTROLLER_DVB
+-		media_device_unregister(mdev);
+-#endif
+-		kfree(mdev);
+-		return rc;
++		goto err_unregister_device;
+ 	}
+ 
+ 	smscore_set_board_id(dev-&gt;coredev, board_id);
+@@ -477,8 +472,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
+ 	rc = smsusb_start_streaming(dev);
+ 	if (rc &lt; 0) {
+ 		pr_err("smsusb_start_streaming(...) failed\n");
+-		smsusb_term_device(intf);
+-		return rc;
++		goto err_unregister_device;
+ 	}
+ 
+ 	dev-&gt;state = SMSUSB_ACTIVE;
+@@ -486,13 +480,20 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
+ 	rc = smscore_start_device(dev-&gt;coredev);
+ 	if (rc &lt; 0) {
+ 		pr_err("smscore_start_device(...) failed\n");
+-		smsusb_term_device(intf);
+-		return rc;
++		goto err_unregister_device;
+ 	}
+ 
+ 	pr_debug("device 0x%p created\n", dev);
+ 
+ 	return rc;
++
++err_unregister_device:
++	smsusb_term_device(intf);
++#ifdef CONFIG_MEDIA_CONTROLLER_DVB
++	media_device_unregister(mdev);
++#endif
++	kfree(mdev);
++	return rc;
+ }
+ 
+ static int smsusb_probe(struct usb_interface *intf,</pre><hr><pre>commit cd9489623c29aa2f8cc07088168afb6e0d5ef06d
+Author: Shuai Jiang &lt;d202180596@hust.edu.cn&gt;
+Date:   Tue Apr 18 21:56:12 2023 +0800
+
+    i2c: qup: Add missing unwind goto in qup_i2c_probe()
+    
+    Smatch Warns:
+            drivers/i2c/busses/i2c-qup.c:1784 qup_i2c_probe()
+            warn: missing unwind goto?
+    
+    The goto label "fail_runtime" and "fail" will disable qup-&gt;pclk,
+    but here qup-&gt;pclk failed to obtain, in order to be consistent,
+    change the direct return to goto label "fail_dma".
+    
+    Fixes: 9cedf3b2f099 ("i2c: qup: Add bam dma capabilities")
+    Signed-off-by: Shuai Jiang &lt;d202180596@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Andi Shyti &lt;andi.shyti@kernel.org&gt;
+    Signed-off-by: Wolfram Sang &lt;wsa@kernel.org&gt;
+    Cc: &lt;stable@vger.kernel.org&gt; # v4.6+
+
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index 2e153f2f71b6..78682388e02e 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -1752,16 +1752,21 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 	if (!clk_freq || clk_freq &gt; I2C_MAX_FAST_MODE_PLUS_FREQ) {
+ 		dev_err(qup-&gt;dev, "clock frequency not supported %d\n",
+ 			clk_freq);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto fail_dma;
+ 	}
+ 
+ 	qup-&gt;base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(qup-&gt;base))
+-		return PTR_ERR(qup-&gt;base);
++	if (IS_ERR(qup-&gt;base)) {
++		ret = PTR_ERR(qup-&gt;base);
++		goto fail_dma;
++	}
+ 
+ 	qup-&gt;irq = platform_get_irq(pdev, 0);
+-	if (qup-&gt;irq &lt; 0)
+-		return qup-&gt;irq;
++	if (qup-&gt;irq &lt; 0) {
++		ret = qup-&gt;irq;
++		goto fail_dma;
++	}
+ 
+ 	if (has_acpi_companion(qup-&gt;dev)) {
+ 		ret = device_property_read_u32(qup-&gt;dev,
+@@ -1775,13 +1780,15 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 		qup-&gt;clk = devm_clk_get(qup-&gt;dev, "core");
+ 		if (IS_ERR(qup-&gt;clk)) {
+ 			dev_err(qup-&gt;dev, "Could not get core clock\n");
+-			return PTR_ERR(qup-&gt;clk);
++			ret = PTR_ERR(qup-&gt;clk);
++			goto fail_dma;
+ 		}
+ 
+ 		qup-&gt;pclk = devm_clk_get(qup-&gt;dev, "iface");
+ 		if (IS_ERR(qup-&gt;pclk)) {
+ 			dev_err(qup-&gt;dev, "Could not get iface clock\n");
+-			return PTR_ERR(qup-&gt;pclk);
++			ret = PTR_ERR(qup-&gt;pclk);
++			goto fail_dma;
+ 		}
+ 		qup_i2c_enable_clocks(qup);
+ 		src_clk_freq = clk_get_rate(qup-&gt;clk);</pre><hr><pre>commit 9e1a1ee93f6b08aad5ee645073f7c7b115f71e15
+Author: Wang Zhang &lt;silver_code@hust.edu.cn&gt;
+Date:   Fri May 26 15:05:33 2023 +0800
+
+    i2c: ocores: use devm_ managed clks
+    
+    Smatch complains that:
+    drivers/i2c/busses/i2c-ocores.c:704 ocores_i2c_probe()
+    warn: missing unwind goto?
+    
+    If any wrong occurs in ocores_i2c_of_probe, the i2c-&gt;clk needs to be
+    released. But the function returns directly without freeing the clock.
+    
+    Fix this by updating the code to use devm_clk_get_optional_enabled()
+    instead. Use dev_err_probe() where appropriate as well since we are
+    changing those statements.
+    
+    Fixes: f5f35a92e44a ("i2c: ocores: Add irq support for sparc")
+    Signed-off-by: Wang Zhang &lt;silver_code@hust.edu.cn&gt;
+    Reviewed-by: Andi Shyti &lt;andi.shyti@kernel.org&gt;
+    Reviewed-by: Andrew Lunn &lt;andrew@lunn.ch&gt;
+    Signed-off-by: Wolfram Sang &lt;wsa@kernel.org&gt;
+
+diff --git a/drivers/i2c/busses/i2c-ocores.c b/drivers/i2c/busses/i2c-ocores.c
+index 0742b84a11eb..4ac77e57bbbf 100644
+--- a/drivers/i2c/busses/i2c-ocores.c
++++ b/drivers/i2c/busses/i2c-ocores.c
+@@ -552,28 +552,20 @@ static int ocores_i2c_of_probe(struct platform_device *pdev,
+ 							&amp;clock_frequency);
+ 	i2c-&gt;bus_clock_khz = 100;
+ 
+-	i2c-&gt;clk = devm_clk_get(&amp;pdev-&gt;dev, NULL);
+-
+-	if (!IS_ERR(i2c-&gt;clk)) {
+-		int ret = clk_prepare_enable(i2c-&gt;clk);
+-
+-		if (ret) {
+-			dev_err(&amp;pdev-&gt;dev,
+-				"clk_prepare_enable failed: %d\n", ret);
+-			return ret;
+-		}
+-		i2c-&gt;ip_clock_khz = clk_get_rate(i2c-&gt;clk) / 1000;
+-		if (clock_frequency_present)
+-			i2c-&gt;bus_clock_khz = clock_frequency / 1000;
+-	}
+-
++	i2c-&gt;clk = devm_clk_get_optional_enabled(&amp;pdev-&gt;dev, NULL);
++	if (IS_ERR(i2c-&gt;clk))
++		return dev_err_probe(&amp;pdev-&gt;dev, PTR_ERR(i2c-&gt;clk),
++				     "devm_clk_get_optional_enabled failed\n");
++
++	i2c-&gt;ip_clock_khz = clk_get_rate(i2c-&gt;clk) / 1000;
++	if (clock_frequency_present)
++		i2c-&gt;bus_clock_khz = clock_frequency / 1000;
+ 	if (i2c-&gt;ip_clock_khz == 0) {
+ 		if (of_property_read_u32(np, "opencores,ip-clock-frequency",
+ 						&amp;val)) {
+ 			if (!clock_frequency_present) {
+ 				dev_err(&amp;pdev-&gt;dev,
+ 					"Missing required parameter 'opencores,ip-clock-frequency'\n");
+-				clk_disable_unprepare(i2c-&gt;clk);
+ 				return -ENODEV;
+ 			}
+ 			i2c-&gt;ip_clock_khz = clock_frequency / 1000;
+@@ -678,8 +670,7 @@ static int ocores_i2c_probe(struct platform_device *pdev)
+ 		default:
+ 			dev_err(&amp;pdev-&gt;dev, "Unsupported I/O width (%d)\n",
+ 				i2c-&gt;reg_io_width);
+-			ret = -EINVAL;
+-			goto err_clk;
++			return -EINVAL;
+ 		}
+ 	}
+ 
+@@ -710,13 +701,13 @@ static int ocores_i2c_probe(struct platform_device *pdev)
+ 						   pdev-&gt;name, i2c);
+ 		if (ret) {
+ 			dev_err(&amp;pdev-&gt;dev, "Cannot claim IRQ\n");
+-			goto err_clk;
++			return ret;
+ 		}
+ 	}
+ 
+ 	ret = ocores_init(&amp;pdev-&gt;dev, i2c);
+ 	if (ret)
+-		goto err_clk;
++		return ret;
+ 
+ 	/* hook up driver to tree */
+ 	platform_set_drvdata(pdev, i2c);
+@@ -728,7 +719,7 @@ static int ocores_i2c_probe(struct platform_device *pdev)
+ 	/* add i2c adapter to i2c tree */
+ 	ret = i2c_add_adapter(&amp;i2c-&gt;adap);
+ 	if (ret)
+-		goto err_clk;
++		return ret;
+ 
+ 	/* add in known devices to the bus */
+ 	if (pdata) {
+@@ -737,10 +728,6 @@ static int ocores_i2c_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	return 0;
+-
+-err_clk:
+-	clk_disable_unprepare(i2c-&gt;clk);
+-	return ret;
+ }
+ 
+ static void ocores_i2c_remove(struct platform_device *pdev)
+@@ -754,9 +741,6 @@ static void ocores_i2c_remove(struct platform_device *pdev)
+ 
+ 	/* remove adapter &amp; data */
+ 	i2c_del_adapter(&amp;i2c-&gt;adap);
+-
+-	if (!IS_ERR(i2c-&gt;clk))
+-		clk_disable_unprepare(i2c-&gt;clk);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+@@ -769,28 +753,22 @@ static int ocores_i2c_suspend(struct device *dev)
+ 	ctrl &amp;= ~(OCI2C_CTRL_EN | OCI2C_CTRL_IEN);
+ 	oc_setreg(i2c, OCI2C_CONTROL, ctrl);
+ 
+-	if (!IS_ERR(i2c-&gt;clk))
+-		clk_disable_unprepare(i2c-&gt;clk);
++	clk_disable_unprepare(i2c-&gt;clk);
+ 	return 0;
+ }
+ 
+ static int ocores_i2c_resume(struct device *dev)
+ {
+ 	struct ocores_i2c *i2c = dev_get_drvdata(dev);
++	unsigned long rate;
++	int ret;
+ 
+-	if (!IS_ERR(i2c-&gt;clk)) {
+-		unsigned long rate;
+-		int ret = clk_prepare_enable(i2c-&gt;clk);
+-
+-		if (ret) {
+-			dev_err(dev,
+-				"clk_prepare_enable failed: %d\n", ret);
+-			return ret;
+-		}
+-		rate = clk_get_rate(i2c-&gt;clk) / 1000;
+-		if (rate)
+-			i2c-&gt;ip_clock_khz = rate;
+-	}
++	ret = clk_prepare_enable(i2c-&gt;clk);
++	if (ret)
++		return dev_err_probe(dev, ret, "clk_prepare_enable failed\n");
++	rate = clk_get_rate(i2c-&gt;clk) / 1000;
++	if (rate)
++		i2c-&gt;ip_clock_khz = rate;
+ 	return ocores_init(dev, i2c);
+ }
+ </pre><hr><pre>commit 8b5bf64c89c7100c921bd807ba39b2eb003061ab
+Author: Feng Mingxi &lt;m202271825@hust.edu.cn&gt;
+Date:   Tue Apr 25 06:56:11 2023 +0000
+
+    clocksource/drivers/cadence-ttc: Fix memory leak in ttc_timer_probe
+    
+    Smatch reports:
+    drivers/clocksource/timer-cadence-ttc.c:529 ttc_timer_probe()
+    warn: 'timer_baseaddr' from of_iomap() not released on lines: 498,508,516.
+    
+    timer_baseaddr may have the problem of not being released after use,
+    I replaced it with the devm_of_iomap() function and added the clk_put()
+    function to cleanup the "clk_ce" and "clk_cs".
+    
+    Fixes: e932900a3279 ("arm: zynq: Use standard timer binding")
+    Fixes: 70504f311d4b ("clocksource/drivers/cadence_ttc: Convert init function to return error")
+    Signed-off-by: Feng Mingxi &lt;m202271825@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Acked-by: Michal Simek &lt;michal.simek@amd.com&gt;
+    Signed-off-by: Daniel Lezcano &lt;daniel.lezcano@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20230425065611.702917-1-m202271825@hust.edu.cn
+
+diff --git a/drivers/clocksource/timer-cadence-ttc.c b/drivers/clocksource/timer-cadence-ttc.c
+index 4efd0cf3b602..0d52e28fea4d 100644
+--- a/drivers/clocksource/timer-cadence-ttc.c
++++ b/drivers/clocksource/timer-cadence-ttc.c
+@@ -486,10 +486,10 @@ static int __init ttc_timer_probe(struct platform_device *pdev)
+ 	 * and use it. Note that the event timer uses the interrupt and it's the
+ 	 * 2nd TTC hence the irq_of_parse_and_map(,1)
+ 	 */
+-	timer_baseaddr = of_iomap(timer, 0);
+-	if (!timer_baseaddr) {
++	timer_baseaddr = devm_of_iomap(&amp;pdev-&gt;dev, timer, 0, NULL);
++	if (IS_ERR(timer_baseaddr)) {
+ 		pr_err("ERROR: invalid timer base address\n");
+-		return -ENXIO;
++		return PTR_ERR(timer_baseaddr);
+ 	}
+ 
+ 	irq = irq_of_parse_and_map(timer, 1);
+@@ -513,20 +513,27 @@ static int __init ttc_timer_probe(struct platform_device *pdev)
+ 	clk_ce = of_clk_get(timer, clksel);
+ 	if (IS_ERR(clk_ce)) {
+ 		pr_err("ERROR: timer input clock not found\n");
+-		return PTR_ERR(clk_ce);
++		ret = PTR_ERR(clk_ce);
++		goto put_clk_cs;
+ 	}
+ 
+ 	ret = ttc_setup_clocksource(clk_cs, timer_baseaddr, timer_width);
+ 	if (ret)
+-		return ret;
++		goto put_clk_ce;
+ 
+ 	ret = ttc_setup_clockevent(clk_ce, timer_baseaddr + 4, irq);
+ 	if (ret)
+-		return ret;
++		goto put_clk_ce;
+ 
+ 	pr_info("%pOFn #0 at %p, irq=%d\n", timer, timer_baseaddr, irq);
+ 
+ 	return 0;
++
++put_clk_ce:
++	clk_put(clk_ce);
++put_clk_cs:
++	clk_put(clk_cs);
++	return ret;
+ }
+ 
+ static const struct of_device_id ttc_timer_of_match[] = {</pre><hr><pre>commit 095bb8ba45f28ed15296eb5b7662e03e57d5e34e
+Author: Yi Yingao &lt;m202271736@hust.edu.cn&gt;
+Date:   Tue May 9 16:52:36 2023 +0800
+
+    nvmem: sunplus-ocotp: release otp-&gt;clk before return
+    
+    Smatch reports:
+    drivers/nvmem/sunplus-ocotp.c:205 sp_ocotp_probe()
+    warn: 'otp-&gt;clk' from clk_prepare() not released on lines: 196.
+    
+    In the function sp_ocotp_probe(struct platform_device *pdev), otp-&gt;clk may
+    not be released before return.
+    
+    To fix this issue, using function clk_unprepare() to release otp-&gt;clk.
+    
+    Fixes: 8747ec2e9762 ("nvmem: Add driver for OCOTP in Sunplus SP7021")
+    Signed-off-by: Yi Yingao &lt;m202271736@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Message-ID: &lt;20230509085237.5917-1-m202271736@hust.edu.cn&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/nvmem/sunplus-ocotp.c b/drivers/nvmem/sunplus-ocotp.c
+index 52b928a7a6d5..f85350b17d67 100644
+--- a/drivers/nvmem/sunplus-ocotp.c
++++ b/drivers/nvmem/sunplus-ocotp.c
+@@ -192,9 +192,11 @@ static int sp_ocotp_probe(struct platform_device *pdev)
+ 	sp_ocotp_nvmem_config.dev = dev;
+ 
+ 	nvmem = devm_nvmem_register(dev, &amp;sp_ocotp_nvmem_config);
+-	if (IS_ERR(nvmem))
+-		return dev_err_probe(&amp;pdev-&gt;dev, PTR_ERR(nvmem),
++	if (IS_ERR(nvmem)) {
++		ret = dev_err_probe(&amp;pdev-&gt;dev, PTR_ERR(nvmem),
+ 						"register nvmem device fail\n");
++		goto err;
++	}
+ 
+ 	platform_set_drvdata(pdev, nvmem);
+ 
+@@ -203,6 +205,9 @@ static int sp_ocotp_probe(struct platform_device *pdev)
+ 		(int)OTP_WORD_SIZE, (int)QAC628_OTP_SIZE);
+ 
+ 	return 0;
++err:
++	clk_unprepare(otp-&gt;clk);
++	return ret;
+ }
+ 
+ static const struct of_device_id sp_ocotp_dt_ids[] = {</pre><hr><pre>commit 3db7285e044144fd88a356f5b641b9cd4b231a77
+Author: Bosi Zhang &lt;u201911157@hust.edu.cn&gt;
+Date:   Sat Apr 22 08:43:31 2023 +0000
+
+    clk: mediatek: fix of_iomap memory leak
+    
+    Smatch reports:
+    drivers/clk/mediatek/clk-mtk.c:583 mtk_clk_simple_probe() warn:
+        'base' from of_iomap() not released on lines: 496.
+    
+    This problem was also found in linux-next. In mtk_clk_simple_probe(),
+    base is not released when handling errors
+    if clk_data is not existed, which may cause a leak.
+    So free_base should be added here to release base.
+    
+    Fixes: c58cd0e40ffa ("clk: mediatek: Add mtk_clk_simple_probe() to simplify clock providers")
+    Signed-off-by: Bosi Zhang &lt;u201911157@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230422084331.47198-1-u201911157@hust.edu.cn
+    Signed-off-by: Stephen Boyd &lt;sboyd@kernel.org&gt;
+
+diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
+index fd2214c3242f..3c50f48e93a7 100644
+--- a/drivers/clk/mediatek/clk-mtk.c
++++ b/drivers/clk/mediatek/clk-mtk.c
+@@ -500,8 +500,10 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 	num_clks += mcd-&gt;num_mux_clks + mcd-&gt;num_divider_clks;
+ 
+ 	clk_data = mtk_alloc_clk_data(num_clks);
+-	if (!clk_data)
+-		return -ENOMEM;
++	if (!clk_data) {
++		r = -ENOMEM;
++		goto free_base;
++	}
+ 
+ 	if (mcd-&gt;fixed_clks) {
+ 		r = mtk_clk_register_fixed_clks(mcd-&gt;fixed_clks,
+@@ -599,6 +601,7 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 					      mcd-&gt;num_fixed_clks, clk_data);
+ free_data:
+ 	mtk_free_clk_data(clk_data);
++free_base:
+ 	if (mcd-&gt;shared_io &amp;&amp; base)
+ 		iounmap(base);
+ 	return r;</pre><hr><pre>commit 878b02d5f3b56cb090dbe2c70c89273be144087f
+Author: Yuxing Liu &lt;lyx2022@hust.edu.cn&gt;
+Date:   Wed May 3 07:06:07 2023 +0000
+
+    clk: imx: clk-imx8mp: improve error handling in imx8mp_clocks_probe()
+    
+    Replace of_iomap() and kzalloc() with devm_of_iomap() and devm_kzalloc()
+    which can automatically release the related memory when the device
+    or driver is removed or unloaded to avoid potential memory leak.
+    
+    In this case, iounmap(anatop_base) in line 427,433 are removed
+    as manual release is not required.
+    
+    Besides, referring to clk-imx8mq.c, check the return code of
+    of_clk_add_hw_provider, if it returns negtive, print error info
+    and unregister hws, which makes the program more robust.
+    
+    Fixes: 9c140d992676 ("clk: imx: Add support for i.MX8MP clock driver")
+    Signed-off-by: Yuxing Liu &lt;lyx2022@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Abel Vesa &lt;abel.vesa@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20230503070607.2462-1-lyx2022@hust.edu.cn
+    Signed-off-by: Abel Vesa &lt;abel.vesa@linaro.org&gt;
+
+diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+index f26ae8de4cc6..1469249386dd 100644
+--- a/drivers/clk/imx/clk-imx8mp.c
++++ b/drivers/clk/imx/clk-imx8mp.c
+@@ -414,25 +414,22 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+ 	struct device *dev = &amp;pdev-&gt;dev;
+ 	struct device_node *np;
+ 	void __iomem *anatop_base, *ccm_base;
++	int err;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mp-anatop");
+-	anatop_base = of_iomap(np, 0);
++	anatop_base = devm_of_iomap(dev, np, 0, NULL);
+ 	of_node_put(np);
+-	if (WARN_ON(!anatop_base))
+-		return -ENOMEM;
++	if (WARN_ON(IS_ERR(anatop_base)))
++		return PTR_ERR(anatop_base);
+ 
+ 	np = dev-&gt;of_node;
+ 	ccm_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (WARN_ON(IS_ERR(ccm_base))) {
+-		iounmap(anatop_base);
++	if (WARN_ON(IS_ERR(ccm_base)))
+ 		return PTR_ERR(ccm_base);
+-	}
+ 
+-	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws, IMX8MP_CLK_END), GFP_KERNEL);
+-	if (WARN_ON(!clk_hw_data)) {
+-		iounmap(anatop_base);
++	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws, IMX8MP_CLK_END), GFP_KERNEL);
++	if (WARN_ON(!clk_hw_data))
+ 		return -ENOMEM;
+-	}
+ 
+ 	clk_hw_data-&gt;num = IMX8MP_CLK_END;
+ 	hws = clk_hw_data-&gt;hws;
+@@ -722,7 +719,12 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+ 
+ 	imx_check_clk_hws(hws, IMX8MP_CLK_END);
+ 
+-	of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
++	err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
++	if (err &lt; 0) {
++		dev_err(dev, "failed to register hws for i.MX8MP\n");
++		imx_unregister_hw_clocks(hws, IMX8MP_CLK_END);
++		return err;
++	}
+ 
+ 	imx_register_uart_clocks();
+ </pre><hr><pre>commit e02ba11b457647050cb16e7cad16cec3c252fade
+Author: Zhanhao Hu &lt;zero12113@hust.edu.cn&gt;
+Date:   Thu Jun 1 03:38:25 2023 +0000
+
+    clk: imx93: fix memory leak and missing unwind goto in imx93_clocks_probe
+    
+    In function probe(), it returns directly without unregistered hws
+    when error occurs.
+    
+    Fix this by adding 'goto unregister_hws;' on line 295 and
+    line 310.
+    
+    Use devm_kzalloc() instead of kzalloc() to automatically
+    free the memory using devm_kfree() when error occurs.
+    
+    Replace of_iomap() with devm_of_iomap() to automatically
+    handle the unused ioremap region and delete 'iounmap(anatop_base);'
+    in unregister_hws.
+    
+    Fixes: 24defbe194b6 ("clk: imx: add i.MX93 clk")
+    Signed-off-by: Zhanhao Hu &lt;zero12113@hust.edu.cn&gt;
+    Reviewed-by: Abel Vesa &lt;abel.vesa@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20230601033825.336558-1-zero12113@hust.edu.cn
+    Signed-off-by: Abel Vesa &lt;abel.vesa@linaro.org&gt;
+
+diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
+index 07b4a043e449..b6c7c2725906 100644
+--- a/drivers/clk/imx/clk-imx93.c
++++ b/drivers/clk/imx/clk-imx93.c
+@@ -264,7 +264,7 @@ static int imx93_clocks_probe(struct platform_device *pdev)
+ 	void __iomem *base, *anatop_base;
+ 	int i, ret;
+ 
+-	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
++	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
+ 					  IMX93_CLK_END), GFP_KERNEL);
+ 	if (!clk_hw_data)
+ 		return -ENOMEM;
+@@ -288,10 +288,12 @@ static int imx93_clocks_probe(struct platform_device *pdev)
+ 								    "sys_pll_pfd2", 1, 2);
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx93-anatop");
+-	anatop_base = of_iomap(np, 0);
++	anatop_base = devm_of_iomap(dev, np, 0, NULL);
+ 	of_node_put(np);
+-	if (WARN_ON(!anatop_base))
+-		return -ENOMEM;
++	if (WARN_ON(IS_ERR(anatop_base))) {
++		ret = PTR_ERR(base);
++		goto unregister_hws;
++	}
+ 
+ 	clks[IMX93_CLK_ARM_PLL] = imx_clk_fracn_gppll_integer("arm_pll", "osc_24m",
+ 							      anatop_base + 0x1000,
+@@ -304,8 +306,8 @@ static int imx93_clocks_probe(struct platform_device *pdev)
+ 	np = dev-&gt;of_node;
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (WARN_ON(IS_ERR(base))) {
+-		iounmap(anatop_base);
+-		return PTR_ERR(base);
++		ret = PTR_ERR(base);
++		goto unregister_hws;
+ 	}
+ 
+ 	for (i = 0; i &lt; ARRAY_SIZE(root_array); i++) {
+@@ -345,7 +347,6 @@ static int imx93_clocks_probe(struct platform_device *pdev)
+ 
+ unregister_hws:
+ 	imx_unregister_hw_clocks(clks, IMX93_CLK_END);
+-	iounmap(anatop_base);
+ 
+ 	return ret;
+ }</pre>
+    <div class="pagination">
+        <a href='14.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><span>[2]</span><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_3.html'>Next&gt;&gt;</a>
+    <div>
+</body>

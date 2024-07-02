@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Huazhong University of Science and Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Huazhong University of Science and Technology</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 7f20ac18cdaa63a1e8fcb9f7a9dc9e160e16c106
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Apr 27 13:37:02 2024 +0800
+
+    docs/zh_CN: remove two inconsistent spaces
+    
+    The spaces on the left and right of texts should be consistent.
+    Remove these redundent spaces.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240427053703.2339727-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/index.rst b/Documentation/translations/zh_CN/index.rst
+index 6ccec9657cc6..20b9d4270d1f 100644
+--- a/Documentation/translations/zh_CN/index.rst
++++ b/Documentation/translations/zh_CN/index.rst
+@@ -24,8 +24,8 @@
+ 上的linux-doc邮件列表。
+ 
+ 顺便说下，中文文档也需要遵守内核编码风格，风格中中文和英文的主要不同就是中文
+-的字符标点占用两个英文字符宽度， 所以，当英文要求不要超过每行100个字符时，
+-中文就不要超过50个字符。另外，也要注意'-'，'=' 等符号与相关标题的对齐。在将
++的字符标点占用两个英文字符宽度，所以，当英文要求不要超过每行100个字符时，
++中文就不要超过50个字符。另外，也要注意'-'，'='等符号与相关标题的对齐。在将
+ 补丁提交到社区之前，一定要进行必要的 ``checkpatch.pl`` 检查和编译测试。
+ 
+ 与Linux 内核社区一起工作</pre><hr><pre>commit 12d712dc8e4f1a30b18f8c3789adfbc07f5eb050
+Author: Shiqi Liu &lt;shiqiliu@hust.edu.cn&gt;
+Date:   Sun Apr 21 14:33:28 2024 +0800
+
+    arm64/sysreg: Update PIE permission encodings
+    
+    Fix left shift overflow issue when the parameter idx is greater than or
+    equal to 8 in the calculation of perm in PIRx_ELx_PERM macro.
+    
+    Fix this by modifying the encoding to use a long integer type.
+    
+    Signed-off-by: Shiqi Liu &lt;shiqiliu@hust.edu.cn&gt;
+    Acked-by: Marc Zyngier &lt;maz@kernel.org&gt;
+    Reviewed-by: Catalin Marinas &lt;catalin.marinas@arm.com&gt;
+    Link: https://lore.kernel.org/r/20240421063328.29710-1-shiqiliu@hust.edu.cn
+    Signed-off-by: Will Deacon &lt;will@kernel.org&gt;
+
+diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+index 9e8999592f3a..af3b206fa423 100644
+--- a/arch/arm64/include/asm/sysreg.h
++++ b/arch/arm64/include/asm/sysreg.h
+@@ -1036,18 +1036,18 @@
+  * Permission Indirection Extension (PIE) permission encodings.
+  * Encodings with the _O suffix, have overlays applied (Permission Overlay Extension).
+  */
+-#define PIE_NONE_O	0x0
+-#define PIE_R_O		0x1
+-#define PIE_X_O		0x2
+-#define PIE_RX_O	0x3
+-#define PIE_RW_O	0x5
+-#define PIE_RWnX_O	0x6
+-#define PIE_RWX_O	0x7
+-#define PIE_R		0x8
+-#define PIE_GCS		0x9
+-#define PIE_RX		0xa
+-#define PIE_RW		0xc
+-#define PIE_RWX		0xe
++#define PIE_NONE_O	UL(0x0)
++#define PIE_R_O		UL(0x1)
++#define PIE_X_O		UL(0x2)
++#define PIE_RX_O	UL(0x3)
++#define PIE_RW_O	UL(0x5)
++#define PIE_RWnX_O	UL(0x6)
++#define PIE_RWX_O	UL(0x7)
++#define PIE_R		UL(0x8)
++#define PIE_GCS		UL(0x9)
++#define PIE_RX		UL(0xa)
++#define PIE_RW		UL(0xc)
++#define PIE_RWX		UL(0xe)
+ 
+ #define PIRx_ELx_PERM(idx, perm)	((perm) &lt;&lt; ((idx) * 4))
+ 
+diff --git a/tools/arch/arm64/include/asm/sysreg.h b/tools/arch/arm64/include/asm/sysreg.h
+index ccc13e991376..cd8420e8c3ad 100644
+--- a/tools/arch/arm64/include/asm/sysreg.h
++++ b/tools/arch/arm64/include/asm/sysreg.h
+@@ -701,18 +701,18 @@
+  * Permission Indirection Extension (PIE) permission encodings.
+  * Encodings with the _O suffix, have overlays applied (Permission Overlay Extension).
+  */
+-#define PIE_NONE_O	0x0
+-#define PIE_R_O		0x1
+-#define PIE_X_O		0x2
+-#define PIE_RX_O	0x3
+-#define PIE_RW_O	0x5
+-#define PIE_RWnX_O	0x6
+-#define PIE_RWX_O	0x7
+-#define PIE_R		0x8
+-#define PIE_GCS		0x9
+-#define PIE_RX		0xa
+-#define PIE_RW		0xc
+-#define PIE_RWX		0xe
++#define PIE_NONE_O	UL(0x0)
++#define PIE_R_O		UL(0x1)
++#define PIE_X_O		UL(0x2)
++#define PIE_RX_O	UL(0x3)
++#define PIE_RW_O	UL(0x5)
++#define PIE_RWnX_O	UL(0x6)
++#define PIE_RWX_O	UL(0x7)
++#define PIE_R		UL(0x8)
++#define PIE_GCS		UL(0x9)
++#define PIE_RX		UL(0xa)
++#define PIE_RW		UL(0xc)
++#define PIE_RWX		UL(0xe)
+ 
+ #define PIRx_ELx_PERM(idx, perm)	((perm) &lt;&lt; ((idx) * 4))
+ </pre><hr><pre>commit e171c7cef29409411b708c5752c16512266f48b4
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Mon Apr 22 12:11:00 2024 +0800
+
+    docs/zh_CN: add process/cve Chinese translation
+    
+    Translate process/cve.rst into Chinese and add it to
+    Documentation/translations/zh_CN directory.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240422041115.2439166-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/process/cve.rst b/Documentation/translations/zh_CN/process/cve.rst
+new file mode 100644
+index 000000000000..e39b796efcec
+--- /dev/null
++++ b/Documentation/translations/zh_CN/process/cve.rst
+@@ -0,0 +1,89 @@
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/process/cve.rst
++:Translator: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++====
++CVEs
++====
++
++Common Vulnerabilities and Exposure (CVE®) 编号是一种明确的方式来
++识别、定义和登记公开披露的安全漏洞。随着时间的推移，它们在内核项目中的实用性
++已经下降，CVE编号经常以不适当的方式和不适当的原因被分配。因此，内核开发社区
++倾向于避免使用它们。然而，分配CVE与其他形式的安全标识符的持续压力，以及内核
++社区之外的个人和公司的持续滥用，已经清楚地表明内核社区应该控制这些CVE分配。
++
++Linux内核开发团队确实有能力为潜在的Linux内核安全问题分配CVE。CVE的分配
++独立于 :doc:`安全漏洞报送流程&lt;/process/security-bugs&gt;`。
++
++所有分配给Linux内核的CVE列表都可以在linux-cve邮件列表的存档中找到，如
++https://lore.kernel.org/linux-cve-announce/ 所示。如果想获得已分配
++CVE的通知，请“订阅”该邮件列表。要获得分配的CVE通知，请订阅该邮件列表：
++`订阅 &lt;https://subspace.kernel.org/subscribing.html&gt;`_。
++
++过程
++=======
++
++作为正常稳定发布过程的一部分，可能存在安全问题的内核更改由负责CVE编号分配
++的开发人员识别，并自动为其分配CVE编号。这些CVE分配会作为经常性的通告经常
++发布在linux-cve-announce邮件列表上。
++
++注意，由于Linux内核在系统中的特殊地位，几乎任何漏洞都可能被利用来危害内核
++的安全性，但是当漏洞被修复后，利用的可能性通常不明显。因此，CVE分配团队过于
++谨慎，并将CVE编号分配给他们识别的任何漏洞修复。这就解释了为什么Linux内核
++团队会发布大量的CVE。
++
++如果CVE分配团队错过了任何用户认为应该分配CVE的特定修复，请发送电子邮件到
++&lt;cve@kernel.org&gt;，那里的团队将与您一起工作。请注意，任何潜在的安全问题
++不应被发送到此邮箱，它仅用于为已发布的内核树中的漏洞修复分配CVE。如果你觉得
++自己发现了一个未修复的安全问题，请按照 :doc:`安全漏洞报送流程
++&lt;/process/security-bugs&gt;` 发送到Linux内核社区。
++
++Linux内核不会给未修复的安全问题自动分配CVE；只有在安全修复可用且应用于
++稳定内核树后，CVE分配才会自动发生，并且它将通过安全修复的Git提交编号进行
++跟踪。如果有人希望在提交安全修复之前分配CVE，请联系内核CVE分配团队，从
++他们的一批保留编号中获得相应的CVE编号。
++
++对于目前没有得到稳定与长期维护内核团队积极支持的内核版本中发现的任何问题，
++都不会分配CVEs。当前支持的内核分支列表可以在 https://kernel.org/releases.html
++上找到。
++
++被分配CVE的争论
++=========================
++
++对于为特定内核修改分配的CVE，其争论或修改的权限仅属于受影响子系统的维护者。
++这一原则确保了漏洞报告的高度准确性和可问责性。只有那些具有深厚专业知识和
++对子系统深入了解的维护人员，才能有效评估内核漏洞的有效性和范围，并确定其适当的
++CVE指定策略。在此指定权限之外，任何争论或修改CVE的尝试都可能导致混乱、
++不准确的报告，并最终危及系统。
++
++无效的CVE
++============
++
++如果发现的安全问题存在于仅由某Linux发行版支持的Linux内核中，即安全问题是
++由于Linux发行版所做的更改导致，或者Linux的发行版内核版本不再是Linux内核
++社区支持的内核版本，那么Linux内核CVE团队将不能分配CVE，必须从Linux
++发行版本身请求。
++
++内核CVE分配团队以外的任何团队对Linux内核支持版本分配的CVE都不应被
++视为有效CVE。请通知内核CVE分配团队，以便他们可以通过CNA修复措施使
++这些条目失效。
++
++特定CVE的适用性
++==============================
++
++由于Linux内核可以以许多不同方式使用，外部用户可以通过许多不同方式访问它，或者
++根本没有访问，因此任何特定CVE的适用性取决于Linux用户，而不是内核CVE分配团队。
++请不要与我们联系来尝试确定任何特定CVE的适用性。
++
++此外，由于源代码树非常大，而任何一个系统都只使用源代码树的一小部分，因此任何
++Linux用户都应该意识到，大量分配的CVEs与他们的系统无关。
++
++简而言之，我们不知道您的用例，也不知道您使用的是内核的哪个部分，因此我们无法
++确定特定的CVE是否与您的系统相关。
++
++与往常一样，最好采用所有发布的内核更改，因为它们是由许多社区成员在一个统一的
++整体中一起进行测试的，而不是作为个别的精选更改。还要注意，对于许多安全问题来
++说，整体问题的解决方案并不是在单个更改中找到的，而是在彼此之上的许多修复的总
++和。理想情况下，CVE将被分配给所有问题的所有修复，但有时我们将无法注意到一些
++修复，因此某些修复可能在没有CVE的情况下被采取。
+diff --git a/Documentation/translations/zh_CN/process/index.rst b/Documentation/translations/zh_CN/process/index.rst
+index 3ca02d281be0..5c6c8ccdd50d 100644
+--- a/Documentation/translations/zh_CN/process/index.rst
++++ b/Documentation/translations/zh_CN/process/index.rst
+@@ -48,6 +48,7 @@ TODOLIST:
+    :maxdepth: 1
+ 
+    embargoed-hardware-issues
++   cve
+ 
+ TODOLIST:
+ </pre><hr><pre>commit 3adde4c5f230e462211b41f1eae37077a0bbd8cd
+Author: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+Date:   Sun Apr 21 22:20:20 2024 +0800
+
+    docs/zh_CN: Add dev-tools/kcov Chinese translation
+    
+    Translate dev-tools/kcov into Chinese and add it in
+    dev-tools/zh_CN/index.rst.
+    
+    Signed-off-by: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240421142021.19504-1-tttturtleruss@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/index.rst b/Documentation/translations/zh_CN/dev-tools/index.rst
+index 51e5b3e724c1..fa900f5beb68 100644
+--- a/Documentation/translations/zh_CN/dev-tools/index.rst
++++ b/Documentation/translations/zh_CN/dev-tools/index.rst
+@@ -22,6 +22,7 @@ Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+    sparse
+    gcov
+    kasan
++   kcov
+    ubsan
+    kmemleak
+    gdb-kernel-debugging
+@@ -29,7 +30,6 @@ Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+ Todolist:
+ 
+  - coccinelle
+- - kcov
+  - kcsan
+  - kfence
+  - kgdb
+diff --git a/Documentation/translations/zh_CN/dev-tools/kcov.rst b/Documentation/translations/zh_CN/dev-tools/kcov.rst
+new file mode 100644
+index 000000000000..629154df7121
+--- /dev/null
++++ b/Documentation/translations/zh_CN/dev-tools/kcov.rst
+@@ -0,0 +1,359 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/dev-tools/kcov.rst
++:Translator: 刘浩阳 Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
++
++KCOV: 用于模糊测试的代码覆盖率
++==============================
++
++KCOV 以一种适用于覆盖率引导的模糊测试的形式收集和暴露内核代码覆盖率信息。
++一个正在运行的内核的覆盖率数据可以通过 ``kcov`` 调试文件导出。覆盖率的收集是基
++于任务启用的，因此 KCOV 可以精确捕获单个系统调用的覆盖率。
++
++要注意的是 KCOV 不是为了收集尽可能多的覆盖率数据。而是为了收集相对稳定的覆盖率
++，这是系统调用输入的函数。为了完成这个目标，它不收集软硬中断的覆盖率（除非移除
++覆盖率收集被启用，见下文）以及内核中固有的不确定部分的覆盖率（如调度器，锁定）
++
++除了收集代码覆盖率，KCOV 还收集操作数比较的覆盖率。见 "操作数比较收集" 一节
++查看详细信息。
++
++除了从系统调用处理器收集覆盖率数据，KCOV 还从后台内核或软中断任务中执行的内核
++被标注的部分收集覆盖率。见 "远程覆盖率收集" 一节查看详细信息。
++
++先决条件
++--------
++
++KCOV 依赖编译器插桩，要求 GCC 6.1.0 及更高版本或者内核支持的任意版本的 Clang。
++
++收集操作数比较的覆盖率需要 GCC 8+ 或者 Clang。
++
++为了启用 KCOV，需要使用如下参数配置内核::
++
++        CONFIG_KCOV=y
++
++为了启用操作数比较覆盖率的收集，使用如下参数::
++
++    CONFIG_KCOV_ENABLE_COMPARISONS=y
++
++覆盖率数据只会在调试文件系统被挂载后才可以获取::
++
++        mount -t debugfs none /sys/kernel/debug
++
++覆盖率收集
++----------
++
++下面的程序演示了如何使用 KCOV 在一个测试程序中收集单个系统调用的覆盖率：
++
++.. code-block:: c
++
++    #include &lt;stdio.h&gt;
++    #include &lt;stddef.h&gt;
++    #include &lt;stdint.h&gt;
++    #include &lt;stdlib.h&gt;
++    #include &lt;sys/types.h&gt;
++    #include &lt;sys/stat.h&gt;
++    #include &lt;sys/ioctl.h&gt;
++    #include &lt;sys/mman.h&gt;
++    #include &lt;unistd.h&gt;
++    #include &lt;fcntl.h&gt;
++    #include &lt;linux/types.h&gt;
++
++    #define KCOV_INIT_TRACE			_IOR('c', 1, unsigned long)
++    #define KCOV_ENABLE			_IO('c', 100)
++    #define KCOV_DISABLE			_IO('c', 101)
++    #define COVER_SIZE			(64&lt;&lt;10)
++
++    #define KCOV_TRACE_PC  0
++    #define KCOV_TRACE_CMP 1
++
++    int main(int argc, char **argv)
++    {
++	int fd;
++	unsigned long *cover, n, i;
++
++	/* 单个文件描述符允许
++	 * 在单线程上收集覆盖率。
++	 */
++	fd = open("/sys/kernel/debug/kcov", O_RDWR);
++	if (fd == -1)
++		perror("open"), exit(1);
++	/* 设置跟踪模式和跟踪大小。 */
++	if (ioctl(fd, KCOV_INIT_TRACE, COVER_SIZE))
++		perror("ioctl"), exit(1);
++	/* 映射内核空间和用户空间共享的缓冲区。 */
++	cover = (unsigned long*)mmap(NULL, COVER_SIZE * sizeof(unsigned long),
++				     PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	if ((void*)cover == MAP_FAILED)
++		perror("mmap"), exit(1);
++	/* 在当前线程中启用覆盖率收集。 */
++	if (ioctl(fd, KCOV_ENABLE, KCOV_TRACE_PC))
++		perror("ioctl"), exit(1);
++	/* 在调用 ioctl() 之后重置覆盖率。 */
++	__atomic_store_n(&amp;cover[0], 0, __ATOMIC_RELAXED);
++	/* 调用目标系统调用。 */
++	read(-1, NULL, 0);
++	/* 读取收集到的 PC 的数目。 */
++	n = __atomic_load_n(&amp;cover[0], __ATOMIC_RELAXED);
++	for (i = 0; i &lt; n; i++)
++		printf("0x%lx\n", cover[i + 1]);
++	/* 在当前线程上禁用覆盖率收集。在这之后
++	 * 可以在其他线程上收集覆盖率
++	 */
++	if (ioctl(fd, KCOV_DISABLE, 0))
++		perror("ioctl"), exit(1);
++	/* 释放资源 */
++	if (munmap(cover, COVER_SIZE * sizeof(unsigned long)))
++		perror("munmap"), exit(1);
++	if (close(fd))
++		perror("close"), exit(1);
++	return 0;
++    }
++
++在使用 ``addr2line`` 传输后，程序输出应该如下所示::
++
++    SyS_read
++    fs/read_write.c:562
++    __fdget_pos
++    fs/file.c:774
++    __fget_light
++    fs/file.c:746
++    __fget_light
++    fs/file.c:750
++    __fget_light
++    fs/file.c:760
++    __fdget_pos
++    fs/file.c:784
++    SyS_read
++    fs/read_write.c:562
++
++如果一个程序需要从多个线程收集覆盖率（独立地）。那么每个线程都需要单独打开
++``/sys/kernel/debug/kcov``。
++
++接口的细粒度允许高效的创建测试进程。即，一个父进程打开了
++``/sys/kernel/debug/kcov``，启用了追踪模式，映射了覆盖率缓冲区，然后在一个循
++环中创建了子进程。这个子进程只需要启用覆盖率收集即可（当一个线程退出时将自动禁
++用覆盖率收集）。
++
++操作数比较收集
++--------------
++
++操作数比较收集和覆盖率收集类似：
++
++.. code-block:: c
++
++    /* 包含和上文一样的头文件和宏定义。 */
++
++    /* 每次记录的 64 位字的数量。 */
++    #define KCOV_WORDS_PER_CMP 4
++
++    /*
++     * 收集的比较种类的格式。
++     *
++     * 0 比特表示是否是一个编译时常量。
++     * 1 &amp; 2 比特包含参数大小的 log2 值，最大 8 字节。
++     */
++
++    #define KCOV_CMP_CONST          (1 &lt;&lt; 0)
++    #define KCOV_CMP_SIZE(n)        ((n) &lt;&lt; 1)
++    #define KCOV_CMP_MASK           KCOV_CMP_SIZE(3)
++
++    int main(int argc, char **argv)
++    {
++	int fd;
++	uint64_t *cover, type, arg1, arg2, is_const, size;
++	unsigned long n, i;
++
++	fd = open("/sys/kernel/debug/kcov", O_RDWR);
++	if (fd == -1)
++		perror("open"), exit(1);
++	if (ioctl(fd, KCOV_INIT_TRACE, COVER_SIZE))
++		perror("ioctl"), exit(1);
++	/*
++	* 注意缓冲区指针的类型是 uint64_t*，因为所有的
++	* 比较操作数都被提升为 uint64_t 类型。
++	*/
++	cover = (uint64_t *)mmap(NULL, COVER_SIZE * sizeof(unsigned long),
++				     PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	if ((void*)cover == MAP_FAILED)
++		perror("mmap"), exit(1);
++	/* 注意这里是 KCOV_TRACE_CMP 而不是 KCOV_TRACE_PC。 */
++	if (ioctl(fd, KCOV_ENABLE, KCOV_TRACE_CMP))
++		perror("ioctl"), exit(1);
++	__atomic_store_n(&amp;cover[0], 0, __ATOMIC_RELAXED);
++	read(-1, NULL, 0);
++	/* 读取收集到的比较操作数的数量。 */
++	n = __atomic_load_n(&amp;cover[0], __ATOMIC_RELAXED);
++	for (i = 0; i &lt; n; i++) {
++		uint64_t ip;
++
++		type = cover[i * KCOV_WORDS_PER_CMP + 1];
++		/* arg1 和 arg2 - 比较的两个操作数。 */
++		arg1 = cover[i * KCOV_WORDS_PER_CMP + 2];
++		arg2 = cover[i * KCOV_WORDS_PER_CMP + 3];
++		/* ip - 调用者的地址。 */
++		ip = cover[i * KCOV_WORDS_PER_CMP + 4];
++		/* 操作数的大小。 */
++		size = 1 &lt;&lt; ((type &amp; KCOV_CMP_MASK) &gt;&gt; 1);
++		/* is_const - 当操作数是一个编译时常量时为真。*/
++		is_const = type &amp; KCOV_CMP_CONST;
++		printf("ip: 0x%lx type: 0x%lx, arg1: 0x%lx, arg2: 0x%lx, "
++			"size: %lu, %s\n",
++			ip, type, arg1, arg2, size,
++		is_const ? "const" : "non-const");
++	}
++	if (ioctl(fd, KCOV_DISABLE, 0))
++		perror("ioctl"), exit(1);
++	/* 释放资源。 */
++	if (munmap(cover, COVER_SIZE * sizeof(unsigned long)))
++		perror("munmap"), exit(1);
++	if (close(fd))
++		perror("close"), exit(1);
++	return 0;
++    }
++
++注意 KCOV 的模式（代码覆盖率收集或操作数比较收集）是互斥的。
++
++远程覆盖率收集
++--------------
++
++除了从用户空间进程发布的系统调用句柄收集覆盖率数据以外，KCOV 也可以从部分在其
++他上下文中执行的内核中收集覆盖率 - 称为“远程”覆盖率。
++
++使用 KCOV 收集远程覆盖率要求：
++
++1. 修改内核源码并使用 ``kcov_remote_start`` 和 ``kcov_remote_stop`` 来标注要收集
++   覆盖率的代码片段。
++
++2. 在用户空间的收集覆盖率的进程应使用 ``KCOV_REMOTE_ENABLE`` 而不是 ``KCOV_ENABLE``。
++
++``kcov_remote_start`` 和 ``kcov_remote_stop`` 的标注以及 ``KCOV_REMOTE_ENABLE``
++ioctl 都接受可以识别特定覆盖率收集片段的句柄。句柄的使用方式取决于匹配代码片段执
++行的上下文。
++
++KCOV 支持在如下上下文中收集远程覆盖率：
++
++1. 全局内核后台任务。这些任务是内核启动时创建的数量有限的实例（如，每一个
++   USB HCD 产生一个 USB ``hub_event`` 工作器）。
++
++2. 局部内核后台任务。这些任务通常是由于用户空间进程与某些内核接口进行交互时产
++   生的，并且通常在进程退出时会被停止（如，vhost 工作器）。
++
++3. 软中断。
++
++对于 #1 和 #3，必须选择一个独特的全局句柄并将其传递给对应的
++``kcov_remote_start`` 调用。一个用户空间进程必须将该句柄存储在
++``kcov_remote_arg`` 结构体的 ``handle`` 数组字段中并将其传递给
++``KCOV_REMOTE_ENABLE``。这会将使用的 KCOV 设备附加到由此句柄引用的代码片段。多个全局
++句柄标识的不同代码片段可以一次性传递。
++
++对于 #2，用户空间进程必须通过 ``kcov_remote_arg`` 结构体的 ``common_handle`` 字段
++传递一个非零句柄。这个通用句柄将会被保存在当前 ``task_struct`` 结构体的
++``kcov_handle`` 字段中并且需要通过自定义内核代码的修改来传递给新创建的本地任务
++。这些任务需要在 ``kcov_remote_start`` 和 ``kcov_remote_stop`` 标注中依次使用传递过来的
++句柄。
++
++KCOV 对全局句柄和通用句柄均遵循一个预定义的格式。每一个句柄都是一个 ``u64`` 整形
++。当前，只有最高位和低四位字节被使用。第 4-7 字节是保留位并且值必须为 0。
++
++对于全局句柄，最高位的字节表示该句柄属于的子系统的标识。比如，KCOV 使用 ``1``
++表示 USB 子系统类型。全局句柄的低 4 字节表示子系统中任务实例的标识。比如，每一
++个 ``hub_event`` 工作器使用 USB 总线号作为任务实例的标识。
++
++对于通用句柄，使用一个保留值 ``0`` 作为子系统标识，因为这些句柄不属于一个特定
++的子系统。通用句柄的低 4 字节用于识别有用户进程生成的所有本地句柄的集合实例，
++该进程将通用句柄传递给 ``KCOV_REMOTE_ENABLE``。
++
++实际上，如果只从系统中的单个用户空间进程收集覆盖率，那么可以使用任意值作为通用
++句柄的实例标识。然而，如果通用句柄被多个用户空间进程使用，每个进程必须使用唯一
++的实例标识。一个选择是使用进程标识作为通用句柄实例的标识。
++
++下面的程序演示了如何使用 KCOV 从一个由进程产生的本地任务和处理 USB 总线的全局
++任务 #1 收集覆盖率：
++
++.. code-block:: c
++
++    /* 包含和上文一样的头文件和宏定义。 */
++
++    struct kcov_remote_arg {
++	__u32		trace_mode;
++	__u32		area_size;
++	__u32		num_handles;
++	__aligned_u64	common_handle;
++	__aligned_u64	handles[0];
++    };
++
++    #define KCOV_INIT_TRACE			_IOR('c', 1, unsigned long)
++    #define KCOV_DISABLE			_IO('c', 101)
++    #define KCOV_REMOTE_ENABLE		_IOW('c', 102, struct kcov_remote_arg)
++
++    #define COVER_SIZE	(64 &lt;&lt; 10)
++
++    #define KCOV_TRACE_PC	0
++
++    #define KCOV_SUBSYSTEM_COMMON	(0x00ull &lt;&lt; 56)
++    #define KCOV_SUBSYSTEM_USB	(0x01ull &lt;&lt; 56)
++
++    #define KCOV_SUBSYSTEM_MASK	(0xffull &lt;&lt; 56)
++    #define KCOV_INSTANCE_MASK	(0xffffffffull)
++
++    static inline __u64 kcov_remote_handle(__u64 subsys, __u64 inst)
++    {
++	if (subsys &amp; ~KCOV_SUBSYSTEM_MASK || inst &amp; ~KCOV_INSTANCE_MASK)
++		return 0;
++	return subsys | inst;
++    }
++
++    #define KCOV_COMMON_ID	0x42
++    #define KCOV_USB_BUS_NUM	1
++
++    int main(int argc, char **argv)
++    {
++	int fd;
++	unsigned long *cover, n, i;
++	struct kcov_remote_arg *arg;
++
++	fd = open("/sys/kernel/debug/kcov", O_RDWR);
++	if (fd == -1)
++		perror("open"), exit(1);
++	if (ioctl(fd, KCOV_INIT_TRACE, COVER_SIZE))
++		perror("ioctl"), exit(1);
++	cover = (unsigned long*)mmap(NULL, COVER_SIZE * sizeof(unsigned long),
++				     PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	if ((void*)cover == MAP_FAILED)
++		perror("mmap"), exit(1);
++
++	/* 通过通用句柄和 USB 总线 #1 启用代码覆盖率收集。 */
++	arg = calloc(1, sizeof(*arg) + sizeof(uint64_t));
++	if (!arg)
++		perror("calloc"), exit(1);
++	arg-&gt;trace_mode = KCOV_TRACE_PC;
++	arg-&gt;area_size = COVER_SIZE;
++	arg-&gt;num_handles = 1;
++	arg-&gt;common_handle = kcov_remote_handle(KCOV_SUBSYSTEM_COMMON,
++							KCOV_COMMON_ID);
++	arg-&gt;handles[0] = kcov_remote_handle(KCOV_SUBSYSTEM_USB,
++						KCOV_USB_BUS_NUM);
++	if (ioctl(fd, KCOV_REMOTE_ENABLE, arg))
++		perror("ioctl"), free(arg), exit(1);
++	free(arg);
++
++	/*
++	 * 在这里用户需要触发执行一个内核代码段
++	 * 该代码段要么使用通用句柄标识
++	 * 要么触发了一些 USB 总线 #1 上的一些活动。
++	 */
++	sleep(2);
++
++	n = __atomic_load_n(&amp;cover[0], __ATOMIC_RELAXED);
++	for (i = 0; i &lt; n; i++)
++		printf("0x%lx\n", cover[i + 1]);
++	if (ioctl(fd, KCOV_DISABLE, 0))
++		perror("ioctl"), exit(1);
++	if (munmap(cover, COVER_SIZE * sizeof(unsigned long)))
++		perror("munmap"), exit(1);
++	if (close(fd))
++		perror("close"), exit(1);
++	return 0;
++    }</pre><hr><pre>commit 8819b60eed720819ea392d2b6d955e332caf703d
+Author: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+Date:   Sat Apr 6 16:36:43 2024 +0800
+
+    docs/zh_CN: Add dev-tools/kmemleak Chinese translation
+    
+    Translate dev-tools/kmemleak.rst into Chinese and add it into
+    zh_CN/dev-tools/index.rst.
+    
+    Signed-off-by: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240406083643.5056-1-tttturtleruss@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/index.rst b/Documentation/translations/zh_CN/dev-tools/index.rst
+index c4463f0750f0..51e5b3e724c1 100644
+--- a/Documentation/translations/zh_CN/dev-tools/index.rst
++++ b/Documentation/translations/zh_CN/dev-tools/index.rst
+@@ -23,13 +23,13 @@ Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+    gcov
+    kasan
+    ubsan
++   kmemleak
+    gdb-kernel-debugging
+ 
+ Todolist:
+ 
+  - coccinelle
+  - kcov
+- - kmemleak
+  - kcsan
+  - kfence
+  - kgdb
+diff --git a/Documentation/translations/zh_CN/dev-tools/kmemleak.rst b/Documentation/translations/zh_CN/dev-tools/kmemleak.rst
+new file mode 100644
+index 000000000000..d248c8428095
+--- /dev/null
++++ b/Documentation/translations/zh_CN/dev-tools/kmemleak.rst
+@@ -0,0 +1,229 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/dev-tools/kmemleak.rst
++:Translator: 刘浩阳 Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
++
++内核内存泄露检测器
++==================
++
++Kmemleak 提供了一个类似 `可追踪的垃圾收集器 &lt;https://en.wikipedia.org/wiki/Tra
++cing_garbage_collection&gt;`_ 的方法来检测可能的内核内存泄漏，不同的是孤立对象不会
++被释放，而是仅通过 /sys/kernel/debug/kmemleak 报告。Valgrind 工具
++（``memcheck --leak-check``）使用了一种相似的方法来检测用户空间应用中的内存泄
++露。
++
++用法
++----
++
++"Kernel hacking" 中的 CONFIG_DEBUG_KMEMLEAK 必须被启用。一个内核线程每10分钟
++（默认情况下）扫描一次内存，并且打印出新发现的未被引用的对象个数。
++如果 ``debugfs`` 没有挂载，则执行::
++
++   # mount -t debugfs nodev /sys/kernel/debug/
++
++显示所有扫描出的可能的内存泄漏的细节信息::
++
++   # cat /sys/kernel/debug/kmemleak
++
++启动一次中等程度的内存扫描::
++
++   # echo scan &gt; /sys/kernel/debug/kmemleak
++
++清空当前所有可能的内存泄露列表::
++
++   # echo clear &gt; /sys/kernel/debug/kmemleak
++
++当再次读取 ``/sys/kernel/debug/kmemleak`` 文件时，将会输出自上次扫描以来检测到的
++新的内存泄露。
++
++注意，孤立目标是通过被分配时间来排序的，列表开始的对象可能会导致后续的对象都被
++识别为孤立对象。
++
++可以通过写入 ``/sys/kernel/debug/kmemleak`` 文件在运行时修改内存扫描参数。下面是
++支持的参数：
++
++
++* off
++    禁用 kmemleak（不可逆）
++* stack=on
++    开启任务栈扫描（默认）
++* stack=off
++    禁用任务栈扫描
++* scan=on
++    开启自动内存扫描线程（默认）
++* scan=off
++    关闭自动内存扫描线程
++* scan=&lt;secs&gt;;
++    设定自动内存扫描间隔，以秒为单位（默认值为 600，设置为 0 表示停
++    止自动扫描）
++* scan
++    触发一次内存扫描
++* clear
++    通过标记所有当前已报告的未被引用对象为灰，从而清空当前可能的内存泄露列
++    表；如果 kmemleak 被禁用，则释放所有 kmemleak 对象，。
++* dump=&lt;addr&gt;
++    输出存储在 &lt;addr&gt; 中的对象信息
++
++可以通过在内核命令行中传递 ``kmemleak=off`` 参数从而在启动时禁用 Kmemleak。
++
++在 kmemleak 初始化之前就可能会有内存分配或释放，这些操作被存储在一个早期日志缓
++冲区中。缓冲区的大小通过 CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE 选项配置。
++
++如果 CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF 被启用，则 kmemleak 默认被禁用。在内核命
++令行中传递 ``kmemleak=on`` 参数来开启这个功能。
++
++如果出现 "Error while writing to stdout" 或 "write_loop: Invalid argument" 这样
++的错误，请确认 kmemleak 被正确启用。
++
++基础算法
++--------
++
++通过 :c:func:`kmalloc`, :c:func:`vmalloc`, :c:func:`kmem_cache_alloc` 以及同类
++函数均被跟踪，指针，包括一些额外的信息如大小和栈追踪等，都被存储在红黑树中。
++对应的释放函数调用也被追踪，并从 kmemleak 数据结构中移除相应指针。
++
++对于一个已分配的内存块，如果通过扫描内存（包括保存寄存器）没有发现任何指针指向
++它的起始地址或者其中的任何位置，则认为这块内存是孤立的。这意味着内核无法将该内
++存块的地址传递给一个释放内存函数，这块内存便被认为泄露了。
++
++扫描算法步骤：
++
++   1. 标记所有对象为白色（最后剩下的白色对象被认为是孤立的）
++   2. 从数据节和栈开始扫描内存，检测每个值是否是红黑树中存储的地址。如果一个指向
++      白色对象的指针被检测到，则将该对象标记为灰色。
++   3. 扫描灰色对象引用的其他对象（有些白色对象可能会变为灰色并被添加到灰名单末尾
++      ）直到灰名单为空。
++   4. 剩余的白色对象就被认为是孤立的并通过 /sys/kernel/debug/kmemleak 报告。
++
++有些指向已分配的内存块的指针存储在内核内部的数据结构中，它们不能被检测为孤立。
++为了避免这种情况，kmemleak 也存储了指向需要被查找的内存块范围内的任意地址的地址
++数量，如此一来这些内存便不会被认为泄露。一个例子是 __vmalloc()。
++
++用 kmemleak 测试特定部分
++------------------------
++
++在初始化启动阶段 /sys/kernel/debug/kmemleak 的输出可能会很多，这也可能是你在开发
++时编写的漏洞百出的代码导致的。为了解决这种情况你可以使用 'clear' 命令来清除
++/sys/kernel/debug/kmemleak 输出的所有的未引用对象。在执行 'clear' 后执行 'scan'
++可以发现新的未引用对象，这将会有利你测试代码的特定部分。
++
++为了用一个空的 kmemleak 测试一个特定部分，执行::
++
++   # echo clear &gt; /sys/kernel/debug/kmemleak
++   ... 测试你的内核或者模块 ...
++   # echo scan &gt; /sys/kernel/debug/kmemleak
++
++然后像平常一样获得报告::
++
++   # cat /sys/kernel/debug/kmemleak
++
++释放 kmemleak 内核对象
++----------------------
++
++为了允许访问先前发现的内存泄露，当用户禁用或发生致命错误导致 kmemleak
++被禁用时，内核中的 kmemleak 对象不会被释放。这些对象可能会占用很大
++一部分物理内存。
++
++在这种情况下，你可以用如下命令回收这些内存::
++
++   # echo clear &gt; /sys/kernel/debug/kmemleak
++
++Kmemleak API
++------------
++
++在 include/linux/kmemleak.h 头文件中查看函数原型：
++
++- ``kmemleak_init`` - 初始化 kmemleak
++- ``kmemleak_alloc`` - 通知一个内存块的分配
++- ``kmemleak_alloc_percpu`` - 通知一个 percpu 类型的内存分配
++- ``kmemleak_vmalloc`` - 通知一个使用 vmalloc() 的内存分配
++- ``kmemleak_free`` - 通知一个内存块的释放
++- ``kmemleak_free_part`` - 通知一个部分的内存释放
++- ``kmemleak_free_percpu`` - 通知一个 percpu 类型的内存释放
++- ``kmemleak_update_trace`` - 更新分配对象过程的栈追踪
++- ``kmemleak_not_leak`` - 标记一个对象内存为未泄露的
++- ``kmemleak_ignore`` - 不要扫描或报告某个对象未泄露的
++- ``kmemleak_scan_area`` - 在内存块中添加扫描区域
++- ``kmemleak_no_scan`` - 不扫描某个内存块
++- ``kmemleak_erase`` - 在指针变量中移除某个旧的值
++- ``kmemleak_alloc_recursive`` - 和 kmemleak_alloc 效果相同但会检查是否有递归的
++   内存分配
++- ``kmemleak_free_recursive`` - 和 kmemleak_free 效果相同但会检查是否有递归的
++   内存释放
++
++下列函数使用一个物理地址作为对象指针并且只在地址有一个 lowmem 映射时做出相应的
++行为：
++
++- ``kmemleak_alloc_phys``
++- ``kmemleak_free_part_phys``
++- ``kmemleak_ignore_phys``
++
++解决假阳性/假阴性
++-----------------
++
++假阴性是指由于在内存扫描中有值指向该对象导致 kmemleak 没有报告的实际存在的内存
++泄露（孤立对象）。为了减少假阴性的出现次数，kmemleak 提供了 kmemleak_ignore，
++kmemleak_scan_area，kmemleak_no_scan 和 kmemleak_erase 函数（见上）。
++任务栈也会增加假阴性的数量并且默认不开启对它们的扫描。
++
++假阳性是对象被误报为内存泄露（孤立对象）。对于已知未泄露的对象，kmemleak
++提供了 kmemleak_not_leak 函数。同时 kmemleak_ignore 可以用于标记已知不包含任何
++其他指针的内存块，标记后该内存块不会再被扫描。
++
++一些被报告的泄露仅仅是暂时的，尤其是在 SMP（对称多处理）系统中，因为其指针
++暂存在 CPU 寄存器或栈中。Kmemleak 定义了 MSECS_MIN_AGE（默认值为 1000）
++来表示一个被报告为内存泄露的对象的最小存活时间。
++
++限制和缺点
++----------
++
++主要的缺点是内存分配和释放的性能下降。为了避免其他的损失，只有当
++/sys/kernel/debug/kmemleak 文件被读取时才会进行内存扫描。无论如何，这个工具是出于
++调试的目标，性能表现可能不是最重要的。
++
++为了保持算法简单，kmemleak 寻找指向某个内存块范围中的任何值。这可能会引发假阴性
++现象的出现。但是，最后一个真正的内存泄露也会变得明显。
++
++非指针值的数据是假阴性的另一个来源。在将来的版本中，kmemleak 仅仅会扫
++描已分配结构体中的指针成员。这个特性会解决上述很多的假阴性情况。
++
++Kmemleak 会报告假阳性。这可能发生在某些被分配的内存块不需要被释放的情况下
++（某些 init_call 函数中），指针的计算是通过其他方法而不是常规的 container_of 宏
++或是指针被存储在 kmemleak 没有扫描的地方。
++
++页分配和 ioremap 不会被追踪。
++
++使用 kmemleak-test 测试
++-----------------------
++
++为了检测是否成功启用了 kmemleak，你可以使用一个故意制造内存泄露的模块
++kmemleak-test。设置 CONFIG_SAMPLE_KMEMLEAK 为模块（不能作为内建模块使用）
++并且启动启用了 kmemleak 的内核。加载模块并执行一次扫描::
++
++   # modprobe kmemleak-test
++   # echo scan &gt; /sys/kernel/debug/kmemleak
++
++注意你可能无法立刻或在第一次扫描后得到结果。当 kmemleak 得到结果，将会输出日
++志 ``kmemleak: &lt;count of leaks&gt; new suspected memory leaks`` 。然后通过读取文件
++获取信息::
++
++   # cat /sys/kernel/debug/kmemleak
++   unreferenced object 0xffff89862ca702e8 (size 32):
++     comm "modprobe", pid 2088, jiffies 4294680594 (age 375.486s)
++     hex dump (first 32 bytes):
++       6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
++       6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b a5  kkkkkkkkkkkkkkk.
++     backtrace:
++       [&lt;00000000e0a73ec7&gt;] 0xffffffffc01d2036
++       [&lt;000000000c5d2a46&gt;] do_one_initcall+0x41/0x1df
++       [&lt;0000000046db7e0a&gt;] do_init_module+0x55/0x200
++       [&lt;00000000542b9814&gt;] load_module+0x203c/0x2480
++       [&lt;00000000c2850256&gt;] __do_sys_finit_module+0xba/0xe0
++       [&lt;000000006564e7ef&gt;] do_syscall_64+0x43/0x110
++       [&lt;000000007c873fa6&gt;] entry_SYSCALL_64_after_hwframe+0x44/0xa9
++   ...
++
++用 ``rmmod kmemleak_test`` 移除模块时也会触发
++kmemleak 的结果输出。</pre><hr><pre>commit 9e192b39a5992d8b730383d57416964b44ea1041
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Mar 2 22:00:50 2024 +0800
+
+    docs/zh_CN: Add dev-tools/ubsan Chinese translation
+    
+    Translate dev-tools/ubsan.rst into Chinese, add it into
+    zh_CN/dev-tools/index.rst.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240302140058.1527765-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/index.rst b/Documentation/translations/zh_CN/dev-tools/index.rst
+index c2db3e566b1b..c4463f0750f0 100644
+--- a/Documentation/translations/zh_CN/dev-tools/index.rst
++++ b/Documentation/translations/zh_CN/dev-tools/index.rst
+@@ -22,13 +22,13 @@ Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+    sparse
+    gcov
+    kasan
++   ubsan
+    gdb-kernel-debugging
+ 
+ Todolist:
+ 
+  - coccinelle
+  - kcov
+- - ubsan
+  - kmemleak
+  - kcsan
+  - kfence
+diff --git a/Documentation/translations/zh_CN/dev-tools/ubsan.rst b/Documentation/translations/zh_CN/dev-tools/ubsan.rst
+new file mode 100644
+index 000000000000..2487696b3772
+--- /dev/null
++++ b/Documentation/translations/zh_CN/dev-tools/ubsan.rst
+@@ -0,0 +1,91 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/dev-tools/ubsan.rst
++:Translator: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++未定义行为消毒剂 - UBSAN
++====================================
++
++UBSAN是一种动态未定义行为检查工具。
++
++UBSAN使用编译时插桩捕捉未定义行为。编译器在可能导致未定义行为的操作前插入特定
++检测代码。如果检查失败，即检测到未定义行为，__ubsan_handle_* 函数将被调用打印
++错误信息。
++
++GCC自4.9.x [1_] （详见 ``-fsanitize=undefined`` 选项及其子选项）版本后引入这
++一特性。GCC 5.x 版本实现了更多检查器 [2_]。
++
++报告样例
++--------------
++
++::
++
++	 ================================================================================
++	 UBSAN: Undefined behaviour in ../include/linux/bitops.h:110:33
++	 shift exponent 32 is to large for 32-bit type 'unsigned int'
++	 CPU: 0 PID: 0 Comm: swapper Not tainted 4.4.0-rc1+ #26
++	  0000000000000000 ffffffff82403cc8 ffffffff815e6cd6 0000000000000001
++	  ffffffff82403cf8 ffffffff82403ce0 ffffffff8163a5ed 0000000000000020
++	  ffffffff82403d78 ffffffff8163ac2b ffffffff815f0001 0000000000000002
++	 Call Trace:
++	  [&lt;ffffffff815e6cd6&gt;] dump_stack+0x45/0x5f
++	  [&lt;ffffffff8163a5ed&gt;] ubsan_epilogue+0xd/0x40
++	  [&lt;ffffffff8163ac2b&gt;] __ubsan_handle_shift_out_of_bounds+0xeb/0x130
++	  [&lt;ffffffff815f0001&gt;] ? radix_tree_gang_lookup_slot+0x51/0x150
++	  [&lt;ffffffff8173c586&gt;] _mix_pool_bytes+0x1e6/0x480
++	  [&lt;ffffffff83105653&gt;] ? dmi_walk_early+0x48/0x5c
++	  [&lt;ffffffff8173c881&gt;] add_device_randomness+0x61/0x130
++	  [&lt;ffffffff83105b35&gt;] ? dmi_save_one_device+0xaa/0xaa
++	  [&lt;ffffffff83105653&gt;] dmi_walk_early+0x48/0x5c
++	  [&lt;ffffffff831066ae&gt;] dmi_scan_machine+0x278/0x4b4
++	  [&lt;ffffffff8111d58a&gt;] ? vprintk_default+0x1a/0x20
++	  [&lt;ffffffff830ad120&gt;] ? early_idt_handler_array+0x120/0x120
++	  [&lt;ffffffff830b2240&gt;] setup_arch+0x405/0xc2c
++	  [&lt;ffffffff830ad120&gt;] ? early_idt_handler_array+0x120/0x120
++	  [&lt;ffffffff830ae053&gt;] start_kernel+0x83/0x49a
++	  [&lt;ffffffff830ad120&gt;] ? early_idt_handler_array+0x120/0x120
++	  [&lt;ffffffff830ad386&gt;] x86_64_start_reservations+0x2a/0x2c
++	  [&lt;ffffffff830ad4f3&gt;] x86_64_start_kernel+0x16b/0x17a
++	 ================================================================================
++
++用法
++-----
++
++使用如下内核配置启用UBSAN::
++
++	CONFIG_UBSAN=y
++
++使用如下内核配置检查整个内核::
++
++        CONFIG_UBSAN_SANITIZE_ALL=y
++
++为了在特定文件或目录启动代码插桩，需要在相应的内核Makefile中添加一行类似内容:
++
++- 单文件（如main.o）::
++
++    UBSAN_SANITIZE_main.o := y
++
++- 一个目录中的所有文件::
++
++    UBSAN_SANITIZE := y
++
++即使设置了``CONFIG_UBSAN_SANITIZE_ALL=y``，为了避免文件被插桩，可使用::
++
++  UBSAN_SANITIZE_main.o := n
++
++与::
++
++  UBSAN_SANITIZE := n
++
++未对齐的内存访问检测可通过开启独立选项 - CONFIG_UBSAN_ALIGNMENT 检测。
++该选项在支持未对齐访问的架构上(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS=y)
++默认为关闭。该选项仍可通过内核配置启用，但它将产生大量的UBSAN报告。
++
++参考文献
++----------
++
++.. _1: https://gcc.gnu.org/onlinedocs/gcc-4.9.0/gcc/Debugging-Options.html
++.. _2: https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
++.. _3: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html</pre><hr><pre>commit bcdbd6f607bacb51743ac73f13f40d015cb9de53
+Author: RutingZhang &lt;u202112078@hust.edu.cn&gt;
+Date:   Tue Nov 21 12:36:20 2023 +0800
+
+    drm/amd/display: remove unnecessary braces to fix coding style
+    
+    checkpatch complains that:
+    
+    WARNING: braces {} are not necessary for single statement blocks
+    +                if (pool-&gt;base.irqs != NULL) {
+    +                        dal_irq_service_destroy(&amp;pool-&gt;base.irqs);
+    +                }
+    
+    Fixed it by removing unnecessary braces to fix the coding style issue.
+    
+    Signed-off-by: RutingZhang &lt;u202112078@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Alex Deucher &lt;alexander.deucher@amd.com&gt;
+
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c
+index c07da45e1e2c..65d337731f56 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c
+@@ -713,9 +713,8 @@ static void dcn21_resource_destruct(struct dcn21_resource_pool *pool)
+ 			pool-&gt;base.hubps[i] = NULL;
+ 		}
+ 
+-		if (pool-&gt;base.irqs != NULL) {
++		if (pool-&gt;base.irqs != NULL)
+ 			dal_irq_service_destroy(&amp;pool-&gt;base.irqs);
+-		}
+ 	}
+ 
+ 	for (i = 0; i &lt; pool-&gt;base.res_cap-&gt;num_ddc; i++) {</pre><hr><pre>commit daacef89cd1bb7e345539db10e979e1b78451591
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Sep 1 14:25:48 2023 +0800
+
+    soc: loongson: loongson2_guts: Convert to devm_platform_ioremap_resource()
+    
+    Use devm_platform_ioremap_resource() to simplify code.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Binbin Zhou &lt;zhoubinbin@loongson.cn&gt;
+    Signed-off-by: Arnd Bergmann &lt;arnd@arndb.de&gt;
+
+diff --git a/drivers/soc/loongson/loongson2_guts.c b/drivers/soc/loongson/loongson2_guts.c
+index bace4bc8e03b..d97c77a9a4a2 100644
+--- a/drivers/soc/loongson/loongson2_guts.c
++++ b/drivers/soc/loongson/loongson2_guts.c
+@@ -94,7 +94,6 @@ static int loongson2_guts_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *root, *np = pdev-&gt;dev.of_node;
+ 	struct device *dev = &amp;pdev-&gt;dev;
+-	struct resource *res;
+ 	const struct loongson2_soc_die_attr *soc_die;
+ 	const char *machine;
+ 	u32 svr;
+@@ -106,8 +105,7 @@ static int loongson2_guts_probe(struct platform_device *pdev)
+ 
+ 	guts-&gt;little_endian = of_property_read_bool(np, "little-endian");
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	guts-&gt;regs = ioremap(res-&gt;start, res-&gt;end - res-&gt;start + 1);
++	guts-&gt;regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(guts-&gt;regs))
+ 		return PTR_ERR(guts-&gt;regs);
+ </pre><hr><pre>commit dc73b20593544f8e1b78dded909296f2777076d0
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Tue Sep 5 09:35:56 2023 +0800
+
+    wifi: ath9k: clean up function ath9k_hif_usb_resume
+    
+    In ath9k_hif_usb_resume, the error handling code calls
+    ath9k_hif_usb_dealloc_urbs twice in different paths.
+    
+    To unify the error handling code, we move the else branch before
+    the if branch and drop one level of indentation of the if branch.
+    
+    In addition, move the ret variable at the end of variable declarations
+    to be reverse x-mas tree order.
+    
+    Note that this patch does not incur any functionability change.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Acked-by: Toke Høiland-Jørgensen &lt;toke@toke.dk&gt;
+    Signed-off-by: Kalle Valo &lt;quic_kvalo@quicinc.com&gt;
+    Link: https://lore.kernel.org/r/20230905013556.2595854-1-dzm91@hust.edu.cn
+
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index e5414435b141..90cfe39aa433 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1481,31 +1481,31 @@ static int ath9k_hif_usb_resume(struct usb_interface *interface)
+ {
+ 	struct hif_device_usb *hif_dev = usb_get_intfdata(interface);
+ 	struct htc_target *htc_handle = hif_dev-&gt;htc_handle;
+-	int ret;
+ 	const struct firmware *fw;
++	int ret;
+ 
+ 	ret = ath9k_hif_usb_alloc_urbs(hif_dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (hif_dev-&gt;flags &amp; HIF_USB_READY) {
+-		/* request cached firmware during suspend/resume cycle */
+-		ret = request_firmware(&amp;fw, hif_dev-&gt;fw_name,
+-				       &amp;hif_dev-&gt;udev-&gt;dev);
+-		if (ret)
+-			goto fail_resume;
+-
+-		hif_dev-&gt;fw_data = fw-&gt;data;
+-		hif_dev-&gt;fw_size = fw-&gt;size;
+-		ret = ath9k_hif_usb_download_fw(hif_dev);
+-		release_firmware(fw);
+-		if (ret)
+-			goto fail_resume;
+-	} else {
+-		ath9k_hif_usb_dealloc_urbs(hif_dev);
+-		return -EIO;
++	if (!(hif_dev-&gt;flags &amp; HIF_USB_READY)) {
++		ret = -EIO;
++		goto fail_resume;
+ 	}
+ 
++	/* request cached firmware during suspend/resume cycle */
++	ret = request_firmware(&amp;fw, hif_dev-&gt;fw_name,
++			       &amp;hif_dev-&gt;udev-&gt;dev);
++	if (ret)
++		goto fail_resume;
++
++	hif_dev-&gt;fw_data = fw-&gt;data;
++	hif_dev-&gt;fw_size = fw-&gt;size;
++	ret = ath9k_hif_usb_download_fw(hif_dev);
++	release_firmware(fw);
++	if (ret)
++		goto fail_resume;
++
+ 	mdelay(100);
+ 
+ 	ret = ath9k_htc_resume(htc_handle);</pre><hr><pre>commit 99e25b17d2a3e3b486b4f6f90a740d51245da1f2
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Wed Nov 16 09:45:50 2022 +0800
+
+    pcmcia: typo fix
+    
+    themselfves -&gt; themselves
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Dominik Brodowski &lt;linux@dominikbrodowski.net&gt;
+
+diff --git a/drivers/pcmcia/pcmcia_resource.c b/drivers/pcmcia/pcmcia_resource.c
+index d78091e79a0f..e9e31c638a67 100644
+--- a/drivers/pcmcia/pcmcia_resource.c
++++ b/drivers/pcmcia/pcmcia_resource.c
+@@ -684,7 +684,7 @@ EXPORT_SYMBOL(pcmcia_request_io);
+  * pcmcia_request_irq() is a wrapper around request_irq() which allows
+  * the PCMCIA core to clean up the registration in pcmcia_disable_device().
+  * Drivers are free to use request_irq() directly, but then they need to
+- * call free_irq() themselfves, too. Also, only %IRQF_SHARED capable IRQ
++ * call free_irq() themselves, too. Also, only %IRQF_SHARED capable IRQ
+  * handlers are allowed.
+  */
+ int __must_check pcmcia_request_irq(struct pcmcia_device *p_dev,</pre>
+    <div class="pagination">
+        <span>[1]</span><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

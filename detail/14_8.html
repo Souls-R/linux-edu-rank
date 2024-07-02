@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Huazhong University of Science and Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Huazhong University of Science and Technology</h1>
+    <div class="pagination">
+        <a href='14_7.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><span>[8]</span>
+    </div>
+    <hr>
+    <pre>commit b1a09b63684cea56774786ca14c13b7041ffee63
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Mon Oct 24 17:02:52 2022 +0800
+
+    can: mcp251x: mcp251x_can_probe(): add missing unregister_candev() in error path
+    
+    In mcp251x_can_probe(), if mcp251x_gpio_setup() fails, it forgets to
+    unregister the CAN device.
+    
+    Fix this by unregistering can device in mcp251x_can_probe().
+    
+    Fixes: 2d52dabbef60 ("can: mcp251x: add GPIO support")
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/all/20221024090256.717236-1-dzm91@hust.edu.cn
+    [mkl: adjust label]
+    Signed-off-by: Marc Kleine-Budde &lt;mkl@pengutronix.de&gt;
+
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index c320de474f40..24883a65ca66 100644
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -1415,11 +1415,14 @@ static int mcp251x_can_probe(struct spi_device *spi)
+ 
+ 	ret = mcp251x_gpio_setup(priv);
+ 	if (ret)
+-		goto error_probe;
++		goto out_unregister_candev;
+ 
+ 	netdev_info(net, "MCP%x successfully initialized.\n", priv-&gt;model);
+ 	return 0;
+ 
++out_unregister_candev:
++	unregister_candev(net);
++
+ error_probe:
+ 	destroy_workqueue(priv-&gt;wq);
+ 	priv-&gt;wq = NULL;</pre><hr><pre>commit 3e5b3418827cefb5e1cc658806f02965791b8f07
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Mon Oct 24 19:48:07 2022 +0800
+
+    can: mscan: mpc5xxx: mpc5xxx_can_probe(): add missing put_clock() in error path
+    
+    The commit 1149108e2fbf ("can: mscan: improve clock API use") only
+    adds put_clock() in mpc5xxx_can_remove() function, forgetting to add
+    put_clock() in the error handling code.
+    
+    Fix this bug by adding put_clock() in the error handling code.
+    
+    Fixes: 1149108e2fbf ("can: mscan: improve clock API use")
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/all/20221024133828.35881-1-mkl@pengutronix.de
+    Signed-off-by: Marc Kleine-Budde &lt;mkl@pengutronix.de&gt;
+
+diff --git a/drivers/net/can/mscan/mpc5xxx_can.c b/drivers/net/can/mscan/mpc5xxx_can.c
+index c469b2f3e57d..b0ed798ae70f 100644
+--- a/drivers/net/can/mscan/mpc5xxx_can.c
++++ b/drivers/net/can/mscan/mpc5xxx_can.c
+@@ -322,14 +322,14 @@ static int mpc5xxx_can_probe(struct platform_device *ofdev)
+ 					       &amp;mscan_clksrc);
+ 	if (!priv-&gt;can.clock.freq) {
+ 		dev_err(&amp;ofdev-&gt;dev, "couldn't get MSCAN clock properties\n");
+-		goto exit_free_mscan;
++		goto exit_put_clock;
+ 	}
+ 
+ 	err = register_mscandev(dev, mscan_clksrc);
+ 	if (err) {
+ 		dev_err(&amp;ofdev-&gt;dev, "registering %s failed (err=%d)\n",
+ 			DRV_NAME, err);
+-		goto exit_free_mscan;
++		goto exit_put_clock;
+ 	}
+ 
+ 	dev_info(&amp;ofdev-&gt;dev, "MSCAN at 0x%p, irq %d, clock %d Hz\n",
+@@ -337,7 +337,9 @@ static int mpc5xxx_can_probe(struct platform_device *ofdev)
+ 
+ 	return 0;
+ 
+-exit_free_mscan:
++exit_put_clock:
++	if (data-&gt;put_clock)
++		data-&gt;put_clock(ofdev);
+ 	free_candev(dev);
+ exit_dispose_irq:
+ 	irq_dispose_mapping(irq);</pre><hr><pre>commit 90732f1769165dcf0778d723ad188f6441a930f5
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sun Oct 9 15:23:05 2022 +0800
+
+    usb: cdns3: adjust the partial logic of cdnsp_pci_remove
+    
+    In cdnsp_pci_remove, if pci_is_enabled returns true, it will
+    call cdns_remove; else it will call kfree. Then both control flow
+    goes to pci_dev_put.
+    
+    Adjust this logic by modifying it to an if else.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Acked-by: Pawel Laszczak &lt;pawell@cadence.com&gt;
+    Link: https://lore.kernel.org/r/20221009072305.1593707-1-dzm91@hust.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/cdns3/cdnsp-pci.c b/drivers/usb/cdns3/cdnsp-pci.c
+index fe8a114c586c..efd54ed918b9 100644
+--- a/drivers/usb/cdns3/cdnsp-pci.c
++++ b/drivers/usb/cdns3/cdnsp-pci.c
+@@ -192,14 +192,12 @@ static void cdnsp_pci_remove(struct pci_dev *pdev)
+ 	if (pci_dev_run_wake(pdev))
+ 		pm_runtime_get_noresume(&amp;pdev-&gt;dev);
+ 
+-	if (!pci_is_enabled(func)) {
++	if (pci_is_enabled(func)) {
++		cdns_remove(cdnsp);
++	} else {
+ 		kfree(cdnsp);
+-		goto pci_put;
+ 	}
+ 
+-	cdns_remove(cdnsp);
+-
+-pci_put:
+ 	pci_dev_put(func);
+ }
+ </pre>
+    <div class="pagination">
+        <a href='14_7.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><span>[8]</span>
+    <div>
+</body>

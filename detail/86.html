@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of California, Irvine</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of California, Irvine</h1>
+    <div class="pagination">
+        <span>[1]</span>
+    </div>
+    <hr>
+    <pre>commit da51bbcdbace8f43adf6066934c3926b656376e5
+Author: Remington Brasga &lt;rbrasga@uci.edu&gt;
+Date:   Mon Apr 29 22:55:27 2024 +0000
+
+    Docs: typos/spelling
+    
+    Fix spelling and grammar in Docs descriptions
+    
+    Signed-off-by: Remington Brasga &lt;rbrasga@uci.edu&gt;
+    Reviewed-by: Randy Dunlap &lt;rdunlap@infradead.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240429225527.2329-1-rbrasga@uci.edu
+
+diff --git a/Documentation/admin-guide/hw-vuln/srso.rst b/Documentation/admin-guide/hw-vuln/srso.rst
+index e715bfc09879..4bd3ce3ba171 100644
+--- a/Documentation/admin-guide/hw-vuln/srso.rst
++++ b/Documentation/admin-guide/hw-vuln/srso.rst
+@@ -135,7 +135,7 @@ and does not want to suffer the performance impact, one can always
+ disable the mitigation with spec_rstack_overflow=off.
+ 
+ Similarly, 'Mitigation: IBPB' is another full mitigation type employing
+-an indrect branch prediction barrier after having applied the required
++an indirect branch prediction barrier after having applied the required
+ microcode patch for one's system. This mitigation comes also at
+ a performance cost.
+ 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e6809b85b211..4ea02ed8d8a6 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7308,7 +7308,7 @@
+ 			This can be changed after boot by writing to the
+ 			matching /sys/module/workqueue/parameters file. All
+ 			workqueues with the "default" affinity scope will be
+-			updated accordignly.
++			updated accordingly.
+ 
+ 	workqueue.debug_force_rr_cpu
+ 			Workqueue used to implicitly guarantee that work
+diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
+index a639cac12477..ad8e7a41f3b5 100644
+--- a/Documentation/admin-guide/mm/ksm.rst
++++ b/Documentation/admin-guide/mm/ksm.rst
+@@ -308,7 +308,7 @@ limited by the ``advisor_max_cpu`` parameter. In addition there is also the
+ ``advisor_target_scan_time`` parameter. This parameter sets the target time to
+ scan all the KSM candidate pages. The parameter ``advisor_target_scan_time``
+ decides how aggressive the scan time advisor scans candidate pages. Lower
+-values make the scan time advisor to scan more aggresively. This is the most
++values make the scan time advisor to scan more aggressively. This is the most
+ important parameter for the configuration of the scan time advisor.
+ 
+ The initial value and the maximum value can be changed with
+diff --git a/Documentation/arch/m68k/buddha-driver.rst b/Documentation/arch/m68k/buddha-driver.rst
+index 20e401413991..5d1bc824978b 100644
+--- a/Documentation/arch/m68k/buddha-driver.rst
++++ b/Documentation/arch/m68k/buddha-driver.rst
+@@ -173,7 +173,7 @@ When accessing IDE registers with A6=1 (for example $84x),
+ the timing will always be mode 0 8-bit compatible, no matter
+ what you have selected in the speed register:
+ 
+-781ns select, IOR/IOW after 4 clock cycles (=314ns) aktive.
++781ns select, IOR/IOW after 4 clock cycles (=314ns) active.
+ 
+ All  the  timings with a very short select-signal (the 355ns
+ fast  accesses)  depend  on the accelerator card used in the
+diff --git a/Documentation/arch/sparc/oradax/dax-hv-api.txt b/Documentation/arch/sparc/oradax/dax-hv-api.txt
+index 7ecd0bf4957b..ef1a4c2bf08b 100644
+--- a/Documentation/arch/sparc/oradax/dax-hv-api.txt
++++ b/Documentation/arch/sparc/oradax/dax-hv-api.txt
+@@ -41,7 +41,7 @@ Chapter 36. Coprocessor services
+         submissions until they succeed; waiting for an outstanding CCB to complete is not necessary, and would
+         not be a guarantee that a future submission would succeed.
+ 
+-        The availablility of DAX coprocessor command service is indicated by the presence of the DAX virtual
++        The availability of DAX coprocessor command service is indicated by the presence of the DAX virtual
+         device node in the guest MD (Section 8.24.17, “Database Analytics Accelerators (DAX) virtual-device
+         node”).
+ 
+diff --git a/Documentation/arch/x86/xstate.rst b/Documentation/arch/x86/xstate.rst
+index ae5c69e48b11..cec05ac464c1 100644
+--- a/Documentation/arch/x86/xstate.rst
++++ b/Documentation/arch/x86/xstate.rst
+@@ -138,7 +138,7 @@ Note this example does not include the sigaltstack preparation.
+ Dynamic features in signal frames
+ ---------------------------------
+ 
+-Dynamcally enabled features are not written to the signal frame upon signal
++Dynamically enabled features are not written to the signal frame upon signal
+ entry if the feature is in its initial configuration.  This differs from
+ non-dynamic features which are always written regardless of their
+ configuration.  Signal handlers can examine the XSAVE buffer's XSTATE_BV
+diff --git a/Documentation/core-api/entry.rst b/Documentation/core-api/entry.rst
+index e12f22ab33c7..a15f9b1767a2 100644
+--- a/Documentation/core-api/entry.rst
++++ b/Documentation/core-api/entry.rst
+@@ -18,7 +18,7 @@ exceptions`_, `NMI and NMI-like exceptions`_.
+ Non-instrumentable code - noinstr
+ ---------------------------------
+ 
+-Most instrumentation facilities depend on RCU, so intrumentation is prohibited
++Most instrumentation facilities depend on RCU, so instrumentation is prohibited
+ for entry code before RCU starts watching and exit code after RCU stops
+ watching. In addition, many architectures must save and restore register state,
+ which means that (for example) a breakpoint in the breakpoint entry code would
+diff --git a/Documentation/driver-api/mtd/nand_ecc.rst b/Documentation/driver-api/mtd/nand_ecc.rst
+index 74347c14a70b..a0d681f26a2e 100644
+--- a/Documentation/driver-api/mtd/nand_ecc.rst
++++ b/Documentation/driver-api/mtd/nand_ecc.rst
+@@ -462,7 +462,7 @@ statements is reduced. This is also reflected in the assembly code.
+ Analysis 3
+ ==========
+ 
+-Very weird. Guess it has to do with caching or instruction parallellism
++Very weird. Guess it has to do with caching or instruction parallelism
+ or so. I also tried on an eeePC (Celeron, clocked at 900 Mhz). Interesting
+ observation was that this one is only 30% slower (according to time)
+ executing the code as my 3Ghz D920 processor.
+diff --git a/Documentation/driver-api/scsi.rst b/Documentation/driver-api/scsi.rst
+index 64b231d125e0..ec92ea2c82cd 100644
+--- a/Documentation/driver-api/scsi.rst
++++ b/Documentation/driver-api/scsi.rst
+@@ -259,7 +259,7 @@ attributes for Serial Attached SCSI, a variant of SATA aimed at large
+ high-end systems.
+ 
+ The SAS transport class contains common code to deal with SAS HBAs, an
+-aproximated representation of SAS topologies in the driver model, and
++approximated representation of SAS topologies in the driver model, and
+ various sysfs attributes to expose these topologies and management
+ interfaces to userspace.
+ 
+diff --git a/Documentation/driver-api/usb/usb.rst b/Documentation/driver-api/usb/usb.rst
+index fb41768696ec..89f9c37bb979 100644
+--- a/Documentation/driver-api/usb/usb.rst
++++ b/Documentation/driver-api/usb/usb.rst
+@@ -422,7 +422,7 @@ USBDEVFS_CONNECTINFO
+ 
+ USBDEVFS_GET_SPEED
+     Returns the speed of the device. The speed is returned as a
+-    nummerical value in accordance with enum usb_device_speed
++    numerical value in accordance with enum usb_device_speed
+ 
+     File modification time is not updated by this request.
+ 
+diff --git a/Documentation/driver-api/wbrf.rst b/Documentation/driver-api/wbrf.rst
+index f48bfa029813..6b18833e2e69 100644
+--- a/Documentation/driver-api/wbrf.rst
++++ b/Documentation/driver-api/wbrf.rst
+@@ -68,7 +68,7 @@ The expected flow for the consumers:
+ can be enabled for the device.
+ 2. Call `amd_wbrf_register_notifier` to register for notification
+ of frequency band change(add or remove) from other producers.
+-3. Call the `amd_wbrf_retrieve_freq_band` initally to retrieve
++3. Call the `amd_wbrf_retrieve_freq_band` initially to retrieve
+ current active frequency bands considering some producers may broadcast
+ such information before the consumer is up.
+ 4. On receiving a notification for frequency band change, run
+diff --git a/Documentation/filesystems/directory-locking.rst b/Documentation/filesystems/directory-locking.rst
+index 05ea387bc9fb..6fdf0b02df43 100644
+--- a/Documentation/filesystems/directory-locking.rst
++++ b/Documentation/filesystems/directory-locking.rst
+@@ -44,7 +44,7 @@ For our purposes all operations fall in 6 classes:
+ 	* decide which of the source and target need to be locked.
+ 	  The source needs to be locked if it's a non-directory, target - if it's
+ 	  a non-directory or about to be removed.
+-	* take the locks that need to be taken (exlusive), in inode pointer order
++	* take the locks that need to be taken (exclusive), in inode pointer order
+ 	  if need to take both (that can happen only when both source and target
+ 	  are non-directories - the source because it wouldn't need to be locked
+ 	  otherwise and the target because mixing directory and non-directory is
+@@ -234,7 +234,7 @@ among the children, in some order.  But that is also impossible, since
+ neither of the children is a descendent of another.
+ 
+ That concludes the proof, since the set of operations with the
+-properties requiered for a minimal deadlock can not exist.
++properties required for a minimal deadlock can not exist.
+ 
+ Note that the check for having a common ancestor in cross-directory
+ rename is crucial - without it a deadlock would be possible.  Indeed,
+diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
+index 1be76ef117b3..f2b44c2400c6 100644
+--- a/Documentation/filesystems/porting.rst
++++ b/Documentation/filesystems/porting.rst
+@@ -858,7 +858,7 @@ be misspelled d_alloc_anon().
+ 
+ **mandatory**
+ 
+-[should've been added in 2016] stale comment in finish_open() nonwithstanding,
++[should've been added in 2016] stale comment in finish_open() notwithstanding,
+ failure exits in -&gt;atomic_open() instances should *NOT* fput() the file,
+ no matter what.  Everything is handled by the caller.
+ 
+@@ -989,7 +989,7 @@ This mechanism would only work for a single device so the block layer couldn't
+ find the owning superblock of any additional devices.
+ 
+ In the old mechanism reusing or creating a superblock for a racing mount(2) and
+-umount(2) relied on the file_system_type as the holder. This was severly
++umount(2) relied on the file_system_type as the holder. This was severely
+ underdocumented however:
+ 
+ (1) Any concurrent mounter that managed to grab an active reference on an
+diff --git a/Documentation/mm/slub.rst b/Documentation/mm/slub.rst
+index b517ee28a955..60d350d08362 100644
+--- a/Documentation/mm/slub.rst
++++ b/Documentation/mm/slub.rst
+@@ -80,7 +80,7 @@ to the dentry cache with::
+ 
+ Debugging options may require the minimum possible slab order to increase as
+ a result of storing the metadata (for example, caches with PAGE_SIZE object
+-sizes).  This has a higher liklihood of resulting in slab allocation errors
++sizes).  This has a higher likelihood of resulting in slab allocation errors
+ in low memory situations or if there's high fragmentation of memory.  To
+ switch off debugging for such caches by default, use::
+ 
+diff --git a/Documentation/security/SCTP.rst b/Documentation/security/SCTP.rst
+index b73eb764a001..6d80d464ab6e 100644
+--- a/Documentation/security/SCTP.rst
++++ b/Documentation/security/SCTP.rst
+@@ -81,7 +81,7 @@ A summary of the ``@optname`` entries is as follows::
+                             destination addresses.
+ 
+     SCTP_SENDMSG_CONNECT  - Initiate a connection that is generated by a
+-                            sendmsg(2) or sctp_sendmsg(3) on a new asociation.
++                            sendmsg(2) or sctp_sendmsg(3) on a new association.
+ 
+     SCTP_PRIMARY_ADDR     - Set local primary address.
+ 
+diff --git a/Documentation/translations/zh_TW/process/submit-checklist.rst b/Documentation/translations/zh_TW/process/submit-checklist.rst
+index 43f2e3c5b514..0ecb187753e4 100644
+--- a/Documentation/translations/zh_TW/process/submit-checklist.rst
++++ b/Documentation/translations/zh_TW/process/submit-checklist.rst
+@@ -31,7 +31,7 @@ Linux內核補丁提交檢查單
+ 
+    c) 使用 ``O=builddir`` 時可以成功編譯
+ 
+-   d) 任何 Doucmentation/ 下的變更都能成功構建且不引入新警告/錯誤。
++   d) 任何 Documentation/ 下的變更都能成功構建且不引入新警告/錯誤。
+       用 ``make htmldocs`` 或 ``make pdfdocs`` 檢驗構建情況並修復問題。
+ 
+ 3) 通過使用本地交叉編譯工具或其他一些構建設施在多個CPU體系結構上構建。</pre><hr><pre>commit 2d7e8a64a1e79f76b9d1165db0b92190d4663848
+Author: Remington Brasga &lt;rbrasga@uci.edu&gt;
+Date:   Sun Apr 28 01:14:01 2024 +0000
+
+    coresight:  Docs/ABI/testing/sysfs-bus-coresight-devices: Fix spelling errors
+    
+    Fix spelling and gramatical errors
+    
+    Signed-off-by: Remington Brasga &lt;rbrasga@uci.edu&gt;
+    [ Adjusted title ]
+    Signed-off-by: Suzuki K Poulose &lt;suzuki.poulose@arm.com&gt;
+    Link: https://lore.kernel.org/r/20240428011401.1080-1-rbrasga@uci.edu
+
+diff --git a/Documentation/ABI/testing/sysfs-bus-coresight-devices-etm3x b/Documentation/ABI/testing/sysfs-bus-coresight-devices-etm3x
+index 3acf7fc31659..271b57c571aa 100644
+--- a/Documentation/ABI/testing/sysfs-bus-coresight-devices-etm3x
++++ b/Documentation/ABI/testing/sysfs-bus-coresight-devices-etm3x
+@@ -22,7 +22,7 @@ Contact:	Mathieu Poirier &lt;mathieu.poirier@linaro.org&gt;
+ Description:	(RW) Used in conjunction with @addr_idx.  Specifies
+ 		characteristics about the address comparator being configure,
+ 		for example the access type, the kind of instruction to trace,
+-		processor contect ID to trigger on, etc.  Individual fields in
++		processor context ID to trigger on, etc.  Individual fields in
+ 		the access type register may vary on the version of the trace
+ 		entity.
+ 
+diff --git a/Documentation/ABI/testing/sysfs-bus-coresight-devices-tmc b/Documentation/ABI/testing/sysfs-bus-coresight-devices-tmc
+index 96aafa66b4a5..339cec3b2f1a 100644
+--- a/Documentation/ABI/testing/sysfs-bus-coresight-devices-tmc
++++ b/Documentation/ABI/testing/sysfs-bus-coresight-devices-tmc
+@@ -97,7 +97,7 @@ Date:		August 2023
+ KernelVersion:	6.7
+ Contact:	Anshuman Khandual &lt;anshuman.khandual@arm.com&gt;
+ Description:	(Read) Shows all supported Coresight TMC-ETR buffer modes available
+-		for the users to configure explicitly. This file is avaialble only
++		for the users to configure explicitly. This file is available only
+ 		for TMC ETR devices.
+ 
+ What:		/sys/bus/coresight/devices/&lt;memory_map&gt;.tmc/buf_mode_preferred
+diff --git a/Documentation/ABI/testing/sysfs-bus-coresight-devices-tpdm b/Documentation/ABI/testing/sysfs-bus-coresight-devices-tpdm
+index b4d0fc8d319d..bf710ea6e0ef 100644
+--- a/Documentation/ABI/testing/sysfs-bus-coresight-devices-tpdm
++++ b/Documentation/ABI/testing/sysfs-bus-coresight-devices-tpdm
+@@ -244,7 +244,7 @@ KernelVersion	6.9
+ Contact:	Jinlong Mao (QUIC) &lt;quic_jinlmao@quicinc.com&gt;, Tao Zhang (QUIC) &lt;quic_taozha@quicinc.com&gt;
+ Description:
+ 		(RW) Read or write the status of timestamp upon all interface.
+-		Only value 0 and 1  can be written to this node. Set this node to 1 to requeset
++		Only value 0 and 1  can be written to this node. Set this node to 1 to request
+ 		timestamp to all trace packet.
+ 		Accepts only one of the 2 values -  0 or 1.
+ 		0 : Disable the timestamp of all trace packets.</pre>
+    <div class="pagination">
+        <span>[1]</span>
+    <div>
+</body>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Huazhong University of Science and Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Huazhong University of Science and Technology</h1>
+    <div class="pagination">
+        <a href='14_2.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><span>[3]</span><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_4.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 188d070de9132667956f5aadd98d2bd87d3eac89
+Author: Hao Luo &lt;m202171776@hust.edu.cn&gt;
+Date:   Tue Apr 11 09:51:07 2023 +0800
+
+    clk: imx: clk-imx8mn: fix memory leak in imx8mn_clocks_probe
+    
+    Use devm_of_iomap() instead of of_iomap() to automatically handle
+    the unused ioremap region.
+    
+    If any error occurs, regions allocated by kzalloc() will leak,
+    but using devm_kzalloc() instead will automatically free the memory
+    using devm_kfree().
+    
+    Fixes: daeb14545514 ("clk: imx: imx8mn: Switch to clk_hw based API")
+    Fixes: 96d6392b54db ("clk: imx: Add support for i.MX8MN clock driver")
+    Signed-off-by: Hao Luo &lt;m202171776@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Peng Fan &lt;peng.fan@nxp.com&gt;
+    Link: https://lore.kernel.org/r/20230411015107.2645-1-m202171776@hust.edu.cn
+    Signed-off-by: Abel Vesa &lt;abel.vesa@linaro.org&gt;
+
+diff --git a/drivers/clk/imx/clk-imx8mn.c b/drivers/clk/imx/clk-imx8mn.c
+index 4b23a4648600..4bd1ed11353b 100644
+--- a/drivers/clk/imx/clk-imx8mn.c
++++ b/drivers/clk/imx/clk-imx8mn.c
+@@ -323,7 +323,7 @@ static int imx8mn_clocks_probe(struct platform_device *pdev)
+ 	void __iomem *base;
+ 	int ret;
+ 
+-	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
++	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
+ 					  IMX8MN_CLK_END), GFP_KERNEL);
+ 	if (WARN_ON(!clk_hw_data))
+ 		return -ENOMEM;
+@@ -340,10 +340,10 @@ static int imx8mn_clocks_probe(struct platform_device *pdev)
+ 	hws[IMX8MN_CLK_EXT4] = imx_get_clk_hw_by_name(np, "clk_ext4");
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mn-anatop");
+-	base = of_iomap(np, 0);
++	base = devm_of_iomap(dev, np, 0, NULL);
+ 	of_node_put(np);
+-	if (WARN_ON(!base)) {
+-		ret = -ENOMEM;
++	if (WARN_ON(IS_ERR(base))) {
++		ret = PTR_ERR(base);
+ 		goto unregister_hws;
+ 	}
+ </pre><hr><pre>commit 1b280598ab3bd8a2dc8b96a12530d5b1ee7a8f4a
+Author: Kai Ma &lt;kaima@hust.edu.cn&gt;
+Date:   Tue Apr 18 11:34:51 2023 +0000
+
+    clk: imx: clk-imxrt1050: fix memory leak in imxrt1050_clocks_probe
+    
+    Use devm_of_iomap() instead of of_iomap() to automatically
+    handle the unused ioremap region. If any error occurs, regions allocated by
+    kzalloc() will leak, but using devm_kzalloc() instead will automatically
+    free the memory using devm_kfree().
+    
+    Also, fix error handling of hws by adding unregister_hws label, which
+    unregisters remaining hws when iomap failed.
+    
+    Fixes: 7154b046d8f3 ("clk: imx: Add initial support for i.MXRT1050 clock driver")
+    Signed-off-by: Kai Ma &lt;kaima@hust.edu.cn&gt;
+    Reviewed-by: Peng Fan &lt;peng.fan@nxp.com&gt;
+    Acked-by: Jesse Taube &lt;Mr.Bossman075@gmail.com&gt;
+    Reviewed-by: Abel Vesa &lt;abel.vesa@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20230418113451.151312-1-kaima@hust.edu.cn
+    Signed-off-by: Abel Vesa &lt;abel.vesa@linaro.org&gt;
+
+diff --git a/drivers/clk/imx/clk-imxrt1050.c b/drivers/clk/imx/clk-imxrt1050.c
+index fd5c51fc92c0..08d155feb035 100644
+--- a/drivers/clk/imx/clk-imxrt1050.c
++++ b/drivers/clk/imx/clk-imxrt1050.c
+@@ -42,7 +42,7 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
+ 	struct device_node *anp;
+ 	int ret;
+ 
+-	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
++	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
+ 					  IMXRT1050_CLK_END), GFP_KERNEL);
+ 	if (WARN_ON(!clk_hw_data))
+ 		return -ENOMEM;
+@@ -53,10 +53,12 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
+ 	hws[IMXRT1050_CLK_OSC] = imx_get_clk_hw_by_name(np, "osc");
+ 
+ 	anp = of_find_compatible_node(NULL, NULL, "fsl,imxrt-anatop");
+-	pll_base = of_iomap(anp, 0);
++	pll_base = devm_of_iomap(dev, anp, 0, NULL);
+ 	of_node_put(anp);
+-	if (WARN_ON(!pll_base))
+-		return -ENOMEM;
++	if (WARN_ON(IS_ERR(pll_base))) {
++		ret = PTR_ERR(pll_base);
++		goto unregister_hws;
++	}
+ 
+ 	/* Anatop clocks */
+ 	hws[IMXRT1050_CLK_DUMMY] = imx_clk_hw_fixed("dummy", 0UL);
+@@ -104,8 +106,10 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
+ 
+ 	/* CCM clocks */
+ 	ccm_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (WARN_ON(IS_ERR(ccm_base)))
+-		return PTR_ERR(ccm_base);
++	if (WARN_ON(IS_ERR(ccm_base))) {
++		ret = PTR_ERR(ccm_base);
++		goto unregister_hws;
++	}
+ 
+ 	hws[IMXRT1050_CLK_ARM_PODF] = imx_clk_hw_divider("arm_podf", "pll1_arm", ccm_base + 0x10, 0, 3);
+ 	hws[IMXRT1050_CLK_PRE_PERIPH_SEL] = imx_clk_hw_mux("pre_periph_sel", ccm_base + 0x18, 18, 2,
+@@ -149,8 +153,12 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
+ 	ret = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
+ 	if (ret &lt; 0) {
+ 		dev_err(dev, "Failed to register clks for i.MXRT1050.\n");
+-		imx_unregister_hw_clocks(hws, IMXRT1050_CLK_END);
++		goto unregister_hws;
+ 	}
++	return 0;
++
++unregister_hws:
++	imx_unregister_hw_clocks(hws, IMXRT1050_CLK_END);
+ 	return ret;
+ }
+ static const struct of_device_id imxrt1050_clk_of_match[] = {</pre><hr><pre>commit 342161c11403ea00e9febc16baab1d883d589d04
+Author: Li Yang &lt;lidaxian@hust.edu.cn&gt;
+Date:   Thu Apr 20 22:08:31 2023 +0800
+
+    usb: phy: phy-tahvo: fix memory leak in tahvo_usb_probe()
+    
+    Smatch reports:
+    drivers/usb/phy/phy-tahvo.c: tahvo_usb_probe()
+    warn: missing unwind goto?
+    
+    After geting irq, if ret &lt; 0, it will return without error handling to
+    free memory.
+    Just add error handling to fix this problem.
+    
+    Fixes: 0d45a1373e66 ("usb: phy: tahvo: add IRQ check")
+    Signed-off-by: Li Yang &lt;lidaxian@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230420140832.9110-1-lidaxian@hust.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/phy/phy-tahvo.c b/drivers/usb/phy/phy-tahvo.c
+index 47562d49dfc1..5cac31c6029b 100644
+--- a/drivers/usb/phy/phy-tahvo.c
++++ b/drivers/usb/phy/phy-tahvo.c
+@@ -391,7 +391,7 @@ static int tahvo_usb_probe(struct platform_device *pdev)
+ 
+ 	tu-&gt;irq = ret = platform_get_irq(pdev, 0);
+ 	if (ret &lt; 0)
+-		return ret;
++		goto err_remove_phy;
+ 	ret = request_threaded_irq(tu-&gt;irq, NULL, tahvo_usb_vbus_interrupt,
+ 				   IRQF_ONESHOT,
+ 				   "tahvo-vbus", tu);</pre><hr><pre>commit c60738de85f40b0b9f5cb23c21f9246e5a47908c
+Author: Junyan Ye &lt;yejunyan@hust.edu.cn&gt;
+Date:   Mon May 8 12:36:41 2023 +0800
+
+    PCI: ftpci100: Release the clock resources
+    
+    Smatch reported:
+    1. drivers/pci/controller/pci-ftpci100.c:526 faraday_pci_probe() warn:
+    'clk' from clk_prepare_enable() not released on lines: 442,451,462,478,512,517.
+    2. drivers/pci/controller/pci-ftpci100.c:526 faraday_pci_probe() warn:
+    'p-&gt;bus_clk' from clk_prepare_enable() not released on lines: 451,462,478,512,517.
+    
+    The clock resource is obtained by devm_clk_get(), and then
+    clk_prepare_enable() makes the clock resource ready for use. After that,
+    clk_disable_unprepare() should be called to release the clock resource
+    when it is no longer needed. However, while doing some error handling
+    in faraday_pci_probe(), clk_disable_unprepare() is not called to release
+    clk and p-&gt;bus_clk before returning. These return lines are exactly 442,
+    451, 462, 478, 512, 517.
+    
+    Fix this warning by replacing devm_clk_get() with devm_clk_get_enabled(),
+    which is equivalent to devm_clk_get() + clk_prepare_enable(). And with
+    devm_clk_get_enabled(), the clock will automatically be disabled,
+    unprepared and freed when the device is unbound from the bus.
+    
+    Link: https://lore.kernel.org/r/20230508043641.23807-1-yejunyan@hust.edu.cn
+    Fixes: b3c433efb8a3 ("PCI: faraday: Fix wrong pointer passed to PTR_ERR()")
+    Fixes: 2eeb02b28579 ("PCI: faraday: Add clock handling")
+    Fixes: 783a862563f7 ("PCI: faraday: Use pci_parse_request_of_pci_ranges()")
+    Fixes: d3c68e0a7e34 ("PCI: faraday: Add Faraday Technology FTPCI100 PCI Host Bridge driver")
+    Fixes: f1e8bd21e39e ("PCI: faraday: Convert IRQ masking to raw PCI config accessors")
+    Signed-off-by: Junyan Ye &lt;yejunyan@hust.edu.cn&gt;
+    Signed-off-by: Lorenzo Pieralisi &lt;lpieralisi@kernel.org&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+
+diff --git a/drivers/pci/controller/pci-ftpci100.c b/drivers/pci/controller/pci-ftpci100.c
+index ecd3009df586..6e7981d2ed5e 100644
+--- a/drivers/pci/controller/pci-ftpci100.c
++++ b/drivers/pci/controller/pci-ftpci100.c
+@@ -429,22 +429,12 @@ static int faraday_pci_probe(struct platform_device *pdev)
+ 	p-&gt;dev = dev;
+ 
+ 	/* Retrieve and enable optional clocks */
+-	clk = devm_clk_get(dev, "PCLK");
++	clk = devm_clk_get_enabled(dev, "PCLK");
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+-	ret = clk_prepare_enable(clk);
+-	if (ret) {
+-		dev_err(dev, "could not prepare PCLK\n");
+-		return ret;
+-	}
+-	p-&gt;bus_clk = devm_clk_get(dev, "PCICLK");
++	p-&gt;bus_clk = devm_clk_get_enabled(dev, "PCICLK");
+ 	if (IS_ERR(p-&gt;bus_clk))
+ 		return PTR_ERR(p-&gt;bus_clk);
+-	ret = clk_prepare_enable(p-&gt;bus_clk);
+-	if (ret) {
+-		dev_err(dev, "could not prepare PCICLK\n");
+-		return ret;
+-	}
+ 
+ 	p-&gt;base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(p-&gt;base))</pre><hr><pre>commit 072210c725c4938682e58236eeeb19a2ddd0b817
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Thu Mar 16 21:32:36 2023 +0800
+
+    wifi: ray_cs: add sanity check on local-&gt;sram/rmem/amem
+    
+    The ray_config uses ray_release as its unified error handling function.
+    However, it does not know if local-&gt;sram/rmem/amem succeeds or not.
+    
+    Fix this by adding sanity check on local-&gt;sram/rmem/amem in the
+    ray_relase.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Kalle Valo &lt;kvalo@kernel.org&gt;
+    Link: https://lore.kernel.org/r/20230316133236.556198-3-dzm91@hust.edu.cn
+
+diff --git a/drivers/net/wireless/legacy/ray_cs.c b/drivers/net/wireless/legacy/ray_cs.c
+index 93eaf3dba6a9..4b53a9c70e7e 100644
+--- a/drivers/net/wireless/legacy/ray_cs.c
++++ b/drivers/net/wireless/legacy/ray_cs.c
+@@ -738,9 +738,12 @@ static void ray_release(struct pcmcia_device *link)
+ 
+ 	del_timer_sync(&amp;local-&gt;timer);
+ 
+-	iounmap(local-&gt;sram);
+-	iounmap(local-&gt;rmem);
+-	iounmap(local-&gt;amem);
++	if (local-&gt;sram)
++		iounmap(local-&gt;sram);
++	if (local-&gt;rmem)
++		iounmap(local-&gt;rmem);
++	if (local-&gt;amem)
++		iounmap(local-&gt;amem);
+ 	pcmcia_disable_device(link);
+ 
+ 	dev_dbg(&amp;link-&gt;dev, "ray_release ending\n");</pre><hr><pre>commit daef020558bc34e8031263aa7cf9e803d709f93a
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Thu Mar 16 21:32:35 2023 +0800
+
+    wifi: ray_cs: remove one redundant del_timer
+    
+    In ray_detach, it and its child function ray_release both call
+    del_timer(_sync) on the same timer.
+    
+    Fix this by removing the del_timer_sync in the ray_detach, and revising
+    the del_timer to del_timer_sync.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Kalle Valo &lt;kvalo@kernel.org&gt;
+    Link: https://lore.kernel.org/r/20230316133236.556198-2-dzm91@hust.edu.cn
+
+diff --git a/drivers/net/wireless/legacy/ray_cs.c b/drivers/net/wireless/legacy/ray_cs.c
+index 38782d4c4694..93eaf3dba6a9 100644
+--- a/drivers/net/wireless/legacy/ray_cs.c
++++ b/drivers/net/wireless/legacy/ray_cs.c
+@@ -328,7 +328,6 @@ static int ray_probe(struct pcmcia_device *p_dev)
+ static void ray_detach(struct pcmcia_device *link)
+ {
+ 	struct net_device *dev;
+-	ray_dev_t *local;
+ 
+ 	dev_dbg(&amp;link-&gt;dev, "ray_detach\n");
+ 
+@@ -337,9 +336,6 @@ static void ray_detach(struct pcmcia_device *link)
+ 
+ 	ray_release(link);
+ 
+-	local = netdev_priv(dev);
+-	del_timer_sync(&amp;local-&gt;timer);
+-
+ 	if (link-&gt;priv) {
+ 		unregister_netdev(dev);
+ 		free_netdev(dev);
+@@ -740,7 +736,7 @@ static void ray_release(struct pcmcia_device *link)
+ 
+ 	dev_dbg(&amp;link-&gt;dev, "ray_release\n");
+ 
+-	del_timer(&amp;local-&gt;timer);
++	del_timer_sync(&amp;local-&gt;timer);
+ 
+ 	iounmap(local-&gt;sram);
+ 	iounmap(local-&gt;rmem);</pre><hr><pre>commit 2e2fe5ac695a00ab03cab4db1f4d6be07168ed9d
+Author: Yuchen Yang &lt;u202114568@hust.edu.cn&gt;
+Date:   Fri May 5 22:12:55 2023 +0800
+
+    scsi: 3w-xxxx: Add error handling for initialization failure in tw_probe()
+    
+    Smatch complains that:
+    
+    tw_probe() warn: missing error code 'retval'
+    
+    This patch adds error checking to tw_probe() to handle initialization
+    failure. If tw_reset_sequence() function returns a non-zero value, the
+    function will return -EINVAL to indicate initialization failure.
+    
+    Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+    Signed-off-by: Yuchen Yang &lt;u202114568@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230505141259.7730-1-u202114568@hust.edu.cn
+    Reviewed-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Signed-off-by: Martin K. Petersen &lt;martin.petersen@oracle.com&gt;
+
+diff --git a/drivers/scsi/3w-xxxx.c b/drivers/scsi/3w-xxxx.c
+index 36c34ced0cc1..f39c9ec2e781 100644
+--- a/drivers/scsi/3w-xxxx.c
++++ b/drivers/scsi/3w-xxxx.c
+@@ -2305,8 +2305,10 @@ static int tw_probe(struct pci_dev *pdev, const struct pci_device_id *dev_id)
+ 	TW_DISABLE_INTERRUPTS(tw_dev);
+ 
+ 	/* Initialize the card */
+-	if (tw_reset_sequence(tw_dev))
++	if (tw_reset_sequence(tw_dev)) {
++		retval = -EINVAL;
+ 		goto out_release_mem_region;
++	}
+ 
+ 	/* Set host specific parameters */
+ 	host-&gt;max_id = TW_MAX_UNITS;</pre><hr><pre>commit ec014683c564fb74fc68e8f5e84691d3b3839d24
+Author: Chao Wang &lt;D202280639@hust.edu.cn&gt;
+Date:   Mon Apr 17 03:04:21 2023 +0000
+
+    iommu/rockchip: Fix unwind goto issue
+    
+    Smatch complains that
+    drivers/iommu/rockchip-iommu.c:1306 rk_iommu_probe() warn: missing unwind goto?
+    
+    The rk_iommu_probe function, after obtaining the irq value through
+    platform_get_irq, directly returns an error if the returned value
+    is negative, without releasing any resources.
+    
+    Fix this by adding a new error handling label "err_pm_disable" and
+    use a goto statement to redirect to the error handling process. In
+    order to preserve the original semantics, set err to the value of irq.
+    
+    Fixes: 1aa55ca9b14a ("iommu/rockchip: Move irq request past pm_runtime_enable")
+    Signed-off-by: Chao Wang &lt;D202280639@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+    Link: https://lore.kernel.org/r/20230417030421.2777-1-D202280639@hust.edu.cn
+    Signed-off-by: Joerg Roedel &lt;jroedel@suse.de&gt;
+
+diff --git a/drivers/iommu/rockchip-iommu.c b/drivers/iommu/rockchip-iommu.c
+index ea5a3088bb7e..4054030c3237 100644
+--- a/drivers/iommu/rockchip-iommu.c
++++ b/drivers/iommu/rockchip-iommu.c
+@@ -1335,20 +1335,22 @@ static int rk_iommu_probe(struct platform_device *pdev)
+ 	for (i = 0; i &lt; iommu-&gt;num_irq; i++) {
+ 		int irq = platform_get_irq(pdev, i);
+ 
+-		if (irq &lt; 0)
+-			return irq;
++		if (irq &lt; 0) {
++			err = irq;
++			goto err_pm_disable;
++		}
+ 
+ 		err = devm_request_irq(iommu-&gt;dev, irq, rk_iommu_irq,
+ 				       IRQF_SHARED, dev_name(dev), iommu);
+-		if (err) {
+-			pm_runtime_disable(dev);
+-			goto err_remove_sysfs;
+-		}
++		if (err)
++			goto err_pm_disable;
+ 	}
+ 
+ 	dma_set_mask_and_coherent(dev, rk_ops-&gt;dma_bit_mask);
+ 
+ 	return 0;
++err_pm_disable:
++	pm_runtime_disable(dev);
+ err_remove_sysfs:
+ 	iommu_device_sysfs_remove(&amp;iommu-&gt;iommu);
+ err_put_group:</pre><hr><pre>commit 27b2ed5b6d53cd62fc61c3f259ae52f5cac23b66
+Author: Jiakai Luo &lt;jkluo@hust.edu.cn&gt;
+Date:   Sat Apr 22 06:34:06 2023 -0700
+
+    iio: adc: mxs-lradc: fix the order of two cleanup operations
+    
+    Smatch reports:
+    drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
+    missing unwind goto?
+    
+    the order of three init operation:
+    1.mxs_lradc_adc_trigger_init
+    2.iio_triggered_buffer_setup
+    3.mxs_lradc_adc_hw_init
+    
+    thus, the order of three cleanup operation should be:
+    1.mxs_lradc_adc_hw_stop
+    2.iio_triggered_buffer_cleanup
+    3.mxs_lradc_adc_trigger_remove
+    
+    we exchange the order of two cleanup operations,
+    introducing the following differences:
+    1.if mxs_lradc_adc_trigger_init fails, returns directly;
+    2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
+    goto err_trig and remove the trigger.
+    
+    In addition, we also reorder the unwind that goes on in the
+    remove() callback to match the new ordering.
+    
+    Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
+    Signed-off-by: Jiakai Luo &lt;jkluo@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230422133407.72908-1-jkluo@hust.edu.cn
+    Cc: &lt;Stable@vger.kernel.org&gt;
+    Signed-off-by: Jonathan Cameron &lt;Jonathan.Cameron@huawei.com&gt;
+
+diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+index bca79a93cbe4..a50f39143d3e 100644
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+ 
+ 	ret = mxs_lradc_adc_trigger_init(iio);
+ 	if (ret)
+-		goto err_trig;
++		return ret;
+ 
+ 	ret = iio_triggered_buffer_setup(iio, &amp;iio_pollfunc_store_time,
+ 					 &amp;mxs_lradc_adc_trigger_handler,
+ 					 &amp;mxs_lradc_adc_buffer_ops);
+ 	if (ret)
+-		return ret;
++		goto err_trig;
+ 
+ 	adc-&gt;vref_mv = mxs_lradc_adc_vref_mv[lradc-&gt;soc];
+ 
+@@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+ 
+ err_dev:
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+-err_trig:
+ 	iio_triggered_buffer_cleanup(iio);
++err_trig:
++	mxs_lradc_adc_trigger_remove(iio);
+ 	return ret;
+ }
+ 
+@@ -814,8 +814,8 @@ static int mxs_lradc_adc_remove(struct platform_device *pdev)
+ 
+ 	iio_device_unregister(iio);
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+ 	iio_triggered_buffer_cleanup(iio);
++	mxs_lradc_adc_trigger_remove(iio);
+ 
+ 	return 0;
+ }</pre><hr><pre>commit 8ab5fc55d7f65d58a3c3aeadf11bdf60267cd2bd
+Author: Ke Zhang &lt;m202171830@hust.edu.cn&gt;
+Date:   Fri Apr 28 11:16:36 2023 +0800
+
+    serial: arc_uart: fix of_iomap leak in `arc_serial_probe`
+    
+    Smatch reports:
+    
+    drivers/tty/serial/arc_uart.c:631 arc_serial_probe() warn:
+    'port-&gt;membase' from of_iomap() not released on lines: 631.
+    
+    In arc_serial_probe(), if uart_add_one_port() fails,
+    port-&gt;membase is not released, which would cause a resource leak.
+    
+    To fix this, I replace of_iomap with devm_platform_ioremap_resource.
+    
+    Fixes: 8dbe1d5e09a7 ("serial/arc: inline the probe helper")
+    Signed-off-by: Ke Zhang &lt;m202171830@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20230428031636.44642-1-m202171830@hust.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/tty/serial/arc_uart.c b/drivers/tty/serial/arc_uart.c
+index 59e25f2b6632..4b2512eef577 100644
+--- a/drivers/tty/serial/arc_uart.c
++++ b/drivers/tty/serial/arc_uart.c
+@@ -606,10 +606,11 @@ static int arc_serial_probe(struct platform_device *pdev)
+ 	}
+ 	uart-&gt;baud = val;
+ 
+-	port-&gt;membase = of_iomap(np, 0);
+-	if (!port-&gt;membase)
++	port-&gt;membase = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(port-&gt;membase)) {
+ 		/* No point of dev_err since UART itself is hosed here */
+-		return -ENXIO;
++		return PTR_ERR(port-&gt;membase);
++	}
+ 
+ 	port-&gt;irq = irq_of_parse_and_map(np, 0);
+ </pre>
+    <div class="pagination">
+        <a href='14_2.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><span>[3]</span><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_4.html'>Next&gt;&gt;</a>
+    <div>
+</body>

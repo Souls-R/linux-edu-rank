@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Harvard University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Harvard University</h1>
+    <div class="pagination">
+        <a href='2_51.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><span>[52]</span><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_53.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 97b6b6d2339f67eb17d954930a908b762af66228
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Feb 23 14:56:32 2012 -0500
+
+    usb-serial: use new registration API in [d-h]* drivers
+    
+    This patch (as1524) modifies the following usb-serial drivers to
+    utilize the new usb_serial_{de}register_drivers() routines:
+    
+            digi_acceleport, empeg, ftdi_sio, funsoft, garmin_gps,
+            and hp4x.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/serial/digi_acceleport.c b/drivers/usb/serial/digi_acceleport.c
+index 2b1da0cc071a..f0e776bb1ffb 100644
+--- a/drivers/usb/serial/digi_acceleport.c
++++ b/drivers/usb/serial/digi_acceleport.c
+@@ -276,7 +276,6 @@ static struct usb_driver digi_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table_combined,
+-	.no_dynamic_id = 	1,
+ };
+ 
+ 
+@@ -288,7 +287,6 @@ static struct usb_serial_driver digi_acceleport_2_device = {
+ 		.name =			"digi_2",
+ 	},
+ 	.description =			"Digi 2 port USB adapter",
+-	.usb_driver = 			&amp;digi_driver,
+ 	.id_table =			id_table_2,
+ 	.num_ports =			3,
+ 	.open =				digi_open,
+@@ -316,7 +314,6 @@ static struct usb_serial_driver digi_acceleport_4_device = {
+ 		.name =			"digi_4",
+ 	},
+ 	.description =			"Digi 4 port USB adapter",
+-	.usb_driver = 			&amp;digi_driver,
+ 	.id_table =			id_table_4,
+ 	.num_ports =			4,
+ 	.open =				digi_open,
+@@ -337,6 +334,9 @@ static struct usb_serial_driver digi_acceleport_4_device = {
+ 	.release =			digi_release,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;digi_acceleport_2_device, &amp;digi_acceleport_4_device, NULL
++};
+ 
+ /* Functions */
+ 
+@@ -1583,31 +1583,17 @@ static int digi_read_oob_callback(struct urb *urb)
+ static int __init digi_init(void)
+ {
+ 	int retval;
+-	retval = usb_serial_register(&amp;digi_acceleport_2_device);
+-	if (retval)
+-		goto failed_acceleport_2_device;
+-	retval = usb_serial_register(&amp;digi_acceleport_4_device);
+-	if (retval)
+-		goto failed_acceleport_4_device;
+-	retval = usb_register(&amp;digi_driver);
+-	if (retval)
+-		goto failed_usb_register;
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
+-	       DRIVER_DESC "\n");
+-	return 0;
+-failed_usb_register:
+-	usb_serial_deregister(&amp;digi_acceleport_4_device);
+-failed_acceleport_4_device:
+-	usb_serial_deregister(&amp;digi_acceleport_2_device);
+-failed_acceleport_2_device:
++
++	retval = usb_serial_register_drivers(&amp;digi_driver, serial_drivers);
++	if (retval == 0)
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
++			       DRIVER_DESC "\n");
+ 	return retval;
+ }
+ 
+ static void __exit digi_exit (void)
+ {
+-	usb_deregister(&amp;digi_driver);
+-	usb_serial_deregister(&amp;digi_acceleport_2_device);
+-	usb_serial_deregister(&amp;digi_acceleport_4_device);
++	usb_serial_deregister_drivers(&amp;digi_driver, serial_drivers);
+ }
+ 
+ 
+diff --git a/drivers/usb/serial/empeg.c b/drivers/usb/serial/empeg.c
+index aced6817bf95..51bcbd5d5e8e 100644
+--- a/drivers/usb/serial/empeg.c
++++ b/drivers/usb/serial/empeg.c
+@@ -56,7 +56,6 @@ static struct usb_driver empeg_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table,
+-	.no_dynamic_id =	1,
+ };
+ 
+ static struct usb_serial_driver empeg_device = {
+@@ -65,7 +64,6 @@ static struct usb_serial_driver empeg_device = {
+ 		.name =		"empeg",
+ 	},
+ 	.id_table =		id_table,
+-	.usb_driver =		&amp;empeg_driver,
+ 	.num_ports =		1,
+ 	.bulk_out_size =	256,
+ 	.throttle =		usb_serial_generic_throttle,
+@@ -74,6 +72,10 @@ static struct usb_serial_driver empeg_device = {
+ 	.init_termios =		empeg_init_termios,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;empeg_device, NULL
++};
++
+ static int empeg_startup(struct usb_serial *serial)
+ {
+ 	int r;
+@@ -140,24 +142,16 @@ static int __init empeg_init(void)
+ {
+ 	int retval;
+ 
+-	retval = usb_serial_register(&amp;empeg_device);
+-	if (retval)
+-		return retval;
+-	retval = usb_register(&amp;empeg_driver);
+-	if (retval) {
+-		usb_serial_deregister(&amp;empeg_device);
+-		return retval;
+-	}
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
+-	       DRIVER_DESC "\n");
+-
+-	return 0;
++	retval = usb_serial_register_drivers(&amp;empeg_driver, serial_drivers);
++	if (retval == 0)
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
++			       DRIVER_DESC "\n");
++	return retval;
+ }
+ 
+ static void __exit empeg_exit(void)
+ {
+-	usb_deregister(&amp;empeg_driver);
+-	usb_serial_deregister(&amp;empeg_device);
++	usb_serial_deregister_drivers(&amp;empeg_driver, serial_drivers);
+ }
+ 
+ 
+diff --git a/drivers/usb/serial/ftdi_sio.c b/drivers/usb/serial/ftdi_sio.c
+index f770415305f8..615cf2c4915c 100644
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -857,7 +857,6 @@ static struct usb_driver ftdi_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table_combined,
+-	.no_dynamic_id =	1,
+ };
+ 
+ static const char *ftdi_chip_name[] = {
+@@ -915,7 +914,6 @@ static struct usb_serial_driver ftdi_sio_device = {
+ 		.name =		"ftdi_sio",
+ 	},
+ 	.description =		"FTDI USB Serial Device",
+-	.usb_driver = 		&amp;ftdi_driver,
+ 	.id_table =		id_table_combined,
+ 	.num_ports =		1,
+ 	.bulk_in_size =		512,
+@@ -938,6 +936,10 @@ static struct usb_serial_driver ftdi_sio_device = {
+ 	.break_ctl =		ftdi_break_ctl,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;ftdi_sio_device, NULL
++};
++
+ 
+ #define WDR_TIMEOUT 5000 /* default urb timeout */
+ #define WDR_SHORT_TIMEOUT 1000	/* shorter urb timeout */
+@@ -2420,19 +2422,10 @@ static int __init ftdi_init(void)
+ 		id_table_combined[i].idVendor = vendor;
+ 		id_table_combined[i].idProduct = product;
+ 	}
+-	retval = usb_serial_register(&amp;ftdi_sio_device);
+-	if (retval)
+-		goto failed_sio_register;
+-	retval = usb_register(&amp;ftdi_driver);
+-	if (retval)
+-		goto failed_usb_register;
+-
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
+-	       DRIVER_DESC "\n");
+-	return 0;
+-failed_usb_register:
+-	usb_serial_deregister(&amp;ftdi_sio_device);
+-failed_sio_register:
++	retval = usb_serial_register_drivers(&amp;ftdi_driver, serial_drivers);
++	if (retval == 0)
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
++			       DRIVER_DESC "\n");
+ 	return retval;
+ }
+ 
+@@ -2440,8 +2433,7 @@ static void __exit ftdi_exit(void)
+ {
+ 	dbg("%s", __func__);
+ 
+-	usb_deregister(&amp;ftdi_driver);
+-	usb_serial_deregister(&amp;ftdi_sio_device);
++	usb_serial_deregister_drivers(&amp;ftdi_driver, serial_drivers);
+ }
+ 
+ 
+diff --git a/drivers/usb/serial/funsoft.c b/drivers/usb/serial/funsoft.c
+index 5d4b099dcf8b..bb274a244ae9 100644
+--- a/drivers/usb/serial/funsoft.c
++++ b/drivers/usb/serial/funsoft.c
+@@ -29,7 +29,6 @@ static struct usb_driver funsoft_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table,
+-	.no_dynamic_id = 	1,
+ };
+ 
+ static struct usb_serial_driver funsoft_device = {
+@@ -38,27 +37,21 @@ static struct usb_serial_driver funsoft_device = {
+ 		.name =		"funsoft",
+ 	},
+ 	.id_table =		id_table,
+-	.usb_driver = 		&amp;funsoft_driver,
+ 	.num_ports =		1,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;funsoft_device, NULL
++};
++
+ static int __init funsoft_init(void)
+ {
+-	int retval;
+-
+-	retval = usb_serial_register(&amp;funsoft_device);
+-	if (retval)
+-		return retval;
+-	retval = usb_register(&amp;funsoft_driver);
+-	if (retval)
+-		usb_serial_deregister(&amp;funsoft_device);
+-	return retval;
++	return usb_serial_register_drivers(&amp;funsoft_driver, serial_drivers);
+ }
+ 
+ static void __exit funsoft_exit(void)
+ {
+-	usb_deregister(&amp;funsoft_driver);
+-	usb_serial_deregister(&amp;funsoft_device);
++	usb_serial_deregister_drivers(&amp;funsoft_driver, serial_drivers);
+ }
+ 
+ module_init(funsoft_init);
+diff --git a/drivers/usb/serial/garmin_gps.c b/drivers/usb/serial/garmin_gps.c
+index 21343378c322..69da3abcb363 100644
+--- a/drivers/usb/serial/garmin_gps.c
++++ b/drivers/usb/serial/garmin_gps.c
+@@ -224,7 +224,6 @@ static struct usb_driver garmin_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table,
+-	.no_dynamic_id = 1,
+ };
+ 
+ 
+@@ -1497,7 +1496,6 @@ static struct usb_serial_driver garmin_device = {
+ 		.name        = "garmin_gps",
+ 	},
+ 	.description         = "Garmin GPS usb/tty",
+-	.usb_driver          = &amp;garmin_driver,
+ 	.id_table            = id_table,
+ 	.num_ports           = 1,
+ 	.open                = garmin_open,
+@@ -1514,33 +1512,26 @@ static struct usb_serial_driver garmin_device = {
+ 	.read_int_callback   = garmin_read_int_callback,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;garmin_device, NULL
++};
+ 
+ 
+ static int __init garmin_init(void)
+ {
+ 	int retval;
+ 
+-	retval = usb_serial_register(&amp;garmin_device);
+-	if (retval)
+-		goto failed_garmin_register;
+-	retval = usb_register(&amp;garmin_driver);
+-	if (retval)
+-		goto failed_usb_register;
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
+-	       DRIVER_DESC "\n");
+-
+-	return 0;
+-failed_usb_register:
+-	usb_serial_deregister(&amp;garmin_device);
+-failed_garmin_register:
++	retval = usb_serial_register_drivers(&amp;garmin_driver, serial_drivers);
++	if (retval == 0)
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
++			       DRIVER_DESC "\n");
+ 	return retval;
+ }
+ 
+ 
+ static void __exit garmin_exit(void)
+ {
+-	usb_deregister(&amp;garmin_driver);
+-	usb_serial_deregister(&amp;garmin_device);
++	usb_serial_deregister_drivers(&amp;garmin_driver, serial_drivers);
+ }
+ 
+ 
+diff --git a/drivers/usb/serial/hp4x.c b/drivers/usb/serial/hp4x.c
+index 809379159b0e..325cf092b61c 100644
+--- a/drivers/usb/serial/hp4x.c
++++ b/drivers/usb/serial/hp4x.c
+@@ -41,7 +41,6 @@ static struct usb_driver hp49gp_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table,
+-	.no_dynamic_id = 	1,
+ };
+ 
+ static struct usb_serial_driver hp49gp_device = {
+@@ -50,32 +49,27 @@ static struct usb_serial_driver hp49gp_device = {
+ 		.name =		"hp4X",
+ 	},
+ 	.id_table =		id_table,
+-	.usb_driver = 		&amp;hp49gp_driver,
+ 	.num_ports =		1,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;hp49gp_device, NULL
++};
++
+ static int __init hp49gp_init(void)
+ {
+ 	int retval;
+-	retval = usb_serial_register(&amp;hp49gp_device);
+-	if (retval)
+-		goto failed_usb_serial_register;
+-	retval = usb_register(&amp;hp49gp_driver);
+-	if (retval)
+-		goto failed_usb_register;
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
+-	       DRIVER_DESC "\n");
+-	return 0;
+-failed_usb_register:
+-	usb_serial_deregister(&amp;hp49gp_device);
+-failed_usb_serial_register:
++
++	retval = usb_serial_register_drivers(&amp;hp49gp_driver, serial_drivers);
++	if (retval == 0)
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
++			       DRIVER_DESC "\n");
+ 	return retval;
+ }
+ 
+ static void __exit hp49gp_exit(void)
+ {
+-	usb_deregister(&amp;hp49gp_driver);
+-	usb_serial_deregister(&amp;hp49gp_device);
++	usb_serial_deregister_drivers(&amp;hp49gp_driver, serial_drivers);
+ }
+ 
+ module_init(hp49gp_init);</pre><hr><pre>commit 08a4f6bc2e7046ce50849d7589b7d0763926d808
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Feb 23 14:56:17 2012 -0500
+
+    usb-serial: use new registration API in [a-c]* drivers
+    
+    This patch (as1523) modifies the following usb-serial drivers to
+    utilize the new usb_serial_{de}register_drivers() routines:
+    
+            aircable, ark3116, belkin_sa, ch341, cp210x, cyberjack,
+            and cypress_m8.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/serial/aircable.c b/drivers/usb/serial/aircable.c
+index 123bf9155339..dbf3bddc1b51 100644
+--- a/drivers/usb/serial/aircable.c
++++ b/drivers/usb/serial/aircable.c
+@@ -175,7 +175,6 @@ static struct usb_driver aircable_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table,
+-	.no_dynamic_id =	1,
+ };
+ 
+ static struct usb_serial_driver aircable_device = {
+@@ -183,7 +182,6 @@ static struct usb_serial_driver aircable_device = {
+ 		.owner =	THIS_MODULE,
+ 		.name =		"aircable",
+ 	},
+-	.usb_driver = 		&amp;aircable_driver,
+ 	.id_table = 		id_table,
+ 	.num_ports =		1,
+ 	.bulk_out_size =	HCI_COMPLETE_FRAME,
+@@ -194,27 +192,18 @@ static struct usb_serial_driver aircable_device = {
+ 	.unthrottle =		usb_serial_generic_unthrottle,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;aircable_device, NULL
++};
++
+ static int __init aircable_init(void)
+ {
+-	int retval;
+-	retval = usb_serial_register(&amp;aircable_device);
+-	if (retval)
+-		goto failed_serial_register;
+-	retval = usb_register(&amp;aircable_driver);
+-	if (retval)
+-		goto failed_usb_register;
+-	return 0;
+-
+-failed_usb_register:
+-	usb_serial_deregister(&amp;aircable_device);
+-failed_serial_register:
+-	return retval;
++	return usb_serial_register_drivers(&amp;aircable_driver, serial_drivers);
+ }
+ 
+ static void __exit aircable_exit(void)
+ {
+-	usb_deregister(&amp;aircable_driver);
+-	usb_serial_deregister(&amp;aircable_device);
++	usb_serial_deregister_drivers(&amp;aircable_driver, serial_drivers);
+ }
+ 
+ MODULE_AUTHOR(DRIVER_AUTHOR);
+diff --git a/drivers/usb/serial/ark3116.c b/drivers/usb/serial/ark3116.c
+index 69328dcfd91a..ab2cf1165c60 100644
+--- a/drivers/usb/serial/ark3116.c
++++ b/drivers/usb/serial/ark3116.c
+@@ -719,7 +719,6 @@ static struct usb_driver ark3116_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table,
+-	.no_dynamic_id =	1,
+ };
+ 
+ static struct usb_serial_driver ark3116_device = {
+@@ -728,7 +727,6 @@ static struct usb_serial_driver ark3116_device = {
+ 		.name =		"ark3116",
+ 	},
+ 	.id_table =		id_table,
+-	.usb_driver =		&amp;ark3116_driver,
+ 	.num_ports =		1,
+ 	.attach =		ark3116_attach,
+ 	.release =		ark3116_release,
+@@ -745,28 +743,27 @@ static struct usb_serial_driver ark3116_device = {
+ 	.process_read_urb =	ark3116_process_read_urb,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;ark3116_device, NULL
++};
++
+ static int __init ark3116_init(void)
+ {
+ 	int retval;
+ 
+-	retval = usb_serial_register(&amp;ark3116_device);
+-	if (retval)
+-		return retval;
+-	retval = usb_register(&amp;ark3116_driver);
++	retval = usb_serial_register_drivers(&amp;ark3116_driver, serial_drivers);
+ 	if (retval == 0) {
+ 		printk(KERN_INFO "%s:"
+ 		       DRIVER_VERSION ":"
+ 		       DRIVER_DESC "\n",
+ 		       KBUILD_MODNAME);
+-	} else
+-		usb_serial_deregister(&amp;ark3116_device);
++	}
+ 	return retval;
+ }
+ 
+ static void __exit ark3116_exit(void)
+ {
+-	usb_deregister(&amp;ark3116_driver);
+-	usb_serial_deregister(&amp;ark3116_device);
++	usb_serial_deregister_drivers(&amp;ark3116_driver, serial_drivers);
+ }
+ 
+ module_init(ark3116_init);
+diff --git a/drivers/usb/serial/belkin_sa.c b/drivers/usb/serial/belkin_sa.c
+index 29ffeb6279c7..e8b473f5acf7 100644
+--- a/drivers/usb/serial/belkin_sa.c
++++ b/drivers/usb/serial/belkin_sa.c
+@@ -78,7 +78,6 @@ static struct usb_driver belkin_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table_combined,
+-	.no_dynamic_id =	1,
+ };
+ 
+ /* All of the device info needed for the serial converters */
+@@ -88,7 +87,6 @@ static struct usb_serial_driver belkin_device = {
+ 		.name =		"belkin",
+ 	},
+ 	.description =		"Belkin / Peracom / GoHubs USB Serial Adapter",
+-	.usb_driver =		&amp;belkin_driver,
+ 	.id_table =		id_table_combined,
+ 	.num_ports =		1,
+ 	.open =			belkin_sa_open,
+@@ -103,6 +101,10 @@ static struct usb_serial_driver belkin_device = {
+ 	.release =		belkin_sa_release,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;belkin_device, NULL
++};
++
+ struct belkin_sa_private {
+ 	spinlock_t		lock;
+ 	unsigned long		control_state;
+@@ -526,25 +528,17 @@ static int belkin_sa_tiocmset(struct tty_struct *tty,
+ static int __init belkin_sa_init(void)
+ {
+ 	int retval;
+-	retval = usb_serial_register(&amp;belkin_device);
+-	if (retval)
+-		goto failed_usb_serial_register;
+-	retval = usb_register(&amp;belkin_driver);
+-	if (retval)
+-		goto failed_usb_register;
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
+-	       DRIVER_DESC "\n");
+-	return 0;
+-failed_usb_register:
+-	usb_serial_deregister(&amp;belkin_device);
+-failed_usb_serial_register:
++
++	retval = usb_serial_register_drivers(&amp;belkin_driver, serial_drivers);
++	if (retval == 0)
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
++			       DRIVER_DESC "\n");
+ 	return retval;
+ }
+ 
+ static void __exit belkin_sa_exit (void)
+ {
+-	usb_deregister(&amp;belkin_driver);
+-	usb_serial_deregister(&amp;belkin_device);
++	usb_serial_deregister_drivers(&amp;belkin_driver, serial_drivers);
+ }
+ 
+ 
+diff --git a/drivers/usb/serial/ch341.c b/drivers/usb/serial/ch341.c
+index 5e53cc59e652..23de3b039a28 100644
+--- a/drivers/usb/serial/ch341.c
++++ b/drivers/usb/serial/ch341.c
+@@ -625,7 +625,6 @@ static struct usb_driver ch341_driver = {
+ 	.resume		= usb_serial_resume,
+ 	.reset_resume	= ch341_reset_resume,
+ 	.id_table	= id_table,
+-	.no_dynamic_id	= 1,
+ 	.supports_autosuspend =	1,
+ };
+ 
+@@ -635,7 +634,6 @@ static struct usb_serial_driver ch341_device = {
+ 		.name	= "ch341-uart",
+ 	},
+ 	.id_table          = id_table,
+-	.usb_driver        = &amp;ch341_driver,
+ 	.num_ports         = 1,
+ 	.open              = ch341_open,
+ 	.dtr_rts	   = ch341_dtr_rts,
+@@ -650,23 +648,18 @@ static struct usb_serial_driver ch341_device = {
+ 	.attach            = ch341_attach,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;ch341_device, NULL
++};
++
+ static int __init ch341_init(void)
+ {
+-	int retval;
+-
+-	retval = usb_serial_register(&amp;ch341_device);
+-	if (retval)
+-		return retval;
+-	retval = usb_register(&amp;ch341_driver);
+-	if (retval)
+-		usb_serial_deregister(&amp;ch341_device);
+-	return retval;
++	return usb_serial_register_drivers(&amp;ch341_driver, serial_drivers);
+ }
+ 
+ static void __exit ch341_exit(void)
+ {
+-	usb_deregister(&amp;ch341_driver);
+-	usb_serial_deregister(&amp;ch341_device);
++	usb_serial_deregister_drivers(&amp;ch341_driver, serial_drivers);
+ }
+ 
+ module_init(ch341_init);
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index ec9dc4e9a3ff..01a9374357f1 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -154,7 +154,6 @@ static struct usb_driver cp210x_driver = {
+ 	.probe		= usb_serial_probe,
+ 	.disconnect	= usb_serial_disconnect,
+ 	.id_table	= id_table,
+-	.no_dynamic_id	= 	1,
+ };
+ 
+ static struct usb_serial_driver cp210x_device = {
+@@ -162,7 +161,6 @@ static struct usb_serial_driver cp210x_device = {
+ 		.owner =	THIS_MODULE,
+ 		.name = 	"cp210x",
+ 	},
+-	.usb_driver		= &amp;cp210x_driver,
+ 	.id_table		= id_table,
+ 	.num_ports		= 1,
+ 	.bulk_in_size		= 256,
+@@ -177,6 +175,10 @@ static struct usb_serial_driver cp210x_device = {
+ 	.dtr_rts		= cp210x_dtr_rts
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;cp210x_device, NULL
++};
++
+ /* Config request types */
+ #define REQTYPE_HOST_TO_DEVICE	0x41
+ #define REQTYPE_DEVICE_TO_HOST	0xc1
+@@ -852,27 +854,16 @@ static int __init cp210x_init(void)
+ {
+ 	int retval;
+ 
+-	retval = usb_serial_register(&amp;cp210x_device);
+-	if (retval)
+-		return retval; /* Failed to register */
+-
+-	retval = usb_register(&amp;cp210x_driver);
+-	if (retval) {
+-		/* Failed to register */
+-		usb_serial_deregister(&amp;cp210x_device);
+-		return retval;
+-	}
+-
+-	/* Success */
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
+-	       DRIVER_DESC "\n");
+-	return 0;
++	retval = usb_serial_register_drivers(&amp;cp210x_driver, serial_drivers);
++	if (retval == 0)
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
++			       DRIVER_DESC "\n");
++	return retval;
+ }
+ 
+ static void __exit cp210x_exit(void)
+ {
+-	usb_deregister(&amp;cp210x_driver);
+-	usb_serial_deregister(&amp;cp210x_device);
++	usb_serial_deregister_drivers(&amp;cp210x_driver, serial_drivers);
+ }
+ 
+ module_init(cp210x_init);
+diff --git a/drivers/usb/serial/cyberjack.c b/drivers/usb/serial/cyberjack.c
+index 6bc3802a581a..d2e536f649ba 100644
+--- a/drivers/usb/serial/cyberjack.c
++++ b/drivers/usb/serial/cyberjack.c
+@@ -82,7 +82,6 @@ static struct usb_driver cyberjack_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table,
+-	.no_dynamic_id = 	1,
+ };
+ 
+ static struct usb_serial_driver cyberjack_device = {
+@@ -91,7 +90,6 @@ static struct usb_serial_driver cyberjack_device = {
+ 		.name =		"cyberjack",
+ 	},
+ 	.description =		"Reiner SCT Cyberjack USB card reader",
+-	.usb_driver = 		&amp;cyberjack_driver,
+ 	.id_table =		id_table,
+ 	.num_ports =		1,
+ 	.attach =		cyberjack_startup,
+@@ -106,6 +104,10 @@ static struct usb_serial_driver cyberjack_device = {
+ 	.write_bulk_callback =	cyberjack_write_bulk_callback,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;cyberjack_device, NULL
++};
++
+ struct cyberjack_private {
+ 	spinlock_t	lock;		/* Lock for SMP */
+ 	short		rdtodo;		/* Bytes still to read */
+@@ -476,28 +478,19 @@ static void cyberjack_write_bulk_callback(struct urb *urb)
+ static int __init cyberjack_init(void)
+ {
+ 	int retval;
+-	retval  = usb_serial_register(&amp;cyberjack_device);
+-	if (retval)
+-		goto failed_usb_serial_register;
+-	retval = usb_register(&amp;cyberjack_driver);
+-	if (retval)
+-		goto failed_usb_register;
+-
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION " "
+-	       DRIVER_AUTHOR "\n");
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_DESC "\n");
+ 
+-	return 0;
+-failed_usb_register:
+-	usb_serial_deregister(&amp;cyberjack_device);
+-failed_usb_serial_register:
++	retval = usb_serial_register_drivers(&amp;cyberjack_driver, serial_drivers);
++	if (retval == 0) {
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION " "
++			       DRIVER_AUTHOR "\n");
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_DESC "\n");
++	}
+ 	return retval;
+ }
+ 
+ static void __exit cyberjack_exit(void)
+ {
+-	usb_deregister(&amp;cyberjack_driver);
+-	usb_serial_deregister(&amp;cyberjack_device);
++	usb_serial_deregister_drivers(&amp;cyberjack_driver, serial_drivers);
+ }
+ 
+ module_init(cyberjack_init);
+diff --git a/drivers/usb/serial/cypress_m8.c b/drivers/usb/serial/cypress_m8.c
+index 5ae86b349cad..bc5057513d5d 100644
+--- a/drivers/usb/serial/cypress_m8.c
++++ b/drivers/usb/serial/cypress_m8.c
+@@ -94,7 +94,6 @@ static struct usb_driver cypress_driver = {
+ 	.probe =	usb_serial_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	id_table_combined,
+-	.no_dynamic_id = 	1,
+ };
+ 
+ enum packet_format {
+@@ -163,7 +162,6 @@ static struct usb_serial_driver cypress_earthmate_device = {
+ 		.name =			"earthmate",
+ 	},
+ 	.description =			"DeLorme Earthmate USB",
+-	.usb_driver = 			&amp;cypress_driver,
+ 	.id_table =			id_table_earthmate,
+ 	.num_ports =			1,
+ 	.attach =			cypress_earthmate_startup,
+@@ -190,7 +188,6 @@ static struct usb_serial_driver cypress_hidcom_device = {
+ 		.name =			"cyphidcom",
+ 	},
+ 	.description =			"HID-&gt;COM RS232 Adapter",
+-	.usb_driver = 			&amp;cypress_driver,
+ 	.id_table =			id_table_cyphidcomrs232,
+ 	.num_ports =			1,
+ 	.attach =			cypress_hidcom_startup,
+@@ -217,7 +214,6 @@ static struct usb_serial_driver cypress_ca42v2_device = {
+ 		.name =			"nokiaca42v2",
+ 	},
+ 	.description =			"Nokia CA-42 V2 Adapter",
+-	.usb_driver = 			&amp;cypress_driver,
+ 	.id_table =			id_table_nokiaca42v2,
+ 	.num_ports =			1,
+ 	.attach =			cypress_ca42v2_startup,
+@@ -238,6 +234,11 @@ static struct usb_serial_driver cypress_ca42v2_device = {
+ 	.write_int_callback =		cypress_write_int_callback,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;cypress_earthmate_device, &amp;cypress_hidcom_device,
++	&amp;cypress_ca42v2_device, NULL
++};
++
+ /*****************************************************************************
+  * Cypress serial helper functions
+  *****************************************************************************/
+@@ -1356,30 +1357,10 @@ static int __init cypress_init(void)
+ 
+ 	dbg("%s", __func__);
+ 
+-	retval = usb_serial_register(&amp;cypress_earthmate_device);
+-	if (retval)
+-		goto failed_em_register;
+-	retval = usb_serial_register(&amp;cypress_hidcom_device);
+-	if (retval)
+-		goto failed_hidcom_register;
+-	retval = usb_serial_register(&amp;cypress_ca42v2_device);
+-	if (retval)
+-		goto failed_ca42v2_register;
+-	retval = usb_register(&amp;cypress_driver);
+-	if (retval)
+-		goto failed_usb_register;
+-
+-	printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
+-	       DRIVER_DESC "\n");
+-	return 0;
+-
+-failed_usb_register:
+-	usb_serial_deregister(&amp;cypress_ca42v2_device);
+-failed_ca42v2_register:
+-	usb_serial_deregister(&amp;cypress_hidcom_device);
+-failed_hidcom_register:
+-	usb_serial_deregister(&amp;cypress_earthmate_device);
+-failed_em_register:
++	retval = usb_serial_register_drivers(&amp;cypress_driver, serial_drivers);
++	if (retval == 0)
++		printk(KERN_INFO KBUILD_MODNAME ": " DRIVER_VERSION ":"
++			       DRIVER_DESC "\n");
+ 	return retval;
+ }
+ 
+@@ -1388,10 +1369,7 @@ static void __exit cypress_exit(void)
+ {
+ 	dbg("%s", __func__);
+ 
+-	usb_deregister(&amp;cypress_driver);
+-	usb_serial_deregister(&amp;cypress_earthmate_device);
+-	usb_serial_deregister(&amp;cypress_hidcom_device);
+-	usb_serial_deregister(&amp;cypress_ca42v2_device);
++	usb_serial_deregister_drivers(&amp;cypress_driver, serial_drivers);
+ }
+ 
+ </pre><hr><pre>commit 765e0ba62613fb90f09c1b5926750df0aa56f349
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Feb 23 14:55:59 2012 -0500
+
+    usb-serial: new API for driver registration
+    
+    This patch (as1522) adds two new routines to the usb-serial core, for
+    registering and unregistering serial drivers.  Instead of registering
+    the usb_driver and usb_serial_drivers separately, with error checking
+    for each one, the drivers can all be registered and unregistered by a
+    single function call.  This reduces duplicated code.
+    
+    More importantly, the new core routines change the order in which the
+    drivers are registered.  Currently the usb-serial drivers are all
+    registered first and the usb_driver is done last, which leaves a
+    window for problems.  A udev script may quickly add a new dynamic-ID
+    for a usb-serial driver, causing the corresponding usb_driver to be
+    probed.  If the usb_driver hasn't been registered yet then an oops
+    will occur.
+    
+    The new routine prevents such problems by registering the usb_driver
+    first.  To insure that it gets probed properly for already-attached
+    serial devices, we call driver_attach() after all the usb-serial
+    drivers have been registered.
+    
+    Along with adding the new routines, the patch modifies the "generic"
+    serial driver to use them.  Further patches will similarly modify all
+    the other in-tree USB serial drivers.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/serial/generic.c b/drivers/usb/serial/generic.c
+index 2a2fa2d0489d..664deb63807c 100644
+--- a/drivers/usb/serial/generic.c
++++ b/drivers/usb/serial/generic.c
+@@ -54,7 +54,6 @@ static struct usb_driver generic_driver = {
+ 	.probe =	generic_probe,
+ 	.disconnect =	usb_serial_disconnect,
+ 	.id_table =	generic_serial_ids,
+-	.no_dynamic_id =	1,
+ };
+ 
+ /* All of the device info needed for the Generic Serial Converter */
+@@ -64,7 +63,6 @@ struct usb_serial_driver usb_serial_generic_device = {
+ 		.name =		"generic",
+ 	},
+ 	.id_table =		generic_device_ids,
+-	.usb_driver = 		&amp;generic_driver,
+ 	.num_ports =		1,
+ 	.disconnect =		usb_serial_generic_disconnect,
+ 	.release =		usb_serial_generic_release,
+@@ -73,6 +71,10 @@ struct usb_serial_driver usb_serial_generic_device = {
+ 	.resume =		usb_serial_generic_resume,
+ };
+ 
++static struct usb_serial_driver * const serial_drivers[] = {
++	&amp;usb_serial_generic_device, NULL
++};
++
+ static int generic_probe(struct usb_interface *interface,
+ 			       const struct usb_device_id *id)
+ {
+@@ -97,13 +99,7 @@ int usb_serial_generic_register(int _debug)
+ 		USB_DEVICE_ID_MATCH_VENDOR | USB_DEVICE_ID_MATCH_PRODUCT;
+ 
+ 	/* register our generic driver with ourselves */
+-	retval = usb_serial_register(&amp;usb_serial_generic_device);
+-	if (retval)
+-		goto exit;
+-	retval = usb_register(&amp;generic_driver);
+-	if (retval)
+-		usb_serial_deregister(&amp;usb_serial_generic_device);
+-exit:
++	retval = usb_serial_register_drivers(&amp;generic_driver, serial_drivers);
+ #endif
+ 	return retval;
+ }
+@@ -112,8 +108,7 @@ void usb_serial_generic_deregister(void)
+ {
+ #ifdef CONFIG_USB_SERIAL_GENERIC
+ 	/* remove our generic driver */
+-	usb_deregister(&amp;generic_driver);
+-	usb_serial_deregister(&amp;usb_serial_generic_device);
++	usb_serial_deregister_drivers(&amp;generic_driver, serial_drivers);
+ #endif
+ }
+ 
+diff --git a/drivers/usb/serial/usb-serial.c b/drivers/usb/serial/usb-serial.c
+index 611b206591cb..45b3658c601f 100644
+--- a/drivers/usb/serial/usb-serial.c
++++ b/drivers/usb/serial/usb-serial.c
+@@ -1338,6 +1338,11 @@ static void fixup_generic(struct usb_serial_driver *device)
+ 	set_to_generic_if_null(device, prepare_write_buffer);
+ }
+ 
++/*
++ * The next two routines are mainly for internal use.
++ * They are exported only for out-of-tree modules.
++ * New drivers should call usb_serial_{de}register_drivers() instead.
++ */
+ int usb_serial_register(struct usb_serial_driver *driver)
+ {
+ 	int retval;
+@@ -1386,6 +1391,76 @@ void usb_serial_deregister(struct usb_serial_driver *device)
+ }
+ EXPORT_SYMBOL_GPL(usb_serial_deregister);
+ 
++/**
++ * usb_serial_register_drivers - register drivers for a usb-serial module
++ * @udriver: usb_driver used for matching devices/interfaces
++ * @serial_drivers: NULL-terminated array of pointers to drivers to be registered
++ *
++ * Registers @udriver and all the drivers in the @serial_drivers array.
++ * Automatically fills in the .no_dynamic_id field in @udriver and
++ * the .usb_driver field in each serial driver.
++ */
++int usb_serial_register_drivers(struct usb_driver *udriver,
++		struct usb_serial_driver * const serial_drivers[])
++{
++	int rc;
++	const struct usb_device_id *saved_id_table;
++	struct usb_serial_driver * const *sd;
++
++	/*
++	 * udriver must be registered before any of the serial drivers,
++	 * because the store_new_id() routine for the serial drivers (in
++	 * bus.c) probes udriver.
++	 *
++	 * Performance hack: We don't want udriver to be probed until
++	 * the serial drivers are registered, because the probe would
++	 * simply fail for lack of a matching serial driver.
++	 * Therefore save off udriver's id_table until we are all set.
++	 */
++	saved_id_table = udriver-&gt;id_table;
++	udriver-&gt;id_table = NULL;
++
++	udriver-&gt;no_dynamic_id = 1;
++	rc = usb_register(udriver);
++	if (rc)
++		return rc;
++
++	for (sd = serial_drivers; *sd; ++sd) {
++		(*sd)-&gt;usb_driver = udriver;
++		rc = usb_serial_register(*sd);
++		if (rc)
++			goto failed;
++	}
++
++	/* Now restore udriver's id_table and look for matches */
++	udriver-&gt;id_table = saved_id_table;
++	rc = driver_attach(&amp;udriver-&gt;drvwrap.driver);
++	return 0;
++
++ failed:
++	while (sd-- &gt; serial_drivers)
++		usb_serial_deregister(*sd);
++	usb_deregister(udriver);
++	return rc;
++}
++EXPORT_SYMBOL_GPL(usb_serial_register_drivers);
++
++/**
++ * usb_serial_deregister_drivers - deregister drivers for a usb-serial module
++ * @udriver: usb_driver to unregister
++ * @serial_drivers: NULL-terminated array of pointers to drivers to be deregistered
++ *
++ * Deregisters @udriver and all the drivers in the @serial_drivers array.
++ */
++void usb_serial_deregister_drivers(struct usb_driver *udriver,
++		struct usb_serial_driver * const serial_drivers[])
++{
++	for (; *serial_drivers; ++serial_drivers)
++		usb_serial_deregister(*serial_drivers);
++	usb_deregister(udriver);
++}
++EXPORT_SYMBOL_GPL(usb_serial_deregister_drivers);
++
+ /* Module information */
+ MODULE_AUTHOR(DRIVER_AUTHOR);
+ MODULE_DESCRIPTION(DRIVER_DESC);
+diff --git a/include/linux/usb/serial.h b/include/linux/usb/serial.h
+index 10cb74d2ad1d..8c8dbf9c5b89 100644
+--- a/include/linux/usb/serial.h
++++ b/include/linux/usb/serial.h
+@@ -300,8 +300,17 @@ struct usb_serial_driver {
+ #define to_usb_serial_driver(d) \
+ 	container_of(d, struct usb_serial_driver, driver)
+ 
++/*
++ * These two routines are kept only for backward compatibility.
++ * Don't use them; call usb_serial_{de}register_drivers() instead.
++ */
+ extern int  usb_serial_register(struct usb_serial_driver *driver);
+ extern void usb_serial_deregister(struct usb_serial_driver *driver);
++
++extern int usb_serial_register_drivers(struct usb_driver *udriver,
++		struct usb_serial_driver * const serial_drivers[]);
++extern void usb_serial_deregister_drivers(struct usb_driver *udriver,
++		struct usb_serial_driver * const serial_drivers[]);
+ extern void usb_serial_port_softint(struct usb_serial_port *port);
+ 
+ extern int usb_serial_probe(struct usb_interface *iface,</pre><hr><pre>commit bb94a406682770a35305daaa241ccdb7cab399de
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Feb 21 13:16:32 2012 -0500
+
+    usb-storage: fix freezing of the scanning thread
+    
+    This patch (as1521b) fixes the interaction between usb-storage's
+    scanning thread and the freezer.  The current implementation has a
+    race: If the device is unplugged shortly after being plugged in and
+    just as a system sleep begins, the scanning thread may get frozen
+    before the khubd task.  Khubd won't be able to freeze until the
+    disconnect processing is complete, and the disconnect processing can't
+    proceed until the scanning thread finishes, so the sleep transition
+    will fail.
+    
+    The implementation in the 3.2 kernel suffers from an additional
+    problem.  There the scanning thread calls set_freezable_with_signal(),
+    and the signals sent by the freezer will mess up the thread's I/O
+    delays, which are all interruptible.
+    
+    The solution to both problems is the same: Replace the kernel thread
+    used for scanning with a delayed-work routine on the system freezable
+    work queue.  Freezable work queues have the nice property that you can
+    cancel a work item even while the work queue is frozen, and no signals
+    are needed.
+    
+    The 3.2 version of this patch solves the problem in Bugzilla #42730.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Acked-by: Seth Forshee &lt;seth.forshee@canonical.com&gt;
+    CC: stable &lt;stable@vger.kernel.org&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index 3dd7da9fd504..db51ba16dc07 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -788,15 +788,19 @@ static void quiesce_and_remove_host(struct us_data *us)
+ 	struct Scsi_Host *host = us_to_host(us);
+ 
+ 	/* If the device is really gone, cut short reset delays */
+-	if (us-&gt;pusb_dev-&gt;state == USB_STATE_NOTATTACHED)
++	if (us-&gt;pusb_dev-&gt;state == USB_STATE_NOTATTACHED) {
+ 		set_bit(US_FLIDX_DISCONNECTING, &amp;us-&gt;dflags);
++		wake_up(&amp;us-&gt;delay_wait);
++	}
+ 
+-	/* Prevent SCSI-scanning (if it hasn't started yet)
+-	 * and wait for the SCSI-scanning thread to stop.
++	/* Prevent SCSI scanning (if it hasn't started yet)
++	 * or wait for the SCSI-scanning routine to stop.
+ 	 */
+-	set_bit(US_FLIDX_DONT_SCAN, &amp;us-&gt;dflags);
+-	wake_up(&amp;us-&gt;delay_wait);
+-	wait_for_completion(&amp;us-&gt;scanning_done);
++	cancel_delayed_work_sync(&amp;us-&gt;scan_dwork);
++
++	/* Balance autopm calls if scanning was cancelled */
++	if (test_bit(US_FLIDX_SCAN_PENDING, &amp;us-&gt;dflags))
++		usb_autopm_put_interface_no_suspend(us-&gt;pusb_intf);
+ 
+ 	/* Removing the host will perform an orderly shutdown: caches
+ 	 * synchronized, disks spun down, etc.
+@@ -823,53 +827,28 @@ static void release_everything(struct us_data *us)
+ 	scsi_host_put(us_to_host(us));
+ }
+ 
+-/* Thread to carry out delayed SCSI-device scanning */
+-static int usb_stor_scan_thread(void * __us)
++/* Delayed-work routine to carry out SCSI-device scanning */
++static void usb_stor_scan_dwork(struct work_struct *work)
+ {
+-	struct us_data *us = (struct us_data *)__us;
++	struct us_data *us = container_of(work, struct us_data,
++			scan_dwork.work);
+ 	struct device *dev = &amp;us-&gt;pusb_intf-&gt;dev;
+ 
+-	dev_dbg(dev, "device found\n");
+-
+-	set_freezable();
++	dev_dbg(dev, "starting scan\n");
+ 
+-	/*
+-	 * Wait for the timeout to expire or for a disconnect
+-	 *
+-	 * We can't freeze in this thread or we risk causing khubd to
+-	 * fail to freeze, but we can't be non-freezable either. Nor can
+-	 * khubd freeze while waiting for scanning to complete as it may
+-	 * hold the device lock, causing a hang when suspending devices.
+-	 * So instead of using wait_event_freezable(), explicitly test
+-	 * for (DONT_SCAN || freezing) in interruptible wait and proceed
+-	 * if any of DONT_SCAN, freezing or timeout has happened.
+-	 */
+-	if (delay_use &gt; 0) {
+-		dev_dbg(dev, "waiting for device to settle "
+-				"before scanning\n");
+-		wait_event_interruptible_timeout(us-&gt;delay_wait,
+-				test_bit(US_FLIDX_DONT_SCAN, &amp;us-&gt;dflags) ||
+-				freezing(current), delay_use * HZ);
++	/* For bulk-only devices, determine the max LUN value */
++	if (us-&gt;protocol == USB_PR_BULK &amp;&amp; !(us-&gt;fflags &amp; US_FL_SINGLE_LUN)) {
++		mutex_lock(&amp;us-&gt;dev_mutex);
++		us-&gt;max_lun = usb_stor_Bulk_max_lun(us);
++		mutex_unlock(&amp;us-&gt;dev_mutex);
+ 	}
++	scsi_scan_host(us_to_host(us));
++	dev_dbg(dev, "scan complete\n");
+ 
+-	/* If the device is still connected, perform the scanning */
+-	if (!test_bit(US_FLIDX_DONT_SCAN, &amp;us-&gt;dflags)) {
+-
+-		/* For bulk-only devices, determine the max LUN value */
+-		if (us-&gt;protocol == USB_PR_BULK &amp;&amp;
+-				!(us-&gt;fflags &amp; US_FL_SINGLE_LUN)) {
+-			mutex_lock(&amp;us-&gt;dev_mutex);
+-			us-&gt;max_lun = usb_stor_Bulk_max_lun(us);
+-			mutex_unlock(&amp;us-&gt;dev_mutex);
+-		}
+-		scsi_scan_host(us_to_host(us));
+-		dev_dbg(dev, "scan complete\n");
+-
+-		/* Should we unbind if no devices were detected? */
+-	}
++	/* Should we unbind if no devices were detected? */
+ 
+ 	usb_autopm_put_interface(us-&gt;pusb_intf);
+-	complete_and_exit(&amp;us-&gt;scanning_done, 0);
++	clear_bit(US_FLIDX_SCAN_PENDING, &amp;us-&gt;dflags);
+ }
+ 
+ static unsigned int usb_stor_sg_tablesize(struct usb_interface *intf)
+@@ -916,7 +895,7 @@ int usb_stor_probe1(struct us_data **pus,
+ 	init_completion(&amp;us-&gt;cmnd_ready);
+ 	init_completion(&amp;(us-&gt;notify));
+ 	init_waitqueue_head(&amp;us-&gt;delay_wait);
+-	init_completion(&amp;us-&gt;scanning_done);
++	INIT_DELAYED_WORK(&amp;us-&gt;scan_dwork, usb_stor_scan_dwork);
+ 
+ 	/* Associate the us_data structure with the USB device */
+ 	result = associate_dev(us, intf);
+@@ -947,7 +926,6 @@ EXPORT_SYMBOL_GPL(usb_stor_probe1);
+ /* Second part of general USB mass-storage probing */
+ int usb_stor_probe2(struct us_data *us)
+ {
+-	struct task_struct *th;
+ 	int result;
+ 	struct device *dev = &amp;us-&gt;pusb_intf-&gt;dev;
+ 
+@@ -988,20 +966,14 @@ int usb_stor_probe2(struct us_data *us)
+ 		goto BadDevice;
+ 	}
+ 
+-	/* Start up the thread for delayed SCSI-device scanning */
+-	th = kthread_create(usb_stor_scan_thread, us, "usb-stor-scan");
+-	if (IS_ERR(th)) {
+-		dev_warn(dev,
+-				"Unable to start the device-scanning thread\n");
+-		complete(&amp;us-&gt;scanning_done);
+-		quiesce_and_remove_host(us);
+-		result = PTR_ERR(th);
+-		goto BadDevice;
+-	}
+-
++	/* Submit the delayed_work for SCSI-device scanning */
+ 	usb_autopm_get_interface_no_resume(us-&gt;pusb_intf);
+-	wake_up_process(th);
++	set_bit(US_FLIDX_SCAN_PENDING, &amp;us-&gt;dflags);
+ 
++	if (delay_use &gt; 0)
++		dev_dbg(dev, "waiting for device to settle before scanning\n");
++	queue_delayed_work(system_freezable_wq, &amp;us-&gt;scan_dwork,
++			delay_use * HZ);
+ 	return 0;
+ 
+ 	/* We come here if there are any problems */
+diff --git a/drivers/usb/storage/usb.h b/drivers/usb/storage/usb.h
+index 7b0f2113632e..75f70f04f37b 100644
+--- a/drivers/usb/storage/usb.h
++++ b/drivers/usb/storage/usb.h
+@@ -47,6 +47,7 @@
+ #include &lt;linux/blkdev.h&gt;
+ #include &lt;linux/completion.h&gt;
+ #include &lt;linux/mutex.h&gt;
++#include &lt;linux/workqueue.h&gt;
+ #include &lt;scsi/scsi_host.h&gt;
+ 
+ struct us_data;
+@@ -72,7 +73,7 @@ struct us_unusual_dev {
+ #define US_FLIDX_DISCONNECTING	3	/* disconnect in progress   */
+ #define US_FLIDX_RESETTING	4	/* device reset in progress */
+ #define US_FLIDX_TIMED_OUT	5	/* SCSI midlayer timed out  */
+-#define US_FLIDX_DONT_SCAN	6	/* don't scan (disconnect)  */
++#define US_FLIDX_SCAN_PENDING	6	/* scanning not yet done    */
+ #define US_FLIDX_REDO_READ10	7	/* redo READ(10) command    */
+ #define US_FLIDX_READ10_WORKED	8	/* previous READ(10) succeeded */
+ 
+@@ -147,8 +148,8 @@ struct us_data {
+ 	/* mutual exclusion and synchronization structures */
+ 	struct completion	cmnd_ready;	 /* to sleep thread on	    */
+ 	struct completion	notify;		 /* thread begin/end	    */
+-	wait_queue_head_t	delay_wait;	 /* wait during scan, reset */
+-	struct completion	scanning_done;	 /* wait for scan thread    */
++	wait_queue_head_t	delay_wait;	 /* wait during reset	    */
++	struct delayed_work	scan_dwork;	 /* for async scanning      */
+ 
+ 	/* subdriver information */
+ 	void			*extra;		 /* Any extra data          */</pre><hr><pre>commit fea6d607e154cf96ab22254ccb48addfd43d4cb5
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Feb 17 16:25:08 2012 -0500
+
+    [SCSI] scsi_pm: Fix bug in the SCSI power management handler
+    
+    This patch (as1520) fixes a bug in the SCSI layer's power management
+    implementation.
+    
+    LUN scanning can be carried out asynchronously in do_scan_async(), and
+    sd uses an asynchronous thread for the time-consuming parts of disk
+    probing in sd_probe_async().  Currently nothing coordinates these
+    async threads with system sleep transitions; they can and do attempt
+    to continue scanning/probing SCSI devices even after the host adapter
+    has been suspended.  As one might expect, the outcome is not ideal.
+    
+    This is what the "prepare" stage of system suspend was created for.
+    After the prepare callback has been called for a host, target, or
+    device, drivers are not allowed to register any children underneath
+    them.  Currently the SCSI prepare callback is not implemented; this
+    patch rectifies that omission.
+    
+    For SCSI hosts, the prepare routine calls scsi_complete_async_scans()
+    to wait until async scanning is finished.  It might be slightly more
+    efficient to wait only until the host in question has been scanned,
+    but there's currently no way to do that.  Besides, during a sleep
+    transition we will ultimately have to wait until all the host scanning
+    has finished anyway.
+    
+    For SCSI devices, the prepare routine calls async_synchronize_full()
+    to wait until sd probing is finished.  The routine does nothing for
+    SCSI targets, because asynchronous target scanning is done only as
+    part of host scanning.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    CC: &lt;stable@kernel.org&gt;
+    Signed-off-by: James Bottomley &lt;JBottomley@Parallels.com&gt;
+
+diff --git a/drivers/scsi/scsi_pm.c b/drivers/scsi/scsi_pm.c
+index bf8bf79e6a1f..c4670642d023 100644
+--- a/drivers/scsi/scsi_pm.c
++++ b/drivers/scsi/scsi_pm.c
+@@ -7,6 +7,7 @@
+ 
+ #include &lt;linux/pm_runtime.h&gt;
+ #include &lt;linux/export.h&gt;
++#include &lt;linux/async.h&gt;
+ 
+ #include &lt;scsi/scsi.h&gt;
+ #include &lt;scsi/scsi_device.h&gt;
+@@ -92,6 +93,19 @@ static int scsi_bus_resume_common(struct device *dev)
+ 	return err;
+ }
+ 
++static int scsi_bus_prepare(struct device *dev)
++{
++	if (scsi_is_sdev_device(dev)) {
++		/* sd probing uses async_schedule.  Wait until it finishes. */
++		async_synchronize_full();
++
++	} else if (scsi_is_host_device(dev)) {
++		/* Wait until async scanning is finished */
++		scsi_complete_async_scans();
++	}
++	return 0;
++}
++
+ static int scsi_bus_suspend(struct device *dev)
+ {
+ 	return scsi_bus_suspend_common(dev, PMSG_SUSPEND);
+@@ -110,6 +124,7 @@ static int scsi_bus_poweroff(struct device *dev)
+ #else /* CONFIG_PM_SLEEP */
+ 
+ #define scsi_bus_resume_common		NULL
++#define scsi_bus_prepare		NULL
+ #define scsi_bus_suspend		NULL
+ #define scsi_bus_freeze			NULL
+ #define scsi_bus_poweroff		NULL
+@@ -218,6 +233,7 @@ void scsi_autopm_put_host(struct Scsi_Host *shost)
+ #endif /* CONFIG_PM_RUNTIME */
+ 
+ const struct dev_pm_ops scsi_bus_pm_ops = {
++	.prepare =		scsi_bus_prepare,
+ 	.suspend =		scsi_bus_suspend,
+ 	.resume =		scsi_bus_resume_common,
+ 	.freeze =		scsi_bus_freeze,
+diff --git a/drivers/scsi/scsi_priv.h b/drivers/scsi/scsi_priv.h
+index 68eadd1c67fd..be4fa6d179b1 100644
+--- a/drivers/scsi/scsi_priv.h
++++ b/drivers/scsi/scsi_priv.h
+@@ -109,6 +109,7 @@ extern void scsi_exit_procfs(void);
+ #endif /* CONFIG_PROC_FS */
+ 
+ /* scsi_scan.c */
++extern int scsi_complete_async_scans(void);
+ extern int scsi_scan_host_selected(struct Scsi_Host *, unsigned int,
+ 				   unsigned int, unsigned int, int);
+ extern void scsi_forget_host(struct Scsi_Host *);</pre><hr><pre>commit af74d2dae8f85a0e90a30594beb507f5d954fa3f
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Jan 10 13:43:40 2012 -0500
+
+    usb-storage: reorganize target-specific code
+    
+    Now that usb-storage has a target_alloc() routine, this patch (as1508)
+    moves some existing target-specific code out of the slave_alloc()
+    routine to where it really belongs.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    CC: Matthew Dharm &lt;mdharm-usb@one-eyed-alien.net&gt;
+    Cc: James Bottomley &lt;James.Bottomley@HansenPartnership.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/storage/scsiglue.c b/drivers/usb/storage/scsiglue.c
+index dc68cc9fef5d..a324a5d21e99 100644
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -78,8 +78,6 @@ static const char* host_info(struct Scsi_Host *host)
+ 
+ static int slave_alloc (struct scsi_device *sdev)
+ {
+-	struct us_data *us = host_to_us(sdev-&gt;host);
+-
+ 	/*
+ 	 * Set the INQUIRY transfer length to 36.  We don't use any of
+ 	 * the extra data and many devices choke if asked for more or
+@@ -104,18 +102,6 @@ static int slave_alloc (struct scsi_device *sdev)
+ 	 */
+ 	blk_queue_update_dma_alignment(sdev-&gt;request_queue, (512 - 1));
+ 
+-	/*
+-	 * The UFI spec treates the Peripheral Qualifier bits in an
+-	 * INQUIRY result as reserved and requires devices to set them
+-	 * to 0.  However the SCSI spec requires these bits to be set
+-	 * to 3 to indicate when a LUN is not present.
+-	 *
+-	 * Let the scanning code know if this target merely sets
+-	 * Peripheral Device Type to 0x1f to indicate no LUN.
+-	 */
+-	if (us-&gt;subclass == USB_SC_UFI)
+-		sdev-&gt;sdev_target-&gt;pdt_1f_for_no_lun = 1;
+-
+ 	return 0;
+ }
+ 
+@@ -278,6 +264,8 @@ static int slave_configure(struct scsi_device *sdev)
+ 
+ static int target_alloc(struct scsi_target *starget)
+ {
++	struct us_data *us = host_to_us(dev_to_shost(starget-&gt;dev.parent));
++
+ 	/*
+ 	 * Some USB drives don't support REPORT LUNS, even though they
+ 	 * report a SCSI revision level above 2.  Tell the SCSI layer
+@@ -285,6 +273,19 @@ static int target_alloc(struct scsi_target *starget)
+ 	 * scan instead.
+ 	 */
+ 	starget-&gt;no_report_luns = 1;
++
++	/*
++	 * The UFI spec treats the Peripheral Qualifier bits in an
++	 * INQUIRY result as reserved and requires devices to set them
++	 * to 0.  However the SCSI spec requires these bits to be set
++	 * to 3 to indicate when a LUN is not present.
++	 *
++	 * Let the scanning code know if this target merely sets
++	 * Peripheral Device Type to 0x1f to indicate no LUN.
++	 */
++	if (us-&gt;subclass == USB_SC_UFI)
++		starget-&gt;pdt_1f_for_no_lun = 1;
++
+ 	return 0;
+ }
+ </pre><hr><pre>commit 09b6b51b0b6c1b9bb61815baf205e4d74c89ff04
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Jan 10 13:43:30 2012 -0500
+
+    SCSI &amp; usb-storage: add flags for VPD pages and REPORT LUNS
+    
+    This patch (as1507) adds a skip_vpd_pages flag to struct scsi_device
+    and a no_report_luns flag to struct scsi_target.  The first is used to
+    control whether sd will look at VPD pages for information on block
+    provisioning, limits, and characteristics.  The second prevents
+    scsi_report_lun_scan() from issuing a REPORT LUNS command.
+    
+    The patch also modifies usb-storage to set the new flag bits for all
+    USB devices and targets, and to stop adjusting the scsi_level value.
+    
+    Historically we have seen that USB mass-storage devices often don't
+    support VPD pages or REPORT LUNS properly.  Until now we have avoided
+    these things by setting the scsi_level to SCSI_2 for all USB devices.
+    But this has the side effect of storing the LUN bits into the second
+    byte of each CDB, and now we have a report of a device which doesn't
+    like that.  The best solution is to stop abusing scsi_level and
+    instead have separate flags for VPD pages and REPORT LUNS.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Reported-by: Perry Wagle &lt;wagle@mac.com&gt;
+    CC: Matthew Dharm &lt;mdharm-usb@one-eyed-alien.net&gt;
+    Cc: James Bottomley &lt;James.Bottomley@HansenPartnership.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index 89da43f73c00..fd37bfbfbcdb 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1295,6 +1295,7 @@ EXPORT_SYMBOL(int_to_scsilun);
+  *   LUNs even if it's older than SCSI-3.
+  *   If BLIST_NOREPORTLUN is set, return 1 always.
+  *   If BLIST_NOLUN is set, return 0 always.
++ *   If starget-&gt;no_report_luns is set, return 1 always.
+  *
+  * Return:
+  *     0: scan completed (or no memory, so further scanning is futile)
+@@ -1321,6 +1322,7 @@ static int scsi_report_lun_scan(struct scsi_target *starget, int bflags,
+ 	 * Only support SCSI-3 and up devices if BLIST_NOREPORTLUN is not set.
+ 	 * Also allow SCSI-2 if BLIST_REPORTLUN2 is set and host adapter does
+ 	 * support more than 8 LUNs.
++	 * Don't attempt if the target doesn't support REPORT LUNS.
+ 	 */
+ 	if (bflags &amp; BLIST_NOREPORTLUN)
+ 		return 1;
+@@ -1332,6 +1334,8 @@ static int scsi_report_lun_scan(struct scsi_target *starget, int bflags,
+ 		return 1;
+ 	if (bflags &amp; BLIST_NOLUN)
+ 		return 0;
++	if (starget-&gt;no_report_luns)
++		return 1;
+ 
+ 	if (!(sdev = scsi_device_lookup_by_target(starget, 0))) {
+ 		sdev = scsi_alloc_sdev(starget, 0, NULL);
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index c691fb50e6cb..d173b90b25e9 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -2349,7 +2349,7 @@ static int sd_try_extended_inquiry(struct scsi_device *sdp)
+ 	 * some USB ones crash on receiving them, and the pages
+ 	 * we currently ask for are for SPC-3 and beyond
+ 	 */
+-	if (sdp-&gt;scsi_level &gt; SCSI_SPC_2)
++	if (sdp-&gt;scsi_level &gt; SCSI_SPC_2 &amp;&amp; !sdp-&gt;skip_vpd_pages)
+ 		return 1;
+ 	return 0;
+ }
+diff --git a/drivers/usb/storage/scsiglue.c b/drivers/usb/storage/scsiglue.c
+index 13b8bcdf3dba..dc68cc9fef5d 100644
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -197,6 +197,9 @@ static int slave_configure(struct scsi_device *sdev)
+ 		 * page x08, so we will skip it. */
+ 		sdev-&gt;skip_ms_page_8 = 1;
+ 
++		/* Some devices don't handle VPD pages correctly */
++		sdev-&gt;skip_vpd_pages = 1;
++
+ 		/* Some disks return the total number of blocks in response
+ 		 * to READ CAPACITY rather than the highest block number.
+ 		 * If this device makes that mistake, tell the sd driver. */
+@@ -217,16 +220,6 @@ static int slave_configure(struct scsi_device *sdev)
+ 		if (sdev-&gt;scsi_level &gt; SCSI_SPC_2)
+ 			us-&gt;fflags |= US_FL_SANE_SENSE;
+ 
+-		/* Some devices report a SCSI revision level above 2 but are
+-		 * unable to handle the REPORT LUNS command (for which
+-		 * support is mandatory at level 3).  Since we already have
+-		 * a Get-Max-LUN request, we won't lose much by setting the
+-		 * revision level down to 2.  The only devices that would be
+-		 * affected are those with sparse LUNs. */
+-		if (sdev-&gt;scsi_level &gt; SCSI_2)
+-			sdev-&gt;sdev_target-&gt;scsi_level =
+-					sdev-&gt;scsi_level = SCSI_2;
+-
+ 		/* USB-IDE bridges tend to report SK = 0x04 (Non-recoverable
+ 		 * Hardware Error) when any low-level error occurs,
+ 		 * recoverable or not.  Setting this flag tells the SCSI
+@@ -283,6 +276,18 @@ static int slave_configure(struct scsi_device *sdev)
+ 	return 0;
+ }
+ 
++static int target_alloc(struct scsi_target *starget)
++{
++	/*
++	 * Some USB drives don't support REPORT LUNS, even though they
++	 * report a SCSI revision level above 2.  Tell the SCSI layer
++	 * not to issue that command; it will perform a normal sequential
++	 * scan instead.
++	 */
++	starget-&gt;no_report_luns = 1;
++	return 0;
++}
++
+ /* queue a command */
+ /* This is always called with scsi_lock(host) held */
+ static int queuecommand_lck(struct scsi_cmnd *srb,
+@@ -546,6 +551,7 @@ struct scsi_host_template usb_stor_host_template = {
+ 
+ 	.slave_alloc =			slave_alloc,
+ 	.slave_configure =		slave_configure,
++	.target_alloc =			target_alloc,
+ 
+ 	/* lots of sg segments can be handled */
+ 	.sg_tablesize =			SCSI_MAX_SG_CHAIN_SEGMENTS,
+diff --git a/include/scsi/scsi_device.h b/include/scsi/scsi_device.h
+index 01cb3c4cb74d..b3a1c2daf6cc 100644
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -136,6 +136,7 @@ struct scsi_device {
+ 	unsigned use_10_for_ms:1; /* first try 10-byte mode sense/select */
+ 	unsigned skip_ms_page_8:1;	/* do not use MODE SENSE page 0x08 */
+ 	unsigned skip_ms_page_3f:1;	/* do not use MODE SENSE page 0x3f */
++	unsigned skip_vpd_pages:1;	/* do not read VPD pages */
+ 	unsigned use_192_bytes_for_3f:1; /* ask for 192 bytes from page 0x3f */
+ 	unsigned no_start_on_add:1;	/* do not issue start on add */
+ 	unsigned allow_restart:1; /* issue START_UNIT in error handler */
+@@ -248,6 +249,8 @@ struct scsi_target {
+ 						 * for the device at a time. */
+ 	unsigned int		pdt_1f_for_no_lun:1;	/* PDT = 0x1f
+ 						 * means no lun present. */
++	unsigned int		no_report_luns:1;	/* Don't use
++						 * REPORT LUNS for scanning. */
+ 	/* commands actually active on LLD. protected by host lock. */
+ 	unsigned int		target_busy;
+ 	/*</pre><hr><pre>commit de8c46bfc032fbdf490cfb67f534d2a0188ebeb0
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Jan 10 13:43:04 2012 -0500
+
+    SCSI: fix typo in definition of struct scsi_target
+    
+    This patch (as1506) corrects a typo in the definition of the
+    scsi_target structure.  pdt_1f_for_no_lun is supposed to be a
+    single-bit flag, not a full-sized integer.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Cc: James Bottomley &lt;James.Bottomley@HansenPartnership.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/include/scsi/scsi_device.h b/include/scsi/scsi_device.h
+index 77273f2fdd80..01cb3c4cb74d 100644
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -246,8 +246,8 @@ struct scsi_target {
+ 	unsigned int		single_lun:1;	/* Indicates we should only
+ 						 * allow I/O to one of the luns
+ 						 * for the device at a time. */
+-	unsigned int		pdt_1f_for_no_lun;	/* PDT = 0x1f */
+-						/* means no lun present */
++	unsigned int		pdt_1f_for_no_lun:1;	/* PDT = 0x1f
++						 * means no lun present. */
+ 	/* commands actually active on LLD. protected by host lock. */
+ 	unsigned int		target_busy;
+ 	/*</pre><hr><pre>commit 0cb54a3e47cb4baf0bc7463f0a64cfeae5e35697
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Feb 2 15:38:14 2012 -0500
+
+    USB: debugging code shouldn't alter control flow
+    
+    People have complained that debugging code shouldn't alter the flow of
+    control; it should restrict itself to printing out warnings and error
+    messages.  Bowing to popular opinion, this patch (as1518) changes the
+    debugging checks in usb_submit_urb() to follow this guideline.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Reported-by: Keith Packard &lt;keithp@keithp.com&gt;
+    CC: Pavel Machek &lt;pavel@ucw.cz&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
+index 909625b91eb3..f4f20c7b7765 100644
+--- a/drivers/usb/core/urb.c
++++ b/drivers/usb/core/urb.c
+@@ -403,20 +403,17 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
+ 	 * cause problems in HCDs if they get it wrong.
+ 	 */
+ 	{
+-	unsigned int	orig_flags = urb-&gt;transfer_flags;
+ 	unsigned int	allowed;
+ 	static int pipetypes[4] = {
+ 		PIPE_CONTROL, PIPE_ISOCHRONOUS, PIPE_BULK, PIPE_INTERRUPT
+ 	};
+ 
+ 	/* Check that the pipe's type matches the endpoint's type */
+-	if (usb_pipetype(urb-&gt;pipe) != pipetypes[xfertype]) {
+-		dev_err(&amp;dev-&gt;dev, "BOGUS urb xfer, pipe %x != type %x\n",
++	if (usb_pipetype(urb-&gt;pipe) != pipetypes[xfertype])
++		dev_WARN(&amp;dev-&gt;dev, "BOGUS urb xfer, pipe %x != type %x\n",
+ 			usb_pipetype(urb-&gt;pipe), pipetypes[xfertype]);
+-		return -EPIPE;		/* The most suitable error code :-) */
+-	}
+ 
+-	/* enforce simple/standard policy */
++	/* Check against a simple/standard policy */
+ 	allowed = (URB_NO_TRANSFER_DMA_MAP | URB_NO_INTERRUPT | URB_DIR_MASK |
+ 			URB_FREE_BUFFER);
+ 	switch (xfertype) {
+@@ -435,14 +432,12 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
+ 		allowed |= URB_ISO_ASAP;
+ 		break;
+ 	}
+-	urb-&gt;transfer_flags &amp;= allowed;
++	allowed &amp;= urb-&gt;transfer_flags;
+ 
+-	/* fail if submitter gave bogus flags */
+-	if (urb-&gt;transfer_flags != orig_flags) {
+-		dev_err(&amp;dev-&gt;dev, "BOGUS urb flags, %x --&gt; %x\n",
+-			orig_flags, urb-&gt;transfer_flags);
+-		return -EINVAL;
+-	}
++	/* warn if submitter gave bogus flags */
++	if (allowed != urb-&gt;transfer_flags)
++		dev_WARN(&amp;dev-&gt;dev, "BOGUS urb flags, %x --&gt; %x\n",
++			urb-&gt;transfer_flags, allowed);
+ 	}
+ #endif
+ 	/*</pre><hr><pre>commit 07d251460bbf9752c6532af8c1a68328c199dd70
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Jan 27 10:24:40 2012 -0500
+
+    PCI/XEN: Fix bug introduced by a recent change
+    
+    This patch (as1516) fixes a bug introduced during the removal of
+    put_driver() and get_driver() from drivers/pci/xen-pcifront.c.
+    
+    Reported-by: Stephen Rothwell &lt;sfr@canb.auug.org.au&gt;
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/pci/xen-pcifront.c b/drivers/pci/xen-pcifront.c
+index 6f819988a8da..98387caf59b3 100644
+--- a/drivers/pci/xen-pcifront.c
++++ b/drivers/pci/xen-pcifront.c
+@@ -593,7 +593,7 @@ static pci_ers_result_t pcifront_common_process(int cmd,
+ 	}
+ 	pdrv = pcidev-&gt;driver;
+ 
+-	if (pdrv-&gt;driver) {
++	if (pdrv) {
+ 		if (pdrv-&gt;err_handler &amp;&amp; pdrv-&gt;err_handler-&gt;error_detected) {
+ 			dev_dbg(&amp;pcidev-&gt;dev,
+ 				"trying to call AER service\n");</pre>
+    <div class="pagination">
+        <a href='2_51.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><span>[52]</span><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><a href='2_62.html'>62</a><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_53.html'>Next&gt;&gt;</a>
+    <div>
+</body>

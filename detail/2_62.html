@@ -1,0 +1,2343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Harvard University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Harvard University</h1>
+    <div class="pagination">
+        <a href='2_61.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><span>[62]</span><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_63.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 7490e44239e60293bca0c2663229050c36c660c2
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Sat Sep 25 23:35:15 2010 +0200
+
+    PM / Runtime: Add no_callbacks flag
+    
+    Some devices, such as USB interfaces, cannot be power-managed
+    independently of their parents, i.e., they cannot be put in low power
+    while the parent remains at full power.  This patch (as1425) creates a
+    new "no_callbacks" flag, which tells the PM core not to invoke the
+    runtime-PM callback routines for the such devices but instead to
+    assume that the callbacks always succeed.  In addition, the
+    non-debugging runtime-PM sysfs attributes for the devices are removed,
+    since they are pretty much meaningless.
+    
+    The advantage of this scheme comes not so much from avoiding the
+    callbacks themselves, but rather from the fact that without the need
+    for a process context in which to run the callbacks, more work can be
+    done in interrupt context.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Rafael J. Wysocki &lt;rjw@sisk.pl&gt;
+
+diff --git a/Documentation/power/runtime_pm.txt b/Documentation/power/runtime_pm.txt
+index 55b859b3bc72..9ba49b21ac86 100644
+--- a/Documentation/power/runtime_pm.txt
++++ b/Documentation/power/runtime_pm.txt
+@@ -1,6 +1,7 @@
+ Run-time Power Management Framework for I/O Devices
+ 
+ (C) 2009 Rafael J. Wysocki &lt;rjw@sisk.pl&gt;, Novell Inc.
++(C) 2010 Alan Stern &lt;stern@rowland.harvard.edu&gt;
+ 
+ 1. Introduction
+ 
+@@ -230,6 +231,11 @@ defined in include/linux/pm.h:
+       interface; it may only be modified with the help of the pm_runtime_allow()
+       and pm_runtime_forbid() helper functions
+ 
++  unsigned int no_callbacks;
++    - indicates that the device does not use the run-time PM callbacks (see
++      Section 8); it may be modified only by the pm_runtime_no_callbacks()
++      helper function
++
+ All of the above fields are members of the 'power' member of 'struct device'.
+ 
+ 4. Run-time PM Device Helper Functions
+@@ -349,6 +355,11 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
+       counter (used by the /sys/devices/.../power/control interface to
+       effectively prevent the device from being power managed at run time)
+ 
++  void pm_runtime_no_callbacks(struct device *dev);
++    - set the power.no_callbacks flag for the device and remove the run-time
++      PM attributes from /sys/devices/.../power (or prevent them from being
++      added when the device is registered)
++
+ It is safe to execute the following helper functions from interrupt context:
+ 
+ pm_request_idle()
+@@ -524,3 +535,29 @@ poweroff and run-time suspend callback, and similarly for system resume, thaw,
+ restore, and run-time resume, can achieve this with the help of the
+ UNIVERSAL_DEV_PM_OPS macro defined in include/linux/pm.h (possibly setting its
+ last argument to NULL).
++
++8. "No-Callback" Devices
++
++Some "devices" are only logical sub-devices of their parent and cannot be
++power-managed on their own.  (The prototype example is a USB interface.  Entire
++USB devices can go into low-power mode or send wake-up requests, but neither is
++possible for individual interfaces.)  The drivers for these devices have no
++need of run-time PM callbacks; if the callbacks did exist, -&gt;runtime_suspend()
++and -&gt;runtime_resume() would always return 0 without doing anything else and
++-&gt;runtime_idle() would always call pm_runtime_suspend().
++
++Subsystems can tell the PM core about these devices by calling
++pm_runtime_no_callbacks().  This should be done after the device structure is
++initialized and before it is registered (although after device registration is
++also okay).  The routine will set the device's power.no_callbacks flag and
++prevent the non-debugging run-time PM sysfs attributes from being created.
++
++When power.no_callbacks is set, the PM core will not invoke the
++-&gt;runtime_idle(), -&gt;runtime_suspend(), or -&gt;runtime_resume() callbacks.
++Instead it will assume that suspends and resumes always succeed and that idle
++devices should be suspended.
++
++As a consequence, the PM core will never directly inform the device's subsystem
++or driver about run-time power changes.  Instead, the driver for the device's
++parent must take responsibility for telling the device's driver when the
++parent's power state changes.
+diff --git a/drivers/base/power/power.h b/drivers/base/power/power.h
+index 8b2745c69e2a..698dde742587 100644
+--- a/drivers/base/power/power.h
++++ b/drivers/base/power/power.h
+@@ -60,6 +60,7 @@ static inline void device_pm_move_last(struct device *dev) {}
+ 
+ extern int dpm_sysfs_add(struct device *);
+ extern void dpm_sysfs_remove(struct device *);
++extern void rpm_sysfs_remove(struct device *);
+ 
+ #else /* CONFIG_PM */
+ 
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index ed227b7c1bb5..5bd4daa93ef1 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -10,8 +10,10 @@
+ #include &lt;linux/sched.h&gt;
+ #include &lt;linux/pm_runtime.h&gt;
+ #include &lt;linux/jiffies.h&gt;
++#include "power.h"
+ 
+ static int rpm_resume(struct device *dev, int rpmflags);
++static int rpm_suspend(struct device *dev, int rpmflags);
+ 
+ /**
+  * update_pm_runtime_accounting - Update the time accounting of power states
+@@ -148,6 +150,12 @@ static int rpm_idle(struct device *dev, int rpmflags)
+ 	/* Pending requests need to be canceled. */
+ 	dev-&gt;power.request = RPM_REQ_NONE;
+ 
++	if (dev-&gt;power.no_callbacks) {
++		/* Assume -&gt;runtime_idle() callback would have suspended. */
++		retval = rpm_suspend(dev, rpmflags);
++		goto out;
++	}
++
+ 	/* Carry out an asynchronous or a synchronous idle notification. */
+ 	if (rpmflags &amp; RPM_ASYNC) {
+ 		dev-&gt;power.request = RPM_REQ_IDLE;
+@@ -254,6 +262,10 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+ 		goto repeat;
+ 	}
+ 
++	dev-&gt;power.deferred_resume = false;
++	if (dev-&gt;power.no_callbacks)
++		goto no_callback;	/* Assume success. */
++
+ 	/* Carry out an asynchronous or a synchronous suspend. */
+ 	if (rpmflags &amp; RPM_ASYNC) {
+ 		dev-&gt;power.request = RPM_REQ_SUSPEND;
+@@ -265,7 +277,6 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+ 	}
+ 
+ 	__update_runtime_status(dev, RPM_SUSPENDING);
+-	dev-&gt;power.deferred_resume = false;
+ 
+ 	if (dev-&gt;bus &amp;&amp; dev-&gt;bus-&gt;pm &amp;&amp; dev-&gt;bus-&gt;pm-&gt;runtime_suspend) {
+ 		spin_unlock_irq(&amp;dev-&gt;power.lock);
+@@ -305,6 +316,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+ 			pm_runtime_cancel_pending(dev);
+ 		}
+ 	} else {
++ no_callback:
+ 		__update_runtime_status(dev, RPM_SUSPENDED);
+ 		pm_runtime_deactivate_timer(dev);
+ 
+@@ -409,6 +421,23 @@ static int rpm_resume(struct device *dev, int rpmflags)
+ 		goto repeat;
+ 	}
+ 
++	/*
++	 * See if we can skip waking up the parent.  This is safe only if
++	 * power.no_callbacks is set, because otherwise we don't know whether
++	 * the resume will actually succeed.
++	 */
++	if (dev-&gt;power.no_callbacks &amp;&amp; !parent &amp;&amp; dev-&gt;parent) {
++		spin_lock(&amp;dev-&gt;parent-&gt;power.lock);
++		if (dev-&gt;parent-&gt;power.disable_depth &gt; 0
++		    || dev-&gt;parent-&gt;power.ignore_children
++		    || dev-&gt;parent-&gt;power.runtime_status == RPM_ACTIVE) {
++			atomic_inc(&amp;dev-&gt;parent-&gt;power.child_count);
++			spin_unlock(&amp;dev-&gt;parent-&gt;power.lock);
++			goto no_callback;	/* Assume success. */
++		}
++		spin_unlock(&amp;dev-&gt;parent-&gt;power.lock);
++	}
++
+ 	/* Carry out an asynchronous or a synchronous resume. */
+ 	if (rpmflags &amp; RPM_ASYNC) {
+ 		dev-&gt;power.request = RPM_REQ_RESUME;
+@@ -449,6 +478,9 @@ static int rpm_resume(struct device *dev, int rpmflags)
+ 		goto repeat;
+ 	}
+ 
++	if (dev-&gt;power.no_callbacks)
++		goto no_callback;	/* Assume success. */
++
+ 	__update_runtime_status(dev, RPM_RESUMING);
+ 
+ 	if (dev-&gt;bus &amp;&amp; dev-&gt;bus-&gt;pm &amp;&amp; dev-&gt;bus-&gt;pm-&gt;runtime_resume) {
+@@ -482,6 +514,7 @@ static int rpm_resume(struct device *dev, int rpmflags)
+ 		__update_runtime_status(dev, RPM_SUSPENDED);
+ 		pm_runtime_cancel_pending(dev);
+ 	} else {
++ no_callback:
+ 		__update_runtime_status(dev, RPM_ACTIVE);
+ 		if (parent)
+ 			atomic_inc(&amp;parent-&gt;power.child_count);
+@@ -954,6 +987,25 @@ void pm_runtime_allow(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(pm_runtime_allow);
+ 
++/**
++ * pm_runtime_no_callbacks - Ignore run-time PM callbacks for a device.
++ * @dev: Device to handle.
++ *
++ * Set the power.no_callbacks flag, which tells the PM core that this
++ * device is power-managed through its parent and has no run-time PM
++ * callbacks of its own.  The run-time sysfs attributes will be removed.
++ *
++ */
++void pm_runtime_no_callbacks(struct device *dev)
++{
++	spin_lock_irq(&amp;dev-&gt;power.lock);
++	dev-&gt;power.no_callbacks = 1;
++	spin_unlock_irq(&amp;dev-&gt;power.lock);
++	if (device_is_registered(dev))
++		rpm_sysfs_remove(dev);
++}
++EXPORT_SYMBOL_GPL(pm_runtime_no_callbacks);
++
+ /**
+  * pm_runtime_init - Initialize run-time PM fields in given device object.
+  * @dev: Device object to initialize.
+diff --git a/drivers/base/power/sysfs.c b/drivers/base/power/sysfs.c
+index 8859780817e1..b5708c47ce2d 100644
+--- a/drivers/base/power/sysfs.c
++++ b/drivers/base/power/sysfs.c
+@@ -81,6 +81,9 @@
+ static const char enabled[] = "enabled";
+ static const char disabled[] = "disabled";
+ 
++const char power_group_name[] = "power";
++EXPORT_SYMBOL_GPL(power_group_name);
++
+ #ifdef CONFIG_PM_RUNTIME
+ static const char ctrl_auto[] = "auto";
+ static const char ctrl_on[] = "on";
+@@ -390,12 +393,6 @@ static DEVICE_ATTR(async, 0644, async_show, async_store);
+ #endif /* CONFIG_PM_ADVANCED_DEBUG */
+ 
+ static struct attribute * power_attrs[] = {
+-#ifdef CONFIG_PM_RUNTIME
+-	&amp;dev_attr_control.attr,
+-	&amp;dev_attr_runtime_status.attr,
+-	&amp;dev_attr_runtime_suspended_time.attr,
+-	&amp;dev_attr_runtime_active_time.attr,
+-#endif
+ 	&amp;dev_attr_wakeup.attr,
+ #ifdef CONFIG_PM_SLEEP
+ 	&amp;dev_attr_wakeup_count.attr,
+@@ -409,6 +406,7 @@ static struct attribute * power_attrs[] = {
+ #ifdef CONFIG_PM_ADVANCED_DEBUG
+ 	&amp;dev_attr_async.attr,
+ #ifdef CONFIG_PM_RUNTIME
++	&amp;dev_attr_runtime_status.attr,
+ 	&amp;dev_attr_runtime_usage.attr,
+ 	&amp;dev_attr_runtime_active_kids.attr,
+ 	&amp;dev_attr_runtime_enabled.attr,
+@@ -417,10 +415,52 @@ static struct attribute * power_attrs[] = {
+ 	NULL,
+ };
+ static struct attribute_group pm_attr_group = {
+-	.name	= "power",
++	.name	= power_group_name,
+ 	.attrs	= power_attrs,
+ };
+ 
++#ifdef CONFIG_PM_RUNTIME
++
++static struct attribute *runtime_attrs[] = {
++#ifndef CONFIG_PM_ADVANCED_DEBUG
++	&amp;dev_attr_runtime_status.attr,
++#endif
++	&amp;dev_attr_control.attr,
++	&amp;dev_attr_runtime_suspended_time.attr,
++	&amp;dev_attr_runtime_active_time.attr,
++	NULL,
++};
++static struct attribute_group pm_runtime_attr_group = {
++	.name	= power_group_name,
++	.attrs	= runtime_attrs,
++};
++
++int dpm_sysfs_add(struct device *dev)
++{
++	int rc;
++
++	rc = sysfs_create_group(&amp;dev-&gt;kobj, &amp;pm_attr_group);
++	if (rc == 0 &amp;&amp; !dev-&gt;power.no_callbacks) {
++		rc = sysfs_merge_group(&amp;dev-&gt;kobj, &amp;pm_runtime_attr_group);
++		if (rc)
++			sysfs_remove_group(&amp;dev-&gt;kobj, &amp;pm_attr_group);
++	}
++	return rc;
++}
++
++void rpm_sysfs_remove(struct device *dev)
++{
++	sysfs_unmerge_group(&amp;dev-&gt;kobj, &amp;pm_runtime_attr_group);
++}
++
++void dpm_sysfs_remove(struct device *dev)
++{
++	rpm_sysfs_remove(dev);
++	sysfs_remove_group(&amp;dev-&gt;kobj, &amp;pm_attr_group);
++}
++
++#else /* CONFIG_PM_RUNTIME */
++
+ int dpm_sysfs_add(struct device * dev)
+ {
+ 	return sysfs_create_group(&amp;dev-&gt;kobj, &amp;pm_attr_group);
+@@ -430,3 +470,5 @@ void dpm_sysfs_remove(struct device * dev)
+ {
+ 	sysfs_remove_group(&amp;dev-&gt;kobj, &amp;pm_attr_group);
+ }
++
++#endif
+diff --git a/include/linux/pm.h b/include/linux/pm.h
+index 1abfe84f447d..abd81ffaba3c 100644
+--- a/include/linux/pm.h
++++ b/include/linux/pm.h
+@@ -41,6 +41,12 @@ extern void (*pm_power_off_prepare)(void);
+ 
+ struct device;
+ 
++#ifdef CONFIG_PM
++extern const char power_group_name[];		/* = "power" */
++#else
++#define power_group_name	NULL
++#endif
++
+ typedef struct pm_message {
+ 	int event;
+ } pm_message_t;
+@@ -475,6 +481,7 @@ struct dev_pm_info {
+ 	unsigned int		deferred_resume:1;
+ 	unsigned int		run_wake:1;
+ 	unsigned int		runtime_auto:1;
++	unsigned int		no_callbacks:1;
+ 	enum rpm_request	request;
+ 	enum rpm_status		runtime_status;
+ 	int			runtime_error;
+diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+index 5869d87fffac..8ca52f7c357e 100644
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -36,6 +36,7 @@ extern void pm_runtime_forbid(struct device *dev);
+ extern int pm_generic_runtime_idle(struct device *dev);
+ extern int pm_generic_runtime_suspend(struct device *dev);
+ extern int pm_generic_runtime_resume(struct device *dev);
++extern void pm_runtime_no_callbacks(struct device *dev);
+ 
+ static inline bool pm_children_suspended(struct device *dev)
+ {
+@@ -110,6 +111,7 @@ static inline bool pm_runtime_suspended(struct device *dev) { return false; }
+ static inline int pm_generic_runtime_idle(struct device *dev) { return 0; }
+ static inline int pm_generic_runtime_suspend(struct device *dev) { return 0; }
+ static inline int pm_generic_runtime_resume(struct device *dev) { return 0; }
++static inline void pm_runtime_no_callbacks(struct device *dev) {}
+ 
+ #endif /* !CONFIG_PM_RUNTIME */
+ </pre><hr><pre>commit 140a6c945211ee911dec776fafa52e03a7d7bb9a
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Sat Sep 25 23:35:07 2010 +0200
+
+    PM / Runtime: Combine runtime PM entry points
+    
+    This patch (as1424) combines the various public entry points for the
+    runtime PM routines into three simple functions: one for idle, one for
+    suspend, and one for resume.  A new bitflag specifies whether or not
+    to increment or decrement the usage_count field.
+    
+    The new entry points are named __pm_runtime_idle,
+    __pm_runtime_suspend, and __pm_runtime_resume, to reflect that they
+    are trampolines.  Simultaneously, the corresponding internal routines
+    are renamed to rpm_idle, rpm_suspend, and rpm_resume.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Rafael J. Wysocki &lt;rjw@sisk.pl&gt;
+
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index d7b5d84c235c..ed227b7c1bb5 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -11,7 +11,7 @@
+ #include &lt;linux/pm_runtime.h&gt;
+ #include &lt;linux/jiffies.h&gt;
+ 
+-static int __pm_runtime_resume(struct device *dev, int rpmflags);
++static int rpm_resume(struct device *dev, int rpmflags);
+ 
+ /**
+  * update_pm_runtime_accounting - Update the time accounting of power states
+@@ -107,7 +107,7 @@ static int rpm_check_suspend_allowed(struct device *dev)
+ 
+ 
+ /**
+- * __pm_runtime_idle - Notify device bus type if the device can be suspended.
++ * rpm_idle - Notify device bus type if the device can be suspended.
+  * @dev: Device to notify the bus type about.
+  * @rpmflags: Flag bits.
+  *
+@@ -118,7 +118,7 @@ static int rpm_check_suspend_allowed(struct device *dev)
+  *
+  * This function must be called under dev-&gt;power.lock with interrupts disabled.
+  */
+-static int __pm_runtime_idle(struct device *dev, int rpmflags)
++static int rpm_idle(struct device *dev, int rpmflags)
+ 	__releases(&amp;dev-&gt;power.lock) __acquires(&amp;dev-&gt;power.lock)
+ {
+ 	int retval;
+@@ -189,23 +189,7 @@ static int __pm_runtime_idle(struct device *dev, int rpmflags)
+ }
+ 
+ /**
+- * pm_runtime_idle - Notify device bus type if the device can be suspended.
+- * @dev: Device to notify the bus type about.
+- */
+-int pm_runtime_idle(struct device *dev)
+-{
+-	int retval;
+-
+-	spin_lock_irq(&amp;dev-&gt;power.lock);
+-	retval = __pm_runtime_idle(dev, 0);
+-	spin_unlock_irq(&amp;dev-&gt;power.lock);
+-
+-	return retval;
+-}
+-EXPORT_SYMBOL_GPL(pm_runtime_idle);
+-
+-/**
+- * __pm_runtime_suspend - Carry out run-time suspend of given device.
++ * rpm_suspend - Carry out run-time suspend of given device.
+  * @dev: Device to suspend.
+  * @rpmflags: Flag bits.
+  *
+@@ -220,7 +204,7 @@ EXPORT_SYMBOL_GPL(pm_runtime_idle);
+  *
+  * This function must be called under dev-&gt;power.lock with interrupts disabled.
+  */
+-static int __pm_runtime_suspend(struct device *dev, int rpmflags)
++static int rpm_suspend(struct device *dev, int rpmflags)
+ 	__releases(&amp;dev-&gt;power.lock) __acquires(&amp;dev-&gt;power.lock)
+ {
+ 	struct device *parent = NULL;
+@@ -332,13 +316,13 @@ static int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ 	wake_up_all(&amp;dev-&gt;power.wait_queue);
+ 
+ 	if (dev-&gt;power.deferred_resume) {
+-		__pm_runtime_resume(dev, 0);
++		rpm_resume(dev, 0);
+ 		retval = -EAGAIN;
+ 		goto out;
+ 	}
+ 
+ 	if (notify)
+-		__pm_runtime_idle(dev, 0);
++		rpm_idle(dev, 0);
+ 
+ 	if (parent &amp;&amp; !parent-&gt;power.ignore_children) {
+ 		spin_unlock_irq(&amp;dev-&gt;power.lock);
+@@ -355,23 +339,7 @@ static int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ }
+ 
+ /**
+- * pm_runtime_suspend - Carry out run-time suspend of given device.
+- * @dev: Device to suspend.
+- */
+-int pm_runtime_suspend(struct device *dev)
+-{
+-	int retval;
+-
+-	spin_lock_irq(&amp;dev-&gt;power.lock);
+-	retval = __pm_runtime_suspend(dev, 0);
+-	spin_unlock_irq(&amp;dev-&gt;power.lock);
+-
+-	return retval;
+-}
+-EXPORT_SYMBOL_GPL(pm_runtime_suspend);
+-
+-/**
+- * __pm_runtime_resume - Carry out run-time resume of given device.
++ * rpm_resume - Carry out run-time resume of given device.
+  * @dev: Device to resume.
+  * @rpmflags: Flag bits.
+  *
+@@ -387,7 +355,7 @@ EXPORT_SYMBOL_GPL(pm_runtime_suspend);
+  *
+  * This function must be called under dev-&gt;power.lock with interrupts disabled.
+  */
+-static int __pm_runtime_resume(struct device *dev, int rpmflags)
++static int rpm_resume(struct device *dev, int rpmflags)
+ 	__releases(&amp;dev-&gt;power.lock) __acquires(&amp;dev-&gt;power.lock)
+ {
+ 	struct device *parent = NULL;
+@@ -469,7 +437,7 @@ static int __pm_runtime_resume(struct device *dev, int rpmflags)
+ 		 */
+ 		if (!parent-&gt;power.disable_depth
+ 		    &amp;&amp; !parent-&gt;power.ignore_children) {
+-			__pm_runtime_resume(parent, 0);
++			rpm_resume(parent, 0);
+ 			if (parent-&gt;power.runtime_status != RPM_ACTIVE)
+ 				retval = -EBUSY;
+ 		}
+@@ -521,7 +489,7 @@ static int __pm_runtime_resume(struct device *dev, int rpmflags)
+ 	wake_up_all(&amp;dev-&gt;power.wait_queue);
+ 
+ 	if (!retval)
+-		__pm_runtime_idle(dev, RPM_ASYNC);
++		rpm_idle(dev, RPM_ASYNC);
+ 
+  out:
+ 	if (parent) {
+@@ -537,22 +505,6 @@ static int __pm_runtime_resume(struct device *dev, int rpmflags)
+ 	return retval;
+ }
+ 
+-/**
+- * pm_runtime_resume - Carry out run-time resume of given device.
+- * @dev: Device to suspend.
+- */
+-int pm_runtime_resume(struct device *dev)
+-{
+-	int retval;
+-
+-	spin_lock_irq(&amp;dev-&gt;power.lock);
+-	retval = __pm_runtime_resume(dev, 0);
+-	spin_unlock_irq(&amp;dev-&gt;power.lock);
+-
+-	return retval;
+-}
+-EXPORT_SYMBOL_GPL(pm_runtime_resume);
+-
+ /**
+  * pm_runtime_work - Universal run-time PM work function.
+  * @work: Work structure used for scheduling the execution of this function.
+@@ -578,13 +530,13 @@ static void pm_runtime_work(struct work_struct *work)
+ 	case RPM_REQ_NONE:
+ 		break;
+ 	case RPM_REQ_IDLE:
+-		__pm_runtime_idle(dev, RPM_NOWAIT);
++		rpm_idle(dev, RPM_NOWAIT);
+ 		break;
+ 	case RPM_REQ_SUSPEND:
+-		__pm_runtime_suspend(dev, RPM_NOWAIT);
++		rpm_suspend(dev, RPM_NOWAIT);
+ 		break;
+ 	case RPM_REQ_RESUME:
+-		__pm_runtime_resume(dev, RPM_NOWAIT);
++		rpm_resume(dev, RPM_NOWAIT);
+ 		break;
+ 	}
+ 
+@@ -592,23 +544,6 @@ static void pm_runtime_work(struct work_struct *work)
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);
+ }
+ 
+-/**
+- * pm_request_idle - Submit an idle notification request for given device.
+- * @dev: Device to handle.
+- */
+-int pm_request_idle(struct device *dev)
+-{
+-	unsigned long flags;
+-	int retval;
+-
+-	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);
+-	retval = __pm_runtime_idle(dev, RPM_ASYNC);
+-	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);
+-
+-	return retval;
+-}
+-EXPORT_SYMBOL_GPL(pm_request_idle);
+-
+ /**
+  * pm_suspend_timer_fn - Timer function for pm_schedule_suspend().
+  * @data: Device pointer passed by pm_schedule_suspend().
+@@ -627,7 +562,7 @@ static void pm_suspend_timer_fn(unsigned long data)
+ 	/* If 'expire' is after 'jiffies' we've been called too early. */
+ 	if (expires &gt; 0 &amp;&amp; !time_after(expires, jiffies)) {
+ 		dev-&gt;power.timer_expires = 0;
+-		__pm_runtime_suspend(dev, RPM_ASYNC);
++		rpm_suspend(dev, RPM_ASYNC);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);
+@@ -646,7 +581,7 @@ int pm_schedule_suspend(struct device *dev, unsigned int delay)
+ 	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);
+ 
+ 	if (!delay) {
+-		retval = __pm_runtime_suspend(dev, RPM_ASYNC);
++		retval = rpm_suspend(dev, RPM_ASYNC);
+ 		goto out;
+ 	}
+ 
+@@ -669,62 +604,81 @@ int pm_schedule_suspend(struct device *dev, unsigned int delay)
+ EXPORT_SYMBOL_GPL(pm_schedule_suspend);
+ 
+ /**
+- * pm_request_resume - Submit a resume request for given device.
+- * @dev: Device to resume.
++ * __pm_runtime_idle - Entry point for run-time idle operations.
++ * @dev: Device to send idle notification for.
++ * @rpmflags: Flag bits.
++ *
++ * If the RPM_GET_PUT flag is set, decrement the device's usage count and
++ * return immediately if it is larger than zero.  Then carry out an idle
++ * notification, either synchronous or asynchronous.
++ *
++ * This routine may be called in atomic context if the RPM_ASYNC flag is set.
+  */
+-int pm_request_resume(struct device *dev)
++int __pm_runtime_idle(struct device *dev, int rpmflags)
+ {
+ 	unsigned long flags;
+ 	int retval;
+ 
++	if (rpmflags &amp; RPM_GET_PUT) {
++		if (!atomic_dec_and_test(&amp;dev-&gt;power.usage_count))
++			return 0;
++	}
++
+ 	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);
+-	retval = __pm_runtime_resume(dev, RPM_ASYNC);
++	retval = rpm_idle(dev, rpmflags);
+ 	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);
+ 
+ 	return retval;
+ }
+-EXPORT_SYMBOL_GPL(pm_request_resume);
++EXPORT_SYMBOL_GPL(__pm_runtime_idle);
+ 
+ /**
+- * __pm_runtime_get - Reference count a device and wake it up, if necessary.
+- * @dev: Device to handle.
++ * __pm_runtime_suspend - Entry point for run-time put/suspend operations.
++ * @dev: Device to suspend.
+  * @rpmflags: Flag bits.
+  *
+- * Increment the usage count of the device and resume it or submit a resume
+- * request for it, depending on the RPM_ASYNC flag bit.
++ * Carry out a suspend, either synchronous or asynchronous.
++ *
++ * This routine may be called in atomic context if the RPM_ASYNC flag is set.
+  */
+-int __pm_runtime_get(struct device *dev, int rpmflags)
++int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ {
++	unsigned long flags;
+ 	int retval;
+ 
+-	atomic_inc(&amp;dev-&gt;power.usage_count);
+-	retval = (rpmflags &amp; RPM_ASYNC) ?
+-	    pm_request_resume(dev) : pm_runtime_resume(dev);
++	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);
++	retval = rpm_suspend(dev, rpmflags);
++	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);
+ 
+ 	return retval;
+ }
+-EXPORT_SYMBOL_GPL(__pm_runtime_get);
++EXPORT_SYMBOL_GPL(__pm_runtime_suspend);
+ 
+ /**
+- * __pm_runtime_put - Decrement the device's usage counter and notify its bus.
+- * @dev: Device to handle.
++ * __pm_runtime_resume - Entry point for run-time resume operations.
++ * @dev: Device to resume.
+  * @rpmflags: Flag bits.
+  *
+- * Decrement the usage count of the device and if it reaches zero, carry out a
+- * synchronous idle notification or submit an idle notification request for it,
+- * depending on the RPM_ASYNC flag bit.
++ * If the RPM_GET_PUT flag is set, increment the device's usage count.  Then
++ * carry out a resume, either synchronous or asynchronous.
++ *
++ * This routine may be called in atomic context if the RPM_ASYNC flag is set.
+  */
+-int __pm_runtime_put(struct device *dev, int rpmflags)
++int __pm_runtime_resume(struct device *dev, int rpmflags)
+ {
+-	int retval = 0;
++	unsigned long flags;
++	int retval;
+ 
+-	if (atomic_dec_and_test(&amp;dev-&gt;power.usage_count))
+-		retval = (rpmflags &amp; RPM_ASYNC) ?
+-		    pm_request_idle(dev) : pm_runtime_idle(dev);
++	if (rpmflags &amp; RPM_GET_PUT)
++		atomic_inc(&amp;dev-&gt;power.usage_count);
++
++	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);
++	retval = rpm_resume(dev, rpmflags);
++	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);
+ 
+ 	return retval;
+ }
+-EXPORT_SYMBOL_GPL(__pm_runtime_put);
++EXPORT_SYMBOL_GPL(__pm_runtime_resume);
+ 
+ /**
+  * __pm_runtime_set_status - Set run-time PM status of a device.
+@@ -875,7 +829,7 @@ int pm_runtime_barrier(struct device *dev)
+ 
+ 	if (dev-&gt;power.request_pending
+ 	    &amp;&amp; dev-&gt;power.request == RPM_REQ_RESUME) {
+-		__pm_runtime_resume(dev, 0);
++		rpm_resume(dev, 0);
+ 		retval = 1;
+ 	}
+ 
+@@ -924,7 +878,7 @@ void __pm_runtime_disable(struct device *dev, bool check_resume)
+ 		 */
+ 		pm_runtime_get_noresume(dev);
+ 
+-		__pm_runtime_resume(dev, 0);
++		rpm_resume(dev, 0);
+ 
+ 		pm_runtime_put_noidle(dev);
+ 	}
+@@ -972,7 +926,7 @@ void pm_runtime_forbid(struct device *dev)
+ 
+ 	dev-&gt;power.runtime_auto = false;
+ 	atomic_inc(&amp;dev-&gt;power.usage_count);
+-	__pm_runtime_resume(dev, 0);
++	rpm_resume(dev, 0);
+ 
+  out:
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);
+@@ -993,7 +947,7 @@ void pm_runtime_allow(struct device *dev)
+ 
+ 	dev-&gt;power.runtime_auto = true;
+ 	if (atomic_dec_and_test(&amp;dev-&gt;power.usage_count))
+-		__pm_runtime_idle(dev, 0);
++		rpm_idle(dev, 0);
+ 
+  out:
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);
+diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+index c030cac59aac..5869d87fffac 100644
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -16,19 +16,17 @@
+ #define RPM_ASYNC		0x01	/* Request is asynchronous */
+ #define RPM_NOWAIT		0x02	/* Don't wait for concurrent
+ 					    state change */
++#define RPM_GET_PUT		0x04	/* Increment/decrement the
++					    usage_count */
+ 
+ #ifdef CONFIG_PM_RUNTIME
+ 
+ extern struct workqueue_struct *pm_wq;
+ 
+-extern int pm_runtime_idle(struct device *dev);
+-extern int pm_runtime_suspend(struct device *dev);
+-extern int pm_runtime_resume(struct device *dev);
+-extern int pm_request_idle(struct device *dev);
++extern int __pm_runtime_idle(struct device *dev, int rpmflags);
++extern int __pm_runtime_suspend(struct device *dev, int rpmflags);
++extern int __pm_runtime_resume(struct device *dev, int rpmflags);
+ extern int pm_schedule_suspend(struct device *dev, unsigned int delay);
+-extern int pm_request_resume(struct device *dev);
+-extern int __pm_runtime_get(struct device *dev, int rpmflags);
+-extern int __pm_runtime_put(struct device *dev, int rpmflags);
+ extern int __pm_runtime_set_status(struct device *dev, unsigned int status);
+ extern int pm_runtime_barrier(struct device *dev);
+ extern void pm_runtime_enable(struct device *dev);
+@@ -77,19 +75,22 @@ static inline bool pm_runtime_suspended(struct device *dev)
+ 
+ #else /* !CONFIG_PM_RUNTIME */
+ 
+-static inline int pm_runtime_idle(struct device *dev) { return -ENOSYS; }
+-static inline int pm_runtime_suspend(struct device *dev) { return -ENOSYS; }
+-static inline int pm_runtime_resume(struct device *dev) { return 0; }
+-static inline int pm_request_idle(struct device *dev) { return -ENOSYS; }
++static inline int __pm_runtime_idle(struct device *dev, int rpmflags)
++{
++	return -ENOSYS;
++}
++static inline int __pm_runtime_suspend(struct device *dev, int rpmflags)
++{
++	return -ENOSYS;
++}
++static inline int __pm_runtime_resume(struct device *dev, int rpmflags)
++{
++	return 1;
++}
+ static inline int pm_schedule_suspend(struct device *dev, unsigned int delay)
+ {
+ 	return -ENOSYS;
+ }
+-static inline int pm_request_resume(struct device *dev) { return 0; }
+-static inline int __pm_runtime_get(struct device *dev, int rpmflags)
+-					{ return 1; }
+-static inline int __pm_runtime_put(struct device *dev, int rpmflags)
+-					{ return 0; }
+ static inline int __pm_runtime_set_status(struct device *dev,
+ 					    unsigned int status) { return 0; }
+ static inline int pm_runtime_barrier(struct device *dev) { return 0; }
+@@ -112,24 +113,49 @@ static inline int pm_generic_runtime_resume(struct device *dev) { return 0; }
+ 
+ #endif /* !CONFIG_PM_RUNTIME */
+ 
++static inline int pm_runtime_idle(struct device *dev)
++{
++	return __pm_runtime_idle(dev, 0);
++}
++
++static inline int pm_runtime_suspend(struct device *dev)
++{
++	return __pm_runtime_suspend(dev, 0);
++}
++
++static inline int pm_runtime_resume(struct device *dev)
++{
++	return __pm_runtime_resume(dev, 0);
++}
++
++static inline int pm_request_idle(struct device *dev)
++{
++	return __pm_runtime_idle(dev, RPM_ASYNC);
++}
++
++static inline int pm_request_resume(struct device *dev)
++{
++	return __pm_runtime_resume(dev, RPM_ASYNC);
++}
++
+ static inline int pm_runtime_get(struct device *dev)
+ {
+-	return __pm_runtime_get(dev, RPM_ASYNC);
++	return __pm_runtime_resume(dev, RPM_GET_PUT | RPM_ASYNC);
+ }
+ 
+ static inline int pm_runtime_get_sync(struct device *dev)
+ {
+-	return __pm_runtime_get(dev, 0);
++	return __pm_runtime_resume(dev, RPM_GET_PUT);
+ }
+ 
+ static inline int pm_runtime_put(struct device *dev)
+ {
+-	return __pm_runtime_put(dev, RPM_ASYNC);
++	return __pm_runtime_idle(dev, RPM_GET_PUT | RPM_ASYNC);
+ }
+ 
+ static inline int pm_runtime_put_sync(struct device *dev)
+ {
+-	return __pm_runtime_put(dev, 0);
++	return __pm_runtime_idle(dev, RPM_GET_PUT);
+ }
+ 
+ static inline int pm_runtime_set_active(struct device *dev)</pre><hr><pre>commit 1bfee5bc86fdaecc912e06080583eddab7263df2
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Sat Sep 25 23:35:00 2010 +0200
+
+    PM / Runtime: Merge synchronous and async runtime routines
+    
+    This patch (as1423) merges the asynchronous routines
+    __pm_request_idle(), __pm_request_suspend(), and __pm_request_resume()
+    with their synchronous counterparts.  The RPM_ASYNC bitflag argument
+    serves to indicate what sort of operation to perform.
+    
+    In the course of performing this merger, it became apparent that the
+    various functions don't all behave consistenly with regard to error
+    reporting and cancellation of outstanding requests.  A new routine,
+    rpm_check_suspend_allowed(), was written to centralize much of the
+    testing, and the other functions were revised to follow a simple
+    algorithm:
+    
+            If the operation is disallowed because of the device's
+            settings or current state, return an error.
+    
+            Cancel pending or scheduled requests of lower priority.
+    
+            Schedule, queue, or perform the desired operation.
+    
+    A few special cases and exceptions are noted in comments.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Rafael J. Wysocki &lt;rjw@sisk.pl&gt;
+
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 0c1db879544b..d7b5d84c235c 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -2,6 +2,7 @@
+  * drivers/base/power/runtime.c - Helper functions for device run-time PM
+  *
+  * Copyright (c) 2009 Rafael J. Wysocki &lt;rjw@sisk.pl&gt;, Novell Inc.
++ * Copyright (C) 2010 Alan Stern &lt;stern@rowland.harvard.edu&gt;
+  *
+  * This file is released under the GPLv2.
+  */
+@@ -11,8 +12,6 @@
+ #include &lt;linux/jiffies.h&gt;
+ 
+ static int __pm_runtime_resume(struct device *dev, int rpmflags);
+-static int __pm_request_idle(struct device *dev);
+-static int __pm_request_resume(struct device *dev);
+ 
+ /**
+  * update_pm_runtime_accounting - Update the time accounting of power states
+@@ -79,40 +78,84 @@ static void pm_runtime_cancel_pending(struct device *dev)
+ }
+ 
+ /**
+- * __pm_runtime_idle - Notify device bus type if the device can be suspended.
+- * @dev: Device to notify the bus type about.
+- *
+- * This function must be called under dev-&gt;power.lock with interrupts disabled.
++ * rpm_check_suspend_allowed - Test whether a device may be suspended.
++ * @dev: Device to test.
+  */
+-static int __pm_runtime_idle(struct device *dev)
+-	__releases(&amp;dev-&gt;power.lock) __acquires(&amp;dev-&gt;power.lock)
++static int rpm_check_suspend_allowed(struct device *dev)
+ {
+ 	int retval = 0;
+ 
+ 	if (dev-&gt;power.runtime_error)
+ 		retval = -EINVAL;
+-	else if (dev-&gt;power.idle_notification)
+-		retval = -EINPROGRESS;
+ 	else if (atomic_read(&amp;dev-&gt;power.usage_count) &gt; 0
+-	    || dev-&gt;power.disable_depth &gt; 0
+-	    || dev-&gt;power.runtime_status != RPM_ACTIVE)
++	    || dev-&gt;power.disable_depth &gt; 0)
+ 		retval = -EAGAIN;
+ 	else if (!pm_children_suspended(dev))
+ 		retval = -EBUSY;
++
++	/* Pending resume requests take precedence over suspends. */
++	else if ((dev-&gt;power.deferred_resume
++			&amp;&amp; dev-&gt;power.status == RPM_SUSPENDING)
++	    || (dev-&gt;power.request_pending
++			&amp;&amp; dev-&gt;power.request == RPM_REQ_RESUME))
++		retval = -EAGAIN;
++	else if (dev-&gt;power.runtime_status == RPM_SUSPENDED)
++		retval = 1;
++
++	return retval;
++}
++
++
++/**
++ * __pm_runtime_idle - Notify device bus type if the device can be suspended.
++ * @dev: Device to notify the bus type about.
++ * @rpmflags: Flag bits.
++ *
++ * Check if the device's run-time PM status allows it to be suspended.  If
++ * another idle notification has been started earlier, return immediately.  If
++ * the RPM_ASYNC flag is set then queue an idle-notification request; otherwise
++ * run the -&gt;runtime_idle() callback directly.
++ *
++ * This function must be called under dev-&gt;power.lock with interrupts disabled.
++ */
++static int __pm_runtime_idle(struct device *dev, int rpmflags)
++	__releases(&amp;dev-&gt;power.lock) __acquires(&amp;dev-&gt;power.lock)
++{
++	int retval;
++
++	retval = rpm_check_suspend_allowed(dev);
++	if (retval &lt; 0)
++		;	/* Conditions are wrong. */
++
++	/* Idle notifications are allowed only in the RPM_ACTIVE state. */
++	else if (dev-&gt;power.runtime_status != RPM_ACTIVE)
++		retval = -EAGAIN;
++
++	/*
++	 * Any pending request other than an idle notification takes
++	 * precedence over us, except that the timer may be running.
++	 */
++	else if (dev-&gt;power.request_pending &amp;&amp;
++	    dev-&gt;power.request &gt; RPM_REQ_IDLE)
++		retval = -EAGAIN;
++
++	/* Act as though RPM_NOWAIT is always set. */
++	else if (dev-&gt;power.idle_notification)
++		retval = -EINPROGRESS;
+ 	if (retval)
+ 		goto out;
+ 
+-	if (dev-&gt;power.request_pending) {
+-		/*
+-		 * If an idle notification request is pending, cancel it.  Any
+-		 * other pending request takes precedence over us.
+-		 */
+-		if (dev-&gt;power.request == RPM_REQ_IDLE) {
+-			dev-&gt;power.request = RPM_REQ_NONE;
+-		} else if (dev-&gt;power.request != RPM_REQ_NONE) {
+-			retval = -EAGAIN;
+-			goto out;
++	/* Pending requests need to be canceled. */
++	dev-&gt;power.request = RPM_REQ_NONE;
++
++	/* Carry out an asynchronous or a synchronous idle notification. */
++	if (rpmflags &amp; RPM_ASYNC) {
++		dev-&gt;power.request = RPM_REQ_IDLE;
++		if (!dev-&gt;power.request_pending) {
++			dev-&gt;power.request_pending = true;
++			queue_work(pm_wq, &amp;dev-&gt;power.work);
+ 		}
++		goto out;
+ 	}
+ 
+ 	dev-&gt;power.idle_notification = true;
+@@ -154,7 +197,7 @@ int pm_runtime_idle(struct device *dev)
+ 	int retval;
+ 
+ 	spin_lock_irq(&amp;dev-&gt;power.lock);
+-	retval = __pm_runtime_idle(dev);
++	retval = __pm_runtime_idle(dev, 0);
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);
+ 
+ 	return retval;
+@@ -166,11 +209,14 @@ EXPORT_SYMBOL_GPL(pm_runtime_idle);
+  * @dev: Device to suspend.
+  * @rpmflags: Flag bits.
+  *
+- * Check if the device can be suspended and run the -&gt;runtime_suspend() callback
+- * provided by its bus type.  If another suspend has been started earlier,
+- * either return immediately or wait for it to finish, depending on the
+- * RPM_NOWAIT flag.  If an idle notification or suspend request is pending or
+- * scheduled, cancel it.
++ * Check if the device's run-time PM status allows it to be suspended.  If
++ * another suspend has been started earlier, either return immediately or wait
++ * for it to finish, depending on the RPM_NOWAIT and RPM_ASYNC flags.  Cancel a
++ * pending idle notification.  If the RPM_ASYNC flag is set then queue a
++ * suspend request; otherwise run the -&gt;runtime_suspend() callback directly.
++ * If a deferred resume was requested while the callback was running then carry
++ * it out; otherwise send an idle notification for the device (if the suspend
++ * failed) or for its parent (if the suspend succeeded).
+  *
+  * This function must be called under dev-&gt;power.lock with interrupts disabled.
+  */
+@@ -179,41 +225,30 @@ static int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ {
+ 	struct device *parent = NULL;
+ 	bool notify = false;
+-	int retval = 0;
++	int retval;
+ 
+ 	dev_dbg(dev, "%s flags 0x%x\n", __func__, rpmflags);
+ 
+  repeat:
+-	if (dev-&gt;power.runtime_error) {
+-		retval = -EINVAL;
+-		goto out;
+-	}
++	retval = rpm_check_suspend_allowed(dev);
+ 
+-	/* Pending resume requests take precedence over us. */
+-	if (dev-&gt;power.request_pending
+-	    &amp;&amp; dev-&gt;power.request == RPM_REQ_RESUME) {
++	if (retval &lt; 0)
++		;	/* Conditions are wrong. */
++
++	/* Synchronous suspends are not allowed in the RPM_RESUMING state. */
++	else if (dev-&gt;power.runtime_status == RPM_RESUMING &amp;&amp;
++	    !(rpmflags &amp; RPM_ASYNC))
+ 		retval = -EAGAIN;
++	if (retval)
+ 		goto out;
+-	}
+ 
+ 	/* Other scheduled or pending requests need to be canceled. */
+ 	pm_runtime_cancel_pending(dev);
+ 
+-	if (dev-&gt;power.runtime_status == RPM_SUSPENDED)
+-		retval = 1;
+-	else if (dev-&gt;power.runtime_status == RPM_RESUMING
+-	    || dev-&gt;power.disable_depth &gt; 0
+-	    || atomic_read(&amp;dev-&gt;power.usage_count) &gt; 0)
+-		retval = -EAGAIN;
+-	else if (!pm_children_suspended(dev))
+-		retval = -EBUSY;
+-	if (retval)
+-		goto out;
+-
+ 	if (dev-&gt;power.runtime_status == RPM_SUSPENDING) {
+ 		DEFINE_WAIT(wait);
+ 
+-		if (rpmflags &amp; RPM_NOWAIT) {
++		if (rpmflags &amp; (RPM_ASYNC | RPM_NOWAIT)) {
+ 			retval = -EINPROGRESS;
+ 			goto out;
+ 		}
+@@ -235,6 +270,16 @@ static int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ 		goto repeat;
+ 	}
+ 
++	/* Carry out an asynchronous or a synchronous suspend. */
++	if (rpmflags &amp; RPM_ASYNC) {
++		dev-&gt;power.request = RPM_REQ_SUSPEND;
++		if (!dev-&gt;power.request_pending) {
++			dev-&gt;power.request_pending = true;
++			queue_work(pm_wq, &amp;dev-&gt;power.work);
++		}
++		goto out;
++	}
++
+ 	__update_runtime_status(dev, RPM_SUSPENDING);
+ 	dev-&gt;power.deferred_resume = false;
+ 
+@@ -267,6 +312,7 @@ static int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ 
+ 	if (retval) {
+ 		__update_runtime_status(dev, RPM_ACTIVE);
++		dev-&gt;power.deferred_resume = 0;
+ 		if (retval == -EAGAIN || retval == -EBUSY) {
+ 			if (dev-&gt;power.timer_expires == 0)
+ 				notify = true;
+@@ -292,7 +338,7 @@ static int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ 	}
+ 
+ 	if (notify)
+-		__pm_runtime_idle(dev);
++		__pm_runtime_idle(dev, 0);
+ 
+ 	if (parent &amp;&amp; !parent-&gt;power.ignore_children) {
+ 		spin_unlock_irq(&amp;dev-&gt;power.lock);
+@@ -329,13 +375,15 @@ EXPORT_SYMBOL_GPL(pm_runtime_suspend);
+  * @dev: Device to resume.
+  * @rpmflags: Flag bits.
+  *
+- * Check if the device can be woken up and run the -&gt;runtime_resume() callback
+- * provided by its bus type.  If another resume has been started earlier,
+- * either return imediately or wait for it to finish, depending on the
+- * RPM_NOWAIT flag.  If there's a suspend running in parallel with this
+- * function, either tell the other process to resume after suspending
+- * (deferred_resume) or wait for it to finish, depending on the RPM_NOWAIT
+- * flag.  Cancel any scheduled or pending requests.
++ * Check if the device's run-time PM status allows it to be resumed.  Cancel
++ * any scheduled or pending requests.  If another resume has been started
++ * earlier, either return imediately or wait for it to finish, depending on the
++ * RPM_NOWAIT and RPM_ASYNC flags.  Similarly, if there's a suspend running in
++ * parallel with this function, either tell the other process to resume after
++ * suspending (deferred_resume) or wait for it to finish.  If the RPM_ASYNC
++ * flag is set then queue a resume request; otherwise run the
++ * -&gt;runtime_resume() callback directly.  Queue an idle notification for the
++ * device if the resume succeeded.
+  *
+  * This function must be called under dev-&gt;power.lock with interrupts disabled.
+  */
+@@ -348,28 +396,30 @@ static int __pm_runtime_resume(struct device *dev, int rpmflags)
+ 	dev_dbg(dev, "%s flags 0x%x\n", __func__, rpmflags);
+ 
+  repeat:
+-	if (dev-&gt;power.runtime_error) {
++	if (dev-&gt;power.runtime_error)
+ 		retval = -EINVAL;
++	else if (dev-&gt;power.disable_depth &gt; 0)
++		retval = -EAGAIN;
++	if (retval)
+ 		goto out;
+-	}
+ 
++	/* Other scheduled or pending requests need to be canceled. */
+ 	pm_runtime_cancel_pending(dev);
+ 
+-	if (dev-&gt;power.runtime_status == RPM_ACTIVE)
++	if (dev-&gt;power.runtime_status == RPM_ACTIVE) {
+ 		retval = 1;
+-	else if (dev-&gt;power.disable_depth &gt; 0)
+-		retval = -EAGAIN;
+-	if (retval)
+ 		goto out;
++	}
+ 
+ 	if (dev-&gt;power.runtime_status == RPM_RESUMING
+ 	    || dev-&gt;power.runtime_status == RPM_SUSPENDING) {
+ 		DEFINE_WAIT(wait);
+ 
+-		if (rpmflags &amp; RPM_NOWAIT) {
++		if (rpmflags &amp; (RPM_ASYNC | RPM_NOWAIT)) {
+ 			if (dev-&gt;power.runtime_status == RPM_SUSPENDING)
+ 				dev-&gt;power.deferred_resume = true;
+-			retval = -EINPROGRESS;
++			else
++				retval = -EINPROGRESS;
+ 			goto out;
+ 		}
+ 
+@@ -391,6 +441,17 @@ static int __pm_runtime_resume(struct device *dev, int rpmflags)
+ 		goto repeat;
+ 	}
+ 
++	/* Carry out an asynchronous or a synchronous resume. */
++	if (rpmflags &amp; RPM_ASYNC) {
++		dev-&gt;power.request = RPM_REQ_RESUME;
++		if (!dev-&gt;power.request_pending) {
++			dev-&gt;power.request_pending = true;
++			queue_work(pm_wq, &amp;dev-&gt;power.work);
++		}
++		retval = 0;
++		goto out;
++	}
++
+ 	if (!parent &amp;&amp; dev-&gt;parent) {
+ 		/*
+ 		 * Increment the parent's resume counter and resume it if
+@@ -460,7 +521,7 @@ static int __pm_runtime_resume(struct device *dev, int rpmflags)
+ 	wake_up_all(&amp;dev-&gt;power.wait_queue);
+ 
+ 	if (!retval)
+-		__pm_request_idle(dev);
++		__pm_runtime_idle(dev, RPM_ASYNC);
+ 
+  out:
+ 	if (parent) {
+@@ -517,7 +578,7 @@ static void pm_runtime_work(struct work_struct *work)
+ 	case RPM_REQ_NONE:
+ 		break;
+ 	case RPM_REQ_IDLE:
+-		__pm_runtime_idle(dev);
++		__pm_runtime_idle(dev, RPM_NOWAIT);
+ 		break;
+ 	case RPM_REQ_SUSPEND:
+ 		__pm_runtime_suspend(dev, RPM_NOWAIT);
+@@ -531,47 +592,6 @@ static void pm_runtime_work(struct work_struct *work)
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);
+ }
+ 
+-/**
+- * __pm_request_idle - Submit an idle notification request for given device.
+- * @dev: Device to handle.
+- *
+- * Check if the device's run-time PM status is correct for suspending the device
+- * and queue up a request to run __pm_runtime_idle() for it.
+- *
+- * This function must be called under dev-&gt;power.lock with interrupts disabled.
+- */
+-static int __pm_request_idle(struct device *dev)
+-{
+-	int retval = 0;
+-
+-	if (dev-&gt;power.runtime_error)
+-		retval = -EINVAL;
+-	else if (atomic_read(&amp;dev-&gt;power.usage_count) &gt; 0
+-	    || dev-&gt;power.disable_depth &gt; 0
+-	    || dev-&gt;power.runtime_status == RPM_SUSPENDED
+-	    || dev-&gt;power.runtime_status == RPM_SUSPENDING)
+-		retval = -EAGAIN;
+-	else if (!pm_children_suspended(dev))
+-		retval = -EBUSY;
+-	if (retval)
+-		return retval;
+-
+-	if (dev-&gt;power.request_pending) {
+-		/* Any requests other then RPM_REQ_IDLE take precedence. */
+-		if (dev-&gt;power.request == RPM_REQ_NONE)
+-			dev-&gt;power.request = RPM_REQ_IDLE;
+-		else if (dev-&gt;power.request != RPM_REQ_IDLE)
+-			retval = -EAGAIN;
+-		return retval;
+-	}
+-
+-	dev-&gt;power.request = RPM_REQ_IDLE;
+-	dev-&gt;power.request_pending = true;
+-	queue_work(pm_wq, &amp;dev-&gt;power.work);
+-
+-	return retval;
+-}
+-
+ /**
+  * pm_request_idle - Submit an idle notification request for given device.
+  * @dev: Device to handle.
+@@ -582,67 +602,18 @@ int pm_request_idle(struct device *dev)
+ 	int retval;
+ 
+ 	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);
+-	retval = __pm_request_idle(dev);
++	retval = __pm_runtime_idle(dev, RPM_ASYNC);
+ 	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);
+ 
+ 	return retval;
+ }
+ EXPORT_SYMBOL_GPL(pm_request_idle);
+ 
+-/**
+- * __pm_request_suspend - Submit a suspend request for given device.
+- * @dev: Device to suspend.
+- *
+- * This function must be called under dev-&gt;power.lock with interrupts disabled.
+- */
+-static int __pm_request_suspend(struct device *dev)
+-{
+-	int retval = 0;
+-
+-	if (dev-&gt;power.runtime_error)
+-		return -EINVAL;
+-
+-	if (dev-&gt;power.runtime_status == RPM_SUSPENDED)
+-		retval = 1;
+-	else if (atomic_read(&amp;dev-&gt;power.usage_count) &gt; 0
+-	    || dev-&gt;power.disable_depth &gt; 0)
+-		retval = -EAGAIN;
+-	else if (dev-&gt;power.runtime_status == RPM_SUSPENDING)
+-		retval = -EINPROGRESS;
+-	else if (!pm_children_suspended(dev))
+-		retval = -EBUSY;
+-	if (retval &lt; 0)
+-		return retval;
+-
+-	pm_runtime_deactivate_timer(dev);
+-
+-	if (dev-&gt;power.request_pending) {
+-		/*
+-		 * Pending resume requests take precedence over us, but we can
+-		 * overtake any other pending request.
+-		 */
+-		if (dev-&gt;power.request == RPM_REQ_RESUME)
+-			retval = -EAGAIN;
+-		else if (dev-&gt;power.request != RPM_REQ_SUSPEND)
+-			dev-&gt;power.request = retval ?
+-						RPM_REQ_NONE : RPM_REQ_SUSPEND;
+-		return retval;
+-	} else if (retval) {
+-		return retval;
+-	}
+-
+-	dev-&gt;power.request = RPM_REQ_SUSPEND;
+-	dev-&gt;power.request_pending = true;
+-	queue_work(pm_wq, &amp;dev-&gt;power.work);
+-
+-	return 0;
+-}
+-
+ /**
+  * pm_suspend_timer_fn - Timer function for pm_schedule_suspend().
+  * @data: Device pointer passed by pm_schedule_suspend().
+  *
+- * Check if the time is right and execute __pm_request_suspend() in that case.
++ * Check if the time is right and queue a suspend request.
+  */
+ static void pm_suspend_timer_fn(unsigned long data)
+ {
+@@ -656,7 +627,7 @@ static void pm_suspend_timer_fn(unsigned long data)
+ 	/* If 'expire' is after 'jiffies' we've been called too early. */
+ 	if (expires &gt; 0 &amp;&amp; !time_after(expires, jiffies)) {
+ 		dev-&gt;power.timer_expires = 0;
+-		__pm_request_suspend(dev);
++		__pm_runtime_suspend(dev, RPM_ASYNC);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);
+@@ -670,47 +641,24 @@ static void pm_suspend_timer_fn(unsigned long data)
+ int pm_schedule_suspend(struct device *dev, unsigned int delay)
+ {
+ 	unsigned long flags;
+-	int retval = 0;
++	int retval;
+ 
+ 	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);
+ 
+-	if (dev-&gt;power.runtime_error) {
+-		retval = -EINVAL;
+-		goto out;
+-	}
+-
+ 	if (!delay) {
+-		retval = __pm_request_suspend(dev);
++		retval = __pm_runtime_suspend(dev, RPM_ASYNC);
+ 		goto out;
+ 	}
+ 
+-	pm_runtime_deactivate_timer(dev);
+-
+-	if (dev-&gt;power.request_pending) {
+-		/*
+-		 * Pending resume requests take precedence over us, but any
+-		 * other pending requests have to be canceled.
+-		 */
+-		if (dev-&gt;power.request == RPM_REQ_RESUME) {
+-			retval = -EAGAIN;
+-			goto out;
+-		}
+-		dev-&gt;power.request = RPM_REQ_NONE;
+-	}
+-
+-	if (dev-&gt;power.runtime_status == RPM_SUSPENDED)
+-		retval = 1;
+-	else if (atomic_read(&amp;dev-&gt;power.usage_count) &gt; 0
+-	    || dev-&gt;power.disable_depth &gt; 0)
+-		retval = -EAGAIN;
+-	else if (!pm_children_suspended(dev))
+-		retval = -EBUSY;
++	retval = rpm_check_suspend_allowed(dev);
+ 	if (retval)
+ 		goto out;
+ 
++	/* Other scheduled or pending requests need to be canceled. */
++	pm_runtime_cancel_pending(dev);
++
+ 	dev-&gt;power.timer_expires = jiffies + msecs_to_jiffies(delay);
+-	if (!dev-&gt;power.timer_expires)
+-		dev-&gt;power.timer_expires = 1;
++	dev-&gt;power.timer_expires += !dev-&gt;power.timer_expires;
+ 	mod_timer(&amp;dev-&gt;power.suspend_timer, dev-&gt;power.timer_expires);
+ 
+  out:
+@@ -720,49 +668,6 @@ int pm_schedule_suspend(struct device *dev, unsigned int delay)
+ }
+ EXPORT_SYMBOL_GPL(pm_schedule_suspend);
+ 
+-/**
+- * pm_request_resume - Submit a resume request for given device.
+- * @dev: Device to resume.
+- *
+- * This function must be called under dev-&gt;power.lock with interrupts disabled.
+- */
+-static int __pm_request_resume(struct device *dev)
+-{
+-	int retval = 0;
+-
+-	if (dev-&gt;power.runtime_error)
+-		return -EINVAL;
+-
+-	if (dev-&gt;power.runtime_status == RPM_ACTIVE)
+-		retval = 1;
+-	else if (dev-&gt;power.runtime_status == RPM_RESUMING)
+-		retval = -EINPROGRESS;
+-	else if (dev-&gt;power.disable_depth &gt; 0)
+-		retval = -EAGAIN;
+-	if (retval &lt; 0)
+-		return retval;
+-
+-	pm_runtime_deactivate_timer(dev);
+-
+-	if (dev-&gt;power.runtime_status == RPM_SUSPENDING) {
+-		dev-&gt;power.deferred_resume = true;
+-		return retval;
+-	}
+-	if (dev-&gt;power.request_pending) {
+-		/* If non-resume request is pending, we can overtake it. */
+-		dev-&gt;power.request = retval ? RPM_REQ_NONE : RPM_REQ_RESUME;
+-		return retval;
+-	}
+-	if (retval)
+-		return retval;
+-
+-	dev-&gt;power.request = RPM_REQ_RESUME;
+-	dev-&gt;power.request_pending = true;
+-	queue_work(pm_wq, &amp;dev-&gt;power.work);
+-
+-	return retval;
+-}
+-
+ /**
+  * pm_request_resume - Submit a resume request for given device.
+  * @dev: Device to resume.
+@@ -773,7 +678,7 @@ int pm_request_resume(struct device *dev)
+ 	int retval;
+ 
+ 	spin_lock_irqsave(&amp;dev-&gt;power.lock, flags);
+-	retval = __pm_request_resume(dev);
++	retval = __pm_runtime_resume(dev, RPM_ASYNC);
+ 	spin_unlock_irqrestore(&amp;dev-&gt;power.lock, flags);
+ 
+ 	return retval;
+@@ -1088,7 +993,7 @@ void pm_runtime_allow(struct device *dev)
+ 
+ 	dev-&gt;power.runtime_auto = true;
+ 	if (atomic_dec_and_test(&amp;dev-&gt;power.usage_count))
+-		__pm_runtime_idle(dev);
++		__pm_runtime_idle(dev, 0);
+ 
+  out:
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);</pre><hr><pre>commit 3f9af0513ae5b1f185302c2d0ba656640926d970
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Sat Sep 25 23:34:54 2010 +0200
+
+    PM / Runtime: Replace boolean arguments with bitflags
+    
+    The "from_wq" argument in __pm_runtime_suspend() and
+    __pm_runtime_resume() supposedly indicates whether or not the function
+    was called by the PM workqueue thread, but in fact it isn't always
+    used this way.  It really indicates whether or not the function should
+    return early if the requested operation is already in progress.
+    
+    Along with this badly-named boolean argument, later patches in this
+    series will add several other boolean arguments to these functions and
+    others.  Therefore this patch (as1422) begins the conversion process
+    by replacing from_wq with a bitflag argument.  The same bitflags are
+    also used in __pm_runtime_get() and __pm_runtime_put(), where they
+    indicate whether or not the operation should be asynchronous.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Rafael J. Wysocki &lt;rjw@sisk.pl&gt;
+
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index ec08f1ae63f1..0c1db879544b 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -10,7 +10,7 @@
+ #include &lt;linux/pm_runtime.h&gt;
+ #include &lt;linux/jiffies.h&gt;
+ 
+-static int __pm_runtime_resume(struct device *dev, bool from_wq);
++static int __pm_runtime_resume(struct device *dev, int rpmflags);
+ static int __pm_request_idle(struct device *dev);
+ static int __pm_request_resume(struct device *dev);
+ 
+@@ -164,24 +164,24 @@ EXPORT_SYMBOL_GPL(pm_runtime_idle);
+ /**
+  * __pm_runtime_suspend - Carry out run-time suspend of given device.
+  * @dev: Device to suspend.
+- * @from_wq: If set, the function has been called via pm_wq.
++ * @rpmflags: Flag bits.
+  *
+  * Check if the device can be suspended and run the -&gt;runtime_suspend() callback
+- * provided by its bus type.  If another suspend has been started earlier, wait
+- * for it to finish.  If an idle notification or suspend request is pending or
++ * provided by its bus type.  If another suspend has been started earlier,
++ * either return immediately or wait for it to finish, depending on the
++ * RPM_NOWAIT flag.  If an idle notification or suspend request is pending or
+  * scheduled, cancel it.
+  *
+  * This function must be called under dev-&gt;power.lock with interrupts disabled.
+  */
+-int __pm_runtime_suspend(struct device *dev, bool from_wq)
++static int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ 	__releases(&amp;dev-&gt;power.lock) __acquires(&amp;dev-&gt;power.lock)
+ {
+ 	struct device *parent = NULL;
+ 	bool notify = false;
+ 	int retval = 0;
+ 
+-	dev_dbg(dev, "__pm_runtime_suspend()%s!\n",
+-		from_wq ? " from workqueue" : "");
++	dev_dbg(dev, "%s flags 0x%x\n", __func__, rpmflags);
+ 
+  repeat:
+ 	if (dev-&gt;power.runtime_error) {
+@@ -213,7 +213,7 @@ int __pm_runtime_suspend(struct device *dev, bool from_wq)
+ 	if (dev-&gt;power.runtime_status == RPM_SUSPENDING) {
+ 		DEFINE_WAIT(wait);
+ 
+-		if (from_wq) {
++		if (rpmflags &amp; RPM_NOWAIT) {
+ 			retval = -EINPROGRESS;
+ 			goto out;
+ 		}
+@@ -286,7 +286,7 @@ int __pm_runtime_suspend(struct device *dev, bool from_wq)
+ 	wake_up_all(&amp;dev-&gt;power.wait_queue);
+ 
+ 	if (dev-&gt;power.deferred_resume) {
+-		__pm_runtime_resume(dev, false);
++		__pm_runtime_resume(dev, 0);
+ 		retval = -EAGAIN;
+ 		goto out;
+ 	}
+@@ -303,7 +303,7 @@ int __pm_runtime_suspend(struct device *dev, bool from_wq)
+ 	}
+ 
+  out:
+-	dev_dbg(dev, "__pm_runtime_suspend() returns %d!\n", retval);
++	dev_dbg(dev, "%s returns %d\n", __func__, retval);
+ 
+ 	return retval;
+ }
+@@ -317,7 +317,7 @@ int pm_runtime_suspend(struct device *dev)
+ 	int retval;
+ 
+ 	spin_lock_irq(&amp;dev-&gt;power.lock);
+-	retval = __pm_runtime_suspend(dev, false);
++	retval = __pm_runtime_suspend(dev, 0);
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);
+ 
+ 	return retval;
+@@ -327,24 +327,25 @@ EXPORT_SYMBOL_GPL(pm_runtime_suspend);
+ /**
+  * __pm_runtime_resume - Carry out run-time resume of given device.
+  * @dev: Device to resume.
+- * @from_wq: If set, the function has been called via pm_wq.
++ * @rpmflags: Flag bits.
+  *
+  * Check if the device can be woken up and run the -&gt;runtime_resume() callback
+- * provided by its bus type.  If another resume has been started earlier, wait
+- * for it to finish.  If there's a suspend running in parallel with this
+- * function, wait for it to finish and resume the device.  Cancel any scheduled
+- * or pending requests.
++ * provided by its bus type.  If another resume has been started earlier,
++ * either return imediately or wait for it to finish, depending on the
++ * RPM_NOWAIT flag.  If there's a suspend running in parallel with this
++ * function, either tell the other process to resume after suspending
++ * (deferred_resume) or wait for it to finish, depending on the RPM_NOWAIT
++ * flag.  Cancel any scheduled or pending requests.
+  *
+  * This function must be called under dev-&gt;power.lock with interrupts disabled.
+  */
+-int __pm_runtime_resume(struct device *dev, bool from_wq)
++static int __pm_runtime_resume(struct device *dev, int rpmflags)
+ 	__releases(&amp;dev-&gt;power.lock) __acquires(&amp;dev-&gt;power.lock)
+ {
+ 	struct device *parent = NULL;
+ 	int retval = 0;
+ 
+-	dev_dbg(dev, "__pm_runtime_resume()%s!\n",
+-		from_wq ? " from workqueue" : "");
++	dev_dbg(dev, "%s flags 0x%x\n", __func__, rpmflags);
+ 
+  repeat:
+ 	if (dev-&gt;power.runtime_error) {
+@@ -365,7 +366,7 @@ int __pm_runtime_resume(struct device *dev, bool from_wq)
+ 	    || dev-&gt;power.runtime_status == RPM_SUSPENDING) {
+ 		DEFINE_WAIT(wait);
+ 
+-		if (from_wq) {
++		if (rpmflags &amp; RPM_NOWAIT) {
+ 			if (dev-&gt;power.runtime_status == RPM_SUSPENDING)
+ 				dev-&gt;power.deferred_resume = true;
+ 			retval = -EINPROGRESS;
+@@ -407,7 +408,7 @@ int __pm_runtime_resume(struct device *dev, bool from_wq)
+ 		 */
+ 		if (!parent-&gt;power.disable_depth
+ 		    &amp;&amp; !parent-&gt;power.ignore_children) {
+-			__pm_runtime_resume(parent, false);
++			__pm_runtime_resume(parent, 0);
+ 			if (parent-&gt;power.runtime_status != RPM_ACTIVE)
+ 				retval = -EBUSY;
+ 		}
+@@ -470,7 +471,7 @@ int __pm_runtime_resume(struct device *dev, bool from_wq)
+ 		spin_lock_irq(&amp;dev-&gt;power.lock);
+ 	}
+ 
+-	dev_dbg(dev, "__pm_runtime_resume() returns %d!\n", retval);
++	dev_dbg(dev, "%s returns %d\n", __func__, retval);
+ 
+ 	return retval;
+ }
+@@ -484,7 +485,7 @@ int pm_runtime_resume(struct device *dev)
+ 	int retval;
+ 
+ 	spin_lock_irq(&amp;dev-&gt;power.lock);
+-	retval = __pm_runtime_resume(dev, false);
++	retval = __pm_runtime_resume(dev, 0);
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);
+ 
+ 	return retval;
+@@ -519,10 +520,10 @@ static void pm_runtime_work(struct work_struct *work)
+ 		__pm_runtime_idle(dev);
+ 		break;
+ 	case RPM_REQ_SUSPEND:
+-		__pm_runtime_suspend(dev, true);
++		__pm_runtime_suspend(dev, RPM_NOWAIT);
+ 		break;
+ 	case RPM_REQ_RESUME:
+-		__pm_runtime_resume(dev, true);
++		__pm_runtime_resume(dev, RPM_NOWAIT);
+ 		break;
+ 	}
+ 
+@@ -782,17 +783,18 @@ EXPORT_SYMBOL_GPL(pm_request_resume);
+ /**
+  * __pm_runtime_get - Reference count a device and wake it up, if necessary.
+  * @dev: Device to handle.
+- * @sync: If set and the device is suspended, resume it synchronously.
++ * @rpmflags: Flag bits.
+  *
+  * Increment the usage count of the device and resume it or submit a resume
+- * request for it, depending on the value of @sync.
++ * request for it, depending on the RPM_ASYNC flag bit.
+  */
+-int __pm_runtime_get(struct device *dev, bool sync)
++int __pm_runtime_get(struct device *dev, int rpmflags)
+ {
+ 	int retval;
+ 
+ 	atomic_inc(&amp;dev-&gt;power.usage_count);
+-	retval = sync ? pm_runtime_resume(dev) : pm_request_resume(dev);
++	retval = (rpmflags &amp; RPM_ASYNC) ?
++	    pm_request_resume(dev) : pm_runtime_resume(dev);
+ 
+ 	return retval;
+ }
+@@ -801,18 +803,19 @@ EXPORT_SYMBOL_GPL(__pm_runtime_get);
+ /**
+  * __pm_runtime_put - Decrement the device's usage counter and notify its bus.
+  * @dev: Device to handle.
+- * @sync: If the device's bus type is to be notified, do that synchronously.
++ * @rpmflags: Flag bits.
+  *
+  * Decrement the usage count of the device and if it reaches zero, carry out a
+  * synchronous idle notification or submit an idle notification request for it,
+- * depending on the value of @sync.
++ * depending on the RPM_ASYNC flag bit.
+  */
+-int __pm_runtime_put(struct device *dev, bool sync)
++int __pm_runtime_put(struct device *dev, int rpmflags)
+ {
+ 	int retval = 0;
+ 
+ 	if (atomic_dec_and_test(&amp;dev-&gt;power.usage_count))
+-		retval = sync ? pm_runtime_idle(dev) : pm_request_idle(dev);
++		retval = (rpmflags &amp; RPM_ASYNC) ?
++		    pm_request_idle(dev) : pm_runtime_idle(dev);
+ 
+ 	return retval;
+ }
+@@ -967,7 +970,7 @@ int pm_runtime_barrier(struct device *dev)
+ 
+ 	if (dev-&gt;power.request_pending
+ 	    &amp;&amp; dev-&gt;power.request == RPM_REQ_RESUME) {
+-		__pm_runtime_resume(dev, false);
++		__pm_runtime_resume(dev, 0);
+ 		retval = 1;
+ 	}
+ 
+@@ -1016,7 +1019,7 @@ void __pm_runtime_disable(struct device *dev, bool check_resume)
+ 		 */
+ 		pm_runtime_get_noresume(dev);
+ 
+-		__pm_runtime_resume(dev, false);
++		__pm_runtime_resume(dev, 0);
+ 
+ 		pm_runtime_put_noidle(dev);
+ 	}
+@@ -1064,7 +1067,7 @@ void pm_runtime_forbid(struct device *dev)
+ 
+ 	dev-&gt;power.runtime_auto = false;
+ 	atomic_inc(&amp;dev-&gt;power.usage_count);
+-	__pm_runtime_resume(dev, false);
++	__pm_runtime_resume(dev, 0);
+ 
+  out:
+ 	spin_unlock_irq(&amp;dev-&gt;power.lock);
+diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+index 6e81888c6222..c030cac59aac 100644
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -12,6 +12,11 @@
+ #include &lt;linux/device.h&gt;
+ #include &lt;linux/pm.h&gt;
+ 
++/* Runtime PM flag argument bits */
++#define RPM_ASYNC		0x01	/* Request is asynchronous */
++#define RPM_NOWAIT		0x02	/* Don't wait for concurrent
++					    state change */
++
+ #ifdef CONFIG_PM_RUNTIME
+ 
+ extern struct workqueue_struct *pm_wq;
+@@ -22,8 +27,8 @@ extern int pm_runtime_resume(struct device *dev);
+ extern int pm_request_idle(struct device *dev);
+ extern int pm_schedule_suspend(struct device *dev, unsigned int delay);
+ extern int pm_request_resume(struct device *dev);
+-extern int __pm_runtime_get(struct device *dev, bool sync);
+-extern int __pm_runtime_put(struct device *dev, bool sync);
++extern int __pm_runtime_get(struct device *dev, int rpmflags);
++extern int __pm_runtime_put(struct device *dev, int rpmflags);
+ extern int __pm_runtime_set_status(struct device *dev, unsigned int status);
+ extern int pm_runtime_barrier(struct device *dev);
+ extern void pm_runtime_enable(struct device *dev);
+@@ -81,8 +86,10 @@ static inline int pm_schedule_suspend(struct device *dev, unsigned int delay)
+ 	return -ENOSYS;
+ }
+ static inline int pm_request_resume(struct device *dev) { return 0; }
+-static inline int __pm_runtime_get(struct device *dev, bool sync) { return 1; }
+-static inline int __pm_runtime_put(struct device *dev, bool sync) { return 0; }
++static inline int __pm_runtime_get(struct device *dev, int rpmflags)
++					{ return 1; }
++static inline int __pm_runtime_put(struct device *dev, int rpmflags)
++					{ return 0; }
+ static inline int __pm_runtime_set_status(struct device *dev,
+ 					    unsigned int status) { return 0; }
+ static inline int pm_runtime_barrier(struct device *dev) { return 0; }
+@@ -107,22 +114,22 @@ static inline int pm_generic_runtime_resume(struct device *dev) { return 0; }
+ 
+ static inline int pm_runtime_get(struct device *dev)
+ {
+-	return __pm_runtime_get(dev, false);
++	return __pm_runtime_get(dev, RPM_ASYNC);
+ }
+ 
+ static inline int pm_runtime_get_sync(struct device *dev)
+ {
+-	return __pm_runtime_get(dev, true);
++	return __pm_runtime_get(dev, 0);
+ }
+ 
+ static inline int pm_runtime_put(struct device *dev)
+ {
+-	return __pm_runtime_put(dev, false);
++	return __pm_runtime_put(dev, RPM_ASYNC);
+ }
+ 
+ static inline int pm_runtime_put_sync(struct device *dev)
+ {
+-	return __pm_runtime_put(dev, true);
++	return __pm_runtime_put(dev, 0);
+ }
+ 
+ static inline int pm_runtime_set_active(struct device *dev)</pre><hr><pre>commit 4769373ca2c8d0b999749a070c48fd8648888831
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Sat Sep 25 23:34:46 2010 +0200
+
+    PM / Runtime: Move code in drivers/base/power/runtime.c
+    
+    This patch (as1421) moves the PM runtime accounting subroutines up to
+    the beginning of runtime.c, taking them out of the middle of the
+    functions that do the actual work.  No operational changes.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Rafael J. Wysocki &lt;rjw@sisk.pl&gt;
+
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index e9520ad2d716..ec08f1ae63f1 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -14,6 +14,44 @@ static int __pm_runtime_resume(struct device *dev, bool from_wq);
+ static int __pm_request_idle(struct device *dev);
+ static int __pm_request_resume(struct device *dev);
+ 
++/**
++ * update_pm_runtime_accounting - Update the time accounting of power states
++ * @dev: Device to update the accounting for
++ *
++ * In order to be able to have time accounting of the various power states
++ * (as used by programs such as PowerTOP to show the effectiveness of runtime
++ * PM), we need to track the time spent in each state.
++ * update_pm_runtime_accounting must be called each time before the
++ * runtime_status field is updated, to account the time in the old state
++ * correctly.
++ */
++void update_pm_runtime_accounting(struct device *dev)
++{
++	unsigned long now = jiffies;
++	int delta;
++
++	delta = now - dev-&gt;power.accounting_timestamp;
++
++	if (delta &lt; 0)
++		delta = 0;
++
++	dev-&gt;power.accounting_timestamp = now;
++
++	if (dev-&gt;power.disable_depth &gt; 0)
++		return;
++
++	if (dev-&gt;power.runtime_status == RPM_SUSPENDED)
++		dev-&gt;power.suspended_jiffies += delta;
++	else
++		dev-&gt;power.active_jiffies += delta;
++}
++
++static void __update_runtime_status(struct device *dev, enum rpm_status status)
++{
++	update_pm_runtime_accounting(dev);
++	dev-&gt;power.runtime_status = status;
++}
++
+ /**
+  * pm_runtime_deactivate_timer - Deactivate given device's suspend timer.
+  * @dev: Device to handle.
+@@ -123,45 +161,6 @@ int pm_runtime_idle(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(pm_runtime_idle);
+ 
+-
+-/**
+- * update_pm_runtime_accounting - Update the time accounting of power states
+- * @dev: Device to update the accounting for
+- *
+- * In order to be able to have time accounting of the various power states
+- * (as used by programs such as PowerTOP to show the effectiveness of runtime
+- * PM), we need to track the time spent in each state.
+- * update_pm_runtime_accounting must be called each time before the
+- * runtime_status field is updated, to account the time in the old state
+- * correctly.
+- */
+-void update_pm_runtime_accounting(struct device *dev)
+-{
+-	unsigned long now = jiffies;
+-	int delta;
+-
+-	delta = now - dev-&gt;power.accounting_timestamp;
+-
+-	if (delta &lt; 0)
+-		delta = 0;
+-
+-	dev-&gt;power.accounting_timestamp = now;
+-
+-	if (dev-&gt;power.disable_depth &gt; 0)
+-		return;
+-
+-	if (dev-&gt;power.runtime_status == RPM_SUSPENDED)
+-		dev-&gt;power.suspended_jiffies += delta;
+-	else
+-		dev-&gt;power.active_jiffies += delta;
+-}
+-
+-static void __update_runtime_status(struct device *dev, enum rpm_status status)
+-{
+-	update_pm_runtime_accounting(dev);
+-	dev-&gt;power.runtime_status = status;
+-}
+-
+ /**
+  * __pm_runtime_suspend - Carry out run-time suspend of given device.
+  * @dev: Device to suspend.</pre><hr><pre>commit 69d44ffbd772bede8c2a6d182e6e14f94826520b
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Sat Sep 25 23:34:22 2010 +0200
+
+    sysfs: Add sysfs_merge_group() and sysfs_unmerge_group()
+    
+    This patch (as1420) adds sysfs_merge_group() and sysfs_unmerge_group()
+    functions, allowing drivers easily to add and remove sets of
+    attributes to a pre-existing attribute group directory.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Acked-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+    Signed-off-by: Rafael J. Wysocki &lt;rjw@sisk.pl&gt;
+
+diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
+index 23c1e598792a..442f34ff1af8 100644
+--- a/fs/sysfs/group.c
++++ b/fs/sysfs/group.c
+@@ -148,6 +148,65 @@ void sysfs_remove_group(struct kobject * kobj,
+ 	sysfs_put(sd);
+ }
+ 
++/**
++ * sysfs_merge_group - merge files into a pre-existing attribute group.
++ * @kobj:	The kobject containing the group.
++ * @grp:	The files to create and the attribute group they belong to.
++ *
++ * This function returns an error if the group doesn't exist or any of the
++ * files already exist in that group, in which case none of the new files
++ * are created.
++ */
++int sysfs_merge_group(struct kobject *kobj,
++		       const struct attribute_group *grp)
++{
++	struct sysfs_dirent *dir_sd;
++	int error = 0;
++	struct attribute *const *attr;
++	int i;
++
++	if (grp)
++		dir_sd = sysfs_get_dirent(kobj-&gt;sd, NULL, grp-&gt;name);
++	else
++		dir_sd = sysfs_get(kobj-&gt;sd);
++	if (!dir_sd)
++		return -ENOENT;
++
++	for ((i = 0, attr = grp-&gt;attrs); *attr &amp;&amp; !error; (++i, ++attr))
++		error = sysfs_add_file(dir_sd, *attr, SYSFS_KOBJ_ATTR);
++	if (error) {
++		while (--i &gt;= 0)
++			sysfs_hash_and_remove(dir_sd, NULL, (*--attr)-&gt;name);
++	}
++	sysfs_put(dir_sd);
++
++	return error;
++}
++EXPORT_SYMBOL_GPL(sysfs_merge_group);
++
++/**
++ * sysfs_unmerge_group - remove files from a pre-existing attribute group.
++ * @kobj:	The kobject containing the group.
++ * @grp:	The files to remove and the attribute group they belong to.
++ */
++void sysfs_unmerge_group(struct kobject *kobj,
++		       const struct attribute_group *grp)
++{
++	struct sysfs_dirent *dir_sd;
++	struct attribute *const *attr;
++
++	if (grp)
++		dir_sd = sysfs_get_dirent(kobj-&gt;sd, NULL, grp-&gt;name);
++	else
++		dir_sd = sysfs_get(kobj-&gt;sd);
++	if (dir_sd) {
++		for (attr = grp-&gt;attrs; *attr; ++attr)
++			sysfs_hash_and_remove(dir_sd, NULL, (*attr)-&gt;name);
++		sysfs_put(dir_sd);
++	}
++}
++EXPORT_SYMBOL_GPL(sysfs_unmerge_group);
++
+ 
+ EXPORT_SYMBOL_GPL(sysfs_create_group);
+ EXPORT_SYMBOL_GPL(sysfs_update_group);
+diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+index 96eb576d82fd..30b881555fa5 100644
+--- a/include/linux/sysfs.h
++++ b/include/linux/sysfs.h
+@@ -164,6 +164,10 @@ int sysfs_add_file_to_group(struct kobject *kobj,
+ 			const struct attribute *attr, const char *group);
+ void sysfs_remove_file_from_group(struct kobject *kobj,
+ 			const struct attribute *attr, const char *group);
++int sysfs_merge_group(struct kobject *kobj,
++		       const struct attribute_group *grp);
++void sysfs_unmerge_group(struct kobject *kobj,
++		       const struct attribute_group *grp);
+ 
+ void sysfs_notify(struct kobject *kobj, const char *dir, const char *attr);
+ void sysfs_notify_dirent(struct sysfs_dirent *sd);
+@@ -302,6 +306,17 @@ static inline void sysfs_remove_file_from_group(struct kobject *kobj,
+ {
+ }
+ 
++static inline int sysfs_merge_group(struct kobject *kobj,
++		       const struct attribute_group *grp)
++{
++	return 0;
++}
++
++static inline void sysfs_unmerge_group(struct kobject *kobj,
++		       const struct attribute_group *grp)
++{
++}
++
+ static inline void sysfs_notify(struct kobject *kobj, const char *dir,
+ 				const char *attr)
+ {</pre><hr><pre>commit 2dab3948f5eeffa320ad92207ef77c997518867b
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Fri Sep 24 11:41:46 2010 -0400
+
+    USB: update Kconfig help text for CONFIG_USB_SUSPEND
+    
+    This patch (as1429) updates the Kconfig help text for
+    CONFIG_USB_SUSPEND.  The power/level file is now deprecated; we should
+    tell people to use power/control instead.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/Kconfig b/drivers/usb/core/Kconfig
+index 7e594449600e..9eed5b52d9de 100644
+--- a/drivers/usb/core/Kconfig
++++ b/drivers/usb/core/Kconfig
+@@ -91,12 +91,12 @@ config USB_DYNAMIC_MINORS
+ 	  If you are unsure about this, say N here.
+ 
+ config USB_SUSPEND
+-	bool "USB runtime power management (suspend/resume and wakeup)"
++	bool "USB runtime power management (autosuspend) and wakeup"
+ 	depends on USB &amp;&amp; PM_RUNTIME
+ 	help
+ 	  If you say Y here, you can use driver calls or the sysfs
+-	  "power/level" file to suspend or resume individual USB
+-	  peripherals and to enable or disable autosuspend (see
++	  "power/control" file to enable or disable autosuspend for
++	  individual USB peripherals (see
+ 	  Documentation/usb/power-management.txt for more details).
+ 
+ 	  Also, USB "remote wakeup" signaling is supported, whereby some</pre><hr><pre>commit 0026e00523a85b90a92a93ddf6660939ecef3e54
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Sep 21 15:01:53 2010 -0400
+
+    USB: fix bug in initialization of interface minor numbers
+    
+    Recent changes in the usbhid layer exposed a bug in usbcore.  If
+    CONFIG_USB_DYNAMIC_MINORS is enabled then an interface may be assigned
+    a minor number of 0.  However interfaces that aren't registered as USB
+    class devices also have their minor number set to 0, during
+    initialization.  As a result usb_find_interface() may return the
+    wrong interface, leading to a crash.
+    
+    This patch (as1418) fixes the problem by initializing every
+    interface's minor number to -1.  It also cleans up the
+    usb_register_dev() function, which besides being somewhat awkwardly
+    written, does not unwind completely on all its error paths.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Tested-by: Philip J. Turmel &lt;philip@turmel.org&gt;
+    Tested-by: Gabriel Craciunescu &lt;nix.or.die@googlemail.com&gt;
+    Tested-by: Alex Riesen &lt;raa.lkml@gmail.com&gt;
+    Tested-by: Matthias Bayer &lt;jackdachef@gmail.com&gt;
+    CC: Jiri Kosina &lt;jkosina@suse.cz&gt;
+    Cc: stable &lt;stable@kernel.org&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/core/file.c b/drivers/usb/core/file.c
+index f06f5dbc8cdc..1e6ccef2cf0c 100644
+--- a/drivers/usb/core/file.c
++++ b/drivers/usb/core/file.c
+@@ -159,9 +159,9 @@ void usb_major_cleanup(void)
+ int usb_register_dev(struct usb_interface *intf,
+ 		     struct usb_class_driver *class_driver)
+ {
+-	int retval = -EINVAL;
++	int retval;
+ 	int minor_base = class_driver-&gt;minor_base;
+-	int minor = 0;
++	int minor;
+ 	char name[20];
+ 	char *temp;
+ 
+@@ -173,12 +173,17 @@ int usb_register_dev(struct usb_interface *intf,
+ 	 */
+ 	minor_base = 0;
+ #endif
+-	intf-&gt;minor = -1;
+-
+-	dbg ("looking for a minor, starting at %d", minor_base);
+ 
+ 	if (class_driver-&gt;fops == NULL)
+-		goto exit;
++		return -EINVAL;
++	if (intf-&gt;minor &gt;= 0)
++		return -EADDRINUSE;
++
++	retval = init_usb_class();
++	if (retval)
++		return retval;
++
++	dev_dbg(&amp;intf-&gt;dev, "looking for a minor, starting at %d", minor_base);
+ 
+ 	down_write(&amp;minor_rwsem);
+ 	for (minor = minor_base; minor &lt; MAX_USB_MINORS; ++minor) {
+@@ -186,20 +191,12 @@ int usb_register_dev(struct usb_interface *intf,
+ 			continue;
+ 
+ 		usb_minors[minor] = class_driver-&gt;fops;
+-
+-		retval = 0;
++		intf-&gt;minor = minor;
+ 		break;
+ 	}
+ 	up_write(&amp;minor_rwsem);
+-
+-	if (retval)
+-		goto exit;
+-
+-	retval = init_usb_class();
+-	if (retval)
+-		goto exit;
+-
+-	intf-&gt;minor = minor;
++	if (intf-&gt;minor &lt; 0)
++		return -EXFULL;
+ 
+ 	/* create a usb class device for this usb interface */
+ 	snprintf(name, sizeof(name), class_driver-&gt;name, minor - minor_base);
+@@ -213,11 +210,11 @@ int usb_register_dev(struct usb_interface *intf,
+ 				      "%s", temp);
+ 	if (IS_ERR(intf-&gt;usb_dev)) {
+ 		down_write(&amp;minor_rwsem);
+-		usb_minors[intf-&gt;minor] = NULL;
++		usb_minors[minor] = NULL;
++		intf-&gt;minor = -1;
+ 		up_write(&amp;minor_rwsem);
+ 		retval = PTR_ERR(intf-&gt;usb_dev);
+ 	}
+-exit:
+ 	return retval;
+ }
+ EXPORT_SYMBOL_GPL(usb_register_dev);
+diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+index 844683e50383..9f0ce7de0e36 100644
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -1802,6 +1802,7 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+ 		intf-&gt;dev.groups = usb_interface_groups;
+ 		intf-&gt;dev.dma_mask = dev-&gt;dev.dma_mask;
+ 		INIT_WORK(&amp;intf-&gt;reset_ws, __usb_queue_reset_device);
++		intf-&gt;minor = -1;
+ 		device_initialize(&amp;intf-&gt;dev);
+ 		dev_set_name(&amp;intf-&gt;dev, "%d-%s:%d.%d",
+ 			dev-&gt;bus-&gt;busnum, dev-&gt;devpath,</pre><hr><pre>commit 50bb6d8492ff0c3f204b263aff90d4a7ebf4dd90
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Thu Sep 23 10:40:21 2010 -0400
+
+    HID: usbhid: remove unused hiddev_driver
+    
+    Now that hiddev_driver isn't being used for anything, there's no
+    reason to keep it around.  This patch (as1419) gets rid of it
+    entirely.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: Jiri Kosina &lt;jkosina@suse.cz&gt;
+
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index c90fbbdbffa2..7a778ac4c5cb 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -1470,9 +1470,6 @@ static int __init hid_init(void)
+ 	retval = usbhid_quirks_init(quirks_param);
+ 	if (retval)
+ 		goto usbhid_quirks_init_fail;
+-	retval = hiddev_init();
+-	if (retval)
+-		goto hiddev_init_fail;
+ 	retval = usb_register(&amp;hid_driver);
+ 	if (retval)
+ 		goto usb_register_fail;
+@@ -1480,8 +1477,6 @@ static int __init hid_init(void)
+ 
+ 	return 0;
+ usb_register_fail:
+-	hiddev_exit();
+-hiddev_init_fail:
+ 	usbhid_quirks_exit();
+ usbhid_quirks_init_fail:
+ 	hid_unregister_driver(&amp;hid_usb_driver);
+@@ -1494,7 +1489,6 @@ static int __init hid_init(void)
+ static void __exit hid_exit(void)
+ {
+ 	usb_deregister(&amp;hid_driver);
+-	hiddev_exit();
+ 	usbhid_quirks_exit();
+ 	hid_unregister_driver(&amp;hid_usb_driver);
+ 	destroy_workqueue(resumption_waker);
+diff --git a/drivers/hid/usbhid/hiddev.c b/drivers/hid/usbhid/hiddev.c
+index 681e620eb95b..19ed90c8f503 100644
+--- a/drivers/hid/usbhid/hiddev.c
++++ b/drivers/hid/usbhid/hiddev.c
+@@ -67,8 +67,6 @@ struct hiddev_list {
+ 	struct mutex thread_lock;
+ };
+ 
+-static struct usb_driver hiddev_driver;
+-
+ /*
+  * Find a report, given the report's type and ID.  The ID can be specified
+  * indirectly by REPORT_ID_FIRST (which returns the first report of the given
+@@ -925,41 +923,3 @@ void hiddev_disconnect(struct hid_device *hid)
+ 		kfree(hiddev);
+ 	}
+ }
+-
+-/* Currently this driver is a USB driver.  It's not a conventional one in
+- * the sense that it doesn't probe at the USB level.  Instead it waits to
+- * be connected by HID through the hiddev_connect / hiddev_disconnect
+- * routines.  The reason to register as a USB device is to gain part of the
+- * minor number space from the USB major.
+- *
+- * In theory, should the HID code be generalized to more than one physical
+- * medium (say, IEEE 1384), this driver will probably need to register its
+- * own major number, and in doing so, no longer need to register with USB.
+- * At that point the probe routine and hiddev_driver struct below will no
+- * longer be useful.
+- */
+-
+-
+-/* We never attach in this manner, and rely on HID to connect us.  This
+- * is why there is no disconnect routine defined in the usb_driver either.
+- */
+-static int hiddev_usbd_probe(struct usb_interface *intf,
+-			     const struct usb_device_id *hiddev_info)
+-{
+-	return -ENODEV;
+-}
+-
+-static /* const */ struct usb_driver hiddev_driver = {
+-	.name =		"hiddev",
+-	.probe =	hiddev_usbd_probe,
+-};
+-
+-int __init hiddev_init(void)
+-{
+-	return usb_register(&amp;hiddev_driver);
+-}
+-
+-void hiddev_exit(void)
+-{
+-	usb_deregister(&amp;hiddev_driver);
+-}
+diff --git a/include/linux/hiddev.h b/include/linux/hiddev.h
+index bb6f58baf319..a3f481a3063b 100644
+--- a/include/linux/hiddev.h
++++ b/include/linux/hiddev.h
+@@ -226,8 +226,6 @@ void hiddev_disconnect(struct hid_device *);
+ void hiddev_hid_event(struct hid_device *hid, struct hid_field *field,
+ 		      struct hid_usage *usage, __s32 value);
+ void hiddev_report_event(struct hid_device *hid, struct hid_report *report);
+-int __init hiddev_init(void);
+-void hiddev_exit(void);
+ #else
+ static inline int hiddev_connect(struct hid_device *hid,
+ 		unsigned int force)
+@@ -236,8 +234,6 @@ static inline void hiddev_disconnect(struct hid_device *hid) { }
+ static inline void hiddev_hid_event(struct hid_device *hid, struct hid_field *field,
+ 		      struct hid_usage *usage, __s32 value) { }
+ static inline void hiddev_report_event(struct hid_device *hid, struct hid_report *report) { }
+-static inline int hiddev_init(void) { return 0; }
+-static inline void hiddev_exit(void) { }
+ #endif
+ 
+ #endif</pre><hr><pre>commit 7e443312403ad1ff40ef3177590e96d1fe747c79
+Author: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+Date:   Tue Sep 7 11:27:52 2010 -0400
+
+    [SCSI] sd: fix medium-removal bug
+    
+    Commit 409f3499a2cfcd1e9c2857c53af7fcce069f027f (scsi/sd: remove big
+    kernel lock) introduced a bug in the sd_release routine.  Medium
+    removal should be allowed when the number of open file references
+    drops to 0, not when it becomes non-zero.
+    
+    This patch (as1414) adjusts the test to fix the bug.
+    
+    Signed-off-by: Alan Stern &lt;stern@rowland.harvard.edu&gt;
+    Signed-off-by: James Bottomley &lt;James.Bottomley@suse.de&gt;
+
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index cd71f46a3d47..ffa0689ee840 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -870,7 +870,7 @@ static int sd_release(struct gendisk *disk, fmode_t mode)
+ 
+ 	SCSI_LOG_HLQUEUE(3, sd_printk(KERN_INFO, sdkp, "sd_release\n"));
+ 
+-	if (atomic_dec_return(&amp;sdkp-&gt;openers) &amp;&amp; sdev-&gt;removable) {
++	if (atomic_dec_return(&amp;sdkp-&gt;openers) == 0 &amp;&amp; sdev-&gt;removable) {
+ 		if (scsi_block_when_processing_errors(sdev))
+ 			scsi_set_medium_removal(sdev, SCSI_REMOVAL_ALLOW);
+ 	}</pre>
+    <div class="pagination">
+        <a href='2_61.html'>&lt;&lt;Prev</a><a href='2.html'>1</a><a href='2_2.html'>2</a><a href='2_3.html'>3</a><a href='2_4.html'>4</a><a href='2_5.html'>5</a><a href='2_6.html'>6</a><a href='2_7.html'>7</a><a href='2_8.html'>8</a><a href='2_9.html'>9</a><a href='2_10.html'>10</a><a href='2_11.html'>11</a><a href='2_12.html'>12</a><a href='2_13.html'>13</a><a href='2_14.html'>14</a><a href='2_15.html'>15</a><a href='2_16.html'>16</a><a href='2_17.html'>17</a><a href='2_18.html'>18</a><a href='2_19.html'>19</a><a href='2_20.html'>20</a><a href='2_21.html'>21</a><a href='2_22.html'>22</a><a href='2_23.html'>23</a><a href='2_24.html'>24</a><a href='2_25.html'>25</a><a href='2_26.html'>26</a><a href='2_27.html'>27</a><a href='2_28.html'>28</a><a href='2_29.html'>29</a><a href='2_30.html'>30</a><a href='2_31.html'>31</a><a href='2_32.html'>32</a><a href='2_33.html'>33</a><a href='2_34.html'>34</a><a href='2_35.html'>35</a><a href='2_36.html'>36</a><a href='2_37.html'>37</a><a href='2_38.html'>38</a><a href='2_39.html'>39</a><a href='2_40.html'>40</a><a href='2_41.html'>41</a><a href='2_42.html'>42</a><a href='2_43.html'>43</a><a href='2_44.html'>44</a><a href='2_45.html'>45</a><a href='2_46.html'>46</a><a href='2_47.html'>47</a><a href='2_48.html'>48</a><a href='2_49.html'>49</a><a href='2_50.html'>50</a><a href='2_51.html'>51</a><a href='2_52.html'>52</a><a href='2_53.html'>53</a><a href='2_54.html'>54</a><a href='2_55.html'>55</a><a href='2_56.html'>56</a><a href='2_57.html'>57</a><a href='2_58.html'>58</a><a href='2_59.html'>59</a><a href='2_60.html'>60</a><a href='2_61.html'>61</a><span>[62]</span><a href='2_63.html'>63</a><a href='2_64.html'>64</a><a href='2_65.html'>65</a><a href='2_66.html'>66</a><a href='2_67.html'>67</a><a href='2_68.html'>68</a><a href='2_69.html'>69</a><a href='2_70.html'>70</a><a href='2_71.html'>71</a><a href='2_72.html'>72</a><a href='2_73.html'>73</a><a href='2_74.html'>74</a><a href='2_75.html'>75</a><a href='2_76.html'>76</a><a href='2_77.html'>77</a><a href='2_78.html'>78</a><a href='2_79.html'>79</a><a href='2_80.html'>80</a><a href='2_81.html'>81</a><a href='2_82.html'>82</a><a href='2_83.html'>83</a><a href='2_84.html'>84</a><a href='2_85.html'>85</a><a href='2_86.html'>86</a><a href='2_87.html'>87</a><a href='2_88.html'>88</a><a href='2_89.html'>89</a><a href='2_90.html'>90</a><a href='2_91.html'>91</a><a href='2_92.html'>92</a><a href='2_93.html'>93</a><a href='2_94.html'>94</a><a href='2_95.html'>95</a><a href='2_96.html'>96</a><a href='2_97.html'>97</a><a href='2_98.html'>98</a><a href='2_99.html'>99</a><a href='2_100.html'>100</a><a href='2_101.html'>101</a><a href='2_102.html'>102</a><a href='2_103.html'>103</a><a href='2_104.html'>104</a><a href='2_105.html'>105</a><a href='2_106.html'>106</a><a href='2_107.html'>107</a><a href='2_108.html'>108</a><a href='2_109.html'>109</a><a href='2_110.html'>110</a><a href='2_111.html'>111</a><a href='2_112.html'>112</a><a href='2_113.html'>113</a><a href='2_114.html'>114</a><a href='2_115.html'>115</a><a href='2_116.html'>116</a><a href='2_117.html'>117</a><a href='2_118.html'>118</a><a href='2_119.html'>119</a><a href='2_120.html'>120</a><a href='2_121.html'>121</a><a href='2_122.html'>122</a><a href='2_123.html'>123</a><a href='2_124.html'>124</a><a href='2_125.html'>125</a><a href='2_126.html'>126</a><a href='2_127.html'>127</a><a href='2_128.html'>128</a><a href='2_129.html'>129</a><a href='2_130.html'>130</a><a href='2_131.html'>131</a><a href='2_132.html'>132</a><a href='2_133.html'>133</a><a href='2_134.html'>134</a><a href='2_135.html'>135</a><a href='2_136.html'>136</a><a href='2_137.html'>137</a><a href='2_138.html'>138</a><a href='2_139.html'>139</a><a href='2_140.html'>140</a><a href='2_63.html'>Next&gt;&gt;</a>
+    <div>
+</body>
