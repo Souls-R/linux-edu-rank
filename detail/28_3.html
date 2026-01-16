@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Southeast University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Southeast University</h1>
+    <div class="pagination">
+        <a href='28_2.html'>&lt;&lt;Prev</a><a href='28.html'>1</a><a href='28_2.html'>2</a><span>[3]</span>
+    </div>
+    <hr>
+    <pre>commit c8ef20fe7274c5766a317f9193b70bed717b6b3d
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Fri May 23 11:47:17 2025 +0000
+
+    tipc: use kfree_sensitive() for aead cleanup
+    
+    The tipc_aead_free() function currently uses kfree() to release the aead
+    structure. However, this structure contains sensitive information, such
+    as key's SALT value, which should be securely erased from memory to
+    prevent potential leakage.
+    
+    To enhance security, replace kfree() with kfree_sensitive() when freeing
+    the aead structure. This change ensures that sensitive data is explicitly
+    cleared before memory deallocation, aligning with the approach used in
+    tipc_aead_init() and adhering to best practices for handling confidential
+    information.
+    
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: Tung Nguyen &lt;tung.quang.nguyen@est.tech&gt;
+    Link: https://patch.msgid.link/20250523114717.4021518-1-zilin@seu.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 8584893b4785..f4cfe88670f5 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -425,7 +425,7 @@ static void tipc_aead_free(struct rcu_head *rp)
+ 	}
+ 	free_percpu(aead-&gt;tfm_entry);
+ 	kfree_sensitive(aead-&gt;key);
+-	kfree(aead);
++	kfree_sensitive(aead);
+ }
+ 
+ static int tipc_aead_users(struct tipc_aead __rcu *aead)</pre><hr><pre>commit e7a37c9e428a2912a4eec160e633503cd72e1ee6
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed May 14 08:48:39 2025 +0000
+
+    xfrm: use kfree_sensitive() for SA secret zeroization
+    
+    High-level copy_to_user_* APIs already redact SA secret fields when
+    redaction is enabled, but the state teardown path still freed aead,
+    aalg and ealg structs with plain kfree(), which does not clear memory
+    before deallocation. This can leave SA keys and other confidential
+    data in memory, risking exposure via post-free vulnerabilities.
+    
+    Since this path is outside the packet fast path, the cost of zeroization
+    is acceptable and prevents any residual key material. This patch
+    replaces those kfree() calls unconditionally with kfree_sensitive(),
+    which zeroizes the entire buffer before freeing.
+    
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: Steffen Klassert &lt;steffen.klassert@secunet.com&gt;
+
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 4bf7a4a8f9d4..5e1c736ea708 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -599,9 +599,9 @@ static void ___xfrm_state_destroy(struct xfrm_state *x)
+ 		x-&gt;mode_cbs-&gt;destroy_state(x);
+ 	hrtimer_cancel(&amp;x-&gt;mtimer);
+ 	timer_delete_sync(&amp;x-&gt;rtimer);
+-	kfree(x-&gt;aead);
+-	kfree(x-&gt;aalg);
+-	kfree(x-&gt;ealg);
++	kfree_sensitive(x-&gt;aead);
++	kfree_sensitive(x-&gt;aalg);
++	kfree_sensitive(x-&gt;ealg);
+ 	kfree(x-&gt;calg);
+ 	kfree(x-&gt;encap);
+ 	kfree(x-&gt;coaddr);</pre><hr><pre>commit 2b270e2f43d7498ba00117c60d196435983d83d7
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Fri Apr 18 04:52:50 2025 +0000
+
+    security/apparmor: use kfree_sensitive() in unpack_secmark()
+    
+    The unpack_secmark() function currently uses kfree() to release memory
+    allocated for secmark structures and their labels. However, if a failure
+    occurs after partially parsing secmark, sensitive data may remain in
+    memory, posing a security risk.
+    
+    To mitigate this, replace kfree() with kfree_sensitive() for freeing
+    secmark structures and their labels, aligning with the approach used
+    in free_ruleset().
+    
+    I am submitting this as an RFC to seek freedback on whether this change
+    is appropriate and aligns with the subsystem's expectations. If
+    confirmed to be helpful, I will send a formal patch.
+    
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: John Johansen &lt;john.johansen@canonical.com&gt;
+
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 73139189df0f..459eb878c824 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -599,8 +599,8 @@ static bool unpack_secmark(struct aa_ext *e, struct aa_ruleset *rules)
+ fail:
+ 	if (rules-&gt;secmark) {
+ 		for (i = 0; i &lt; size; i++)
+-			kfree(rules-&gt;secmark[i].label);
+-		kfree(rules-&gt;secmark);
++			kfree_sensitive(rules-&gt;secmark[i].label);
++		kfree_sensitive(rules-&gt;secmark);
+ 		rules-&gt;secmark_count = 0;
+ 		rules-&gt;secmark = NULL;
+ 	}</pre><hr><pre>commit d65474033740ded0a4fe9a097fce72328655b41d
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Tue Dec 31 11:37:31 2024 +0000
+
+    fgraph: Add READ_ONCE() when accessing fgraph_array[]
+    
+    In __ftrace_return_to_handler(), a loop iterates over the fgraph_array[]
+    elements, which are fgraph_ops. The loop checks if an element is a
+    fgraph_stub to prevent using a fgraph_stub afterward.
+    
+    However, if the compiler reloads fgraph_array[] after this check, it might
+    race with an update to fgraph_array[] that introduces a fgraph_stub. This
+    could result in the stub being processed, but the stub contains a null
+    "func_hash" field, leading to a NULL pointer dereference.
+    
+    To ensure that the gops compared against the fgraph_stub matches the gops
+    processed later, add a READ_ONCE(). A similar patch appears in commit
+    63a8dfb ("function_graph: Add READ_ONCE() when accessing fgraph_array[]").
+    
+    Cc: stable@vger.kernel.org
+    Fixes: 37238abe3cb47 ("ftrace/function_graph: Pass fgraph_ops to function graph callbacks")
+    Link: https://lore.kernel.org/20241231113731.277668-1-zilin@seu.edu.cn
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: Steven Rostedt (Google) &lt;rostedt@goodmis.org&gt;
+
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index ddedcb50917f..30e3ddc8a8a8 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -833,7 +833,7 @@ static unsigned long __ftrace_return_to_handler(struct fgraph_ret_regs *ret_regs
+ #endif
+ 	{
+ 		for_each_set_bit(i, &amp;bitmap, sizeof(bitmap) * BITS_PER_BYTE) {
+-			struct fgraph_ops *gops = fgraph_array[i];
++			struct fgraph_ops *gops = READ_ONCE(fgraph_array[i]);
+ 
+ 			if (gops == &amp;fgraph_stub)
+ 				continue;</pre><hr><pre>commit f4d3cde410cc62b5483f59f0f3454a5c5203a2cb
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Fri Dec 13 13:50:06 2024 +0000
+
+    netfs: Remove redundant use of smp_rmb()
+    
+    The function netfs_unbuffered_write_iter_locked() in
+    fs/netfs/direct_write.c contains an unnecessary smp_rmb() call after
+    wait_on_bit(). Since wait_on_bit() already incorporates a memory barrier
+    that ensures the flag update is visible before the function returns, the
+    smp_rmb() provides no additional benefit and incurs unnecessary overhead.
+    
+    This patch removes the redundant barrier to simplify and optimize the code.
+    
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: David Howells &lt;dhowells@redhat.com&gt;
+    Link: https://lore.kernel.org/r/20241207021952.2978530-1-zilin@seu.edu.cn/
+    Link: https://lore.kernel.org/r/20241213135013.2964079-7-dhowells@redhat.com
+    Reviewed-by: Akira Yokosawa &lt;akiyks@gmail.com&gt;
+    cc: Akira Yokosawa &lt;akiyks@gmail.com&gt;
+    cc: Jeff Layton &lt;jlayton@kernel.org&gt;
+    cc: netfs@lists.linux.dev
+    cc: linux-fsdevel@vger.kernel.org
+    Signed-off-by: Christian Brauner &lt;brauner@kernel.org&gt;
+
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index 88f2adfab75e..173e8b5e6a93 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -104,7 +104,6 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
+ 		trace_netfs_rreq(wreq, netfs_rreq_trace_wait_ip);
+ 		wait_on_bit(&amp;wreq-&gt;flags, NETFS_RREQ_IN_PROGRESS,
+ 			    TASK_UNINTERRUPTIBLE);
+-		smp_rmb(); /* Read error/transferred after RIP flag */
+ 		ret = wreq-&gt;error;
+ 		if (ret == 0) {
+ 			ret = wreq-&gt;transferred;</pre>
+    <div class="pagination">
+        <a href='28_2.html'>&lt;&lt;Prev</a><a href='28.html'>1</a><a href='28_2.html'>2</a><span>[3]</span>
+    <div>
+</body>

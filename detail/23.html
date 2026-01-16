@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of Illinois Urbana-Champaign</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of Illinois Urbana-Champaign</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='23_2.html'>2</a><a href='23_3.html'>3</a><a href='23_4.html'>4</a><a href='23_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 32058c38d3b79a28963a59ac0353644dc24775cd
+Author: Yikang Yue &lt;yikangy2@illinois.edu&gt;
+Date:   Sat May 3 20:44:34 2025 -0500
+
+    fs/hpfs: Fix error code for new_inode() failure in mkdir/create/mknod/symlink
+    
+    The function call new_inode() is a primitive for allocating an inode in memory,
+    rather than planning disk space for it. Therefore, -ENOMEM should be returned
+    as the error code rather than -ENOSPC.
+    
+    To be specific, new_inode()'s call path looks like this:
+    new_inode
+      new_inode_pseudo
+        alloc_inode
+          ops-&gt;alloc_inode (hpfs_alloc_inode)
+            alloc_inode_sb
+              kmem_cache_alloc_lru
+    
+    Therefore, the failure of new_inode() indicates a memory presure issue (-ENOMEM),
+    not a lack of disk space. However, the current implementation of
+    hpfs_mkdir/create/mknod/symlink incorrectly returns -ENOSPC when new_inode() fails.
+    This patch fix this by set err to -ENOMEM before the goto statement.
+    
+    BTW, we also noticed that other nested calls within these four functions,
+    like hpfs_alloc_f/dnode and hpfs_add_dirent, might also fail due to memory presure.
+    But similarly, only -ENOSPC is returned. Addressing these will involve code
+    modifications in other functions, and we plan to submit dedicated patches for these
+    issues in the future. For this patch, we focus on new_inode().
+    
+    Signed-off-by: Yikang Yue &lt;yikangy2@illinois.edu&gt;
+    Signed-off-by: Mikulas Patocka &lt;mpatocka@redhat.com&gt;
+
+diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
+index e3cdc421dfba..353e13a615f5 100644
+--- a/fs/hpfs/namei.c
++++ b/fs/hpfs/namei.c
+@@ -52,8 +52,10 @@ static struct dentry *hpfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.fnode = cpu_to_le32(fno);
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir-&gt;i_sb));
+ 	result = new_inode(dir-&gt;i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail2;
++	}
+ 	hpfs_init_inode(result);
+ 	result-&gt;i_ino = fno;
+ 	hpfs_i(result)-&gt;i_parent_dir = dir-&gt;i_ino;
+@@ -153,9 +155,10 @@ static int hpfs_create(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir-&gt;i_sb));
+ 
+ 	result = new_inode(dir-&gt;i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-	
++	}
+ 	hpfs_init_inode(result);
+ 	result-&gt;i_ino = fno;
+ 	result-&gt;i_mode |= S_IFREG;
+@@ -239,9 +242,10 @@ static int hpfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir-&gt;i_sb));
+ 
+ 	result = new_inode(dir-&gt;i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-
++	}
+ 	hpfs_init_inode(result);
+ 	result-&gt;i_ino = fno;
+ 	hpfs_i(result)-&gt;i_parent_dir = dir-&gt;i_ino;
+@@ -314,8 +318,10 @@ static int hpfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir-&gt;i_sb));
+ 
+ 	result = new_inode(dir-&gt;i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
++	}
+ 	result-&gt;i_ino = fno;
+ 	hpfs_init_inode(result);
+ 	hpfs_i(result)-&gt;i_parent_dir = dir-&gt;i_ino;</pre><hr><pre>commit 94f53edc64e19640b5245721cd6d0c4a84f52587
+Author: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+Date:   Mon Feb 3 02:55:05 2025 -0600
+
+    samples/bpf: Fix broken vmlinux path for VMLINUX_BTF
+    
+    Commit 13b25489b6f8 ("kbuild: change working directory to external
+    module directory with M=") changed kbuild working directory of bpf
+    sample programs to samples/bpf, which broke the vmlinux path for
+    VMLINUX_BTF, as the Makefiles assume the current work directory to be
+    the kernel output directory and use a relative path (i.e., ./vmlinux):
+    
+      Makefile:316: *** Cannot find a vmlinux for VMLINUX_BTF at any of "  /path/to/linux/samples/bpf/vmlinux", build the kernel or set VMLINUX_BTF like "VMLINUX_BTF=/sys/kernel/btf/vmlinux" or VMLINUX_H variable.  Stop.
+    
+    Correctly refer to the kernel output directory using $(objtree).
+    
+    Fixes: 13b25489b6f8 ("kbuild: change working directory to external module directory with M=")
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Signed-off-by: Andrii Nakryiko &lt;andrii@kernel.org&gt;
+    Tested-by: Ruowen Qin &lt;ruqin@redhat.com&gt;
+    Link: https://lore.kernel.org/bpf/20250203085506.220297-3-jinghao7@illinois.edu
+
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index dd9944a97b7e..5b632635e00d 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -307,7 +307,7 @@ $(obj)/$(TRACE_HELPERS): TPROGS_CFLAGS := $(TPROGS_CFLAGS) -D__must_check=
+ 
+ VMLINUX_BTF_PATHS ?= $(abspath $(if $(O),$(O)/vmlinux))				\
+ 		     $(abspath $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux))	\
+-		     $(abspath ./vmlinux)
++		     $(abspath $(objtree)/vmlinux)
+ VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
+ 
+ $(obj)/vmlinux.h: $(VMLINUX_BTF) $(BPFTOOL)</pre><hr><pre>commit 8b125949df58a00e8797c6e6d3f3d3dc08f4d939
+Author: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+Date:   Mon Feb 3 02:55:06 2025 -0600
+
+    samples/hid: fix broken vmlinux path for VMLINUX_BTF
+    
+    Commit 13b25489b6f8 ("kbuild: change working directory to external
+    module directory with M=") changed kbuild working directory of hid-bpf
+    sample programs to samples/hid, which broke the vmlinux path for
+    VMLINUX_BTF, as the Makefiles assume the current work directory to be
+    the kernel output directory and use a relative path (i.e., ./vmlinux):
+    
+      Makefile:173: *** Cannot find a vmlinux for VMLINUX_BTF at any of "  /path/to/linux/samples/hid/vmlinux", build the kernel or set VMLINUX_BTF or VMLINUX_H variable.  Stop.
+    
+    Correctly refer to the kernel output directory using $(objtree).
+    
+    Fixes: 13b25489b6f8 ("kbuild: change working directory to external module directory with M=")
+    Tested-by: Ruowen Qin &lt;ruqin@redhat.com&gt;
+    Suggested-by: Daniel Borkmann &lt;daniel@iogearbox.net&gt;
+    Suggested-by: Andrii Nakryiko &lt;andrii@kernel.org&gt;
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Link: https://patch.msgid.link/20250203085506.220297-4-jinghao7@illinois.edu
+    Signed-off-by: Benjamin Tissoires &lt;bentiss@kernel.org&gt;
+
+diff --git a/samples/hid/Makefile b/samples/hid/Makefile
+index 69159c81d045..db5a077c77fc 100644
+--- a/samples/hid/Makefile
++++ b/samples/hid/Makefile
+@@ -164,7 +164,7 @@ $(obj)/hid_surface_dial.o: $(obj)/hid_surface_dial.skel.h
+ 
+ VMLINUX_BTF_PATHS ?= $(abspath $(if $(O),$(O)/vmlinux))				\
+ 		     $(abspath $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux))	\
+-		     $(abspath ./vmlinux)
++		     $(abspath $(objtree)/vmlinux)
+ VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
+ 
+ $(obj)/vmlinux.h: $(VMLINUX_BTF) $(BPFTOOL)</pre><hr><pre>commit 1739cafdb8decad538410b05a4640055408826de
+Author: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+Date:   Mon Feb 3 02:55:04 2025 -0600
+
+    samples/hid: remove unnecessary -I flags from libbpf EXTRA_CFLAGS
+    
+    Commit 5a6ea7022ff4 ("samples/bpf: Remove unnecessary -I flags from
+    libbpf EXTRA_CFLAGS") fixed the build error caused by redundant include
+    path for samples/bpf, but not samples/hid.
+    
+    Apply the same fix on samples/hid as well.
+    
+    Fixes: 13b25489b6f8 ("kbuild: change working directory to external module directory with M=")
+    Tested-by: Ruowen Qin &lt;ruqin@redhat.com&gt;
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Link: https://patch.msgid.link/20250203085506.220297-2-jinghao7@illinois.edu
+    Signed-off-by: Benjamin Tissoires &lt;bentiss@kernel.org&gt;
+
+diff --git a/samples/hid/Makefile b/samples/hid/Makefile
+index 8ea59e9631a3..69159c81d045 100644
+--- a/samples/hid/Makefile
++++ b/samples/hid/Makefile
+@@ -40,16 +40,17 @@ BPF_EXTRA_CFLAGS += -I$(srctree)/arch/mips/include/asm/mach-generic
+ endif
+ endif
+ 
+-TPROGS_CFLAGS += -Wall -O2
+-TPROGS_CFLAGS += -Wmissing-prototypes
+-TPROGS_CFLAGS += -Wstrict-prototypes
++COMMON_CFLAGS += -Wall -O2
++COMMON_CFLAGS += -Wmissing-prototypes
++COMMON_CFLAGS += -Wstrict-prototypes
+ 
++TPROGS_CFLAGS += $(COMMON_CFLAGS)
+ TPROGS_CFLAGS += -I$(objtree)/usr/include
+ TPROGS_CFLAGS += -I$(LIBBPF_INCLUDE)
+ TPROGS_CFLAGS += -I$(srctree)/tools/include
+ 
+ ifdef SYSROOT
+-TPROGS_CFLAGS += --sysroot=$(SYSROOT)
++COMMON_CFLAGS += --sysroot=$(SYSROOT)
+ TPROGS_LDFLAGS := -L$(SYSROOT)/usr/lib
+ endif
+ 
+@@ -112,7 +113,7 @@ clean:
+ 
+ $(LIBBPF): $(wildcard $(LIBBPF_SRC)/*.[ch] $(LIBBPF_SRC)/Makefile) | $(LIBBPF_OUTPUT)
+ # Fix up variables inherited from Kbuild that tools/ build system won't like
+-	$(MAKE) -C $(LIBBPF_SRC) RM='rm -rf' EXTRA_CFLAGS="$(TPROGS_CFLAGS)" \
++	$(MAKE) -C $(LIBBPF_SRC) RM='rm -rf' EXTRA_CFLAGS="$(COMMON_CFLAGS)" \
+ 		LDFLAGS=$(TPROGS_LDFLAGS) srctree=$(HID_SAMPLES_PATH)/../../ \
+ 		O= OUTPUT=$(LIBBPF_OUTPUT)/ DESTDIR=$(LIBBPF_DESTDIR) prefix= \
+ 		$@ install_headers</pre><hr><pre>commit 146b6f1112eb30a19776d6c323c994e9d67790db
+Author: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+Date:   Sat Nov 23 03:42:56 2024 -0600
+
+    ipvs: fix UB due to uninitialized stack access in ip_vs_protocol_init()
+    
+    Under certain kernel configurations when building with Clang/LLVM, the
+    compiler does not generate a return or jump as the terminator
+    instruction for ip_vs_protocol_init(), triggering the following objtool
+    warning during build time:
+    
+      vmlinux.o: warning: objtool: ip_vs_protocol_init() falls through to next function __initstub__kmod_ip_vs_rr__935_123_ip_vs_rr_init6()
+    
+    At runtime, this either causes an oops when trying to load the ipvs
+    module or a boot-time panic if ipvs is built-in. This same issue has
+    been reported by the Intel kernel test robot previously.
+    
+    Digging deeper into both LLVM and the kernel code reveals this to be a
+    undefined behavior problem. ip_vs_protocol_init() uses a on-stack buffer
+    of 64 chars to store the registered protocol names and leaves it
+    uninitialized after definition. The function calls strnlen() when
+    concatenating protocol names into the buffer. With CONFIG_FORTIFY_SOURCE
+    strnlen() performs an extra step to check whether the last byte of the
+    input char buffer is a null character (commit 3009f891bb9f ("fortify:
+    Allow strlen() and strnlen() to pass compile-time known lengths")).
+    This, together with possibly other configurations, cause the following
+    IR to be generated:
+    
+      define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #5 section ".init.text" align 16 !kcfi_type !29 {
+        %1 = alloca [64 x i8], align 16
+        ...
+    
+      14:                                               ; preds = %11
+        %15 = getelementptr inbounds i8, ptr %1, i64 63
+        %16 = load i8, ptr %15, align 1
+        %17 = tail call i1 @llvm.is.constant.i8(i8 %16)
+        %18 = icmp eq i8 %16, 0
+        %19 = select i1 %17, i1 %18, i1 false
+        br i1 %19, label %20, label %23
+    
+      20:                                               ; preds = %14
+        %21 = call i64 @strlen(ptr noundef nonnull dereferenceable(1) %1) #23
+        ...
+    
+      23:                                               ; preds = %14, %11, %20
+        %24 = call i64 @strnlen(ptr noundef nonnull dereferenceable(1) %1, i64 noundef 64) #24
+        ...
+      }
+    
+    The above code calculates the address of the last char in the buffer
+    (value %15) and then loads from it (value %16). Because the buffer is
+    never initialized, the LLVM GVN pass marks value %16 as undefined:
+    
+      %13 = getelementptr inbounds i8, ptr %1, i64 63
+      br i1 undef, label %14, label %17
+    
+    This gives later passes (SCCP, in particular) more DCE opportunities by
+    propagating the undef value further, and eventually removes everything
+    after the load on the uninitialized stack location:
+    
+      define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #0 section ".init.text" align 16 !kcfi_type !11 {
+        %1 = alloca [64 x i8], align 16
+        ...
+    
+      12:                                               ; preds = %11
+        %13 = getelementptr inbounds i8, ptr %1, i64 63
+        unreachable
+      }
+    
+    In this way, the generated native code will just fall through to the
+    next function, as LLVM does not generate any code for the unreachable IR
+    instruction and leaves the function without a terminator.
+    
+    Zero the on-stack buffer to avoid this possible UB.
+    
+    Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+    Reported-by: kernel test robot &lt;lkp@intel.com&gt;
+    Closes: https://lore.kernel.org/oe-kbuild-all/202402100205.PWXIz1ZK-lkp@intel.com/
+    Co-developed-by: Ruowen Qin &lt;ruqin@redhat.com&gt;
+    Signed-off-by: Ruowen Qin &lt;ruqin@redhat.com&gt;
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Acked-by: Julian Anastasov &lt;ja@ssi.bg&gt;
+    Signed-off-by: Pablo Neira Ayuso &lt;pablo@netfilter.org&gt;
+
+diff --git a/net/netfilter/ipvs/ip_vs_proto.c b/net/netfilter/ipvs/ip_vs_proto.c
+index f100da4ba3bc..a9fd1d3fc2cb 100644
+--- a/net/netfilter/ipvs/ip_vs_proto.c
++++ b/net/netfilter/ipvs/ip_vs_proto.c
+@@ -340,7 +340,7 @@ void __net_exit ip_vs_protocol_net_cleanup(struct netns_ipvs *ipvs)
+ 
+ int __init ip_vs_protocol_init(void)
+ {
+-	char protocols[64];
++	char protocols[64] = { 0 };
+ #define REGISTER_PROTOCOL(p)			\
+ 	do {					\
+ 		register_ip_vs_protocol(p);	\
+@@ -348,8 +348,6 @@ int __init ip_vs_protocol_init(void)
+ 		strcat(protocols, (p)-&gt;name);	\
+ 	} while (0)
+ 
+-	protocols[0] = '\0';
+-	protocols[2] = '\0';
+ #ifdef CONFIG_IP_VS_PROTO_TCP
+ 	REGISTER_PROTOCOL(&amp;ip_vs_protocol_tcp);
+ #endif</pre><hr><pre>commit 290eb13f1a657313177789159a6d1786187cf168
+Author: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+Date:   Thu Mar 7 00:26:01 2024 +0900
+
+    x86/kprobes: Boost more instructions from grp2/3/4/5
+    
+    With the instruction decoder, we are now able to decode and recognize
+    instructions with opcode extensions. There are more instructions in
+    these groups that can be boosted:
+    
+    Group 2: ROL, ROR, RCL, RCR, SHL/SAL, SHR, SAR
+    Group 3: TEST, NOT, NEG, MUL, IMUL, DIV, IDIV
+    Group 4: INC, DEC (byte operation)
+    Group 5: INC, DEC (word/doubleword/quadword operation)
+    
+    These instructions are not boosted previously because there are reserved
+    opcodes within the groups, e.g., group 2 with ModR/M.nnn == 110 is
+    unmapped. As a result, kprobes attached to them requires two int3 traps
+    as being non-boostable also prevents jump-optimization.
+    
+    Some simple tests on QEMU show that after boosting and jump-optimization
+    a single kprobe on these instructions with an empty pre-handler runs 10x
+    faster (~1000 cycles vs. ~100 cycles).
+    
+    Since these instructions are mostly ALU operations and do not touch
+    special registers like RIP, let's boost them so that we get the
+    performance benefit.
+    
+    Link: https://lore.kernel.org/all/20240204031300.830475-4-jinghao7@illinois.edu/
+    
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Signed-off-by: Masami Hiramatsu (Google) &lt;mhiramat@kernel.org&gt;
+
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index c65ca556005a..091b3ab76a18 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -169,22 +169,33 @@ bool can_boost(struct insn *insn, void *addr)
+ 	case 0x62:		/* bound */
+ 	case 0x70 ... 0x7f:	/* Conditional jumps */
+ 	case 0x9a:		/* Call far */
+-	case 0xc0 ... 0xc1:	/* Grp2 */
+ 	case 0xcc ... 0xce:	/* software exceptions */
+-	case 0xd0 ... 0xd3:	/* Grp2 */
+ 	case 0xd6:		/* (UD) */
+ 	case 0xd8 ... 0xdf:	/* ESC */
+ 	case 0xe0 ... 0xe3:	/* LOOP*, JCXZ */
+ 	case 0xe8 ... 0xe9:	/* near Call, JMP */
+ 	case 0xeb:		/* Short JMP */
+ 	case 0xf0 ... 0xf4:	/* LOCK/REP, HLT */
+-	case 0xf6 ... 0xf7:	/* Grp3 */
+-	case 0xfe:		/* Grp4 */
+ 		/* ... are not boostable */
+ 		return false;
++	case 0xc0 ... 0xc1:	/* Grp2 */
++	case 0xd0 ... 0xd3:	/* Grp2 */
++		/*
++		 * AMD uses nnn == 110 as SHL/SAL, but Intel makes it reserved.
++		 */
++		return X86_MODRM_REG(insn-&gt;modrm.bytes[0]) != 0b110;
++	case 0xf6 ... 0xf7:	/* Grp3 */
++		/* AMD uses nnn == 001 as TEST, but Intel makes it reserved. */
++		return X86_MODRM_REG(insn-&gt;modrm.bytes[0]) != 0b001;
++	case 0xfe:		/* Grp4 */
++		/* Only INC and DEC are boostable */
++		return X86_MODRM_REG(insn-&gt;modrm.bytes[0]) == 0b000 ||
++		       X86_MODRM_REG(insn-&gt;modrm.bytes[0]) == 0b001;
+ 	case 0xff:		/* Grp5 */
+-		/* Only indirect jmp is boostable */
+-		return X86_MODRM_REG(insn-&gt;modrm.bytes[0]) == 4;
++		/* Only INC, DEC, and indirect JMP are boostable */
++		return X86_MODRM_REG(insn-&gt;modrm.bytes[0]) == 0b000 ||
++		       X86_MODRM_REG(insn-&gt;modrm.bytes[0]) == 0b001 ||
++		       X86_MODRM_REG(insn-&gt;modrm.bytes[0]) == 0b100;
+ 	default:
+ 		return true;
+ 	}</pre><hr><pre>commit e884edbb844fd6935e4368734edd9f3fa46ec5c2
+Author: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+Date:   Thu Mar 7 00:26:01 2024 +0900
+
+    x86/kprobes: Prohibit kprobing on INT and UD
+    
+    Both INT (INT n, INT1, INT3, INTO) and UD (UD0, UD1, UD2) serve special
+    purposes in the kernel, e.g., INT3 is used by KGDB and UD2 is involved
+    in LLVM-KCFI instrumentation. At the same time, attaching kprobes on
+    these instructions (particularly UD) will pollute the stack trace dumped
+    in the kernel ring buffer, since the exception is triggered in the copy
+    buffer rather than the original location.
+    
+    Check for INT and UD in can_probe and reject any kprobes trying to
+    attach to these instructions.
+    
+    Link: https://lore.kernel.org/all/20240204031300.830475-3-jinghao7@illinois.edu/
+    
+    Suggested-by: Masami Hiramatsu (Google) &lt;mhiramat@kernel.org&gt;
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Signed-off-by: Masami Hiramatsu (Google) &lt;mhiramat@kernel.org&gt;
+
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index 70982e725fd7..c65ca556005a 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -252,7 +252,28 @@ unsigned long recover_probed_instruction(kprobe_opcode_t *buf, unsigned long add
+ 	return __recover_probed_insn(buf, addr);
+ }
+ 
+-/* Check if paddr is at an instruction boundary */
++/* Check if insn is INT or UD */
++static inline bool is_exception_insn(struct insn *insn)
++{
++	/* UD uses 0f escape */
++	if (insn-&gt;opcode.bytes[0] == 0x0f) {
++		/* UD0 / UD1 / UD2 */
++		return insn-&gt;opcode.bytes[1] == 0xff ||
++		       insn-&gt;opcode.bytes[1] == 0xb9 ||
++		       insn-&gt;opcode.bytes[1] == 0x0b;
++	}
++
++	/* INT3 / INT n / INTO / INT1 */
++	return insn-&gt;opcode.bytes[0] == 0xcc ||
++	       insn-&gt;opcode.bytes[0] == 0xcd ||
++	       insn-&gt;opcode.bytes[0] == 0xce ||
++	       insn-&gt;opcode.bytes[0] == 0xf1;
++}
++
++/*
++ * Check if paddr is at an instruction boundary and that instruction can
++ * be probed
++ */
+ static bool can_probe(unsigned long paddr)
+ {
+ 	unsigned long addr, __addr, offset = 0;
+@@ -291,6 +312,22 @@ static bool can_probe(unsigned long paddr)
+ #endif
+ 		addr += insn.length;
+ 	}
++
++	/* Check if paddr is at an instruction boundary */
++	if (addr != paddr)
++		return false;
++
++	__addr = recover_probed_instruction(buf, addr);
++	if (!__addr)
++		return false;
++
++	if (insn_decode_kernel(&amp;insn, (void *)__addr) &lt; 0)
++		return false;
++
++	/* INT and UD are special and should not be kprobed */
++	if (is_exception_insn(&amp;insn))
++		return false;
++
+ 	if (IS_ENABLED(CONFIG_CFI_CLANG)) {
+ 		/*
+ 		 * The compiler generates the following instruction sequence
+@@ -305,13 +342,6 @@ static bool can_probe(unsigned long paddr)
+ 		 * Also, these movl and addl are used for showing expected
+ 		 * type. So those must not be touched.
+ 		 */
+-		__addr = recover_probed_instruction(buf, addr);
+-		if (!__addr)
+-			return false;
+-
+-		if (insn_decode_kernel(&amp;insn, (void *)__addr) &lt; 0)
+-			return false;
+-
+ 		if (insn.opcode.value == 0xBA)
+ 			offset = 12;
+ 		else if (insn.opcode.value == 0x3)
+@@ -325,7 +355,7 @@ static bool can_probe(unsigned long paddr)
+ 	}
+ 
+ out:
+-	return (addr == paddr);
++	return true;
+ }
+ 
+ /* If x86 supports IBT (ENDBR) it must be skipped. */</pre><hr><pre>commit e4778a0ef322834718f8e42da3901eb99fef1208
+Author: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+Date:   Thu Mar 7 00:26:01 2024 +0900
+
+    x86/kprobes: Refactor can_{probe,boost} return type to bool
+    
+    Both can_probe and can_boost have int return type but are using int as
+    boolean in their context.
+    
+    Refactor both functions to make them actually return boolean.
+    
+    Link: https://lore.kernel.org/all/20240204031300.830475-2-jinghao7@illinois.edu/
+    
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Acked-by: Masami Hiramatsu (Google) &lt;mhiramat@kernel.org&gt;
+    Signed-off-by: Masami Hiramatsu (Google) &lt;mhiramat@kernel.org&gt;
+
+diff --git a/arch/x86/kernel/kprobes/common.h b/arch/x86/kernel/kprobes/common.h
+index c993521d4933..e772276f5aa9 100644
+--- a/arch/x86/kernel/kprobes/common.h
++++ b/arch/x86/kernel/kprobes/common.h
+@@ -78,7 +78,7 @@
+ #endif
+ 
+ /* Ensure if the instruction can be boostable */
+-extern int can_boost(struct insn *insn, void *orig_addr);
++extern bool can_boost(struct insn *insn, void *orig_addr);
+ /* Recover instruction if given address is probed */
+ extern unsigned long recover_probed_instruction(kprobe_opcode_t *buf,
+ 					 unsigned long addr);
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index a0ce46c0a2d8..70982e725fd7 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -137,14 +137,14 @@ NOKPROBE_SYMBOL(synthesize_relcall);
+  * Returns non-zero if INSN is boostable.
+  * RIP relative instructions are adjusted at copying time in 64 bits mode
+  */
+-int can_boost(struct insn *insn, void *addr)
++bool can_boost(struct insn *insn, void *addr)
+ {
+ 	kprobe_opcode_t opcode;
+ 	insn_byte_t prefix;
+ 	int i;
+ 
+ 	if (search_exception_tables((unsigned long)addr))
+-		return 0;	/* Page fault may occur on this address. */
++		return false;	/* Page fault may occur on this address. */
+ 
+ 	/* 2nd-byte opcode */
+ 	if (insn-&gt;opcode.nbytes == 2)
+@@ -152,7 +152,7 @@ int can_boost(struct insn *insn, void *addr)
+ 				(unsigned long *)twobyte_is_boostable);
+ 
+ 	if (insn-&gt;opcode.nbytes != 1)
+-		return 0;
++		return false;
+ 
+ 	for_each_insn_prefix(insn, i, prefix) {
+ 		insn_attr_t attr;
+@@ -160,7 +160,7 @@ int can_boost(struct insn *insn, void *addr)
+ 		attr = inat_get_opcode_attribute(prefix);
+ 		/* Can't boost Address-size override prefix and CS override prefix */
+ 		if (prefix == 0x2e || inat_is_address_size_prefix(attr))
+-			return 0;
++			return false;
+ 	}
+ 
+ 	opcode = insn-&gt;opcode.bytes[0];
+@@ -181,12 +181,12 @@ int can_boost(struct insn *insn, void *addr)
+ 	case 0xf6 ... 0xf7:	/* Grp3 */
+ 	case 0xfe:		/* Grp4 */
+ 		/* ... are not boostable */
+-		return 0;
++		return false;
+ 	case 0xff:		/* Grp5 */
+ 		/* Only indirect jmp is boostable */
+ 		return X86_MODRM_REG(insn-&gt;modrm.bytes[0]) == 4;
+ 	default:
+-		return 1;
++		return true;
+ 	}
+ }
+ 
+@@ -253,20 +253,18 @@ unsigned long recover_probed_instruction(kprobe_opcode_t *buf, unsigned long add
+ }
+ 
+ /* Check if paddr is at an instruction boundary */
+-static int can_probe(unsigned long paddr)
++static bool can_probe(unsigned long paddr)
+ {
+ 	unsigned long addr, __addr, offset = 0;
+ 	struct insn insn;
+ 	kprobe_opcode_t buf[MAX_INSN_SIZE];
+ 
+ 	if (!kallsyms_lookup_size_offset(paddr, NULL, &amp;offset))
+-		return 0;
++		return false;
+ 
+ 	/* Decode instructions */
+ 	addr = paddr - offset;
+ 	while (addr &lt; paddr) {
+-		int ret;
+-
+ 		/*
+ 		 * Check if the instruction has been modified by another
+ 		 * kprobe, in which case we replace the breakpoint by the
+@@ -277,11 +275,10 @@ static int can_probe(unsigned long paddr)
+ 		 */
+ 		__addr = recover_probed_instruction(buf, addr);
+ 		if (!__addr)
+-			return 0;
++			return false;
+ 
+-		ret = insn_decode_kernel(&amp;insn, (void *)__addr);
+-		if (ret &lt; 0)
+-			return 0;
++		if (insn_decode_kernel(&amp;insn, (void *)__addr) &lt; 0)
++			return false;
+ 
+ #ifdef CONFIG_KGDB
+ 		/*
+@@ -290,7 +287,7 @@ static int can_probe(unsigned long paddr)
+ 		 */
+ 		if (insn.opcode.bytes[0] == INT3_INSN_OPCODE &amp;&amp;
+ 		    kgdb_has_hit_break(addr))
+-			return 0;
++			return false;
+ #endif
+ 		addr += insn.length;
+ 	}
+@@ -310,10 +307,10 @@ static int can_probe(unsigned long paddr)
+ 		 */
+ 		__addr = recover_probed_instruction(buf, addr);
+ 		if (!__addr)
+-			return 0;
++			return false;
+ 
+ 		if (insn_decode_kernel(&amp;insn, (void *)__addr) &lt; 0)
+-			return 0;
++			return false;
+ 
+ 		if (insn.opcode.value == 0xBA)
+ 			offset = 12;
+@@ -324,7 +321,7 @@ static int can_probe(unsigned long paddr)
+ 
+ 		/* This movl/addl is used for decoding CFI. */
+ 		if (is_cfi_trap(addr + offset))
+-			return 0;
++			return false;
+ 	}
+ 
+ out:</pre><hr><pre>commit f5d03da48d062966c94f0199d20be0b3a37a7982
+Author: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+Date:   Tue Jan 2 17:33:45 2024 -0600
+
+    x86/kprobes: fix incorrect return address calculation in kprobe_emulate_call_indirect
+    
+    kprobe_emulate_call_indirect currently uses int3_emulate_call to emulate
+    indirect calls. However, int3_emulate_call always assumes the size of
+    the call to be 5 bytes when calculating the return address. This is
+    incorrect for register-based indirect calls in x86, which can be either
+    2 or 3 bytes depending on whether REX prefix is used. At kprobe runtime,
+    the incorrect return address causes control flow to land onto the wrong
+    place after return -- possibly not a valid instruction boundary. This
+    can lead to a panic like the following:
+    
+    [    7.308204][    C1] BUG: unable to handle page fault for address: 000000000002b4d8
+    [    7.308883][    C1] #PF: supervisor read access in kernel mode
+    [    7.309168][    C1] #PF: error_code(0x0000) - not-present page
+    [    7.309461][    C1] PGD 0 P4D 0
+    [    7.309652][    C1] Oops: 0000 [#1] SMP
+    [    7.309929][    C1] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.7.0-rc5-trace-for-next #6
+    [    7.310397][    C1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
+    [    7.311068][    C1] RIP: 0010:__common_interrupt+0x52/0xc0
+    [    7.311349][    C1] Code: 01 00 4d 85 f6 74 39 49 81 fe 00 f0 ff ff 77 30 4c 89 f7 4d 8b 5e 68 41 ba 91 76 d8 42 45 03 53 fc 74 02 0f 0b cc ff d3 65 48 &lt;8b&gt; 05 30 c7 ff 7e 65 4c 89 3d 28 c7 ff 7e 5b 41 5c 41 5e 41 5f c3
+    [    7.312512][    C1] RSP: 0018:ffffc900000e0fd0 EFLAGS: 00010046
+    [    7.312899][    C1] RAX: 0000000000000001 RBX: 0000000000000023 RCX: 0000000000000001
+    [    7.313334][    C1] RDX: 00000000000003cd RSI: 0000000000000001 RDI: ffff888100d302a4
+    [    7.313702][    C1] RBP: 0000000000000001 R08: 0ef439818636191f R09: b1621ff338a3b482
+    [    7.314146][    C1] R10: ffffffff81e5127b R11: ffffffff81059810 R12: 0000000000000023
+    [    7.314509][    C1] R13: 0000000000000000 R14: ffff888100d30200 R15: 0000000000000000
+    [    7.314951][    C1] FS:  0000000000000000(0000) GS:ffff88813bc80000(0000) knlGS:0000000000000000
+    [    7.315396][    C1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [    7.315691][    C1] CR2: 000000000002b4d8 CR3: 0000000003028003 CR4: 0000000000370ef0
+    [    7.316153][    C1] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    [    7.316508][    C1] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    [    7.316948][    C1] Call Trace:
+    [    7.317123][    C1]  &lt;IRQ&gt;
+    [    7.317279][    C1]  ? __die_body+0x64/0xb0
+    [    7.317482][    C1]  ? page_fault_oops+0x248/0x370
+    [    7.317712][    C1]  ? __wake_up+0x96/0xb0
+    [    7.317964][    C1]  ? exc_page_fault+0x62/0x130
+    [    7.318211][    C1]  ? asm_exc_page_fault+0x22/0x30
+    [    7.318444][    C1]  ? __cfi_native_send_call_func_single_ipi+0x10/0x10
+    [    7.318860][    C1]  ? default_idle+0xb/0x10
+    [    7.319063][    C1]  ? __common_interrupt+0x52/0xc0
+    [    7.319330][    C1]  common_interrupt+0x78/0x90
+    [    7.319546][    C1]  &lt;/IRQ&gt;
+    [    7.319679][    C1]  &lt;TASK&gt;
+    [    7.319854][    C1]  asm_common_interrupt+0x22/0x40
+    [    7.320082][    C1] RIP: 0010:default_idle+0xb/0x10
+    [    7.320309][    C1] Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 b8 0c 67 40 a5 66 90 0f 00 2d 09 b9 3b 00 fb f4 &lt;fa&gt; c3 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 b8 0c 67 40 a5 e9
+    [    7.321449][    C1] RSP: 0018:ffffc9000009bee8 EFLAGS: 00000256
+    [    7.321808][    C1] RAX: ffff88813bca8b68 RBX: 0000000000000001 RCX: 000000000001ef0c
+    [    7.322227][    C1] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 000000000001ef0c
+    [    7.322656][    C1] RBP: ffffc9000009bef8 R08: 8000000000000000 R09: 00000000000008c2
+    [    7.323083][    C1] R10: 0000000000000000 R11: ffffffff81058e70 R12: 0000000000000000
+    [    7.323530][    C1] R13: ffff8881002b30c0 R14: 0000000000000000 R15: 0000000000000000
+    [    7.323948][    C1]  ? __cfi_lapic_next_deadline+0x10/0x10
+    [    7.324239][    C1]  default_idle_call+0x31/0x50
+    [    7.324464][    C1]  do_idle+0xd3/0x240
+    [    7.324690][    C1]  cpu_startup_entry+0x25/0x30
+    [    7.324983][    C1]  start_secondary+0xb4/0xc0
+    [    7.325217][    C1]  secondary_startup_64_no_verify+0x179/0x17b
+    [    7.325498][    C1]  &lt;/TASK&gt;
+    [    7.325641][    C1] Modules linked in:
+    [    7.325906][    C1] CR2: 000000000002b4d8
+    [    7.326104][    C1] ---[ end trace 0000000000000000 ]---
+    [    7.326354][    C1] RIP: 0010:__common_interrupt+0x52/0xc0
+    [    7.326614][    C1] Code: 01 00 4d 85 f6 74 39 49 81 fe 00 f0 ff ff 77 30 4c 89 f7 4d 8b 5e 68 41 ba 91 76 d8 42 45 03 53 fc 74 02 0f 0b cc ff d3 65 48 &lt;8b&gt; 05 30 c7 ff 7e 65 4c 89 3d 28 c7 ff 7e 5b 41 5c 41 5e 41 5f c3
+    [    7.327570][    C1] RSP: 0018:ffffc900000e0fd0 EFLAGS: 00010046
+    [    7.327910][    C1] RAX: 0000000000000001 RBX: 0000000000000023 RCX: 0000000000000001
+    [    7.328273][    C1] RDX: 00000000000003cd RSI: 0000000000000001 RDI: ffff888100d302a4
+    [    7.328632][    C1] RBP: 0000000000000001 R08: 0ef439818636191f R09: b1621ff338a3b482
+    [    7.329223][    C1] R10: ffffffff81e5127b R11: ffffffff81059810 R12: 0000000000000023
+    [    7.329780][    C1] R13: 0000000000000000 R14: ffff888100d30200 R15: 0000000000000000
+    [    7.330193][    C1] FS:  0000000000000000(0000) GS:ffff88813bc80000(0000) knlGS:0000000000000000
+    [    7.330632][    C1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [    7.331050][    C1] CR2: 000000000002b4d8 CR3: 0000000003028003 CR4: 0000000000370ef0
+    [    7.331454][    C1] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    [    7.331854][    C1] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    [    7.332236][    C1] Kernel panic - not syncing: Fatal exception in interrupt
+    [    7.332730][    C1] Kernel Offset: disabled
+    [    7.333044][    C1] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+    
+    The relevant assembly code is (from objdump, faulting address
+    highlighted):
+    
+    ffffffff8102ed9d:       41 ff d3                  call   *%r11
+    ffffffff8102eda0:       65 48 &lt;8b&gt; 05 30 c7 ff    mov    %gs:0x7effc730(%rip),%rax
+    
+    The emulation incorrectly sets the return address to be ffffffff8102ed9d
+    + 0x5 = ffffffff8102eda2, which is the 8b byte in the middle of the next
+    mov. This in turn causes incorrect subsequent instruction decoding and
+    eventually triggers the page fault above.
+    
+    Instead of invoking int3_emulate_call, perform push and jmp emulation
+    directly in kprobe_emulate_call_indirect. At this point we can obtain
+    the instruction size from p-&gt;ainsn.size so that we can calculate the
+    correct return address.
+    
+    Link: https://lore.kernel.org/all/20240102233345.385475-1-jinghao7@illinois.edu/
+    
+    Fixes: 6256e668b7af ("x86/kprobes: Use int3 instead of debug trap for single-step")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Signed-off-by: Masami Hiramatsu (Google) &lt;mhiramat@kernel.org&gt;
+
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index e8babebad7b8..a0ce46c0a2d8 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -576,7 +576,8 @@ static void kprobe_emulate_call_indirect(struct kprobe *p, struct pt_regs *regs)
+ {
+ 	unsigned long offs = addrmode_regoffs[p-&gt;ainsn.indirect.reg];
+ 
+-	int3_emulate_call(regs, regs_get_register(regs, offs));
++	int3_emulate_push(regs, regs-&gt;ip - INT3_INSN_SIZE + p-&gt;ainsn.size);
++	int3_emulate_jmp(regs, regs_get_register(regs, offs));
+ }
+ NOKPROBE_SYMBOL(kprobe_emulate_call_indirect);
+ </pre><hr><pre>commit 9e09b75079e229b08f12a732712100fdb9af8cab
+Author: Ruowen Qin &lt;ruowenq2@illinois.edu&gt;
+Date:   Tue Sep 26 23:50:30 2023 -0500
+
+    samples/bpf: Add -fsanitize=bounds to userspace programs
+    
+    The sanitizer flag, which is supported by both clang and gcc, would make
+    it easier to debug array index out-of-bounds problems in these programs.
+    
+    Make the Makfile smarter to detect ubsan support from the compiler and
+    add the '-fsanitize=bounds' accordingly.
+    
+    Suggested-by: Mimi Zohar &lt;zohar@linux.ibm.com&gt;
+    Signed-off-by: Jinghao Jia &lt;jinghao@linux.ibm.com&gt;
+    Signed-off-by: Jinghao Jia &lt;jinghao7@illinois.edu&gt;
+    Signed-off-by: Ruowen Qin &lt;ruowenq2@illinois.edu&gt;
+    Signed-off-by: Andrii Nakryiko &lt;andrii@kernel.org&gt;
+    Tested-by: Jiri Olsa &lt;jolsa@kernel.org&gt;
+    Acked-by: Jiri Olsa &lt;jolsa@kernel.org&gt;
+    Link: https://lore.kernel.org/bpf/20230927045030.224548-2-ruowenq2@illinois.edu
+
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 6c707ebcebb9..90af76fa9dd8 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -169,6 +169,9 @@ endif
+ TPROGS_CFLAGS += -Wall -O2
+ TPROGS_CFLAGS += -Wmissing-prototypes
+ TPROGS_CFLAGS += -Wstrict-prototypes
++TPROGS_CFLAGS += $(call try-run,\
++	printf "int main() { return 0; }" |\
++	$(CC) -Werror -fsanitize=bounds -x c - -o "$$TMP",-fsanitize=bounds,)
+ 
+ TPROGS_CFLAGS += -I$(objtree)/usr/include
+ TPROGS_CFLAGS += -I$(srctree)/tools/testing/selftests/bpf/</pre>
+    <div class="pagination">
+        <span>[1]</span><a href='23_2.html'>2</a><a href='23_3.html'>3</a><a href='23_4.html'>4</a><a href='23_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

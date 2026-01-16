@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Arizona State University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Arizona State University</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='43_2.html'>2</a><a href='43_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit c1d73b1480235731e35c81df70b08f4714a7d095
+Author: Xiang Mei &lt;xmei5@asu.edu&gt;
+Date:   Mon Jan 5 20:41:00 2026 -0700
+
+    net/sched: sch_qfq: Fix NULL deref when deactivating inactive aggregate in qfq_reset
+    
+    `qfq_class-&gt;leaf_qdisc-&gt;q.qlen &gt; 0` does not imply that the class
+    itself is active.
+    
+    Two qfq_class objects may point to the same leaf_qdisc. This happens
+    when:
+    
+    1. one QFQ qdisc is attached to the dev as the root qdisc, and
+    
+    2. another QFQ qdisc is temporarily referenced (e.g., via qdisc_get()
+    / qdisc_put()) and is pending to be destroyed, as in function
+    tc_new_tfilter.
+    
+    When packets are enqueued through the root QFQ qdisc, the shared
+    leaf_qdisc-&gt;q.qlen increases. At the same time, the second QFQ
+    qdisc triggers qdisc_put and qdisc_destroy: the qdisc enters
+    qfq_reset() with its own q-&gt;q.qlen == 0, but its class's leaf
+    qdisc-&gt;q.qlen &gt; 0. Therefore, the qfq_reset would wrongly deactivate
+    an inactive aggregate and trigger a null-deref in qfq_deactivate_agg:
+    
+    [    0.903172] BUG: kernel NULL pointer dereference, address: 0000000000000000
+    [    0.903571] #PF: supervisor write access in kernel mode
+    [    0.903860] #PF: error_code(0x0002) - not-present page
+    [    0.904177] PGD 10299b067 P4D 10299b067 PUD 10299c067 PMD 0
+    [    0.904502] Oops: Oops: 0002 [#1] SMP NOPTI
+    [    0.904737] CPU: 0 UID: 0 PID: 135 Comm: exploit Not tainted 6.19.0-rc3+ #2 NONE
+    [    0.905157] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+    [    0.905754] RIP: 0010:qfq_deactivate_agg (include/linux/list.h:992 (discriminator 2) include/linux/list.h:1006 (discriminator 2) net/sched/sch_qfq.c:1367 (discriminator 2) net/sched/sch_qfq.c:1393 (discriminator 2))
+    [    0.906046] Code: 0f 84 4d 01 00 00 48 89 70 18 8b 4b 10 48 c7 c2 ff ff ff ff 48 8b 78 08 48 d3 e2 48 21 f2 48 2b 13 48 8b 30 48 d3 ea 8b 4b 18 0
+    
+    Code starting with the faulting instruction
+    ===========================================
+       0:   0f 84 4d 01 00 00       je     0x153
+       6:   48 89 70 18             mov    %rsi,0x18(%rax)
+       a:   8b 4b 10                mov    0x10(%rbx),%ecx
+       d:   48 c7 c2 ff ff ff ff    mov    $0xffffffffffffffff,%rdx
+      14:   48 8b 78 08             mov    0x8(%rax),%rdi
+      18:   48 d3 e2                shl    %cl,%rdx
+      1b:   48 21 f2                and    %rsi,%rdx
+      1e:   48 2b 13                sub    (%rbx),%rdx
+      21:   48 8b 30                mov    (%rax),%rsi
+      24:   48 d3 ea                shr    %cl,%rdx
+      27:   8b 4b 18                mov    0x18(%rbx),%ecx
+            ...
+    [    0.907095] RSP: 0018:ffffc900004a39a0 EFLAGS: 00010246
+    [    0.907368] RAX: ffff8881043a0880 RBX: ffff888102953340 RCX: 0000000000000000
+    [    0.907723] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+    [    0.908100] RBP: ffff888102952180 R08: 0000000000000000 R09: 0000000000000000
+    [    0.908451] R10: ffff8881043a0000 R11: 0000000000000000 R12: ffff888102952000
+    [    0.908804] R13: ffff888102952180 R14: ffff8881043a0ad8 R15: ffff8881043a0880
+    [    0.909179] FS:  000000002a1a0380(0000) GS:ffff888196d8d000(0000) knlGS:0000000000000000
+    [    0.909572] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [    0.909857] CR2: 0000000000000000 CR3: 0000000102993002 CR4: 0000000000772ef0
+    [    0.910247] PKRU: 55555554
+    [    0.910391] Call Trace:
+    [    0.910527]  &lt;TASK&gt;
+    [    0.910638]  qfq_reset_qdisc (net/sched/sch_qfq.c:357 net/sched/sch_qfq.c:1485)
+    [    0.910826]  qdisc_reset (include/linux/skbuff.h:2195 include/linux/skbuff.h:2501 include/linux/skbuff.h:3424 include/linux/skbuff.h:3430 net/sched/sch_generic.c:1036)
+    [    0.911040]  __qdisc_destroy (net/sched/sch_generic.c:1076)
+    [    0.911236]  tc_new_tfilter (net/sched/cls_api.c:2447)
+    [    0.911447]  rtnetlink_rcv_msg (net/core/rtnetlink.c:6958)
+    [    0.911663]  ? __pfx_rtnetlink_rcv_msg (net/core/rtnetlink.c:6861)
+    [    0.911894]  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+    [    0.912100]  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
+    [    0.912296]  ? __alloc_skb (net/core/skbuff.c:706)
+    [    0.912484]  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+    [    0.912682]  sock_write_iter (net/socket.c:727 (discriminator 1) net/socket.c:742 (discriminator 1) net/socket.c:1195 (discriminator 1))
+    [    0.912880]  vfs_write (fs/read_write.c:593 fs/read_write.c:686)
+    [    0.913077]  ksys_write (fs/read_write.c:738)
+    [    0.913252]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+    [    0.913438]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:131)
+    [    0.913687] RIP: 0033:0x424c34
+    [    0.913844] Code: 89 02 48 c7 c0 ff ff ff ff eb bd 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d 2d 44 09 00 00 74 13 b8 01 00 00 00 0f 05 9
+    
+    Code starting with the faulting instruction
+    ===========================================
+       0:   89 02                   mov    %eax,(%rdx)
+       2:   48 c7 c0 ff ff ff ff    mov    $0xffffffffffffffff,%rax
+       9:   eb bd                   jmp    0xffffffffffffffc8
+       b:   66 2e 0f 1f 84 00 00    cs nopw 0x0(%rax,%rax,1)
+      12:   00 00 00
+      15:   90                      nop
+      16:   f3 0f 1e fa             endbr64
+      1a:   80 3d 2d 44 09 00 00    cmpb   $0x0,0x9442d(%rip)        # 0x9444e
+      21:   74 13                   je     0x36
+      23:   b8 01 00 00 00          mov    $0x1,%eax
+      28:   0f 05                   syscall
+      2a:   09                      .byte 0x9
+    [    0.914807] RSP: 002b:00007ffea1938b78 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+    [    0.915197] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 0000000000424c34
+    [    0.915556] RDX: 000000000000003c RSI: 000000002af378c0 RDI: 0000000000000003
+    [    0.915912] RBP: 00007ffea1938bc0 R08: 00000000004b8820 R09: 0000000000000000
+    [    0.916297] R10: 0000000000000001 R11: 0000000000000202 R12: 00007ffea1938d28
+    [    0.916652] R13: 00007ffea1938d38 R14: 00000000004b3828 R15: 0000000000000001
+    [    0.917039]  &lt;/TASK&gt;
+    [    0.917158] Modules linked in:
+    [    0.917316] CR2: 0000000000000000
+    [    0.917484] ---[ end trace 0000000000000000 ]---
+    [    0.917717] RIP: 0010:qfq_deactivate_agg (include/linux/list.h:992 (discriminator 2) include/linux/list.h:1006 (discriminator 2) net/sched/sch_qfq.c:1367 (discriminator 2) net/sched/sch_qfq.c:1393 (discriminator 2))
+    [    0.917978] Code: 0f 84 4d 01 00 00 48 89 70 18 8b 4b 10 48 c7 c2 ff ff ff ff 48 8b 78 08 48 d3 e2 48 21 f2 48 2b 13 48 8b 30 48 d3 ea 8b 4b 18 0
+    
+    Code starting with the faulting instruction
+    ===========================================
+       0:   0f 84 4d 01 00 00       je     0x153
+       6:   48 89 70 18             mov    %rsi,0x18(%rax)
+       a:   8b 4b 10                mov    0x10(%rbx),%ecx
+       d:   48 c7 c2 ff ff ff ff    mov    $0xffffffffffffffff,%rdx
+      14:   48 8b 78 08             mov    0x8(%rax),%rdi
+      18:   48 d3 e2                shl    %cl,%rdx
+      1b:   48 21 f2                and    %rsi,%rdx
+      1e:   48 2b 13                sub    (%rbx),%rdx
+      21:   48 8b 30                mov    (%rax),%rsi
+      24:   48 d3 ea                shr    %cl,%rdx
+      27:   8b 4b 18                mov    0x18(%rbx),%ecx
+            ...
+    [    0.918902] RSP: 0018:ffffc900004a39a0 EFLAGS: 00010246
+    [    0.919198] RAX: ffff8881043a0880 RBX: ffff888102953340 RCX: 0000000000000000
+    [    0.919559] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+    [    0.919908] RBP: ffff888102952180 R08: 0000000000000000 R09: 0000000000000000
+    [    0.920289] R10: ffff8881043a0000 R11: 0000000000000000 R12: ffff888102952000
+    [    0.920648] R13: ffff888102952180 R14: ffff8881043a0ad8 R15: ffff8881043a0880
+    [    0.921014] FS:  000000002a1a0380(0000) GS:ffff888196d8d000(0000) knlGS:0000000000000000
+    [    0.921424] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [    0.921710] CR2: 0000000000000000 CR3: 0000000102993002 CR4: 0000000000772ef0
+    [    0.922097] PKRU: 55555554
+    [    0.922240] Kernel panic - not syncing: Fatal exception
+    [    0.922590] Kernel Offset: disabled
+    
+    Fixes: 0545a3037773 ("pkt_sched: QFQ - quick fair queue scheduler")
+    Signed-off-by: Xiang Mei &lt;xmei5@asu.edu&gt;
+    Link: https://patch.msgid.link/20260106034100.1780779-1-xmei5@asu.edu
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index d920f57dc6d7..f4013b547438 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -1481,7 +1481,7 @@ static void qfq_reset_qdisc(struct Qdisc *sch)
+ 
+ 	for (i = 0; i &lt; q-&gt;clhash.hashsize; i++) {
+ 		hlist_for_each_entry(cl, &amp;q-&gt;clhash.hash[i], common.hnode) {
+-			if (cl-&gt;qdisc-&gt;q.qlen &gt; 0)
++			if (cl_is_active(cl))
+ 				qfq_deactivate_class(q, cl);
+ 
+ 			qdisc_reset(cl-&gt;qdisc);</pre><hr><pre>commit 58fc7342b529803d3c221101102fe913df7adb83
+Author: Will Rosenberg &lt;whrosenb@asu.edu&gt;
+Date:   Fri Dec 19 10:36:37 2025 -0700
+
+    ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
+    
+    There exists a kernel oops caused by a BUG_ON(nhead &lt; 0) at
+    net/core/skbuff.c:2232 in pskb_expand_head().
+    This bug is triggered as part of the calipso_skbuff_setattr()
+    routine when skb_cow() is passed headroom &gt; INT_MAX
+    (i.e. (int)(skb_headroom(skb) + len_delta) &lt; 0).
+    
+    The root cause of the bug is due to an implicit integer cast in
+    __skb_cow(). The check (headroom &gt; skb_headroom(skb)) is meant to ensure
+    that delta = headroom - skb_headroom(skb) is never negative, otherwise
+    we will trigger a BUG_ON in pskb_expand_head(). However, if
+    headroom &gt; INT_MAX and delta &lt;= -NET_SKB_PAD, the check passes, delta
+    becomes negative, and pskb_expand_head() is passed a negative value for
+    nhead.
+    
+    Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
+    "negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
+    by only using skb_cow() to grow headroom.
+    
+    PoC:
+            Using `netlabelctl` tool:
+    
+            netlabelctl map del default
+            netlabelctl calipso add pass doi:7
+            netlabelctl map add default address:0::1/128 protocol:calipso,7
+    
+            Then run the following PoC:
+    
+            int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+    
+            // setup msghdr
+            int cmsg_size = 2;
+            int cmsg_len = 0x60;
+            struct msghdr msg;
+            struct sockaddr_in6 dest_addr;
+            struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
+                            sizeof(struct cmsghdr) + cmsg_len);
+            msg.msg_name = &amp;dest_addr;
+            msg.msg_namelen = sizeof(dest_addr);
+            msg.msg_iov = NULL;
+            msg.msg_iovlen = 0;
+            msg.msg_control = cmsg;
+            msg.msg_controllen = cmsg_len;
+            msg.msg_flags = 0;
+    
+            // setup sockaddr
+            dest_addr.sin6_family = AF_INET6;
+            dest_addr.sin6_port = htons(31337);
+            dest_addr.sin6_flowinfo = htonl(31337);
+            dest_addr.sin6_addr = in6addr_loopback;
+            dest_addr.sin6_scope_id = 31337;
+    
+            // setup cmsghdr
+            cmsg-&gt;cmsg_len = cmsg_len;
+            cmsg-&gt;cmsg_level = IPPROTO_IPV6;
+            cmsg-&gt;cmsg_type = IPV6_HOPOPTS;
+            char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
+            hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
+    
+            sendmsg(fd, &amp;msg, 0);
+    
+    Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
+    Suggested-by: Paul Moore &lt;paul@paul-moore.com&gt;
+    Signed-off-by: Will Rosenberg &lt;whrosenb@asu.edu&gt;
+    Acked-by: Paul Moore &lt;paul@paul-moore.com&gt;
+    Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index df1986973430..21f6ed126253 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1342,7 +1342,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
+ 	/* At this point new_end aligns to 4n, so (new_end &amp; 4) pads to 8n */
+ 	pad = ((new_end &amp; 4) + (end &amp; 7)) &amp; 7;
+ 	len_delta = new_end - (int)end + pad;
+-	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
++	ret_val = skb_cow(skb,
++			  skb_headroom(skb) + (len_delta &gt; 0 ? len_delta : 0));
+ 	if (ret_val &lt; 0)
+ 		return ret_val;
+ </pre><hr><pre>commit 2b742094582db365fe07021b0a9c5405f85049f9
+Author: Will Rosenberg &lt;whrosenb@asu.edu&gt;
+Date:   Tue Dec 16 23:01:07 2025 -0700
+
+    fs/kernfs: null-ptr deref in simple_xattrs_free()
+    
+    There exists a null pointer dereference in simple_xattrs_free() as
+    part of the __kernfs_new_node() routine. Within __kernfs_new_node(),
+    err_out4 calls simple_xattr_free(), but kn-&gt;iattr may be NULL if
+    __kernfs_setattr() was never called. As a result, the first argument to
+    simple_xattrs_free() may be NULL + 0x38, and no NULL check is done
+    internally, causing an incorrect pointer dereference.
+    
+    Add a check to ensure kn-&gt;iattr is not NULL, meaning __kernfs_setattr()
+    has been called and kn-&gt;iattr is allocated. Note that struct kernfs_node
+    kn is allocated with kmem_cache_zalloc, so we can assume kn-&gt;iattr will
+    be NULL if not allocated.
+    
+    An alternative fix could be to not call simple_xattrs_free() at all. As
+    was previously discussed during the initial patch, simple_xattrs_free()
+    is not strictly needed and is included to be consistent with
+    kernfs_free_rcu(), which also helps the function maintain correctness if
+    changes are made in __kernfs_new_node().
+    
+    Reported-by: syzbot+6aaf7f48ae034ab0ea97@syzkaller.appspotmail.com
+    Closes: https://syzkaller.appspot.com/bug?extid=6aaf7f48ae034ab0ea97
+    Fixes: 382b1e8f30f7 ("kernfs: fix memory leak of kernfs_iattrs in __kernfs_new_node")
+    Signed-off-by: Will Rosenberg &lt;whrosenb@asu.edu&gt;
+    Link: https://patch.msgid.link/20251217060107.4171558-1-whrosenb@asu.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
+index 5c0efd6b239f..29baeeb97871 100644
+--- a/fs/kernfs/dir.c
++++ b/fs/kernfs/dir.c
+@@ -681,8 +681,10 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
+ 	return kn;
+ 
+  err_out4:
+-	simple_xattrs_free(&amp;kn-&gt;iattr-&gt;xattrs, NULL);
+-	kmem_cache_free(kernfs_iattrs_cache, kn-&gt;iattr);
++	if (kn-&gt;iattr) {
++		simple_xattrs_free(&amp;kn-&gt;iattr-&gt;xattrs, NULL);
++		kmem_cache_free(kernfs_iattrs_cache, kn-&gt;iattr);
++	}
+  err_out3:
+ 	spin_lock(&amp;root-&gt;kernfs_idr_lock);
+ 	idr_remove(&amp;root-&gt;ino_idr, (u32)kernfs_ino(kn));</pre><hr><pre>commit 108f9405ce81085284c7ab09b84784b94b611435
+Author: Xiang Mei &lt;xmei5@asu.edu&gt;
+Date:   Thu Nov 27 17:14:16 2025 -0700
+
+    selftests/tc-testing: Test CAKE scheduler when enqueue drops packets
+    
+    Add tests that trigger packet drops in cake_enqueue(): "CAKE with QFQ
+    Parent - CAKE enqueue with packets dropping". It forces CAKE_enqueue to
+    return NET_XMIT_CN after dropping the packets when it has a QFQ parent.
+    
+    Signed-off-by: Xiang Mei &lt;xmei5@asu.edu&gt;
+    Reviewed-by: Toke Høiland-Jørgensen &lt;toke@toke.dk&gt;
+    Link: https://patch.msgid.link/20251128001415.377823-3-xmei5@asu.edu
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+index 0091bcd91c2c..47de27fd4f90 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+@@ -1005,5 +1005,33 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY clsact"
+         ]
++    },
++    {
++        "id": "4366",
++        "name": "CAKE with QFQ Parent - CAKE enqueue with packets dropping",
++        "category": [
++            "qdisc",
++            "cake",
++            "netem"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup":[
++            "$TC qdisc add dev $DUMMY handle 1: root qfq",
++            "$TC class add dev $DUMMY parent 1: classid 1:1 qfq maxpkt 1024",
++            "$TC qdisc add dev $DUMMY parent 1:1 handle 2: cake memlimit 9",
++            "$TC filter add dev $DUMMY protocol ip parent 1: prio 1 u32 match ip protocol 1 0xff flowid 1:1",
++            "ping -I$DUMMY -f -c1 -s64 -W1 10.10.10.1 || true",
++            "$TC qdisc replace dev $DUMMY parent 1:1 handle 3: netem delay 0ms"
++        ],
++        "cmdUnderTest": "ping -I$DUMMY -f -c1 -s64 -W1 10.10.10.1 || true",
++        "expExitCode": "0",
++        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
++        "matchPattern": "qdisc qfq 1:",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
+     }
+ ]</pre><hr><pre>commit 9fefc78f7f02d71810776fdeb119a05a946a27cc
+Author: Xiang Mei &lt;xmei5@asu.edu&gt;
+Date:   Thu Nov 27 17:14:14 2025 -0700
+
+    net/sched: sch_cake: Fix incorrect qlen reduction in cake_drop
+    
+    In cake_drop(), qdisc_tree_reduce_backlog() is used to update the qlen
+    and backlog of the qdisc hierarchy. Its caller, cake_enqueue(), assumes
+    that the parent qdisc will enqueue the current packet. However, this
+    assumption breaks when cake_enqueue() returns NET_XMIT_CN: the parent
+    qdisc stops enqueuing current packet, leaving the tree qlen/backlog
+    accounting inconsistent. This mismatch can lead to a NULL dereference
+    (e.g., when the parent Qdisc is qfq_qdisc).
+    
+    This patch computes the qlen/backlog delta in a more robust way by
+    observing the difference before and after the series of cake_drop()
+    calls, and then compensates the qdisc tree accounting if cake_enqueue()
+    returns NET_XMIT_CN.
+    
+    To ensure correct compensation when ACK thinning is enabled, a new
+    variable is introduced to keep qlen unchanged.
+    
+    Fixes: 15de71d06a40 ("net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit")
+    Signed-off-by: Xiang Mei &lt;xmei5@asu.edu&gt;
+    Reviewed-by: Toke Høiland-Jørgensen &lt;toke@toke.dk&gt;
+    Link: https://patch.msgid.link/20251128001415.377823-1-xmei5@asu.edu
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index 32bacfc314c2..d325a90cde9e 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1597,7 +1597,6 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 
+ 	qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_OVERLIMIT);
+ 	sch-&gt;q.qlen--;
+-	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	cake_heapify(q, 0);
+ 
+@@ -1743,14 +1742,14 @@ static void cake_reconfigure(struct Qdisc *sch);
+ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			struct sk_buff **to_free)
+ {
++	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
+ 	struct cake_sched_data *q = qdisc_priv(sch);
+-	int len = qdisc_pkt_len(skb);
+-	int ret;
++	int len = qdisc_pkt_len(skb), ret;
+ 	struct sk_buff *ack = NULL;
+ 	ktime_t now = ktime_get();
+ 	struct cake_tin_data *b;
+ 	struct cake_flow *flow;
+-	u32 idx, tin;
++	bool same_flow = false;
+ 
+ 	/* choose flow to insert into */
+ 	idx = cake_classify(sch, &amp;b, skb, q-&gt;flow_mode, &amp;ret);
+@@ -1823,6 +1822,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		consume_skb(skb);
+ 	} else {
+ 		/* not splitting */
++		int ack_pkt_len = 0;
++
+ 		cobalt_set_enqueue_time(skb, now);
+ 		get_cobalt_cb(skb)-&gt;adjusted_len = cake_overhead(q, skb);
+ 		flow_queue_add(flow, skb);
+@@ -1833,13 +1834,13 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (ack) {
+ 			b-&gt;ack_drops++;
+ 			sch-&gt;qstats.drops++;
+-			b-&gt;bytes += qdisc_pkt_len(ack);
+-			len -= qdisc_pkt_len(ack);
++			ack_pkt_len = qdisc_pkt_len(ack);
++			b-&gt;bytes += ack_pkt_len;
+ 			q-&gt;buffer_used += skb-&gt;truesize - ack-&gt;truesize;
+ 			if (q-&gt;rate_flags &amp; CAKE_FLAG_INGRESS)
+ 				cake_advance_shaper(q, b, ack, now, true);
+ 
+-			qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(ack));
++			qdisc_tree_reduce_backlog(sch, 1, ack_pkt_len);
+ 			consume_skb(ack);
+ 		} else {
+ 			sch-&gt;q.qlen++;
+@@ -1848,11 +1849,11 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 		/* stats */
+ 		b-&gt;packets++;
+-		b-&gt;bytes	    += len;
+-		b-&gt;backlogs[idx]    += len;
+-		b-&gt;tin_backlog      += len;
+-		sch-&gt;qstats.backlog += len;
+-		q-&gt;avg_window_bytes += len;
++		b-&gt;bytes	    += len - ack_pkt_len;
++		b-&gt;backlogs[idx]    += len - ack_pkt_len;
++		b-&gt;tin_backlog      += len - ack_pkt_len;
++		sch-&gt;qstats.backlog += len - ack_pkt_len;
++		q-&gt;avg_window_bytes += len - ack_pkt_len;
+ 	}
+ 
+ 	if (q-&gt;overflow_timeout)
+@@ -1927,24 +1928,29 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	if (q-&gt;buffer_used &gt; q-&gt;buffer_max_used)
+ 		q-&gt;buffer_max_used = q-&gt;buffer_used;
+ 
+-	if (q-&gt;buffer_used &gt; q-&gt;buffer_limit) {
+-		bool same_flow = false;
+-		u32 dropped = 0;
+-		u32 drop_id;
++	if (q-&gt;buffer_used &lt;= q-&gt;buffer_limit)
++		return NET_XMIT_SUCCESS;
+ 
+-		while (q-&gt;buffer_used &gt; q-&gt;buffer_limit) {
+-			dropped++;
+-			drop_id = cake_drop(sch, to_free);
++	prev_qlen = sch-&gt;q.qlen;
++	prev_backlog = sch-&gt;qstats.backlog;
+ 
+-			if ((drop_id &gt;&gt; 16) == tin &amp;&amp;
+-			    (drop_id &amp; 0xFFFF) == idx)
+-				same_flow = true;
+-		}
+-		b-&gt;drop_overlimit += dropped;
++	while (q-&gt;buffer_used &gt; q-&gt;buffer_limit) {
++		drop_id = cake_drop(sch, to_free);
++		if ((drop_id &gt;&gt; 16) == tin &amp;&amp;
++		    (drop_id &amp; 0xFFFF) == idx)
++			same_flow = true;
++	}
++
++	prev_qlen -= sch-&gt;q.qlen;
++	prev_backlog -= sch-&gt;qstats.backlog;
++	b-&gt;drop_overlimit += prev_qlen;
+ 
+-		if (same_flow)
+-			return NET_XMIT_CN;
++	if (same_flow) {
++		qdisc_tree_reduce_backlog(sch, prev_qlen - 1,
++					  prev_backlog - len);
++		return NET_XMIT_CN;
+ 	}
++	qdisc_tree_reduce_backlog(sch, prev_qlen, prev_backlog);
+ 	return NET_XMIT_SUCCESS;
+ }
+ </pre><hr><pre>commit 382b1e8f30f779af8d6d33268e53df7de579ef3c
+Author: Will Rosenberg &lt;whrosenb@asu.edu&gt;
+Date:   Tue Nov 25 08:13:32 2025 -0700
+
+    kernfs: fix memory leak of kernfs_iattrs in __kernfs_new_node
+    
+    There exists a memory leak of kernfs_iattrs contained as an element
+    of kernfs_node allocated in __kernfs_new_node(). __kernfs_setattr()
+    allocates kernfs_iattrs as a sub-object, and the LSM security check
+    incorrectly errors out and does not free the kernfs_iattrs sub-object.
+    
+    Make an additional error out case that properly frees kernfs_iattrs if
+    security_kernfs_init_security() fails.
+    
+    Fixes: e19dfdc83b60 ("kernfs: initialize security of newly created nodes")
+    Co-developed-by: Oliver Rosenberg &lt;olrose55@gmail.com&gt;
+    Signed-off-by: Oliver Rosenberg &lt;olrose55@gmail.com&gt;
+    Signed-off-by: Will Rosenberg &lt;whrosenb@asu.edu&gt;
+    Link: https://patch.msgid.link/20251125151332.2010687-1-whrosenb@asu.edu
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
+index a670ba3e565e..5c0efd6b239f 100644
+--- a/fs/kernfs/dir.c
++++ b/fs/kernfs/dir.c
+@@ -675,11 +675,14 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
+ 	if (parent) {
+ 		ret = security_kernfs_init_security(parent, kn);
+ 		if (ret)
+-			goto err_out3;
++			goto err_out4;
+ 	}
+ 
+ 	return kn;
+ 
++ err_out4:
++	simple_xattrs_free(&amp;kn-&gt;iattr-&gt;xattrs, NULL);
++	kmem_cache_free(kernfs_iattrs_cache, kn-&gt;iattr);
+  err_out3:
+ 	spin_lock(&amp;root-&gt;kernfs_idr_lock);
+ 	idr_remove(&amp;root-&gt;ino_idr, (u32)kernfs_ino(kn));</pre><hr><pre>commit cf074eca0065bc5142e6004ae236bb35a2687fdf
+Author: Xiang Mei &lt;xmei5@asu.edu&gt;
+Date:   Thu Jul 17 16:01:28 2025 -0700
+
+    net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
+    
+    might_sleep could be trigger in the atomic context in qfq_delete_class.
+    
+    qfq_destroy_class was moved into atomic context locked
+    by sch_tree_lock to avoid a race condition bug on
+    qfq_aggregate. However, might_sleep could be triggered by
+    qfq_destroy_class, which introduced sleeping in atomic context (path:
+    qfq_destroy_class-&gt;qdisc_put-&gt;__qdisc_destroy-&gt;lockdep_unregister_key
+    -&gt;might_sleep).
+    
+    Considering the race is on the qfq_aggregate objects, keeping
+    qfq_rm_from_agg in the lock but moving the left part out can solve
+    this issue.
+    
+    Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
+    Reported-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Signed-off-by: Xiang Mei &lt;xmei5@asu.edu&gt;
+    Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
+    Reviewed-by: Cong Wang &lt;xiyou.wangcong@gmail.com&gt;
+    Reviewed-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index f0eb70353744..2255355e51d3 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -536,9 +536,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 
+ static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
+ {
+-	struct qfq_sched *q = qdisc_priv(sch);
+-
+-	qfq_rm_from_agg(q, cl);
+ 	gen_kill_estimator(&amp;cl-&gt;rate_est);
+ 	qdisc_put(cl-&gt;qdisc);
+ 	kfree(cl);
+@@ -559,10 +556,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
+ 
+ 	qdisc_purge_queue(cl-&gt;qdisc);
+ 	qdisc_class_hash_remove(&amp;q-&gt;clhash, &amp;cl-&gt;common);
+-	qfq_destroy_class(sch, cl);
++	qfq_rm_from_agg(q, cl);
+ 
+ 	sch_tree_unlock(sch);
+ 
++	qfq_destroy_class(sch, cl);
+ 	return 0;
+ }
+ 
+@@ -1503,6 +1501,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
+ 	for (i = 0; i &lt; q-&gt;clhash.hashsize; i++) {
+ 		hlist_for_each_entry_safe(cl, next, &amp;q-&gt;clhash.hash[i],
+ 					  common.hnode) {
++			qfq_rm_from_agg(q, cl);
+ 			qfq_destroy_class(sch, cl);
+ 		}
+ 	}</pre><hr><pre>commit 5e28d5a3f774f118896aec17a3a20a9c5c9dfc64
+Author: Xiang Mei &lt;xmei5@asu.edu&gt;
+Date:   Thu Jul 10 03:09:42 2025 -0700
+
+    net/sched: sch_qfq: Fix race condition on qfq_aggregate
+    
+    A race condition can occur when 'agg' is modified in qfq_change_agg
+    (called during qfq_enqueue) while other threads access it
+    concurrently. For example, qfq_dump_class may trigger a NULL
+    dereference, and qfq_delete_class may cause a use-after-free.
+    
+    This patch addresses the issue by:
+    
+    1. Moved qfq_destroy_class into the critical section.
+    
+    2. Added sch_tree_lock protection to qfq_dump_class and
+    qfq_dump_class_stats.
+    
+    Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
+    Signed-off-by: Xiang Mei &lt;xmei5@asu.edu&gt;
+    Reviewed-by: Cong Wang &lt;xiyou.wangcong@gmail.com&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index bcce36608871..f0eb70353744 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -412,7 +412,7 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 	bool existing = false;
+ 	struct nlattr *tb[TCA_QFQ_MAX + 1];
+ 	struct qfq_aggregate *new_agg = NULL;
+-	u32 weight, lmax, inv_w;
++	u32 weight, lmax, inv_w, old_weight, old_lmax;
+ 	int err;
+ 	int delta_w;
+ 
+@@ -443,12 +443,16 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 	inv_w = ONE_FP / weight;
+ 	weight = ONE_FP / inv_w;
+ 
+-	if (cl != NULL &amp;&amp;
+-	    lmax == cl-&gt;agg-&gt;lmax &amp;&amp;
+-	    weight == cl-&gt;agg-&gt;class_weight)
+-		return 0; /* nothing to change */
++	if (cl != NULL) {
++		sch_tree_lock(sch);
++		old_weight = cl-&gt;agg-&gt;class_weight;
++		old_lmax   = cl-&gt;agg-&gt;lmax;
++		sch_tree_unlock(sch);
++		if (lmax == old_lmax &amp;&amp; weight == old_weight)
++			return 0; /* nothing to change */
++	}
+ 
+-	delta_w = weight - (cl ? cl-&gt;agg-&gt;class_weight : 0);
++	delta_w = weight - (cl ? old_weight : 0);
+ 
+ 	if (q-&gt;wsum + delta_w &gt; QFQ_MAX_WSUM) {
+ 		NL_SET_ERR_MSG_FMT_MOD(extack,
+@@ -555,10 +559,10 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
+ 
+ 	qdisc_purge_queue(cl-&gt;qdisc);
+ 	qdisc_class_hash_remove(&amp;q-&gt;clhash, &amp;cl-&gt;common);
++	qfq_destroy_class(sch, cl);
+ 
+ 	sch_tree_unlock(sch);
+ 
+-	qfq_destroy_class(sch, cl);
+ 	return 0;
+ }
+ 
+@@ -625,6 +629,7 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
+ {
+ 	struct qfq_class *cl = (struct qfq_class *)arg;
+ 	struct nlattr *nest;
++	u32 class_weight, lmax;
+ 
+ 	tcm-&gt;tcm_parent	= TC_H_ROOT;
+ 	tcm-&gt;tcm_handle	= cl-&gt;common.classid;
+@@ -633,8 +638,13 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
+ 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
+ 	if (nest == NULL)
+ 		goto nla_put_failure;
+-	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, cl-&gt;agg-&gt;class_weight) ||
+-	    nla_put_u32(skb, TCA_QFQ_LMAX, cl-&gt;agg-&gt;lmax))
++
++	sch_tree_lock(sch);
++	class_weight	= cl-&gt;agg-&gt;class_weight;
++	lmax		= cl-&gt;agg-&gt;lmax;
++	sch_tree_unlock(sch);
++	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, class_weight) ||
++	    nla_put_u32(skb, TCA_QFQ_LMAX, lmax))
+ 		goto nla_put_failure;
+ 	return nla_nest_end(skb, nest);
+ 
+@@ -651,8 +661,10 @@ static int qfq_dump_class_stats(struct Qdisc *sch, unsigned long arg,
+ 
+ 	memset(&amp;xstats, 0, sizeof(xstats));
+ 
++	sch_tree_lock(sch);
+ 	xstats.weight = cl-&gt;agg-&gt;class_weight;
+ 	xstats.lmax = cl-&gt;agg-&gt;lmax;
++	sch_tree_unlock(sch);
+ 
+ 	if (gnet_stats_copy_basic(d, NULL, &amp;cl-&gt;bstats, true) &lt; 0 ||
+ 	    gnet_stats_copy_rate_est(d, &amp;cl-&gt;rate_est) &lt; 0 ||</pre><hr><pre>commit dd831ac8221e691e9e918585b1003c7071df0379
+Author: Xiang Mei &lt;xmei5@asu.edu&gt;
+Date:   Sat Jul 5 14:21:43 2025 -0700
+
+    net/sched: sch_qfq: Fix null-deref in agg_dequeue
+    
+    To prevent a potential crash in agg_dequeue (net/sched/sch_qfq.c)
+    when cl-&gt;qdisc-&gt;ops-&gt;peek(cl-&gt;qdisc) returns NULL, we check the return
+    value before using it, similar to the existing approach in sch_hfsc.c.
+    
+    To avoid code duplication, the following changes are made:
+    
+    1. Changed qdisc_warn_nonwc(include/net/pkt_sched.h) into a static
+    inline function.
+    
+    2. Moved qdisc_peek_len from net/sched/sch_hfsc.c to
+    include/net/pkt_sched.h so that sch_qfq can reuse it.
+    
+    3. Applied qdisc_peek_len in agg_dequeue to avoid crashing.
+    
+    Signed-off-by: Xiang Mei &lt;xmei5@asu.edu&gt;
+    Reviewed-by: Cong Wang &lt;xiyou.wangcong@gmail.com&gt;
+    Link: https://patch.msgid.link/20250705212143.3982664-1-xmei5@asu.edu
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index d7b7b6cd4aa1..8a75c73fc555 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -114,7 +114,6 @@ struct qdisc_rate_table *qdisc_get_rtab(struct tc_ratespec *r,
+ 					struct netlink_ext_ack *extack);
+ void qdisc_put_rtab(struct qdisc_rate_table *tab);
+ void qdisc_put_stab(struct qdisc_size_table *tab);
+-void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc);
+ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
+ 		     struct net_device *dev, struct netdev_queue *txq,
+ 		     spinlock_t *root_lock, bool validate);
+@@ -290,4 +289,28 @@ static inline bool tc_qdisc_stats_dump(struct Qdisc *sch,
+ 	return true;
+ }
+ 
++static inline void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
++{
++	if (!(qdisc-&gt;flags &amp; TCQ_F_WARN_NONWC)) {
++		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
++			txt, qdisc-&gt;ops-&gt;id, qdisc-&gt;handle &gt;&gt; 16);
++		qdisc-&gt;flags |= TCQ_F_WARN_NONWC;
++	}
++}
++
++static inline unsigned int qdisc_peek_len(struct Qdisc *sch)
++{
++	struct sk_buff *skb;
++	unsigned int len;
++
++	skb = sch-&gt;ops-&gt;peek(sch);
++	if (unlikely(skb == NULL)) {
++		qdisc_warn_nonwc("qdisc_peek_len", sch);
++		return 0;
++	}
++	len = qdisc_pkt_len(skb);
++
++	return len;
++}
++
+ #endif
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 241e86cec9c5..d7c767b861a4 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -601,16 +601,6 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
+ 	qdisc_skb_cb(skb)-&gt;pkt_len = pkt_len;
+ }
+ 
+-void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
+-{
+-	if (!(qdisc-&gt;flags &amp; TCQ_F_WARN_NONWC)) {
+-		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
+-			txt, qdisc-&gt;ops-&gt;id, qdisc-&gt;handle &gt;&gt; 16);
+-		qdisc-&gt;flags |= TCQ_F_WARN_NONWC;
+-	}
+-}
+-EXPORT_SYMBOL(qdisc_warn_nonwc);
+-
+ static enum hrtimer_restart qdisc_watchdog(struct hrtimer *timer)
+ {
+ 	struct qdisc_watchdog *wd = container_of(timer, struct qdisc_watchdog,
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index 5a7745170e84..d8fd35da32a7 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -835,22 +835,6 @@ update_vf(struct hfsc_class *cl, unsigned int len, u64 cur_time)
+ 	}
+ }
+ 
+-static unsigned int
+-qdisc_peek_len(struct Qdisc *sch)
+-{
+-	struct sk_buff *skb;
+-	unsigned int len;
+-
+-	skb = sch-&gt;ops-&gt;peek(sch);
+-	if (unlikely(skb == NULL)) {
+-		qdisc_warn_nonwc("qdisc_peek_len", sch);
+-		return 0;
+-	}
+-	len = qdisc_pkt_len(skb);
+-
+-	return len;
+-}
+-
+ static void
+ hfsc_adjust_levels(struct hfsc_class *cl)
+ {
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index bf1282cb22eb..bcce36608871 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -989,7 +989,7 @@ static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
+ 
+ 	if (cl-&gt;qdisc-&gt;q.qlen == 0) /* no more packets, remove from list */
+ 		list_del_init(&amp;cl-&gt;alist);
+-	else if (cl-&gt;deficit &lt; qdisc_pkt_len(cl-&gt;qdisc-&gt;ops-&gt;peek(cl-&gt;qdisc))) {
++	else if (cl-&gt;deficit &lt; qdisc_peek_len(cl-&gt;qdisc)) {
+ 		cl-&gt;deficit += agg-&gt;lmax;
+ 		list_move_tail(&amp;cl-&gt;alist, &amp;agg-&gt;active);
+ 	}</pre><hr><pre>commit b8e51a6a9db94bc1fb18ae831b3dab106b5a4b5f
+Author: Yihui ZENG &lt;yzeng56@asu.edu&gt;
+Date:   Fri Oct 25 12:31:48 2019 +0300
+
+    s390/cmm: fix information leak in cmm_timeout_handler()
+    
+    The problem is that we were putting the NUL terminator too far:
+    
+            buf[sizeof(buf) - 1] = '\0';
+    
+    If the user input isn't NUL terminated and they haven't initialized the
+    whole buffer then it leads to an info leak.  The NUL terminator should
+    be:
+    
+            buf[len - 1] = '\0';
+    
+    Signed-off-by: Yihui Zeng &lt;yzeng56@asu.edu&gt;
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    [heiko.carstens@de.ibm.com: keep semantics of how *lenp and *ppos are handled]
+    Signed-off-by: Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;
+    Signed-off-by: Vasily Gorbik &lt;gor@linux.ibm.com&gt;
+
+diff --git a/arch/s390/mm/cmm.c b/arch/s390/mm/cmm.c
+index 510a18299196..a51c892f14f3 100644
+--- a/arch/s390/mm/cmm.c
++++ b/arch/s390/mm/cmm.c
+@@ -298,16 +298,16 @@ static int cmm_timeout_handler(struct ctl_table *ctl, int write,
+ 	}
+ 
+ 	if (write) {
+-		len = *lenp;
+-		if (copy_from_user(buf, buffer,
+-				   len &gt; sizeof(buf) ? sizeof(buf) : len))
++		len = min(*lenp, sizeof(buf));
++		if (copy_from_user(buf, buffer, len))
+ 			return -EFAULT;
+-		buf[sizeof(buf) - 1] = '\0';
++		buf[len - 1] = '\0';
+ 		cmm_skip_blanks(buf, &amp;p);
+ 		nr = simple_strtoul(p, &amp;p, 0);
+ 		cmm_skip_blanks(p, &amp;p);
+ 		seconds = simple_strtoul(p, &amp;p, 0);
+ 		cmm_set_timeout(nr, seconds);
++		*ppos += *lenp;
+ 	} else {
+ 		len = sprintf(buf, "%ld %ld\n",
+ 			      cmm_timeout_pages, cmm_timeout_seconds);
+@@ -315,9 +315,9 @@ static int cmm_timeout_handler(struct ctl_table *ctl, int write,
+ 			len = *lenp;
+ 		if (copy_to_user(buffer, buf, len))
+ 			return -EFAULT;
++		*lenp = len;
++		*ppos += len;
+ 	}
+-	*lenp = len;
+-	*ppos += len;
+ 	return 0;
+ }
+ </pre>
+    <div class="pagination">
+        <span>[1]</span><a href='43_2.html'>2</a><a href='43_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

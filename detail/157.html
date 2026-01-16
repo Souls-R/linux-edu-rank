@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Carnegie Mellon University Qatar</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Carnegie Mellon University Qatar</h1>
+    <div class="pagination">
+        <span>[1]</span>
+    </div>
+    <hr>
+    <pre>commit a14848275b04f3193b9d9e9c745a4fae37f11f2f
+Author: Justin Carlson &lt;justinca@qatar.cmu.edu&gt;
+Date:   Sun Sep 24 11:52:12 2006 +0300
+
+    USB: add SeaLevel 2106 SeaLINK support to ftdi_sio
+    
+    We have a couple of these USB-Serial converters around; they're slightly
+    different from the 2104 models in that they can handle 500Kb/sec over RS422.
+    The existing ftdi driver seems to work just fine if we add in the
+    appropriate IDs.
+    
+    Patch is against 2.6.17.6, but should apply cleanly to pretty much
+    anything recent.
+    
+    From: Justin Carlson &lt;justinca@qatar.cmu.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/usb/serial/ftdi_sio.c b/drivers/usb/serial/ftdi_sio.c
+index b94d1bdb174e..e774a27c6c98 100644
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -344,6 +344,7 @@ static struct usb_device_id id_table_combined [] = {
+ 	{ USB_DEVICE(SEALEVEL_VID, SEALEVEL_2102_PID) },
+ 	{ USB_DEVICE(SEALEVEL_VID, SEALEVEL_2103_PID) },
+ 	{ USB_DEVICE(SEALEVEL_VID, SEALEVEL_2104_PID) },
++	{ USB_DEVICE(SEALEVEL_VID, SEALEVEL_2106_PID) },
+ 	{ USB_DEVICE(SEALEVEL_VID, SEALEVEL_2201_1_PID) },
+ 	{ USB_DEVICE(SEALEVEL_VID, SEALEVEL_2201_2_PID) },
+ 	{ USB_DEVICE(SEALEVEL_VID, SEALEVEL_2202_1_PID) },
+diff --git a/drivers/usb/serial/ftdi_sio.h b/drivers/usb/serial/ftdi_sio.h
+index 5bada7fa28e9..f0edb87d2dd5 100644
+--- a/drivers/usb/serial/ftdi_sio.h
++++ b/drivers/usb/serial/ftdi_sio.h
+@@ -111,6 +111,7 @@
+ #define SEALEVEL_2102_PID	0x2102	/* SeaLINK+485 (2102) */
+ #define SEALEVEL_2103_PID	0x2103	/* SeaLINK+232I (2103) */
+ #define SEALEVEL_2104_PID	0x2104	/* SeaLINK+485I (2104) */
++#define SEALEVEL_2106_PID	0x9020	/* SeaLINK+422 (2106) */
+ #define SEALEVEL_2201_1_PID	0x2211	/* SeaPORT+2/232 (2201) Port 1 */
+ #define SEALEVEL_2201_2_PID	0x2221	/* SeaPORT+2/232 (2201) Port 2 */
+ #define SEALEVEL_2202_1_PID	0x2212	/* SeaPORT+2/485 (2202) Port 1 */</pre>
+    <div class="pagination">
+        <span>[1]</span>
+    <div>
+</body>

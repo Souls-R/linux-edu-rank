@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Carnegie Mellon University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Carnegie Mellon University</h1>
+    <div class="pagination">
+        <a href='15.html'>&lt;&lt;Prev</a><a href='15.html'>1</a><span>[2]</span><a href='15_3.html'>3</a><a href='15_4.html'>4</a><a href='15_5.html'>5</a><a href='15_6.html'>6</a><a href='15_7.html'>7</a><a href='15_8.html'>8</a><a href='15_3.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 6dc280ebeed2c96a2fb933103dafe655a922b9c1
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Tue Jul 16 16:28:51 2019 -0700
+
+    coda: remove uapi/linux/coda_psdev.h
+    
+    Nothing is left in this header that is used by userspace.
+    
+    Link: http://lkml.kernel.org/r/bb11378cef94739f2cf89425dd6d302a52c64480.1558117389.git.jaharkes@cs.cmu.edu
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Colin Ian King &lt;colin.king@canonical.com&gt;
+    Cc: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Cc: David Howells &lt;dhowells@redhat.com&gt;
+    Cc: Fabian Frederick &lt;fabf@skynet.be&gt;
+    Cc: Mikko Rapeli &lt;mikko.rapeli@iki.fi&gt;
+    Cc: Sam Protsenko &lt;semen.protsenko@linaro.org&gt;
+    Cc: Yann Droneaud &lt;ydroneaud@opteya.com&gt;
+    Cc: Zhouyang Jia &lt;jiazhouyang09@gmail.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/coda_psdev.h b/fs/coda/coda_psdev.h
+index 012e16f741a6..801423cbbdfc 100644
+--- a/fs/coda/coda_psdev.h
++++ b/fs/coda/coda_psdev.h
+@@ -3,8 +3,11 @@
+ #define __CODA_PSDEV_H
+ 
+ #include &lt;linux/backing-dev.h&gt;
++#include &lt;linux/magic.h&gt;
+ #include &lt;linux/mutex.h&gt;
+-#include &lt;linux/coda_psdev.h&gt;
++
++#define CODA_PSDEV_MAJOR 67
++#define MAX_CODADEVS  5	   /* how many do we allow */
+ 
+ struct kstatfs;
+ 
+diff --git a/include/uapi/linux/coda_psdev.h b/include/uapi/linux/coda_psdev.h
+deleted file mode 100644
+index 3dacb7fad66a..000000000000
+--- a/include/uapi/linux/coda_psdev.h
++++ /dev/null
+@@ -1,10 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _UAPI__CODA_PSDEV_H
+-#define _UAPI__CODA_PSDEV_H
+-
+-#include &lt;linux/magic.h&gt;
+-
+-#define CODA_PSDEV_MAJOR 67
+-#define MAX_CODADEVS  5	   /* how many do we allow */
+-
+-#endif /* _UAPI__CODA_PSDEV_H */</pre><hr><pre>commit b6a18c60080fcff0921e81991fec049394fb04e9
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Tue Jul 16 16:28:44 2019 -0700
+
+    coda: bump module version
+    
+    The out of tree module version had been bumped several times already,
+    but we haven't kept this in-tree one in sync, partly because most
+    changes go from here to the out-of-tree copy.
+    
+    Link: http://lkml.kernel.org/r/8b0ab50a2da2f0180ac32c79d91811b4d1d0bd8b.1558117389.git.jaharkes@cs.cmu.edu
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Colin Ian King &lt;colin.king@canonical.com&gt;
+    Cc: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Cc: David Howells &lt;dhowells@redhat.com&gt;
+    Cc: Fabian Frederick &lt;fabf@skynet.be&gt;
+    Cc: Mikko Rapeli &lt;mikko.rapeli@iki.fi&gt;
+    Cc: Sam Protsenko &lt;semen.protsenko@linaro.org&gt;
+    Cc: Yann Droneaud &lt;ydroneaud@opteya.com&gt;
+    Cc: Zhouyang Jia &lt;jiazhouyang09@gmail.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/psdev.c b/fs/coda/psdev.c
+index 3ac22a2b97e2..e80bda1de6c5 100644
+--- a/fs/coda/psdev.c
++++ b/fs/coda/psdev.c
+@@ -389,7 +389,7 @@ MODULE_AUTHOR("Jan Harkes, Peter J. Braam");
+ MODULE_DESCRIPTION("Coda Distributed File System VFS interface");
+ MODULE_ALIAS_CHARDEV_MAJOR(CODA_PSDEV_MAJOR);
+ MODULE_LICENSE("GPL");
+-MODULE_VERSION("6.6");
++MODULE_VERSION("6.11");
+ 
+ static int __init init_coda(void)
+ {</pre><hr><pre>commit 5e7c31dfe74703f428220384b2863525957cc160
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Tue Jul 16 16:28:35 2019 -0700
+
+    coda: change Coda's user api to use 64-bit time_t in timespec
+    
+    Move the 32-bit time_t problems to userspace.
+    
+    Link: http://lkml.kernel.org/r/8d089068823bfb292a4020f773922fbd82ffad39.1558117389.git.jaharkes@cs.cmu.edu
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Colin Ian King &lt;colin.king@canonical.com&gt;
+    Cc: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Cc: David Howells &lt;dhowells@redhat.com&gt;
+    Cc: Fabian Frederick &lt;fabf@skynet.be&gt;
+    Cc: Mikko Rapeli &lt;mikko.rapeli@iki.fi&gt;
+    Cc: Sam Protsenko &lt;semen.protsenko@linaro.org&gt;
+    Cc: Yann Droneaud &lt;ydroneaud@opteya.com&gt;
+    Cc: Zhouyang Jia &lt;jiazhouyang09@gmail.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/Documentation/filesystems/coda.txt b/Documentation/filesystems/coda.txt
+index ea5969068895..545262c167c3 100644
+--- a/Documentation/filesystems/coda.txt
++++ b/Documentation/filesystems/coda.txt
+@@ -481,8 +481,8 @@ kernel support.
+ 
+ 
+ 
+-  struct vtimespec {
+-          long            tv_sec;         /* seconds */
++  struct coda_timespec {
++          int64_t         tv_sec;         /* seconds */
+           long            tv_nsec;        /* nanoseconds */
+   };
+ 
+@@ -496,9 +496,9 @@ kernel support.
+           long            va_fileid;      /* file id */
+           u_quad_t        va_size;        /* file size in bytes */
+           long            va_blocksize;   /* blocksize preferred for i/o */
+-          struct vtimespec va_atime;      /* time of last access */
+-          struct vtimespec va_mtime;      /* time of last modification */
+-          struct vtimespec va_ctime;      /* time file changed */
++          struct coda_timespec va_atime;  /* time of last access */
++          struct coda_timespec va_mtime;  /* time of last modification */
++          struct coda_timespec va_ctime;  /* time file changed */
+           u_long          va_gen;         /* generation number of file */
+           u_long          va_flags;       /* flags defined for file */
+           dev_t           va_rdev;        /* device special file represents */
+diff --git a/fs/coda/coda_linux.c b/fs/coda/coda_linux.c
+index 8addcd166908..e4b5f02f0dd4 100644
+--- a/fs/coda/coda_linux.c
++++ b/fs/coda/coda_linux.c
+@@ -66,13 +66,8 @@ unsigned short coda_flags_to_cflags(unsigned short flags)
+ 	return coda_flags;
+ }
+ 
+-static struct timespec64 coda_to_timespec64(struct vtimespec ts)
++static struct timespec64 coda_to_timespec64(struct coda_timespec ts)
+ {
+-	/*
+-	 * We interpret incoming timestamps as 'signed' to match traditional
+-	 * usage and support pre-1970 timestamps, but this breaks in y2038
+-	 * on 32-bit machines.
+-	 */
+ 	struct timespec64 ts64 = {
+ 		.tv_sec = ts.tv_sec,
+ 		.tv_nsec = ts.tv_nsec,
+@@ -81,12 +76,10 @@ static struct timespec64 coda_to_timespec64(struct vtimespec ts)
+ 	return ts64;
+ }
+ 
+-static struct vtimespec timespec64_to_coda(struct timespec64 ts64)
++static struct coda_timespec timespec64_to_coda(struct timespec64 ts64)
+ {
+-	/* clamp the timestamps to the maximum range rather than wrapping */
+-	struct vtimespec ts = {
+-		.tv_sec = lower_32_bits(clamp_t(time64_t, ts64.tv_sec,
+-						LONG_MIN, LONG_MAX)),
++	struct coda_timespec ts = {
++		.tv_sec = ts64.tv_sec,
+ 		.tv_nsec = ts64.tv_nsec,
+ 	};
+ 
+@@ -156,11 +149,11 @@ void coda_iattr_to_vattr(struct iattr *iattr, struct coda_vattr *vattr)
+         vattr-&gt;va_uid = (vuid_t) -1; 
+         vattr-&gt;va_gid = (vgid_t) -1;
+         vattr-&gt;va_size = (off_t) -1;
+-	vattr-&gt;va_atime.tv_sec = (long) -1;
++	vattr-&gt;va_atime.tv_sec = (int64_t) -1;
+ 	vattr-&gt;va_atime.tv_nsec = (long) -1;
+-	vattr-&gt;va_mtime.tv_sec = (long) -1;
++	vattr-&gt;va_mtime.tv_sec = (int64_t) -1;
+ 	vattr-&gt;va_mtime.tv_nsec = (long) -1;
+-	vattr-&gt;va_ctime.tv_sec = (long) -1;
++	vattr-&gt;va_ctime.tv_sec = (int64_t) -1;
+ 	vattr-&gt;va_ctime.tv_nsec = (long) -1;
+         vattr-&gt;va_type = C_VNON;
+ 	vattr-&gt;va_fileid = -1;
+diff --git a/include/uapi/linux/coda.h b/include/uapi/linux/coda.h
+index fc5f7874208a..5dba636b6e11 100644
+--- a/include/uapi/linux/coda.h
++++ b/include/uapi/linux/coda.h
+@@ -86,10 +86,6 @@ typedef unsigned long long u_quad_t;
+ 
+ #define inline
+ 
+-struct timespec {
+-        long       ts_sec;
+-        long       ts_nsec;
+-};
+ #else  /* DJGPP but not KERNEL */
+ #include &lt;sys/time.h&gt;
+ typedef unsigned long long u_quad_t;
+@@ -110,13 +106,6 @@ typedef unsigned long long u_quad_t;
+ #define cdev_t dev_t
+ #endif
+ 
+-#ifdef __CYGWIN32__
+-struct timespec {
+-        time_t  tv_sec;         /* seconds */
+-        long    tv_nsec;        /* nanoseconds */
+-};
+-#endif
+-
+ #ifndef __BIT_TYPES_DEFINED__
+ #define __BIT_TYPES_DEFINED__
+ typedef signed char	      int8_t;
+@@ -211,19 +200,10 @@ struct CodaFid {
+  */
+ enum coda_vtype	{ C_VNON, C_VREG, C_VDIR, C_VBLK, C_VCHR, C_VLNK, C_VSOCK, C_VFIFO, C_VBAD };
+ 
+-#ifdef __linux__
+-/*
+- * This matches the traditional Linux 'timespec' structure binary layout,
+- * before using 64-bit time_t everywhere. Overflows in y2038 on 32-bit
+- * architectures.
+- */
+-struct vtimespec {
+-	long		tv_sec;		/* seconds */
++struct coda_timespec {
++	int64_t		tv_sec;		/* seconds */
+ 	long		tv_nsec;	/* nanoseconds */
+ };
+-#else
+-#define vtimespec timespec
+-#endif
+ 
+ struct coda_vattr {
+ 	long     	va_type;	/* vnode type (for create) */
+@@ -234,9 +214,9 @@ struct coda_vattr {
+ 	long		va_fileid;	/* file id */
+ 	u_quad_t	va_size;	/* file size in bytes */
+ 	long		va_blocksize;	/* blocksize preferred for i/o */
+-	struct vtimespec va_atime;	/* time of last access */
+-	struct vtimespec va_mtime;	/* time of last modification */
+-	struct vtimespec va_ctime;	/* time file changed */
++	struct coda_timespec va_atime;	/* time of last access */
++	struct coda_timespec va_mtime;	/* time of last modification */
++	struct coda_timespec va_ctime;	/* time file changed */
+ 	u_long		va_gen;		/* generation number of file */
+ 	u_long		va_flags;	/* flags defined for file */
+ 	cdev_t	        va_rdev;	/* device special file represents */
+@@ -301,7 +281,8 @@ struct coda_statfs {
+ 
+ #define CIOC_KERNEL_VERSION _IOWR('c', 10, size_t)
+ 
+-#define CODA_KERNEL_VERSION 3 /* 128-bit file identifiers */
++//      CODA_KERNEL_VERSION 3 /* 128-bit file identifiers */
++#define CODA_KERNEL_VERSION 4 /* 64-bit timespec */
+ 
+ /*
+  *        Venus &lt;-&gt; Coda  RPC arguments</pre><hr><pre>commit 2fe7491d219428a32f09948e88bfaf8e71b9a66b
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Tue Jul 16 16:28:26 2019 -0700
+
+    uapi linux/coda_psdev.h: move CODA_REQ_ from uapi to kernel side headers
+    
+    These constants only used internally and not exposed to userspace.
+    
+    Link: http://lkml.kernel.org/r/baeafc30dad70d8b422ee679420099c2d8aa7da0.1558117389.git.jaharkes@cs.cmu.edu
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Colin Ian King &lt;colin.king@canonical.com&gt;
+    Cc: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Cc: David Howells &lt;dhowells@redhat.com&gt;
+    Cc: Fabian Frederick &lt;fabf@skynet.be&gt;
+    Cc: Mikko Rapeli &lt;mikko.rapeli@iki.fi&gt;
+    Cc: Sam Protsenko &lt;semen.protsenko@linaro.org&gt;
+    Cc: Yann Droneaud &lt;ydroneaud@opteya.com&gt;
+    Cc: Zhouyang Jia &lt;jiazhouyang09@gmail.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/include/linux/coda_psdev.h b/include/linux/coda_psdev.h
+index d1672fd5e638..9487f792770c 100644
+--- a/include/linux/coda_psdev.h
++++ b/include/linux/coda_psdev.h
+@@ -31,6 +31,11 @@ struct upc_req {
+ 	wait_queue_head_t	uc_sleep;   /* process' wait queue */
+ };
+ 
++#define CODA_REQ_ASYNC  0x1
++#define CODA_REQ_READ   0x2
++#define CODA_REQ_WRITE  0x4
++#define CODA_REQ_ABORT  0x8
++
+ static inline struct venus_comm *coda_vcp(struct super_block *sb)
+ {
+ 	return (struct venus_comm *)((sb)-&gt;s_fs_info);
+diff --git a/include/uapi/linux/coda_psdev.h b/include/uapi/linux/coda_psdev.h
+index d50d51a57fe4..3dacb7fad66a 100644
+--- a/include/uapi/linux/coda_psdev.h
++++ b/include/uapi/linux/coda_psdev.h
+@@ -7,9 +7,4 @@
+ #define CODA_PSDEV_MAJOR 67
+ #define MAX_CODADEVS  5	   /* how many do we allow */
+ 
+-#define CODA_REQ_ASYNC  0x1
+-#define CODA_REQ_READ   0x2
+-#define CODA_REQ_WRITE  0x4
+-#define CODA_REQ_ABORT  0x8
+-
+ #endif /* _UAPI__CODA_PSDEV_H */</pre><hr><pre>commit 9a05671dd8d85cbce6cf1a00727d5919c1e56192
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Tue Jul 16 16:28:23 2019 -0700
+
+    coda: don't try to print names that were considered too long
+    
+    Probably safer to just show the unexpected length and debug it from the
+    userspace side.
+    
+    Link: http://lkml.kernel.org/r/582ae759a4fdfa31a64c35de489fa4efabac09d6.1558117389.git.jaharkes@cs.cmu.edu
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Colin Ian King &lt;colin.king@canonical.com&gt;
+    Cc: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Cc: David Howells &lt;dhowells@redhat.com&gt;
+    Cc: Fabian Frederick &lt;fabf@skynet.be&gt;
+    Cc: Mikko Rapeli &lt;mikko.rapeli@iki.fi&gt;
+    Cc: Sam Protsenko &lt;semen.protsenko@linaro.org&gt;
+    Cc: Yann Droneaud &lt;ydroneaud@opteya.com&gt;
+    Cc: Zhouyang Jia &lt;jiazhouyang09@gmail.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/dir.c b/fs/coda/dir.c
+index 00876ddadb43..7e103eb8ffcd 100644
+--- a/fs/coda/dir.c
++++ b/fs/coda/dir.c
+@@ -47,8 +47,8 @@ static struct dentry *coda_lookup(struct inode *dir, struct dentry *entry, unsig
+ 	int type = 0;
+ 
+ 	if (length &gt; CODA_MAXNAMLEN) {
+-		pr_err("name too long: lookup, %s (%*s)\n",
+-		       coda_i2s(dir), (int)length, name);
++		pr_err("name too long: lookup, %s %zu\n",
++		       coda_i2s(dir), length);
+ 		return ERR_PTR(-ENAMETOOLONG);
+ 	}
+ </pre><hr><pre>commit 6e51f8aa76b67d0a6eb168fd41a81e8478ae07a9
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Tue Jul 16 16:28:16 2019 -0700
+
+    coda: potential buffer overflow in coda_psdev_write()
+    
+    Add checks to make sure the downcall message we got from the Coda cache
+    manager is large enough to contain the data it is supposed to have.
+    i.e.  when we get a CODA_ZAPDIR we can access &amp;out-&gt;coda_zapdir.CodaFid.
+    
+    Link: http://lkml.kernel.org/r/894fb6b250add09e4e3935f14649f21284a5cb18.1558117389.git.jaharkes@cs.cmu.edu
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Reported-by: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Colin Ian King &lt;colin.king@canonical.com&gt;
+    Cc: David Howells &lt;dhowells@redhat.com&gt;
+    Cc: Fabian Frederick &lt;fabf@skynet.be&gt;
+    Cc: Mikko Rapeli &lt;mikko.rapeli@iki.fi&gt;
+    Cc: Sam Protsenko &lt;semen.protsenko@linaro.org&gt;
+    Cc: Yann Droneaud &lt;ydroneaud@opteya.com&gt;
+    Cc: Zhouyang Jia &lt;jiazhouyang09@gmail.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/psdev.c b/fs/coda/psdev.c
+index 241f7e04ad04..b4da2812499e 100644
+--- a/fs/coda/psdev.c
++++ b/fs/coda/psdev.c
+@@ -100,8 +100,12 @@ static ssize_t coda_psdev_write(struct file *file, const char __user *buf,
+ 	ssize_t retval = 0, count = 0;
+ 	int error;
+ 
++	/* make sure there is enough to copy out the (opcode, unique) values */
++	if (nbytes &lt; (2 * sizeof(u_int32_t)))
++		return -EINVAL;
++
+         /* Peek at the opcode, uniquefier */
+-	if (copy_from_user(&amp;hdr, buf, 2 * sizeof(u_long)))
++	if (copy_from_user(&amp;hdr, buf, 2 * sizeof(u_int32_t)))
+ 	        return -EFAULT;
+ 
+         if (DOWNCALL(hdr.opcode)) {
+@@ -127,7 +131,7 @@ static ssize_t coda_psdev_write(struct file *file, const char __user *buf,
+ 		}
+ 
+ 		/* what downcall errors does Venus handle ? */
+-		error = coda_downcall(vcp, hdr.opcode, dcbuf);
++		error = coda_downcall(vcp, hdr.opcode, dcbuf, nbytes);
+ 
+ 		CODA_FREE(dcbuf, nbytes);
+ 		if (error) {
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index 1175a1722411..cf1e662681a5 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -804,12 +804,44 @@ static int coda_upcall(struct venus_comm *vcp,
+  *
+  * CODA_REPLACE -- replace one CodaFid with another throughout the name cache */
+ 
+-int coda_downcall(struct venus_comm *vcp, int opcode, union outputArgs *out)
++int coda_downcall(struct venus_comm *vcp, int opcode, union outputArgs *out,
++		  size_t nbytes)
+ {
+ 	struct inode *inode = NULL;
+ 	struct CodaFid *fid = NULL, *newfid;
+ 	struct super_block *sb;
+ 
++	/*
++	 * Make sure we have received enough data from the cache
++	 * manager to populate the necessary fields in the buffer
++	 */
++	switch (opcode) {
++	case CODA_PURGEUSER:
++		if (nbytes &lt; sizeof(struct coda_purgeuser_out))
++			return -EINVAL;
++		break;
++
++	case CODA_ZAPDIR:
++		if (nbytes &lt; sizeof(struct coda_zapdir_out))
++			return -EINVAL;
++		break;
++
++	case CODA_ZAPFILE:
++		if (nbytes &lt; sizeof(struct coda_zapfile_out))
++			return -EINVAL;
++		break;
++
++	case CODA_PURGEFID:
++		if (nbytes &lt; sizeof(struct coda_purgefid_out))
++			return -EINVAL;
++		break;
++
++	case CODA_REPLACE:
++		if (nbytes &lt; sizeof(struct coda_replace_out))
++			return -EINVAL;
++		break;
++	}
++
+ 	/* Handle invalidation requests. */
+ 	mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 	sb = vcp-&gt;vc_sb;
+diff --git a/include/linux/coda_psdev.h b/include/linux/coda_psdev.h
+index 57d2b2faf6a3..d1672fd5e638 100644
+--- a/include/linux/coda_psdev.h
++++ b/include/linux/coda_psdev.h
+@@ -71,7 +71,8 @@ int venus_symlink(struct super_block *sb, struct CodaFid *fid,
+ int venus_access(struct super_block *sb, struct CodaFid *fid, int mask);
+ int venus_pioctl(struct super_block *sb, struct CodaFid *fid,
+ 		 unsigned int cmd, struct PioctlData *data);
+-int coda_downcall(struct venus_comm *vcp, int opcode, union outputArgs *out);
++int coda_downcall(struct venus_comm *vcp, int opcode, union outputArgs *out,
++		  size_t nbytes);
+ int venus_fsync(struct super_block *sb, struct CodaFid *fid);
+ int venus_statfs(struct dentry *dentry, struct kstatfs *sfs);
+ </pre><hr><pre>commit 7fa0a1da3dadfd9216df7745a1331fdaa0940d1c
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Tue Jul 16 16:28:04 2019 -0700
+
+    coda: pass the host file in vma-&gt;vm_file on mmap
+    
+    Patch series "Coda updates".
+    
+    The following patch series is a collection of various fixes for Coda,
+    most of which were collected from linux-fsdevel or linux-kernel but
+    which have as yet not found their way upstream.
+    
+    This patch (of 22):
+    
+    Various file systems expect that vma-&gt;vm_file points at their own file
+    handle, several use file_inode(vma-&gt;vm_file) to get at their inode or
+    use vma-&gt;vm_file-&gt;private_data.  However the way Coda wrapped mmap on a
+    host file broke this assumption, vm_file was still pointing at the Coda
+    file and the host file systems would scribble over Coda's inode and
+    private file data.
+    
+    This patch fixes the incorrect expectation and wraps vm_ops-&gt;open and
+    vm_ops-&gt;close to allow Coda to track when the vm_area_struct is
+    destroyed so we still release the reference on the Coda file handle at
+    the right time.
+    
+    Link: http://lkml.kernel.org/r/0e850c6e59c0b147dc2dcd51a3af004c948c3697.1558117389.git.jaharkes@cs.cmu.edu
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Colin Ian King &lt;colin.king@canonical.com&gt;
+    Cc: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Cc: David Howells &lt;dhowells@redhat.com&gt;
+    Cc: Fabian Frederick &lt;fabf@skynet.be&gt;
+    Cc: Mikko Rapeli &lt;mikko.rapeli@iki.fi&gt;
+    Cc: Sam Protsenko &lt;semen.protsenko@linaro.org&gt;
+    Cc: Yann Droneaud &lt;ydroneaud@opteya.com&gt;
+    Cc: Zhouyang Jia &lt;jiazhouyang09@gmail.com&gt;
+    Cc: &lt;stable@vger.kernel.org&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/file.c b/fs/coda/file.c
+index 1cbc1f2298ee..43d371551d2b 100644
+--- a/fs/coda/file.c
++++ b/fs/coda/file.c
+@@ -27,6 +27,13 @@
+ #include "coda_linux.h"
+ #include "coda_int.h"
+ 
++struct coda_vm_ops {
++	atomic_t refcnt;
++	struct file *coda_file;
++	const struct vm_operations_struct *host_vm_ops;
++	struct vm_operations_struct vm_ops;
++};
++
+ static ssize_t
+ coda_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ {
+@@ -61,6 +68,34 @@ coda_file_write_iter(struct kiocb *iocb, struct iov_iter *to)
+ 	return ret;
+ }
+ 
++static void
++coda_vm_open(struct vm_area_struct *vma)
++{
++	struct coda_vm_ops *cvm_ops =
++		container_of(vma-&gt;vm_ops, struct coda_vm_ops, vm_ops);
++
++	atomic_inc(&amp;cvm_ops-&gt;refcnt);
++
++	if (cvm_ops-&gt;host_vm_ops &amp;&amp; cvm_ops-&gt;host_vm_ops-&gt;open)
++		cvm_ops-&gt;host_vm_ops-&gt;open(vma);
++}
++
++static void
++coda_vm_close(struct vm_area_struct *vma)
++{
++	struct coda_vm_ops *cvm_ops =
++		container_of(vma-&gt;vm_ops, struct coda_vm_ops, vm_ops);
++
++	if (cvm_ops-&gt;host_vm_ops &amp;&amp; cvm_ops-&gt;host_vm_ops-&gt;close)
++		cvm_ops-&gt;host_vm_ops-&gt;close(vma);
++
++	if (atomic_dec_and_test(&amp;cvm_ops-&gt;refcnt)) {
++		vma-&gt;vm_ops = cvm_ops-&gt;host_vm_ops;
++		fput(cvm_ops-&gt;coda_file);
++		kfree(cvm_ops);
++	}
++}
++
+ static int
+ coda_file_mmap(struct file *coda_file, struct vm_area_struct *vma)
+ {
+@@ -68,6 +103,8 @@ coda_file_mmap(struct file *coda_file, struct vm_area_struct *vma)
+ 	struct coda_inode_info *cii;
+ 	struct file *host_file;
+ 	struct inode *coda_inode, *host_inode;
++	struct coda_vm_ops *cvm_ops;
++	int ret;
+ 
+ 	cfi = CODA_FTOC(coda_file);
+ 	BUG_ON(!cfi || cfi-&gt;cfi_magic != CODA_MAGIC);
+@@ -76,6 +113,13 @@ coda_file_mmap(struct file *coda_file, struct vm_area_struct *vma)
+ 	if (!host_file-&gt;f_op-&gt;mmap)
+ 		return -ENODEV;
+ 
++	if (WARN_ON(coda_file != vma-&gt;vm_file))
++		return -EIO;
++
++	cvm_ops = kmalloc(sizeof(struct coda_vm_ops), GFP_KERNEL);
++	if (!cvm_ops)
++		return -ENOMEM;
++
+ 	coda_inode = file_inode(coda_file);
+ 	host_inode = file_inode(host_file);
+ 
+@@ -89,6 +133,7 @@ coda_file_mmap(struct file *coda_file, struct vm_area_struct *vma)
+ 	 * the container file on us! */
+ 	else if (coda_inode-&gt;i_mapping != host_inode-&gt;i_mapping) {
+ 		spin_unlock(&amp;cii-&gt;c_lock);
++		kfree(cvm_ops);
+ 		return -EBUSY;
+ 	}
+ 
+@@ -97,7 +142,29 @@ coda_file_mmap(struct file *coda_file, struct vm_area_struct *vma)
+ 	cfi-&gt;cfi_mapcount++;
+ 	spin_unlock(&amp;cii-&gt;c_lock);
+ 
+-	return call_mmap(host_file, vma);
++	vma-&gt;vm_file = get_file(host_file);
++	ret = call_mmap(vma-&gt;vm_file, vma);
++
++	if (ret) {
++		/* if call_mmap fails, our caller will put coda_file so we
++		 * should drop the reference to the host_file that we got.
++		 */
++		fput(host_file);
++		kfree(cvm_ops);
++	} else {
++		/* here we add redirects for the open/close vm_operations */
++		cvm_ops-&gt;host_vm_ops = vma-&gt;vm_ops;
++		if (vma-&gt;vm_ops)
++			cvm_ops-&gt;vm_ops = *vma-&gt;vm_ops;
++
++		cvm_ops-&gt;vm_ops.open = coda_vm_open;
++		cvm_ops-&gt;vm_ops.close = coda_vm_close;
++		cvm_ops-&gt;coda_file = coda_file;
++		atomic_set(&amp;cvm_ops-&gt;refcnt, 1);
++
++		vma-&gt;vm_ops = &amp;cvm_ops-&gt;vm_ops;
++	}
++	return ret;
+ }
+ 
+ int coda_open(struct inode *coda_inode, struct file *coda_file)
+@@ -207,4 +274,3 @@ const struct file_operations coda_file_operations = {
+ 	.fsync		= coda_fsync,
+ 	.splice_read	= generic_file_splice_read,
+ };
+-</pre><hr><pre>commit d337b66a4c52c7b04eec661d86c2ef6e168965a2
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Wed Sep 27 15:52:12 2017 -0400
+
+    coda: fix 'kernel memory exposure attempt' in fsync
+    
+    When an application called fsync on a file in Coda a small request with
+    just the file identifier was allocated, but the declared length was set
+    to the size of union of all possible upcall requests.
+    
+    This bug has been around for a very long time and is now caught by the
+    extra checking in usercopy that was introduced in Linux-4.8.
+    
+    The exposure happens when the Coda cache manager process reads the fsync
+    upcall request at which point it is killed. As a result there is nobody
+    servicing any further upcalls, trapping any processes that try to access
+    the mounted Coda filesystem.
+    
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Al Viro &lt;viro@zeniv.linux.org.uk&gt;
+
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index e82357c89979..8cf16d8c5261 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -446,8 +446,7 @@ int venus_fsync(struct super_block *sb, struct CodaFid *fid)
+ 	UPARG(CODA_FSYNC);
+ 
+ 	inp-&gt;coda_fsync.VFid = *fid;
+-	error = coda_upcall(coda_vcp(sb), sizeof(union inputArgs),
+-			    &amp;outsize, inp);
++	error = coda_upcall(coda_vcp(sb), insize, &amp;outsize, inp);
+ 
+ 	CODA_FREE(inp, insize);
+ 	return error;</pre><hr><pre>commit 3725e9dd5bef376ab87d41e40c437a6b2a20eb59
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Wed Sep 9 15:38:01 2015 -0700
+
+    fs/coda: fix readlink buffer overflow
+    
+    Dan Carpenter discovered a buffer overflow in the Coda file system
+    readlink code.  A userspace file system daemon can return a 4096 byte
+    result which then triggers a one byte write past the allocated readlink
+    result buffer.
+    
+    This does not trigger with an unmodified Coda implementation because Coda
+    has a 1024 byte limit for symbolic links, however other userspace file
+    systems using the Coda kernel module could be affected.
+    
+    Although this is an obvious overflow, I don't think this has to be handled
+    as too sensitive from a security perspective because the overflow is on
+    the Coda userspace daemon side which already needs root to open Coda's
+    kernel device and to mount the file system before we get to the point that
+    links can be read.
+    
+    [akpm@linux-foundation.org: coding-style fixes]
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Reported-by: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index 9b1ffaa0572e..f6c6c8adbc01 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -353,7 +353,7 @@ int venus_readlink(struct super_block *sb, struct CodaFid *fid,
+         char *result;
+         
+ 	insize = max_t(unsigned int,
+-		     INSIZE(readlink), OUTSIZE(readlink)+ *length + 1);
++		     INSIZE(readlink), OUTSIZE(readlink)+ *length);
+ 	UPARG(CODA_READLINK);
+ 
+         inp-&gt;coda_readlink.VFid = *fid;
+@@ -361,8 +361,8 @@ int venus_readlink(struct super_block *sb, struct CodaFid *fid,
+ 	error = coda_upcall(coda_vcp(sb), insize, &amp;outsize, inp);
+ 	if (!error) {
+ 		retlen = outp-&gt;coda_readlink.count;
+-		if ( retlen &gt; *length )
+-			retlen = *length;
++		if (retlen &gt;= *length)
++			retlen = *length - 1;
+ 		*length = retlen;
+ 		result =  (char *)outp + (long)outp-&gt;coda_readlink.data;
+ 		memcpy(buffer, result, retlen);</pre><hr><pre>commit da47c19e5c746829042933c8f945a71e2b62d6fc
+Author: Yoshihisa Abe &lt;yoshiabe@cs.cmu.edu&gt;
+Date:   Mon Oct 25 02:03:46 2010 -0400
+
+    Coda: replace BKL with mutex
+    
+    Replace the BKL with a mutex to protect the venus_comm structure which
+    binds the mountpoint with the character device and holds the upcall
+    queues.
+    
+    Signed-off-by: Yoshihisa Abe &lt;yoshiabe@cs.cmu.edu&gt;
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/inode.c b/fs/coda/inode.c
+index b7fa3e3d772f..7993b96ca348 100644
+--- a/fs/coda/inode.c
++++ b/fs/coda/inode.c
+@@ -15,7 +15,7 @@
+ #include &lt;linux/stat.h&gt;
+ #include &lt;linux/errno.h&gt;
+ #include &lt;linux/unistd.h&gt;
+-#include &lt;linux/smp_lock.h&gt;
++#include &lt;linux/mutex.h&gt;
+ #include &lt;linux/spinlock.h&gt;
+ #include &lt;linux/file.h&gt;
+ #include &lt;linux/vfs.h&gt;
+@@ -145,7 +145,7 @@ static int get_device_index(struct coda_mount_data *data)
+ static int coda_fill_super(struct super_block *sb, void *data, int silent)
+ {
+ 	struct inode *root = NULL;
+-	struct venus_comm *vc = NULL;
++	struct venus_comm *vc;
+ 	struct CodaFid fid;
+ 	int error;
+ 	int idx;
+@@ -159,7 +159,7 @@ static int coda_fill_super(struct super_block *sb, void *data, int silent)
+ 	printk(KERN_INFO "coda_read_super: device index: %i\n", idx);
+ 
+ 	vc = &amp;coda_comms[idx];
+-	lock_kernel();
++	mutex_lock(&amp;vc-&gt;vc_mutex);
+ 
+ 	if (!vc-&gt;vc_inuse) {
+ 		printk("coda_read_super: No pseudo device\n");
+@@ -178,7 +178,7 @@ static int coda_fill_super(struct super_block *sb, void *data, int silent)
+ 		goto unlock_out;
+ 
+ 	vc-&gt;vc_sb = sb;
+-	unlock_kernel();
++	mutex_unlock(&amp;vc-&gt;vc_mutex);
+ 
+ 	sb-&gt;s_fs_info = vc;
+ 	sb-&gt;s_flags |= MS_NOATIME;
+@@ -217,20 +217,23 @@ static int coda_fill_super(struct super_block *sb, void *data, int silent)
+ 	if (root)
+ 		iput(root);
+ 
+-	lock_kernel();
++	mutex_lock(&amp;vc-&gt;vc_mutex);
+ 	bdi_destroy(&amp;vc-&gt;bdi);
+ 	vc-&gt;vc_sb = NULL;
+ 	sb-&gt;s_fs_info = NULL;
+ unlock_out:
+-	unlock_kernel();
++	mutex_unlock(&amp;vc-&gt;vc_mutex);
+ 	return error;
+ }
+ 
+ static void coda_put_super(struct super_block *sb)
+ {
+-	bdi_destroy(&amp;coda_vcp(sb)-&gt;bdi);
+-	coda_vcp(sb)-&gt;vc_sb = NULL;
++	struct venus_comm *vcp = coda_vcp(sb);
++	mutex_lock(&amp;vcp-&gt;vc_mutex);
++	bdi_destroy(&amp;vcp-&gt;bdi);
++	vcp-&gt;vc_sb = NULL;
+ 	sb-&gt;s_fs_info = NULL;
++	mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 
+ 	printk("Coda: Bye bye.\n");
+ }
+diff --git a/fs/coda/psdev.c b/fs/coda/psdev.c
+index 9a9248e632c6..62647a8595e4 100644
+--- a/fs/coda/psdev.c
++++ b/fs/coda/psdev.c
+@@ -35,7 +35,7 @@
+ #include &lt;linux/poll.h&gt;
+ #include &lt;linux/init.h&gt;
+ #include &lt;linux/list.h&gt;
+-#include &lt;linux/smp_lock.h&gt;
++#include &lt;linux/mutex.h&gt;
+ #include &lt;linux/device.h&gt;
+ #include &lt;asm/io.h&gt;
+ #include &lt;asm/system.h&gt;
+@@ -67,8 +67,10 @@ static unsigned int coda_psdev_poll(struct file *file, poll_table * wait)
+ 	unsigned int mask = POLLOUT | POLLWRNORM;
+ 
+ 	poll_wait(file, &amp;vcp-&gt;vc_waitq, wait);
++	mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 	if (!list_empty(&amp;vcp-&gt;vc_pending))
+                 mask |= POLLIN | POLLRDNORM;
++	mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 
+ 	return mask;
+ }
+@@ -143,7 +145,7 @@ static ssize_t coda_psdev_write(struct file *file, const char __user *buf,
+ 	}
+         
+ 	/* Look for the message on the processing queue. */
+-	lock_kernel();
++	mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 	list_for_each(lh, &amp;vcp-&gt;vc_processing) {
+ 		tmp = list_entry(lh, struct upc_req , uc_chain);
+ 		if (tmp-&gt;uc_unique == hdr.unique) {
+@@ -152,7 +154,7 @@ static ssize_t coda_psdev_write(struct file *file, const char __user *buf,
+ 			break;
+ 		}
+ 	}
+-	unlock_kernel();
++	mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 
+ 	if (!req) {
+ 		printk("psdev_write: msg (%d, %d) not found\n", 
+@@ -207,7 +209,7 @@ static ssize_t coda_psdev_read(struct file * file, char __user * buf,
+ 	if (nbytes == 0)
+ 		return 0;
+ 
+-	lock_kernel();
++	mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 
+ 	add_wait_queue(&amp;vcp-&gt;vc_waitq, &amp;wait);
+ 	set_current_state(TASK_INTERRUPTIBLE);
+@@ -221,7 +223,9 @@ static ssize_t coda_psdev_read(struct file * file, char __user * buf,
+ 			retval = -ERESTARTSYS;
+ 			break;
+ 		}
++		mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 		schedule();
++		mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 	}
+ 
+ 	set_current_state(TASK_RUNNING);
+@@ -254,7 +258,7 @@ static ssize_t coda_psdev_read(struct file * file, char __user * buf,
+ 	CODA_FREE(req-&gt;uc_data, sizeof(struct coda_in_hdr));
+ 	kfree(req);
+ out:
+-	unlock_kernel();
++	mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 	return (count ? count : retval);
+ }
+ 
+@@ -267,10 +271,10 @@ static int coda_psdev_open(struct inode * inode, struct file * file)
+ 	if (idx &lt; 0 || idx &gt;= MAX_CODADEVS)
+ 		return -ENODEV;
+ 
+-	lock_kernel();
+-
+ 	err = -EBUSY;
+ 	vcp = &amp;coda_comms[idx];
++	mutex_lock(&amp;vcp-&gt;vc_mutex);
++
+ 	if (!vcp-&gt;vc_inuse) {
+ 		vcp-&gt;vc_inuse++;
+ 
+@@ -284,7 +288,7 @@ static int coda_psdev_open(struct inode * inode, struct file * file)
+ 		err = 0;
+ 	}
+ 
+-	unlock_kernel();
++	mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 	return err;
+ }
+ 
+@@ -299,7 +303,7 @@ static int coda_psdev_release(struct inode * inode, struct file * file)
+ 		return -1;
+ 	}
+ 
+-	lock_kernel();
++	mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 
+ 	/* Wakeup clients so they can return. */
+ 	list_for_each_entry_safe(req, tmp, &amp;vcp-&gt;vc_pending, uc_chain) {
+@@ -324,7 +328,7 @@ static int coda_psdev_release(struct inode * inode, struct file * file)
+ 
+ 	file-&gt;private_data = NULL;
+ 	vcp-&gt;vc_inuse--;
+-	unlock_kernel();
++	mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 	return 0;
+ }
+ 
+@@ -353,9 +357,11 @@ static int init_coda_psdev(void)
+ 		err = PTR_ERR(coda_psdev_class);
+ 		goto out_chrdev;
+ 	}		
+-	for (i = 0; i &lt; MAX_CODADEVS; i++)
++	for (i = 0; i &lt; MAX_CODADEVS; i++) {
++		mutex_init(&amp;(&amp;coda_comms[i])-&gt;vc_mutex);
+ 		device_create(coda_psdev_class, NULL,
+ 			      MKDEV(CODA_PSDEV_MAJOR, i), NULL, "cfs%d", i);
++	}
+ 	coda_sysctl_init();
+ 	goto out;
+ 
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index 4c258cb5266d..c3563cab9758 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -27,7 +27,7 @@
+ #include &lt;linux/errno.h&gt;
+ #include &lt;linux/string.h&gt;
+ #include &lt;linux/slab.h&gt;
+-#include &lt;linux/smp_lock.h&gt;
++#include &lt;linux/mutex.h&gt;
+ #include &lt;asm/uaccess.h&gt;
+ #include &lt;linux/vmalloc.h&gt;
+ #include &lt;linux/vfs.h&gt;
+@@ -607,7 +607,8 @@ static void coda_unblock_signals(sigset_t *old)
+ 				 (r)-&gt;uc_opcode != CODA_RELEASE) || \
+ 				(r)-&gt;uc_flags &amp; CODA_REQ_READ))
+ 
+-static inline void coda_waitfor_upcall(struct upc_req *req)
++static inline void coda_waitfor_upcall(struct venus_comm *vcp,
++				       struct upc_req *req)
+ {
+ 	DECLARE_WAITQUEUE(wait, current);
+ 	unsigned long timeout = jiffies + coda_timeout * HZ;
+@@ -640,10 +641,12 @@ static inline void coda_waitfor_upcall(struct upc_req *req)
+ 			break;
+ 		}
+ 
++		mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 		if (blocked)
+ 			schedule_timeout(HZ);
+ 		else
+ 			schedule();
++		mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 	}
+ 	if (blocked)
+ 		coda_unblock_signals(&amp;old);
+@@ -671,7 +674,7 @@ static int coda_upcall(struct venus_comm *vcp,
+ 	struct upc_req *req = NULL, *sig_req;
+ 	int error;
+ 
+-	lock_kernel();
++	mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 
+ 	if (!vcp-&gt;vc_inuse) {
+ 		printk(KERN_NOTICE "coda: Venus dead, not sending upcall\n");
+@@ -711,7 +714,7 @@ static int coda_upcall(struct venus_comm *vcp,
+ 	 * ENODEV.  */
+ 
+ 	/* Go to sleep.  Wake up on signals only after the timeout. */
+-	coda_waitfor_upcall(req);
++	coda_waitfor_upcall(vcp, req);
+ 
+ 	/* Op went through, interrupt or not... */
+ 	if (req-&gt;uc_flags &amp; CODA_REQ_WRITE) {
+@@ -765,7 +768,7 @@ static int coda_upcall(struct venus_comm *vcp,
+ 
+ exit:
+ 	kfree(req);
+-	unlock_kernel();
++	mutex_unlock(&amp;vcp-&gt;vc_mutex);
+ 	return error;
+ }
+ 
+@@ -806,11 +809,11 @@ static int coda_upcall(struct venus_comm *vcp,
+ int coda_downcall(struct venus_comm *vcp, int opcode, union outputArgs *out)
+ {
+ 	struct inode *inode = NULL;
+-	struct CodaFid *fid, *newfid;
++	struct CodaFid *fid = NULL, *newfid;
+ 	struct super_block *sb;
+ 
+ 	/* Handle invalidation requests. */
+-	lock_kernel();
++	mutex_lock(&amp;vcp-&gt;vc_mutex);
+ 	sb = vcp-&gt;vc_sb;
+ 	if (!sb || !sb-&gt;s_root)
+ 		goto unlock_out;
+@@ -829,47 +832,53 @@ int coda_downcall(struct venus_comm *vcp, int opcode, union outputArgs *out)
+ 
+ 	case CODA_ZAPDIR:
+ 		fid = &amp;out-&gt;coda_zapdir.CodaFid;
+-		inode = coda_fid_to_inode(fid, sb);
+-		if (inode) {
+-			coda_flag_inode_children(inode, C_PURGE);
+-			coda_flag_inode(inode, C_VATTR);
+-		}
+ 		break;
+ 
+ 	case CODA_ZAPFILE:
+ 		fid = &amp;out-&gt;coda_zapfile.CodaFid;
+-		inode = coda_fid_to_inode(fid, sb);
+-		if (inode)
+-			coda_flag_inode(inode, C_VATTR);
+ 		break;
+ 
+ 	case CODA_PURGEFID:
+ 		fid = &amp;out-&gt;coda_purgefid.CodaFid;
+-		inode = coda_fid_to_inode(fid, sb);
+-		if (inode) {
+-			coda_flag_inode_children(inode, C_PURGE);
+-
+-			/* catch the dentries later if some are still busy */
+-			coda_flag_inode(inode, C_PURGE);
+-			d_prune_aliases(inode);
+-
+-		}
+ 		break;
+ 
+ 	case CODA_REPLACE:
+ 		fid = &amp;out-&gt;coda_replace.OldFid;
+-		newfid = &amp;out-&gt;coda_replace.NewFid;
+-		inode = coda_fid_to_inode(fid, sb);
+-		if (inode)
+-			coda_replace_fid(inode, fid, newfid);
+ 		break;
+ 	}
++	if (fid)
++		inode = coda_fid_to_inode(fid, sb);
+ 
+ unlock_out:
+-	unlock_kernel();
++	mutex_unlock(&amp;vcp-&gt;vc_mutex);
++
++	if (!inode)
++		return 0;
++
++	switch (opcode) {
++	case CODA_ZAPDIR:
++		coda_flag_inode_children(inode, C_PURGE);
++		coda_flag_inode(inode, C_VATTR);
++		break;
++
++	case CODA_ZAPFILE:
++		coda_flag_inode(inode, C_VATTR);
++		break;
++
++	case CODA_PURGEFID:
++		coda_flag_inode_children(inode, C_PURGE);
+ 
+-	if (inode)
+-		iput(inode);
++		/* catch the dentries later if some are still busy */
++		coda_flag_inode(inode, C_PURGE);
++		d_prune_aliases(inode);
++		break;
++
++	case CODA_REPLACE:
++		newfid = &amp;out-&gt;coda_replace.NewFid;
++		coda_replace_fid(inode, fid, newfid);
++		break;
++	}
++	iput(inode);
+ 	return 0;
+ }
+ 
+diff --git a/include/linux/coda_psdev.h b/include/linux/coda_psdev.h
+index 1e60c5a41a5b..72f2d2f0af91 100644
+--- a/include/linux/coda_psdev.h
++++ b/include/linux/coda_psdev.h
+@@ -8,6 +8,7 @@
+ 
+ #ifdef __KERNEL__
+ #include &lt;linux/backing-dev.h&gt;
++#include &lt;linux/mutex.h&gt;
+ 
+ struct kstatfs;
+ 
+@@ -20,6 +21,7 @@ struct venus_comm {
+ 	int                 vc_inuse;
+ 	struct super_block *vc_sb;
+ 	struct backing_dev_info bdi;
++	struct mutex	    vc_mutex;
+ };
+ 
+ </pre>
+    <div class="pagination">
+        <a href='15.html'>&lt;&lt;Prev</a><a href='15.html'>1</a><span>[2]</span><a href='15_3.html'>3</a><a href='15_4.html'>4</a><a href='15_5.html'>5</a><a href='15_6.html'>6</a><a href='15_7.html'>7</a><a href='15_8.html'>8</a><a href='15_3.html'>Next&gt;&gt;</a>
+    <div>
+</body>

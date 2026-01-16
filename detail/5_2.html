@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of South Carolina</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of South Carolina</h1>
+    <div class="pagination">
+        <a href='5.html'>&lt;&lt;Prev</a><a href='5.html'>1</a><span>[2]</span><a href='5_3.html'>3</a><a href='5_4.html'>4</a><a href='5_5.html'>5</a><a href='5_6.html'>6</a><a href='5_7.html'>7</a><a href='5_8.html'>8</a><a href='5_9.html'>9</a><a href='5_10.html'>10</a><a href='5_11.html'>11</a><a href='5_12.html'>12</a><a href='5_13.html'>13</a><a href='5_14.html'>14</a><a href='5_15.html'>15</a><a href='5_16.html'>16</a><a href='5_17.html'>17</a><a href='5_18.html'>18</a><a href='5_19.html'>19</a><a href='5_20.html'>20</a><a href='5_21.html'>21</a><a href='5_22.html'>22</a><a href='5_23.html'>23</a><a href='5_24.html'>24</a><a href='5_25.html'>25</a><a href='5_26.html'>26</a><a href='5_27.html'>27</a><a href='5_28.html'>28</a><a href='5_29.html'>29</a><a href='5_30.html'>30</a><a href='5_31.html'>31</a><a href='5_32.html'>32</a><a href='5_33.html'>33</a><a href='5_34.html'>34</a><a href='5_35.html'>35</a><a href='5_36.html'>36</a><a href='5_37.html'>37</a><a href='5_38.html'>38</a><a href='5_39.html'>39</a><a href='5_40.html'>40</a><a href='5_41.html'>41</a><a href='5_42.html'>42</a><a href='5_43.html'>43</a><a href='5_44.html'>44</a><a href='5_45.html'>45</a><a href='5_46.html'>46</a><a href='5_47.html'>47</a><a href='5_48.html'>48</a><a href='5_3.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 09ff742c62a6bbfca7aed485f44c8b16f52e1096
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Sat Jul 12 15:51:51 2014 -0500
+
+    libiscsi: return new error code when nop times out
+    
+    When a iscsi nop as ping timedout we were failing with the
+    common connection error code, ISCSI_ERR_CONN_FAILED. This
+    patch adds a new error code for this problem so can properly
+    track/distinguish in userspace.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Acked-by: Vikas Chaudhary &lt;vikas.chaudhary@qlogic.com&gt;
+    Reviewed-by: Hannes Reinecke &lt;hare@suse.de&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
+index f9f3a1224dfa..ea025e4806b6 100644
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -2097,7 +2097,7 @@ static void iscsi_check_transport_timeouts(unsigned long data)
+ 				  conn-&gt;ping_timeout, conn-&gt;recv_timeout,
+ 				  last_recv, conn-&gt;last_ping, jiffies);
+ 		spin_unlock(&amp;session-&gt;frwd_lock);
+-		iscsi_conn_failure(conn, ISCSI_ERR_CONN_FAILED);
++		iscsi_conn_failure(conn, ISCSI_ERR_NOP_TIMEDOUT);
+ 		return;
+ 	}
+ 
+diff --git a/include/scsi/iscsi_if.h b/include/scsi/iscsi_if.h
+index fd0421c6d40a..95ed9424a11a 100644
+--- a/include/scsi/iscsi_if.h
++++ b/include/scsi/iscsi_if.h
+@@ -527,6 +527,7 @@ enum iscsi_err {
+ 	ISCSI_ERR_XMIT_FAILED		= ISCSI_ERR_BASE + 19,
+ 	ISCSI_ERR_TCP_CONN_CLOSE	= ISCSI_ERR_BASE + 20,
+ 	ISCSI_ERR_SCSI_EH_SESSION_RST	= ISCSI_ERR_BASE + 21,
++	ISCSI_ERR_NOP_TIMEDOUT		= ISCSI_ERR_BASE + 22,
+ };
+ 
+ /*</pre><hr><pre>commit 719e5874d0777b575720249d3ece3dbde3efb452
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Sat Jul 12 15:51:50 2014 -0500
+
+    iscsi class: fix get_host_stats return code when not supported
+    
+    When the get_host_stats call was not supported we were
+    returing EINVAL. This has us return ENOSYS, because for
+    software iscsi drivers where there is no host it is ok to not
+    have this callout.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Acked-by: Vikas Chaudhary &lt;vikas.chaudhary@qlogic.com&gt;
+    Reviewed-by: Hannes Reinecke &lt;hare@suse.de&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 14bfa53c6f7d..534d3fb87658 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3429,7 +3429,7 @@ iscsi_get_host_stats(struct iscsi_transport *transport, struct nlmsghdr *nlh)
+ 	char *buf;
+ 
+ 	if (!transport-&gt;get_host_stats)
+-		return -EINVAL;
++		return -ENOSYS;
+ 
+ 	priv = iscsi_if_transport_lookup(transport);
+ 	if (!priv)</pre><hr><pre>commit 2f7608fc5e6c8a70df3ce31406feee70a42458ba
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Sat Jul 12 15:51:48 2014 -0500
+
+    iscsi class: fix get_host_stats error handling
+    
+    iscsi_get_host_stats was dropping the error code returned
+    by drivers like qla4xxx.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Acked-by: Vikas Chaudhary &lt;vikas.chaudhary@qlogic.com&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index b481e62a12cc..14bfa53c6f7d 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3467,6 +3467,10 @@ iscsi_get_host_stats(struct iscsi_transport *transport, struct nlmsghdr *nlh)
+ 		memset(buf, 0, host_stats_size);
+ 
+ 		err = transport-&gt;get_host_stats(shost, buf, host_stats_size);
++		if (err) {
++			kfree(skbhost_stats);
++			goto exit_host_stats;
++		}
+ 
+ 		actual_size = nlmsg_total_size(sizeof(*ev) + host_stats_size);
+ 		skb_trim(skbhost_stats, NLMSG_ALIGN(actual_size));</pre><hr><pre>commit 7f3976f03ff128fd5aa8dc22e4784d03311ebd09
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Sat Jul 12 15:51:49 2014 -0500
+
+    qla4xxx: fix get_host_stats error propagation
+    
+    qla4xxx was not always returning -EXYZ error codes when
+    qla4xxx_get_host_stats failed.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Acked-by: Vikas Chaudhary &lt;vikas.chaudhary@qlogic.com&gt;
+    Reviewed-by: Hannes Reinecke &lt;hare@suse.de&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
+index 82b46ee8e7c1..199fcf79a051 100644
+--- a/drivers/scsi/qla4xxx/ql4_os.c
++++ b/drivers/scsi/qla4xxx/ql4_os.c
+@@ -1050,6 +1050,7 @@ static int qla4xxx_get_host_stats(struct Scsi_Host *shost, char *buf, int len)
+ 	if (!ql_iscsi_stats) {
+ 		ql4_printk(KERN_ERR, ha,
+ 			   "Unable to allocate memory for iscsi stats\n");
++		ret = -ENOMEM;
+ 		goto exit_host_stats;
+ 	}
+ 
+@@ -1058,6 +1059,7 @@ static int qla4xxx_get_host_stats(struct Scsi_Host *shost, char *buf, int len)
+ 	if (ret != QLA_SUCCESS) {
+ 		ql4_printk(KERN_ERR, ha,
+ 			   "Unable to retrieve iscsi stats\n");
++		ret = -EIO;
+ 		goto exit_host_stats;
+ 	}
+ 	host_stats-&gt;mactx_frames = le64_to_cpu(ql_iscsi_stats-&gt;mac_tx_frames);</pre><hr><pre>commit 915aafd856d1a4ef1dea30c2b20ada03c93be4d7
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Tue Jul 1 11:24:38 2014 -0500
+
+    bnx2i, be2iscsi: fix custom stats length
+    
+    The custom stats is an array with custom_length indicating the length
+    of the array. This patch fixes bnx2i and be2iscsi's setting of the
+    custom stats length. They both just have the one, eh_abort_cnt, so that should
+    be in the first entry of the custom array and custom_length should then
+    be one.
+    
+    Reported-by: Rickard Strandqvist &lt;rickard_strandqvist@spectrumdigital.se&gt;
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Acked-by: Vikas Chaudhary &lt;vikas.chaudhary@qlogic.com&gt;
+    Acked-by: Eddie Wai &lt;eddie.wai@broadcom.com&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/be2iscsi/be_iscsi.c b/drivers/scsi/be2iscsi/be_iscsi.c
+index fd284ff36ecf..86162811812d 100644
+--- a/drivers/scsi/be2iscsi/be_iscsi.c
++++ b/drivers/scsi/be2iscsi/be_iscsi.c
+@@ -914,7 +914,7 @@ void beiscsi_conn_get_stats(struct iscsi_cls_conn *cls_conn,
+ 	stats-&gt;r2t_pdus = conn-&gt;r2t_pdus_cnt;
+ 	stats-&gt;digest_err = 0;
+ 	stats-&gt;timeout_err = 0;
+-	stats-&gt;custom_length = 0;
++	stats-&gt;custom_length = 1;
+ 	strcpy(stats-&gt;custom[0].desc, "eh_abort_cnt");
+ 	stats-&gt;custom[0].value = conn-&gt;eh_abort_cnt;
+ }
+diff --git a/drivers/scsi/bnx2i/bnx2i_iscsi.c b/drivers/scsi/bnx2i/bnx2i_iscsi.c
+index 166543f7ef55..9bd9b8148689 100644
+--- a/drivers/scsi/bnx2i/bnx2i_iscsi.c
++++ b/drivers/scsi/bnx2i/bnx2i_iscsi.c
+@@ -1643,12 +1643,11 @@ static void bnx2i_conn_get_stats(struct iscsi_cls_conn *cls_conn,
+ 	stats-&gt;r2t_pdus = conn-&gt;r2t_pdus_cnt;
+ 	stats-&gt;tmfcmd_pdus = conn-&gt;tmfcmd_pdus_cnt;
+ 	stats-&gt;tmfrsp_pdus = conn-&gt;tmfrsp_pdus_cnt;
+-	stats-&gt;custom_length = 3;
+-	strcpy(stats-&gt;custom[2].desc, "eh_abort_cnt");
+-	stats-&gt;custom[2].value = conn-&gt;eh_abort_cnt;
+ 	stats-&gt;digest_err = 0;
+ 	stats-&gt;timeout_err = 0;
+-	stats-&gt;custom_length = 0;
++	strcpy(stats-&gt;custom[0].desc, "eh_abort_cnt");
++	stats-&gt;custom[0].value = conn-&gt;eh_abort_cnt;
++	stats-&gt;custom_length = 1;
+ }
+ 
+ </pre><hr><pre>commit eee2b5c840d93f704554f4a2884cef72742f22e2
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Fri Feb 7 00:41:42 2014 -0600
+
+    [SCSI] iscsi_tcp: check for valid session before accessing
+    
+    Check that the session is setup before accessing its
+    connection. This fixes a oops where userspace tries
+    to get the ip address before the session is bound to
+    a host.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Signed-off-by: James Bottomley &lt;JBottomley@Parallels.com&gt;
+
+diff --git a/drivers/scsi/iscsi_tcp.c b/drivers/scsi/iscsi_tcp.c
+index 12b351213c59..bfb6d07d87f0 100644
+--- a/drivers/scsi/iscsi_tcp.c
++++ b/drivers/scsi/iscsi_tcp.c
+@@ -759,6 +759,9 @@ static int iscsi_sw_tcp_host_get_param(struct Scsi_Host *shost,
+ 
+ 	switch (param) {
+ 	case ISCSI_HOST_PARAM_IPADDRESS:
++		if (!session)
++			return -ENOTCONN;
++
+ 		spin_lock_bh(&amp;session-&gt;frwd_lock);
+ 		conn = session-&gt;leadconn;
+ 		if (!conn) {</pre><hr><pre>commit 46a84c6516fa09bb8e4cc0c7998ccd4cb5e876a1
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Fri Feb 7 00:41:39 2014 -0600
+
+    [SCSI] libiscsi: remove unneeded queue work when max_cmdsn is increased
+    
+    iscsi_queuecommand will only take in commands that can fit in the
+    current window. So, if a command is on the cmdqueue then it can
+    fit in the current window. If a command is on the mgmtqueue, then
+    we are setting the immediate bit so they will also fit in the
+    window. As a result, we never need to to do a iscsi_conn_queue_work
+    when the maxCmdSn is increased.
+    
+    What should happen is that a command will complete the window will
+    be increased, then the scsi layer will send us more commands by
+    running the scsi_device queues.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Signed-off-by: James Bottomley &lt;JBottomley@Parallels.com&gt;
+
+diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
+index 8738b989a801..5b8605ca42fa 100644
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -110,16 +110,8 @@ static void __iscsi_update_cmdsn(struct iscsi_session *session,
+ 		session-&gt;exp_cmdsn = exp_cmdsn;
+ 
+ 	if (max_cmdsn != session-&gt;max_cmdsn &amp;&amp;
+-	    !iscsi_sna_lt(max_cmdsn, session-&gt;max_cmdsn)) {
++	    !iscsi_sna_lt(max_cmdsn, session-&gt;max_cmdsn))
+ 		session-&gt;max_cmdsn = max_cmdsn;
+-		/*
+-		 * if the window closed with IO queued, then kick the
+-		 * xmit thread
+-		 */
+-		if (!list_empty(&amp;session-&gt;leadconn-&gt;cmdqueue) ||
+-		    !list_empty(&amp;session-&gt;leadconn-&gt;mgmtqueue))
+-			iscsi_conn_queue_work(session-&gt;leadconn);
+-	}
+ }
+ 
+ void iscsi_update_cmdsn(struct iscsi_session *session, struct iscsi_nopin *hdr)</pre><hr><pre>commit 126e964a444f125bd428757fb88c24c730f6fcf9
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Thu Dec 19 01:16:21 2013 -0600
+
+    [SCSI] be2iscsi: fix bad if expression
+    
+    https://bugzilla.kernel.org/show_bug.cgi?id=67091
+    
+    Cc: Jayamohan Kallickal &lt;Jayamohan.Kallickal@emulex.com&gt;
+    Signed-off-by: James Bottomley &lt;JBottomley@Parallels.com&gt;
+
+diff --git a/drivers/scsi/be2iscsi/be_main.c b/drivers/scsi/be2iscsi/be_main.c
+index 1f375051483a..5642a9b250c2 100644
+--- a/drivers/scsi/be2iscsi/be_main.c
++++ b/drivers/scsi/be2iscsi/be_main.c
+@@ -325,7 +325,7 @@ static int beiscsi_eh_device_reset(struct scsi_cmnd *sc)
+ 		if (!abrt_task-&gt;sc || abrt_task-&gt;state == ISCSI_TASK_FREE)
+ 			continue;
+ 
+-		if (abrt_task-&gt;sc-&gt;device-&gt;lun != abrt_task-&gt;sc-&gt;device-&gt;lun)
++		if (sc-&gt;device-&gt;lun != abrt_task-&gt;sc-&gt;device-&gt;lun)
+ 			continue;
+ 
+ 		/* Invalidate WRB Posted for this Task */</pre><hr><pre>commit 7652113c2f508b1c8176640dcd034730fe79bc48
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Wed Sep 18 08:33:55 2013 -0600
+
+    If the queue is dying then we only call the rq-&gt;end_io callout.
+    This leaves bios setup on the request, because the caller assumes when
+    the blk_execute_rq_nowait/blk_execute_rq call has completed that
+    the rq-&gt;bios have been cleaned up.
+    
+    This patch has blk_execute_rq_nowait use __blk_end_request_all
+    to free bios and also call rq-&gt;end_io.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Signed-off-by: Jens Axboe &lt;axboe@kernel.dk&gt;
+
+diff --git a/block/blk-exec.c b/block/blk-exec.c
+index e70621396129..ae4f27d7944e 100644
+--- a/block/blk-exec.c
++++ b/block/blk-exec.c
+@@ -68,9 +68,9 @@ void blk_execute_rq_nowait(struct request_queue *q, struct gendisk *bd_disk,
+ 	spin_lock_irq(q-&gt;queue_lock);
+ 
+ 	if (unlikely(blk_queue_dying(q))) {
++		rq-&gt;cmd_flags |= REQ_QUIET; 
+ 		rq-&gt;errors = -ENXIO;
+-		if (rq-&gt;end_io)
+-			rq-&gt;end_io(rq, rq-&gt;errors);
++		__blk_end_request_all(rq, rq-&gt;errors);
+ 		spin_unlock_irq(q-&gt;queue_lock);
+ 		return;
+ 	}</pre><hr><pre>commit 86e92ad299fb0be359efdd61812944497d4d8d52
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Fri Jun 14 04:56:14 2013 -0500
+
+    dlm: disable nagle for SCTP
+    
+    For TCP we disable Nagle and I cannot think of why it would be needed
+    for SCTP. When disabled it seems to improve dlm_lock operations like it
+    does for TCP.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Signed-off-by: David Teigland &lt;teigland@redhat.com&gt;
+
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index a4fad32bb788..4f539dd9b1e9 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -1346,6 +1346,7 @@ static int sctp_listen_for_all(void)
+ 	int result = -EINVAL, num = 1, i, addr_len;
+ 	struct connection *con = nodeid2con(0, GFP_NOFS);
+ 	int bufsize = NEEDED_RMEM;
++	int one = 1;
+ 
+ 	if (!con)
+ 		return -ENOMEM;
+@@ -1380,6 +1381,11 @@ static int sctp_listen_for_all(void)
+ 		goto create_delsock;
+ 	}
+ 
++	result = kernel_setsockopt(sock, SOL_SCTP, SCTP_NODELAY, (char *)&amp;one,
++				   sizeof(one));
++	if (result &lt; 0)
++		log_print("Could not set SCTP NODELAY error %d\n", result);
++
+ 	/* Init con struct */
+ 	sock-&gt;sk-&gt;sk_user_data = con;
+ 	con-&gt;sock = sock;</pre>
+    <div class="pagination">
+        <a href='5.html'>&lt;&lt;Prev</a><a href='5.html'>1</a><span>[2]</span><a href='5_3.html'>3</a><a href='5_4.html'>4</a><a href='5_5.html'>5</a><a href='5_6.html'>6</a><a href='5_7.html'>7</a><a href='5_8.html'>8</a><a href='5_9.html'>9</a><a href='5_10.html'>10</a><a href='5_11.html'>11</a><a href='5_12.html'>12</a><a href='5_13.html'>13</a><a href='5_14.html'>14</a><a href='5_15.html'>15</a><a href='5_16.html'>16</a><a href='5_17.html'>17</a><a href='5_18.html'>18</a><a href='5_19.html'>19</a><a href='5_20.html'>20</a><a href='5_21.html'>21</a><a href='5_22.html'>22</a><a href='5_23.html'>23</a><a href='5_24.html'>24</a><a href='5_25.html'>25</a><a href='5_26.html'>26</a><a href='5_27.html'>27</a><a href='5_28.html'>28</a><a href='5_29.html'>29</a><a href='5_30.html'>30</a><a href='5_31.html'>31</a><a href='5_32.html'>32</a><a href='5_33.html'>33</a><a href='5_34.html'>34</a><a href='5_35.html'>35</a><a href='5_36.html'>36</a><a href='5_37.html'>37</a><a href='5_38.html'>38</a><a href='5_39.html'>39</a><a href='5_40.html'>40</a><a href='5_41.html'>41</a><a href='5_42.html'>42</a><a href='5_43.html'>43</a><a href='5_44.html'>44</a><a href='5_45.html'>45</a><a href='5_46.html'>46</a><a href='5_47.html'>47</a><a href='5_48.html'>48</a><a href='5_3.html'>Next&gt;&gt;</a>
+    <div>
+</body>

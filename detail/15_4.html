@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Carnegie Mellon University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Carnegie Mellon University</h1>
+    <div class="pagination">
+        <a href='15_3.html'>&lt;&lt;Prev</a><a href='15.html'>1</a><a href='15_2.html'>2</a><a href='15_3.html'>3</a><span>[4]</span><a href='15_5.html'>5</a><a href='15_6.html'>6</a><a href='15_7.html'>7</a><a href='15_8.html'>8</a><a href='15_5.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 5fd31e9a67dd6c80e49240514cf854c1f054aca2
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:49 2007 -0700
+
+    coda: cleanup downcall handler
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index 097dbb2fd6f5..87601e147644 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -859,77 +859,66 @@ static int coda_upcall(struct coda_sb_info *sbi,
+ 
+ int coda_downcall(int opcode, union outputArgs * out, struct super_block *sb)
+ {
++	struct inode *inode = NULL;
++	struct CodaFid *fid, *newfid;
++
+ 	/* Handle invalidation requests. */
+-          if ( !sb || !sb-&gt;s_root || !sb-&gt;s_root-&gt;d_inode)
+-		  return 0; 
+-
+-	  switch (opcode) {
+-
+-	  case CODA_FLUSH : {
+-		   coda_cache_clear_all(sb);
+-		   shrink_dcache_sb(sb);
+-		   coda_flag_inode(sb-&gt;s_root-&gt;d_inode, C_FLUSH);
+-		   return(0);
+-	  }
+-
+-	  case CODA_PURGEUSER : {
+-		   coda_cache_clear_all(sb);
+-		   return(0);
+-	  }
+-
+-	  case CODA_ZAPDIR : {
+-	          struct inode *inode;
+-		  struct CodaFid *fid = &amp;out-&gt;coda_zapdir.CodaFid;
+-
+-		  inode = coda_fid_to_inode(fid, sb);
+-		  if (inode) {
+-			  coda_flag_inode_children(inode, C_PURGE);
+-	                  coda_flag_inode(inode, C_VATTR);
+-			  iput(inode);
+-		  }
+-		  
+-		  return(0);
+-	  }
+-
+-	  case CODA_ZAPFILE : {
+-	          struct inode *inode;
+-		  struct CodaFid *fid = &amp;out-&gt;coda_zapfile.CodaFid;
+-		  inode = coda_fid_to_inode(fid, sb);
+-		  if ( inode ) {
+-	                  coda_flag_inode(inode, C_VATTR);
+-			  iput(inode);
+-		  }
+-		  return 0;
+-	  }
+-
+-	  case CODA_PURGEFID : {
+-	          struct inode *inode;
+-		  struct CodaFid *fid = &amp;out-&gt;coda_purgefid.CodaFid;
+-		  inode = coda_fid_to_inode(fid, sb);
+-		  if ( inode ) { 
++	if ( !sb || !sb-&gt;s_root)
++		return 0;
++
++	switch (opcode) {
++	case CODA_FLUSH:
++		coda_cache_clear_all(sb);
++		shrink_dcache_sb(sb);
++		if (sb-&gt;s_root-&gt;d_inode)
++		    coda_flag_inode(sb-&gt;s_root-&gt;d_inode, C_FLUSH);
++		break;
++
++	case CODA_PURGEUSER:
++		coda_cache_clear_all(sb);
++		break;
++
++	case CODA_ZAPDIR:
++		fid = &amp;out-&gt;coda_zapdir.CodaFid;
++		inode = coda_fid_to_inode(fid, sb);
++		if (inode) {
++			coda_flag_inode_children(inode, C_PURGE);
++			coda_flag_inode(inode, C_VATTR);
++		}
++		break;
++
++	case CODA_ZAPFILE:
++		fid = &amp;out-&gt;coda_zapfile.CodaFid;
++		inode = coda_fid_to_inode(fid, sb);
++		if (inode)
++			coda_flag_inode(inode, C_VATTR);
++		break;
++
++	case CODA_PURGEFID:
++		fid = &amp;out-&gt;coda_purgefid.CodaFid;
++		inode = coda_fid_to_inode(fid, sb);
++		if (inode) {
+ 			coda_flag_inode_children(inode, C_PURGE);
+ 
+ 			/* catch the dentries later if some are still busy */
+ 			coda_flag_inode(inode, C_PURGE);
+ 			d_prune_aliases(inode);
+ 
+-			iput(inode);
+-		  }
+-		  return 0;
+-	  }
+-
+-	  case CODA_REPLACE : {
+-	          struct inode *inode;
+-		  struct CodaFid *oldfid = &amp;out-&gt;coda_replace.OldFid;
+-		  struct CodaFid *newfid = &amp;out-&gt;coda_replace.NewFid;
+-		  inode = coda_fid_to_inode(oldfid, sb);
+-		  if ( inode ) { 
+-			  coda_replace_fid(inode, oldfid, newfid);
+-			  iput(inode);
+-		  }
+-		  return 0;
+-	  }
+-	  }
+-	  return 0;
++		}
++		break;
++
++	case CODA_REPLACE:
++		fid = &amp;out-&gt;coda_replace.OldFid;
++		newfid = &amp;out-&gt;coda_replace.NewFid;
++		inode = coda_fid_to_inode(fid, sb);
++		if (inode)
++			coda_replace_fid(inode, fid, newfid);
++		break;
++	}
++
++	if (inode)
++		iput(inode);
++
++	return 0;
+ }
+ </pre><hr><pre>commit ed36f723676b208053d0655cee7e7f1601a2d356
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:49 2007 -0700
+
+    coda: cleanup coda_lookup, use dsplice_alias
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/dir.c b/fs/coda/dir.c
+index 47ac9e21a590..0c6c48ca7496 100644
+--- a/fs/coda/dir.c
++++ b/fs/coda/dir.c
+@@ -97,58 +97,45 @@ const struct file_operations coda_dir_operations = {
+ /* access routines: lookup, readlink, permission */
+ static struct dentry *coda_lookup(struct inode *dir, struct dentry *entry, struct nameidata *nd)
+ {
+-	struct inode *res_inode = NULL;
++	struct inode *inode = NULL;
+ 	struct CodaFid resfid = { { 0, } };
+-	int dropme = 0; /* to indicate entry should not be cached */
+ 	int type = 0;
+ 	int error = 0;
+ 	const char *name = entry-&gt;d_name.name;
+ 	size_t length = entry-&gt;d_name.len;
+-	
+-	if ( length &gt; CODA_MAXNAMLEN ) {
+-	        printk("name too long: lookup, %s (%*s)\n", 
++
++	if (length &gt; CODA_MAXNAMLEN) {
++		printk(KERN_ERR "name too long: lookup, %s (%*s)\n",
+ 		       coda_i2s(dir), (int)length, name);
+ 		return ERR_PTR(-ENAMETOOLONG);
+ 	}
+ 
++	/* control object, create inode on the fly */
++	if (coda_isroot(dir) &amp;&amp; coda_iscontrol(name, length)) {
++		error = coda_cnode_makectl(&amp;inode, dir-&gt;i_sb);
++		type = CODA_NOCACHE;
++		goto exit;
++	}
++
+ 	lock_kernel();
+-        /* control object, create inode on the fly */
+-        if (coda_isroot(dir) &amp;&amp; coda_iscontrol(name, length)) {
+-	        error = coda_cnode_makectl(&amp;res_inode, dir-&gt;i_sb);
+-		dropme = 1;
+-                goto exit;
+-        }
+ 
+-	error = venus_lookup(dir-&gt;i_sb, coda_i2f(dir), 
+-			     (const char *)name, length, &amp;type, &amp;resfid);
++	error = venus_lookup(dir-&gt;i_sb, coda_i2f(dir), name, length,
++			     &amp;type, &amp;resfid);
++	if (!error)
++		error = coda_cnode_make(&amp;inode, &amp;resfid, dir-&gt;i_sb);
+ 
+-	res_inode = NULL;
+-	if (!error) {
+-		if (type &amp; CODA_NOCACHE) {
+-			type &amp;= (~CODA_NOCACHE);
+-			dropme = 1;
+-		}
++	unlock_kernel();
+ 
+-	    	error = coda_cnode_make(&amp;res_inode, &amp;resfid, dir-&gt;i_sb);
+-		if (error) {
+-			unlock_kernel();
+-			return ERR_PTR(error);
+-		}
+-	} else if (error != -ENOENT) {
+-		unlock_kernel();
++	if (error &amp;&amp; error != -ENOENT)
+ 		return ERR_PTR(error);
+-	}
+ 
+ exit:
+-	entry-&gt;d_time = 0;
+ 	entry-&gt;d_op = &amp;coda_dentry_operations;
+-	d_add(entry, res_inode);
+-	if ( dropme ) {
+-		d_drop(entry);
+-		coda_flag_inode(res_inode, C_VATTR);
+-	}
+-	unlock_kernel();
+-        return NULL;
++
++	if (inode &amp;&amp; (type &amp; CODA_NOCACHE))
++		coda_flag_inode(inode, C_VATTR | C_PURGE);
++
++	return d_splice_alias(inode, entry);
+ }
+ 
+ </pre><hr><pre>commit 970648eb03cca7d7405f9a3a5d3fe29929e48aa6
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:48 2007 -0700
+
+    coda: ignore returned values when upcalls return errors
+    
+    Venus returns an ENOENT error on open, so we shouldn't try to grab the
+    filehandle for the returned fd.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index 330de7dbdcf8..097dbb2fd6f5 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -84,12 +84,8 @@ int venus_rootfid(struct super_block *sb, struct CodaFid *fidp)
+         UPARG(CODA_ROOT);
+ 
+ 	error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
+-	
+-	if (error) {
+-	        printk("coda_get_rootfid: error %d\n", error);
+-	} else {
++	if (!error)
+ 		*fidp = outp-&gt;coda_root.VFid;
+-	}
+ 
+ 	CODA_FREE(inp, insize);
+ 	return error;
+@@ -106,9 +102,9 @@ int venus_getattr(struct super_block *sb, struct CodaFid *fid,
+ 	UPARG(CODA_GETATTR);
+         inp-&gt;coda_getattr.VFid = *fid;
+ 
+-        error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
+-	
+-	*attr = outp-&gt;coda_getattr.attr;
++	error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
++	if (!error)
++		*attr = outp-&gt;coda_getattr.attr;
+ 
+ 	CODA_FREE(inp, insize);
+         return error;
+@@ -153,10 +149,11 @@ int venus_lookup(struct super_block *sb, struct CodaFid *fid,
+         memcpy((char *)(inp) + offset, name, length);
+         *((char *)inp + offset + length) = '\0';
+ 
+-        error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
+-
+-	*resfid = outp-&gt;coda_lookup.VFid;
+-	*type = outp-&gt;coda_lookup.vtype;
++	error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
++	if (!error) {
++		*resfid = outp-&gt;coda_lookup.VFid;
++		*type = outp-&gt;coda_lookup.vtype;
++	}
+ 
+ 	CODA_FREE(inp, insize);
+ 	return error;
+@@ -278,11 +275,12 @@ int venus_mkdir(struct super_block *sb, struct CodaFid *dirfid,
+         /* Venus must get null terminated string */
+         memcpy((char *)(inp) + offset, name, length);
+         *((char *)inp + offset + length) = '\0';
+-        
+-        error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
+ 
+-	*attrs = outp-&gt;coda_mkdir.attr;
+-	*newfid = outp-&gt;coda_mkdir.VFid;
++	error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
++	if (!error) {
++		*attrs = outp-&gt;coda_mkdir.attr;
++		*newfid = outp-&gt;coda_mkdir.VFid;
++	}
+ 
+ 	CODA_FREE(inp, insize);
+ 	return error;        
+@@ -348,11 +346,12 @@ int venus_create(struct super_block *sb, struct CodaFid *dirfid,
+         /* Venus must get null terminated string */
+         memcpy((char *)(inp) + offset, name, length);
+         *((char *)inp + offset + length) = '\0';
+-                
+-        error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
+ 
+-	*attrs = outp-&gt;coda_create.attr;
+-	*newfid = outp-&gt;coda_create.VFid;
++	error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
++	if (!error) {
++		*attrs = outp-&gt;coda_create.attr;
++		*newfid = outp-&gt;coda_create.VFid;
++	}
+ 
+ 	CODA_FREE(inp, insize);
+ 	return error;        
+@@ -417,19 +416,18 @@ int venus_readlink(struct super_block *sb, struct CodaFid *fid,
+ 	UPARG(CODA_READLINK);
+ 
+         inp-&gt;coda_readlink.VFid = *fid;
+-    
+-        error =  coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
+-	
+-	if (! error) {
+-                retlen = outp-&gt;coda_readlink.count;
++
++	error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
++	if (!error) {
++		retlen = outp-&gt;coda_readlink.count;
+ 		if ( retlen &gt; *length )
+-		        retlen = *length;
++			retlen = *length;
+ 		*length = retlen;
+ 		result =  (char *)outp + (long)outp-&gt;coda_readlink.data;
+ 		memcpy(buffer, result, retlen);
+ 		*(buffer + retlen) = '\0';
+ 	}
+-        
++
+         CODA_FREE(inp, insize);
+         return error;
+ }
+@@ -617,16 +615,13 @@ int venus_statfs(struct dentry *dentry, struct kstatfs *sfs)
+ 	insize = max_t(unsigned int, INSIZE(statfs), OUTSIZE(statfs));
+ 	UPARG(CODA_STATFS);
+ 
+-        error = coda_upcall(coda_sbp(dentry-&gt;d_sb), insize, &amp;outsize, inp);
+-	
+-        if (!error) {
++	error = coda_upcall(coda_sbp(dentry-&gt;d_sb), insize, &amp;outsize, inp);
++	if (!error) {
+ 		sfs-&gt;f_blocks = outp-&gt;coda_statfs.stat.f_blocks;
+ 		sfs-&gt;f_bfree  = outp-&gt;coda_statfs.stat.f_bfree;
+ 		sfs-&gt;f_bavail = outp-&gt;coda_statfs.stat.f_bavail;
+ 		sfs-&gt;f_files  = outp-&gt;coda_statfs.stat.f_files;
+ 		sfs-&gt;f_ffree  = outp-&gt;coda_statfs.stat.f_ffree;
+-	} else {
+-		printk("coda_statfs: Venus returns: %d\n", error);
+ 	}
+ 
+         CODA_FREE(inp, insize);</pre><hr><pre>commit 37461e1957e6262278342a0c1a78e46996b7ff88
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:48 2007 -0700
+
+    coda: replace upc_alloc/upc_free with kmalloc/kfree
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/psdev.c b/fs/coda/psdev.c
+index 6818c20372ca..8a09f19596db 100644
+--- a/fs/coda/psdev.c
++++ b/fs/coda/psdev.c
+@@ -49,8 +49,6 @@
+ 
+ #include "coda_int.h"
+ 
+-#define upc_free(r) kfree(r)
+-
+ /* statistics */
+ int           coda_hard;         /* allows signals during upcalls */
+ unsigned long coda_timeout = 30; /* .. secs, then signals will dequeue */
+@@ -264,7 +262,7 @@ static ssize_t coda_psdev_read(struct file * file, char __user * buf,
+ 	}
+ 
+ 	CODA_FREE(req-&gt;uc_data, sizeof(struct coda_in_hdr));
+-	upc_free(req);
++	kfree(req);
+ out:
+ 	unlock_kernel();
+ 	return (count ? count : retval);
+@@ -320,7 +318,7 @@ static int coda_psdev_release(struct inode * inode, struct file * file)
+ 		/* Async requests need to be freed here */
+ 		if (req-&gt;uc_flags &amp; REQ_ASYNC) {
+ 			CODA_FREE(req-&gt;uc_data, sizeof(struct coda_in_hdr));
+-			upc_free(req);
++			kfree(req);
+ 			continue;
+ 		}
+ 		req-&gt;uc_flags |= REQ_ABORT;
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index ad65ee01790f..330de7dbdcf8 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -37,9 +37,6 @@
+ #include &lt;linux/coda_cache.h&gt;
+ #include &lt;linux/coda_proc.h&gt; 
+ 
+-#define upc_alloc() kmalloc(sizeof(struct upc_req), GFP_KERNEL)
+-#define upc_free(r) kfree(r)
+-
+ static int coda_upcall(struct coda_sb_info *mntinfo, int inSize, int *outSize, 
+ 		       union inputArgs *buffer);
+ 
+@@ -745,7 +742,7 @@ static int coda_upcall(struct coda_sb_info *sbi,
+ 	}
+ 
+ 	/* Format the request message. */
+-	req = upc_alloc();
++	req = kmalloc(sizeof(struct upc_req), GFP_KERNEL);
+ 	if (!req)
+ 		return -ENOMEM;
+ 
+@@ -802,12 +799,12 @@ static int coda_upcall(struct coda_sb_info *sbi,
+ 	}
+ 
+ 	error = -ENOMEM;
+-	sig_req = upc_alloc();
++	sig_req = kmalloc(sizeof(struct upc_req), GFP_KERNEL);
+ 	if (!sig_req) goto exit;
+ 
+ 	CODA_ALLOC((sig_req-&gt;uc_data), char *, sizeof(struct coda_in_hdr));
+ 	if (!sig_req-&gt;uc_data) {
+-		upc_free(sig_req);
++		kfree(sig_req);
+ 		goto exit;
+ 	}
+ 
+@@ -827,7 +824,7 @@ static int coda_upcall(struct coda_sb_info *sbi,
+ 	wake_up_interruptible(&amp;vcommp-&gt;vc_waitq);
+ 
+ exit:
+-	upc_free(req);
++	kfree(req);
+ 	return error;
+ }
+ </pre><hr><pre>commit 978752534e94b50c8078b229134a37bad9db88b2
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:47 2007 -0700
+
+    coda: avoid lockdep warning in coda_readdir
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Cc: Al Viro &lt;viro@zeniv.linux.org.uk&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/dir.c b/fs/coda/dir.c
+index 01f55f447d82..47ac9e21a590 100644
+--- a/fs/coda/dir.c
++++ b/fs/coda/dir.c
+@@ -43,15 +43,15 @@ static int coda_rename(struct inode *old_inode, struct dentry *old_dentry,
+                        struct inode *new_inode, struct dentry *new_dentry);
+ 
+ /* dir file-ops */
+-static int coda_readdir(struct file *file, void *dirent, filldir_t filldir);
++static int coda_readdir(struct file *file, void *buf, filldir_t filldir);
+ 
+ /* dentry ops */
+ static int coda_dentry_revalidate(struct dentry *de, struct nameidata *nd);
+ static int coda_dentry_delete(struct dentry *);
+ 
+ /* support routines */
+-static int coda_venus_readdir(struct file *filp, filldir_t filldir,
+-			      void *dirent, struct dentry *dir);
++static int coda_venus_readdir(struct file *coda_file, void *buf,
++			      filldir_t filldir);
+ 
+ /* same as fs/bad_inode.c */
+ static int coda_return_EIO(void)
+@@ -448,12 +448,10 @@ static int coda_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 
+ 
+ /* file operations for directories */
+-int coda_readdir(struct file *coda_file, void *dirent, filldir_t filldir)
++int coda_readdir(struct file *coda_file, void *buf, filldir_t filldir)
+ {
+-	struct dentry *coda_dentry = coda_file-&gt;f_path.dentry;
+ 	struct coda_file_info *cfi;
+ 	struct file *host_file;
+-	struct inode *host_inode;
+ 	int ret;
+ 
+ 	cfi = CODA_FTOC(coda_file);
+@@ -462,30 +460,31 @@ int coda_readdir(struct file *coda_file, void *dirent, filldir_t filldir)
+ 
+ 	coda_vfs_stat.readdir++;
+ 
+-	host_inode = host_file-&gt;f_path.dentry-&gt;d_inode;
+-	mutex_lock(&amp;host_inode-&gt;i_mutex);
+-	host_file-&gt;f_pos = coda_file-&gt;f_pos;
+-
+-	if (!host_file-&gt;f_op-&gt;readdir) {
+-		/* Venus: we must read Venus dirents from the file */
+-		ret = coda_venus_readdir(host_file, filldir, dirent, coda_dentry);
+-	} else {
+-		/* potemkin case: we were handed a directory inode. */
+-		/* Yuk, we can't call vfs_readdir because we are already
+-		 * holding the inode semaphore. */
+-		ret = -ENOTDIR;
+-		if (!host_file-&gt;f_op || !host_file-&gt;f_op-&gt;readdir)
+-			goto out;
++	if (!host_file-&gt;f_op)
++		return -ENOTDIR;
++
++	if (host_file-&gt;f_op-&gt;readdir)
++	{
++		/* potemkin case: we were handed a directory inode.
++		 * We can't use vfs_readdir because we have to keep the file
++		 * position in sync between the coda_file and the host_file.
++		 * and as such we need grab the inode mutex. */
++		struct inode *host_inode = host_file-&gt;f_path.dentry-&gt;d_inode;
++
++		mutex_lock(&amp;host_inode-&gt;i_mutex);
++		host_file-&gt;f_pos = coda_file-&gt;f_pos;
+ 
+ 		ret = -ENOENT;
+ 		if (!IS_DEADDIR(host_inode)) {
+-			ret = host_file-&gt;f_op-&gt;readdir(host_file, dirent, filldir);
++			ret = host_file-&gt;f_op-&gt;readdir(host_file, buf, filldir);
+ 			file_accessed(host_file);
+ 		}
++
++		coda_file-&gt;f_pos = host_file-&gt;f_pos;
++		mutex_unlock(&amp;host_inode-&gt;i_mutex);
+ 	}
+-out:
+-	coda_file-&gt;f_pos = host_file-&gt;f_pos;
+-	mutex_unlock(&amp;host_inode-&gt;i_mutex);
++	else /* Venus: we must read Venus dirents from a file */
++		ret = coda_venus_readdir(coda_file, buf, filldir);
+ 
+ 	return ret;
+ }
+@@ -510,57 +509,68 @@ static inline unsigned int CDT2DT(unsigned char cdt)
+ }
+ 
+ /* support routines */
+-static int coda_venus_readdir(struct file *filp, filldir_t filldir,
+-			      void *dirent, struct dentry *dir)
++static int coda_venus_readdir(struct file *coda_file, void *buf,
++			      filldir_t filldir)
+ {
+ 	int result = 0; /* # of entries returned */
++	struct coda_file_info *cfi;
++	struct coda_inode_info *cii;
++	struct file *host_file;
++	struct dentry *de;
+ 	struct venus_dirent *vdir;
+ 	unsigned long vdir_size =
+ 	    (unsigned long)(&amp;((struct venus_dirent *)0)-&gt;d_name);
+ 	unsigned int type;
+ 	struct qstr name;
+ 	ino_t ino;
+-	int ret, i;
++	int ret;
++
++	cfi = CODA_FTOC(coda_file);
++	BUG_ON(!cfi || cfi-&gt;cfi_magic != CODA_MAGIC);
++	host_file = cfi-&gt;cfi_container;
++
++	de = coda_file-&gt;f_path.dentry;
++	cii = ITOC(de-&gt;d_inode);
+ 
+ 	vdir = kmalloc(sizeof(*vdir), GFP_KERNEL);
+ 	if (!vdir) return -ENOMEM;
+ 
+-	i = filp-&gt;f_pos;
+-	switch(i) {
++	switch (coda_file-&gt;f_pos) {
+ 	case 0:
+-		ret = filldir(dirent, ".", 1, 0, dir-&gt;d_inode-&gt;i_ino, DT_DIR);
++		ret = filldir(buf, ".", 1, 0, de-&gt;d_inode-&gt;i_ino, DT_DIR);
+ 		if (ret &lt; 0) break;
+ 		result++;
+-		filp-&gt;f_pos++;
++		coda_file-&gt;f_pos++;
+ 		/* fallthrough */
+ 	case 1:
+-		ret = filldir(dirent, "..", 2, 1, dir-&gt;d_parent-&gt;d_inode-&gt;i_ino, DT_DIR);
++		ret = filldir(buf, "..", 2, 1, de-&gt;d_parent-&gt;d_inode-&gt;i_ino, DT_DIR);
+ 		if (ret &lt; 0) break;
+ 		result++;
+-		filp-&gt;f_pos++;
++		coda_file-&gt;f_pos++;
+ 		/* fallthrough */
+ 	default:
+ 	while (1) {
+ 		/* read entries from the directory file */
+-		ret = kernel_read(filp, filp-&gt;f_pos - 2, (char *)vdir,
++		ret = kernel_read(host_file, coda_file-&gt;f_pos - 2, (char *)vdir,
+ 				  sizeof(*vdir));
+ 		if (ret &lt; 0) {
+-			printk("coda_venus_readdir: read dir failed %d\n", ret);
++			printk(KERN_ERR "coda readdir: read dir %s failed %d\n",
++			       coda_f2s(&amp;cii-&gt;c_fid), ret);
+ 			break;
+ 		}
+ 		if (ret == 0) break; /* end of directory file reached */
+ 
+ 		/* catch truncated reads */
+ 		if (ret &lt; vdir_size || ret &lt; vdir_size + vdir-&gt;d_namlen) {
+-			printk("coda_venus_readdir: short read: %ld\n",
+-			       filp-&gt;f_path.dentry-&gt;d_inode-&gt;i_ino);
++			printk(KERN_ERR "coda readdir: short read on %s\n",
++			       coda_f2s(&amp;cii-&gt;c_fid));
+ 			ret = -EBADF;
+ 			break;
+ 		}
+ 		/* validate whether the directory file actually makes sense */
+ 		if (vdir-&gt;d_reclen &lt; vdir_size + vdir-&gt;d_namlen) {
+-			printk("coda_venus_readdir: Invalid dir: %ld\n",
+-			       filp-&gt;f_path.dentry-&gt;d_inode-&gt;i_ino);
++			printk(KERN_ERR "coda readdir: invalid dir %s\n",
++			       coda_f2s(&amp;cii-&gt;c_fid));
+ 			ret = -EBADF;
+ 			break;
+ 		}
+@@ -579,21 +589,21 @@ static int coda_venus_readdir(struct file *filp, filldir_t filldir,
+ 			 * userspace doesn't have to worry about breaking
+ 			 * getcwd by having mismatched inode numbers for
+ 			 * internal volume mountpoints. */
+-			ino = find_inode_number(dir, &amp;name);
++			ino = find_inode_number(de, &amp;name);
+ 			if (!ino) ino = vdir-&gt;d_fileno;
+ 
+ 			type = CDT2DT(vdir-&gt;d_type);
+-			ret = filldir(dirent, name.name, name.len, filp-&gt;f_pos,
+-				      ino, type); 
++			ret = filldir(buf, name.name, name.len,
++				      coda_file-&gt;f_pos, ino, type);
+ 			/* failure means no space for filling in this round */
+ 			if (ret &lt; 0) break;
+ 			result++;
+ 		}
+ 		/* we'll always have progress because d_reclen is unsigned and
+ 		 * we've already established it is non-zero. */
+-		filp-&gt;f_pos += vdir-&gt;d_reclen;
++		coda_file-&gt;f_pos += vdir-&gt;d_reclen;
++	}
+ 	}
+-	} 
+ 	kfree(vdir);
+ 	return result ? result : ret;
+ }</pre><hr><pre>commit d9664c95afe5baa92ea56eff6a1c18e7b7a2cbe7
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:46 2007 -0700
+
+    coda: block signals during upcall processing
+    
+    We ignore signals for about 30 seconds to give userspace a chance to see the
+    upcall.  As we did not block signals we ended up in a busy loop for the
+    remainder of the period when a signal is received.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index 44332efa8411..ad65ee01790f 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -638,42 +638,83 @@ int venus_statfs(struct dentry *dentry, struct kstatfs *sfs)
+ 
+ /*
+  * coda_upcall and coda_downcall routines.
+- * 
+  */
++static void block_signals(sigset_t *old)
++{
++	spin_lock_irq(&amp;current-&gt;sighand-&gt;siglock);
++	*old = current-&gt;blocked;
++
++	sigfillset(&amp;current-&gt;blocked);
++	sigdelset(&amp;current-&gt;blocked, SIGKILL);
++	sigdelset(&amp;current-&gt;blocked, SIGSTOP);
++	sigdelset(&amp;current-&gt;blocked, SIGINT);
++
++	recalc_sigpending();
++	spin_unlock_irq(&amp;current-&gt;sighand-&gt;siglock);
++}
++
++static void unblock_signals(sigset_t *old)
++{
++	spin_lock_irq(&amp;current-&gt;sighand-&gt;siglock);
++	current-&gt;blocked = *old;
++	recalc_sigpending();
++	spin_unlock_irq(&amp;current-&gt;sighand-&gt;siglock);
++}
++
++/* Don't allow signals to interrupt the following upcalls before venus
++ * has seen them,
++ * - CODA_CLOSE or CODA_RELEASE upcall  (to avoid reference count problems)
++ * - CODA_STORE				(to avoid data loss)
++ */
++#define CODA_INTERRUPTIBLE(r) (!coda_hard &amp;&amp; \
++			       (((r)-&gt;uc_opcode != CODA_CLOSE &amp;&amp; \
++				 (r)-&gt;uc_opcode != CODA_STORE &amp;&amp; \
++				 (r)-&gt;uc_opcode != CODA_RELEASE) || \
++				(r)-&gt;uc_flags &amp; REQ_READ))
+ 
+-static inline void coda_waitfor_upcall(struct upc_req *vmp)
++static inline void coda_waitfor_upcall(struct upc_req *req)
+ {
+ 	DECLARE_WAITQUEUE(wait, current);
++	unsigned long timeout = jiffies + coda_timeout * HZ;
++	sigset_t old;
++	int blocked;
+ 
+-	vmp-&gt;uc_posttime = jiffies;
++	block_signals(&amp;old);
++	blocked = 1;
+ 
+-	add_wait_queue(&amp;vmp-&gt;uc_sleep, &amp;wait);
++	add_wait_queue(&amp;req-&gt;uc_sleep, &amp;wait);
+ 	for (;;) {
+-		if ( !coda_hard &amp;&amp; vmp-&gt;uc_opcode != CODA_CLOSE ) 
++		if (CODA_INTERRUPTIBLE(req))
+ 			set_current_state(TASK_INTERRUPTIBLE);
+ 		else
+ 			set_current_state(TASK_UNINTERRUPTIBLE);
+ 
+ 		/* got a reply */
+-		if ( vmp-&gt;uc_flags &amp; ( REQ_WRITE | REQ_ABORT ) )
++		if (req-&gt;uc_flags &amp; (REQ_WRITE | REQ_ABORT))
+ 			break;
+ 
+-		if ( !coda_hard &amp;&amp; vmp-&gt;uc_opcode != CODA_CLOSE &amp;&amp; signal_pending(current) ) {
+-			/* if this process really wants to die, let it go */
+-			if ( sigismember(&amp;(current-&gt;pending.signal), SIGKILL) ||
+-			     sigismember(&amp;(current-&gt;pending.signal), SIGINT) )
+-				break;
+-			/* signal is present: after timeout always return 
+-			   really smart idea, probably useless ... */
+-			if ( jiffies - vmp-&gt;uc_posttime &gt; coda_timeout * HZ )
+-				break; 
++		if (blocked &amp;&amp; time_after(jiffies, timeout) &amp;&amp;
++		    CODA_INTERRUPTIBLE(req))
++		{
++			unblock_signals(&amp;old);
++			blocked = 0;
+ 		}
+-		schedule();
++
++		if (signal_pending(current)) {
++			list_del(&amp;req-&gt;uc_chain);
++			break;
++		}
++
++		if (blocked)
++			schedule_timeout(HZ);
++		else
++			schedule();
+ 	}
+-	remove_wait_queue(&amp;vmp-&gt;uc_sleep, &amp;wait);
+-	set_current_state(TASK_RUNNING);
++	if (blocked)
++		unblock_signals(&amp;old);
+ 
+-	return;
++	remove_wait_queue(&amp;req-&gt;uc_sleep, &amp;wait);
++	set_current_state(TASK_RUNNING);
+ }
+ 
+ 
+@@ -750,8 +791,6 @@ static int coda_upcall(struct coda_sb_info *sbi,
+ 		goto exit;
+ 	}
+ 
+-	list_del(&amp;(req-&gt;uc_chain));
+-
+ 	/* Interrupted before venus read it. */
+ 	if (!(req-&gt;uc_flags &amp; REQ_READ))
+ 		goto exit;
+diff --git a/include/linux/coda_psdev.h b/include/linux/coda_psdev.h
+index b541bb3d1f4b..f28c2f7fd454 100644
+--- a/include/linux/coda_psdev.h
++++ b/include/linux/coda_psdev.h
+@@ -85,7 +85,6 @@ struct upc_req {
+ 	u_short	            uc_opcode;  /* copied from data to save lookup */
+ 	int		    uc_unique;
+ 	wait_queue_head_t   uc_sleep;   /* process' wait queue */
+-	unsigned long       uc_posttime;
+ };
+ 
+ #define REQ_ASYNC  0x1</pre><hr><pre>commit fe71b5f3871af2c281a08acd4bedd2da25e46bc3
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:46 2007 -0700
+
+    coda: cleanup for upcall handling path
+    
+    Make the code that processes upcall responses more straightforward, uncovered
+    at least one bad assumption.  We trusted that vc_inuse would be 0 when upcalls
+    are aborted, however the device may have been reopened.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index a44ca4155fd5..44332efa8411 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -687,27 +687,27 @@ static inline void coda_waitfor_upcall(struct upc_req *vmp)
+  * are all mapped to -EINTR, while showing a nice warning message. (jh)
+  * 
+  */
+-static int coda_upcall(struct coda_sb_info *sbi, 
+-		int inSize, int *outSize, 
+-		union inputArgs *buffer) 
++static int coda_upcall(struct coda_sb_info *sbi,
++		       int inSize, int *outSize,
++		       union inputArgs *buffer)
+ {
+ 	struct venus_comm *vcommp;
+ 	union outputArgs *out;
+-	struct upc_req *req;
++	union inputArgs *sig_inputArgs;
++	struct upc_req *req, *sig_req;
+ 	int error = 0;
+ 
+ 	vcommp = sbi-&gt;sbi_vcomm;
+-	if ( !vcommp-&gt;vc_inuse ) {
+-		printk("No pseudo device in upcall comms at %p\n", vcommp);
+-                return -ENXIO;
++	if (!vcommp-&gt;vc_inuse) {
++		printk(KERN_NOTICE "coda: Venus dead, not sending upcall\n");
++		return -ENXIO;
+ 	}
+ 
+ 	/* Format the request message. */
+ 	req = upc_alloc();
+-	if (!req) {
+-		printk("Failed to allocate upc_req structure\n");
++	if (!req)
+ 		return -ENOMEM;
+-	}
++
+ 	req-&gt;uc_data = (void *)buffer;
+ 	req-&gt;uc_flags = 0;
+ 	req-&gt;uc_inSize = inSize;
+@@ -715,13 +715,13 @@ static int coda_upcall(struct coda_sb_info *sbi,
+ 	req-&gt;uc_opcode = ((union inputArgs *)buffer)-&gt;ih.opcode;
+ 	req-&gt;uc_unique = ++vcommp-&gt;vc_seq;
+ 	init_waitqueue_head(&amp;req-&gt;uc_sleep);
+-	
++
+ 	/* Fill in the common input args. */
+ 	((union inputArgs *)buffer)-&gt;ih.unique = req-&gt;uc_unique;
+ 
+ 	/* Append msg to pending queue and poke Venus. */
+-	list_add_tail(&amp;(req-&gt;uc_chain), &amp;vcommp-&gt;vc_pending);
+-        
++	list_add_tail(&amp;req-&gt;uc_chain, &amp;vcommp-&gt;vc_pending);
++
+ 	wake_up_interruptible(&amp;vcommp-&gt;vc_waitq);
+ 	/* We can be interrupted while we wait for Venus to process
+ 	 * our request.  If the interrupt occurs before Venus has read
+@@ -735,64 +735,59 @@ static int coda_upcall(struct coda_sb_info *sbi,
+ 	/* Go to sleep.  Wake up on signals only after the timeout. */
+ 	coda_waitfor_upcall(req);
+ 
+-	if (vcommp-&gt;vc_inuse) {      /* i.e. Venus is still alive */
+-	    /* Op went through, interrupt or not... */
+-	    if (req-&gt;uc_flags &amp; REQ_WRITE) {
++	/* Op went through, interrupt or not... */
++	if (req-&gt;uc_flags &amp; REQ_WRITE) {
+ 		out = (union outputArgs *)req-&gt;uc_data;
+ 		/* here we map positive Venus errors to kernel errors */
+ 		error = -out-&gt;oh.result;
+ 		*outSize = req-&gt;uc_outSize;
+ 		goto exit;
+-	    }
+-	    if ( !(req-&gt;uc_flags &amp; REQ_READ) &amp;&amp; signal_pending(current)) { 
+-		/* Interrupted before venus read it. */
+-		list_del(&amp;(req-&gt;uc_chain));
+-		/* perhaps the best way to convince the app to
+-		   give up? */
+-		error = -EINTR;
++	}
++
++	error = -EINTR;
++	if ((req-&gt;uc_flags &amp; REQ_ABORT) || !signal_pending(current)) {
++		printk(KERN_WARNING "coda: Unexpected interruption.\n");
+ 		goto exit;
+-	    } 
+-	    if ( (req-&gt;uc_flags &amp; REQ_READ) &amp;&amp; signal_pending(current) ) {
+-		    /* interrupted after Venus did its read, send signal */
+-		    union inputArgs *sig_inputArgs;
+-		    struct upc_req *sig_req;
+-		    
+-		    list_del(&amp;(req-&gt;uc_chain));
+-		    error = -ENOMEM;
+-		    sig_req = upc_alloc();
+-		    if (!sig_req) goto exit;
+-
+-		    CODA_ALLOC((sig_req-&gt;uc_data), char *, sizeof(struct coda_in_hdr));
+-		    if (!sig_req-&gt;uc_data) {
+-			upc_free(sig_req);
+-			goto exit;
+-		    }
+-		    
+-		    error = -EINTR;
+-		    sig_inputArgs = (union inputArgs *)sig_req-&gt;uc_data;
+-		    sig_inputArgs-&gt;ih.opcode = CODA_SIGNAL;
+-		    sig_inputArgs-&gt;ih.unique = req-&gt;uc_unique;
+-		    
+-		    sig_req-&gt;uc_flags = REQ_ASYNC;
+-		    sig_req-&gt;uc_opcode = sig_inputArgs-&gt;ih.opcode;
+-		    sig_req-&gt;uc_unique = sig_inputArgs-&gt;ih.unique;
+-		    sig_req-&gt;uc_inSize = sizeof(struct coda_in_hdr);
+-		    sig_req-&gt;uc_outSize = sizeof(struct coda_in_hdr);
+-		    
+-		    /* insert at head of queue! */
+-		    list_add(&amp;(sig_req-&gt;uc_chain), &amp;vcommp-&gt;vc_pending);
+-		    wake_up_interruptible(&amp;vcommp-&gt;vc_waitq);
+-	    } else {
+-		    printk("Coda: Strange interruption..\n");
+-		    error = -EINTR;
+-	    }
+-	} else {	/* If venus died i.e. !VC_OPEN(vcommp) */
+-	        printk("coda_upcall: Venus dead on (op,un) (%d.%d) flags %d\n",
+-		       req-&gt;uc_opcode, req-&gt;uc_unique, req-&gt;uc_flags);
+-		error = -ENODEV;
+ 	}
+ 
+- exit:
++	list_del(&amp;(req-&gt;uc_chain));
++
++	/* Interrupted before venus read it. */
++	if (!(req-&gt;uc_flags &amp; REQ_READ))
++		goto exit;
++
++	/* Venus saw the upcall, make sure we can send interrupt signal */
++	if (!vcommp-&gt;vc_inuse) {
++		printk(KERN_INFO "coda: Venus dead, not sending signal.\n");
++		goto exit;
++	}
++
++	error = -ENOMEM;
++	sig_req = upc_alloc();
++	if (!sig_req) goto exit;
++
++	CODA_ALLOC((sig_req-&gt;uc_data), char *, sizeof(struct coda_in_hdr));
++	if (!sig_req-&gt;uc_data) {
++		upc_free(sig_req);
++		goto exit;
++	}
++
++	error = -EINTR;
++	sig_inputArgs = (union inputArgs *)sig_req-&gt;uc_data;
++	sig_inputArgs-&gt;ih.opcode = CODA_SIGNAL;
++	sig_inputArgs-&gt;ih.unique = req-&gt;uc_unique;
++
++	sig_req-&gt;uc_flags = REQ_ASYNC;
++	sig_req-&gt;uc_opcode = sig_inputArgs-&gt;ih.opcode;
++	sig_req-&gt;uc_unique = sig_inputArgs-&gt;ih.unique;
++	sig_req-&gt;uc_inSize = sizeof(struct coda_in_hdr);
++	sig_req-&gt;uc_outSize = sizeof(struct coda_in_hdr);
++
++	/* insert at head of queue! */
++	list_add(&amp;(sig_req-&gt;uc_chain), &amp;vcommp-&gt;vc_pending);
++	wake_up_interruptible(&amp;vcommp-&gt;vc_waitq);
++
++exit:
+ 	upc_free(req);
+ 	return error;
+ }</pre><hr><pre>commit 87065519633af79e0577e32a58dcd9cf3c45a8a0
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:45 2007 -0700
+
+    coda: cleanup /dev/cfs open and close handling
+    
+    - Make sure device index is not a negative number.
+    - Unlink queued requests when the device is closed to avoid passing them
+      to the next opener.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/psdev.c b/fs/coda/psdev.c
+index 09382d47a4e1..6818c20372ca 100644
+--- a/fs/coda/psdev.c
++++ b/fs/coda/psdev.c
+@@ -272,56 +272,51 @@ static ssize_t coda_psdev_read(struct file * file, char __user * buf,
+ 
+ static int coda_psdev_open(struct inode * inode, struct file * file)
+ {
+-        struct venus_comm *vcp;
+-	int idx;
++	struct venus_comm *vcp;
++	int idx, err;
+ 
+-	lock_kernel();
+ 	idx = iminor(inode);
+-	if(idx &gt;= MAX_CODADEVS) {
+-		unlock_kernel();
++	if (idx &lt; 0 || idx &gt;= MAX_CODADEVS)
+ 		return -ENODEV;
+-	}
+ 
++	lock_kernel();
++
++	err = -EBUSY;
+ 	vcp = &amp;coda_comms[idx];
+-	if(vcp-&gt;vc_inuse) {
+-		unlock_kernel();
+-		return -EBUSY;
+-	}
+-	
+-	if (!vcp-&gt;vc_inuse++) {
++	if (!vcp-&gt;vc_inuse) {
++		vcp-&gt;vc_inuse++;
++
+ 		INIT_LIST_HEAD(&amp;vcp-&gt;vc_pending);
+ 		INIT_LIST_HEAD(&amp;vcp-&gt;vc_processing);
+ 		init_waitqueue_head(&amp;vcp-&gt;vc_waitq);
+ 		vcp-&gt;vc_sb = NULL;
+ 		vcp-&gt;vc_seq = 0;
++
++		file-&gt;private_data = vcp;
++		err = 0;
+ 	}
+-	
+-	file-&gt;private_data = vcp;
+ 
+ 	unlock_kernel();
+-        return 0;
++	return err;
+ }
+ 
+ 
+ static int coda_psdev_release(struct inode * inode, struct file * file)
+ {
+-        struct venus_comm *vcp = (struct venus_comm *) file-&gt;private_data;
+-        struct upc_req *req, *tmp;
++	struct venus_comm *vcp = (struct venus_comm *) file-&gt;private_data;
++	struct upc_req *req, *tmp;
+ 
+-	lock_kernel();
+-	if ( !vcp-&gt;vc_inuse ) {
+-		unlock_kernel();
++	if (!vcp || !vcp-&gt;vc_inuse ) {
+ 		printk("psdev_release: Not open.\n");
+ 		return -1;
+ 	}
+ 
+-	if (--vcp-&gt;vc_inuse) {
+-		unlock_kernel();
+-		return 0;
+-	}
+-        
+-        /* Wakeup clients so they can return. */
++	lock_kernel();
++
++	/* Wakeup clients so they can return. */
+ 	list_for_each_entry_safe(req, tmp, &amp;vcp-&gt;vc_pending, uc_chain) {
++		list_del(&amp;req-&gt;uc_chain);
++
+ 		/* Async requests need to be freed here */
+ 		if (req-&gt;uc_flags &amp; REQ_ASYNC) {
+ 			CODA_FREE(req-&gt;uc_data, sizeof(struct coda_in_hdr));
+@@ -330,13 +325,17 @@ static int coda_psdev_release(struct inode * inode, struct file * file)
+ 		}
+ 		req-&gt;uc_flags |= REQ_ABORT;
+ 		wake_up(&amp;req-&gt;uc_sleep);
+-        }
+-        
+-	list_for_each_entry(req, &amp;vcp-&gt;vc_processing, uc_chain) {
++	}
++
++	list_for_each_entry_safe(req, tmp, &amp;vcp-&gt;vc_processing, uc_chain) {
++		list_del(&amp;req-&gt;uc_chain);
++
+ 		req-&gt;uc_flags |= REQ_ABORT;
+-	        wake_up(&amp;req-&gt;uc_sleep);
+-        }
++		wake_up(&amp;req-&gt;uc_sleep);
++	}
+ 
++	file-&gt;private_data = NULL;
++	vcp-&gt;vc_inuse--;
+ 	unlock_kernel();
+ 	return 0;
+ }
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index 1651b918219a..a44ca4155fd5 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -641,8 +641,7 @@ int venus_statfs(struct dentry *dentry, struct kstatfs *sfs)
+  * 
+  */
+ 
+-static inline void coda_waitfor_upcall(struct upc_req *vmp,
+-				       struct venus_comm *vcommp)
++static inline void coda_waitfor_upcall(struct upc_req *vmp)
+ {
+ 	DECLARE_WAITQUEUE(wait, current);
+ 
+@@ -655,10 +654,6 @@ static inline void coda_waitfor_upcall(struct upc_req *vmp,
+ 		else
+ 			set_current_state(TASK_UNINTERRUPTIBLE);
+ 
+-                /* venus died */
+-                if ( !vcommp-&gt;vc_inuse )
+-                        break;
+-
+ 		/* got a reply */
+ 		if ( vmp-&gt;uc_flags &amp; ( REQ_WRITE | REQ_ABORT ) )
+ 			break;
+@@ -738,7 +733,7 @@ static int coda_upcall(struct coda_sb_info *sbi,
+ 	 * ENODEV.  */
+ 
+ 	/* Go to sleep.  Wake up on signals only after the timeout. */
+-	coda_waitfor_upcall(req, vcommp);
++	coda_waitfor_upcall(req);
+ 
+ 	if (vcommp-&gt;vc_inuse) {      /* i.e. Venus is still alive */
+ 	    /* Op went through, interrupt or not... */</pre><hr><pre>commit ed31a7dd636b296746c131b7386023aa1ef84309
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:44 2007 -0700
+
+    coda: use ilookup5
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/cnode.c b/fs/coda/cnode.c
+index 28c872747f81..a7a780929eec 100644
+--- a/fs/coda/cnode.c
++++ b/fs/coda/cnode.c
+@@ -55,11 +55,6 @@ static int coda_set_inode(struct inode *inode, void *data)
+ 	return 0;
+ }
+ 
+-static int coda_fail_inode(struct inode *inode, void *data)
+-{
+-	return -1;
+-}
+-
+ struct inode * coda_iget(struct super_block * sb, struct CodaFid * fid,
+ 			 struct coda_vattr * attr)
+ {
+@@ -141,7 +136,7 @@ struct inode *coda_fid_to_inode(struct CodaFid *fid, struct super_block *sb)
+ 		return NULL;
+ 	}
+ 
+-	inode = iget5_locked(sb, hash, coda_test_inode, coda_fail_inode, fid);
++	inode = ilookup5(sb, hash, coda_test_inode, fid);
+ 	if ( !inode )
+ 		return NULL;
+ </pre><hr><pre>commit fac1f0e34026a656174102ebad4d1cd71cd4fe2c
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:44 2007 -0700
+
+    coda: coda doesn't track atime
+    
+    Set MS_NOATIME flag to avoid unnecessary calls when the coda inode is
+    accessed.
+    
+    Also, set statfs.f_bsize to 4k.  1k is obviously too small for the suggested
+    IO size.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/inode.c b/fs/coda/inode.c
+index dbff1bd4fb96..29e441765600 100644
+--- a/fs/coda/inode.c
++++ b/fs/coda/inode.c
+@@ -83,7 +83,7 @@ void coda_destroy_inodecache(void)
+ 
+ static int coda_remount(struct super_block *sb, int *flags, char *data)
+ {
+-	*flags |= MS_NODIRATIME;
++	*flags |= MS_NOATIME;
+ 	return 0;
+ }
+ 
+@@ -176,12 +176,12 @@ static int coda_fill_super(struct super_block *sb, void *data, int silent)
+ 
+ 	sbi-&gt;sbi_vcomm = vc;
+ 
+-        sb-&gt;s_fs_info = sbi;
+-	sb-&gt;s_flags |= MS_NODIRATIME; /* probably even noatime */
+-        sb-&gt;s_blocksize = 1024;	/* XXXXX  what do we put here?? */
+-        sb-&gt;s_blocksize_bits = 10;
+-        sb-&gt;s_magic = CODA_SUPER_MAGIC;
+-        sb-&gt;s_op = &amp;coda_super_operations;
++	sb-&gt;s_fs_info = sbi;
++	sb-&gt;s_flags |= MS_NOATIME;
++	sb-&gt;s_blocksize = 4096;	/* XXXXX  what do we put here?? */
++	sb-&gt;s_blocksize_bits = 12;
++	sb-&gt;s_magic = CODA_SUPER_MAGIC;
++	sb-&gt;s_op = &amp;coda_super_operations;
+ 
+ 	/* get root fid from Venus: this needs the root inode */
+ 	error = venus_rootfid(sb, &amp;fid);
+@@ -296,7 +296,7 @@ static int coda_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 
+ 	/* and fill in the rest */
+ 	buf-&gt;f_type = CODA_SUPER_MAGIC;
+-	buf-&gt;f_bsize = 1024;
++	buf-&gt;f_bsize = 4096;
+ 	buf-&gt;f_namelen = CODA_MAXNAMLEN;
+ 
+ 	return 0; </pre>
+    <div class="pagination">
+        <a href='15_3.html'>&lt;&lt;Prev</a><a href='15.html'>1</a><a href='15_2.html'>2</a><a href='15_3.html'>3</a><span>[4]</span><a href='15_5.html'>5</a><a href='15_6.html'>6</a><a href='15_7.html'>7</a><a href='15_8.html'>8</a><a href='15_5.html'>Next&gt;&gt;</a>
+    <div>
+</body>

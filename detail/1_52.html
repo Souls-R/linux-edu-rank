@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_51.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><span>[52]</span><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_53.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 7f3e3c7cfcec148ccca9c0dd2dbfd7b00b7ac10f
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Apr 21 20:32:03 2013 -0400
+
+    ext4: fix Kconfig documentation for CONFIG_EXT4_DEBUG
+    
+    Fox the Kconfig documentation for CONFIG_EXT4_DEBUG to match the
+    change made by commit a0b30c1229: ext4: use module parameters instead
+    of debugfs for mballoc_debug
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/Kconfig b/fs/ext4/Kconfig
+index 987358740cb9..efea5d5c44ce 100644
+--- a/fs/ext4/Kconfig
++++ b/fs/ext4/Kconfig
+@@ -71,4 +71,5 @@ config EXT4_DEBUG
+ 	  Enables run-time debugging support for the ext4 filesystem.
+ 
+ 	  If you select Y here, then you will be able to turn on debugging
+-	  with a command such as "echo 1 &gt; /sys/kernel/debug/ext4/mballoc-debug"
++	  with a command such as:
++		echo 1 &gt; /sys/module/ext4/parameters/mballoc_debug</pre><hr><pre>commit c5c72d814cf0f650010337c73638b25e6d14d2d4
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Apr 21 20:19:43 2013 -0400
+
+    ext4: fix online resizing for ext3-compat file systems
+    
+    Commit fb0a387dcdc restricts block allocations for indirect-mapped
+    files to block groups less than s_blockfile_groups.  However, the
+    online resizing code wasn't setting s_blockfile_groups, so the newly
+    added block groups were not available for non-extent mapped files.
+    
+    Reported-by: Eric Sandeen &lt;sandeen@redhat.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index e3498534a2c1..08d2312c0fd4 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -1341,6 +1341,8 @@ static void ext4_update_super(struct super_block *sb,
+ 
+ 	/* Update the global fs size fields */
+ 	sbi-&gt;s_groups_count += flex_gd-&gt;count;
++	sbi-&gt;s_blockfile_groups = min_t(ext4_group_t, sbi-&gt;s_groups_count,
++			(EXT4_MAX_BLOCK_FILE_PHYS / EXT4_BLOCKS_PER_GROUP(sb)));
+ 
+ 	/* Update the reserved block counts only once the new group is
+ 	 * active. */</pre><hr><pre>commit f783f091e49ce4896e6b026af82d76e0537c6089
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Apr 21 16:47:54 2013 -0400
+
+    jbd2: trace when lock_buffer in do_get_write_access takes a long time
+    
+    While investigating interactivity problems it was clear that processes
+    sometimes stall for long periods of times if an attempt is made to
+    lock a buffer which is undergoing writeback.  It would stall in
+    a trace looking something like
+    
+    [&lt;ffffffff811a39de&gt;] __lock_buffer+0x2e/0x30
+    [&lt;ffffffff8123a60f&gt;] do_get_write_access+0x43f/0x4b0
+    [&lt;ffffffff8123a7cb&gt;] jbd2_journal_get_write_access+0x2b/0x50
+    [&lt;ffffffff81220f79&gt;] __ext4_journal_get_write_access+0x39/0x80
+    [&lt;ffffffff811f3198&gt;] ext4_reserve_inode_write+0x78/0xa0
+    [&lt;ffffffff811f3209&gt;] ext4_mark_inode_dirty+0x49/0x220
+    [&lt;ffffffff811f57d1&gt;] ext4_dirty_inode+0x41/0x60
+    [&lt;ffffffff8119ac3e&gt;] __mark_inode_dirty+0x4e/0x2d0
+    [&lt;ffffffff8118b9b9&gt;] update_time+0x79/0xc0
+    [&lt;ffffffff8118ba98&gt;] file_update_time+0x98/0x100
+    [&lt;ffffffff81110ffc&gt;] __generic_file_aio_write+0x17c/0x3b0
+    [&lt;ffffffff811112aa&gt;] generic_file_aio_write+0x7a/0xf0
+    [&lt;ffffffff811ea853&gt;] ext4_file_write+0x83/0xd0
+    [&lt;ffffffff81172b23&gt;] do_sync_write+0xa3/0xe0
+    [&lt;ffffffff811731ae&gt;] vfs_write+0xae/0x180
+    [&lt;ffffffff8117361d&gt;] sys_write+0x4d/0x90
+    [&lt;ffffffff8159d62d&gt;] system_call_fastpath+0x1a/0x1f
+    [&lt;ffffffffffffffff&gt;] 0xffffffffffffffff
+    
+    Signed-off-by: Mel Gorman &lt;mgorman@suse.de&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index a1920da22802..10f524c59ea8 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -639,6 +639,7 @@ do_get_write_access(handle_t *handle, struct journal_head *jh,
+ 	int error;
+ 	char *frozen_buffer = NULL;
+ 	int need_copy = 0;
++	unsigned long start_lock, time_lock;
+ 
+ 	if (is_handle_aborted(handle))
+ 		return -EROFS;
+@@ -654,9 +655,16 @@ do_get_write_access(handle_t *handle, struct journal_head *jh,
+ 
+ 	/* @@@ Need to check for errors here at some point. */
+ 
++ 	start_lock = jiffies;
+ 	lock_buffer(bh);
+ 	jbd_lock_bh_state(bh);
+ 
++	/* If it takes too long to lock the buffer, trace it */
++	time_lock = jbd2_time_diff(start_lock, jiffies);
++	if (time_lock &gt; HZ/10)
++		trace_jbd2_lock_buffer_stall(bh-&gt;b_bdev-&gt;bd_dev,
++			jiffies_to_msecs(time_lock));
++
+ 	/* We now hold the buffer lock so it is safe to query the buffer
+ 	 * state.  Is the buffer dirty?
+ 	 *
+diff --git a/include/trace/events/jbd2.h b/include/trace/events/jbd2.h
+index 070df49e4a1d..c1d1f3eb242d 100644
+--- a/include/trace/events/jbd2.h
++++ b/include/trace/events/jbd2.h
+@@ -358,6 +358,27 @@ TRACE_EVENT(jbd2_write_superblock,
+ 		  MINOR(__entry-&gt;dev), __entry-&gt;write_op)
+ );
+ 
++TRACE_EVENT(jbd2_lock_buffer_stall,
++
++	TP_PROTO(dev_t dev, unsigned long stall_ms),
++
++	TP_ARGS(dev, stall_ms),
++
++	TP_STRUCT__entry(
++		__field(        dev_t, dev	)
++		__field(unsigned long, stall_ms	)
++	),
++
++	TP_fast_assign(
++		__entry-&gt;dev		= dev;
++		__entry-&gt;stall_ms	= stall_ms;
++	),
++
++	TP_printk("dev %d,%d stall_ms %lu",
++		MAJOR(__entry-&gt;dev), MINOR(__entry-&gt;dev),
++		__entry-&gt;stall_ms)
++);
++
+ #endif /* _TRACE_JBD2_H */
+ 
+ /* This part must be outside protection */</pre><hr><pre>commit 13fca323e9a8b63c08de7a4e05d3c702516b535d
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Apr 21 16:45:54 2013 -0400
+
+    ext4: mark metadata blocks using bh flags
+    
+    This allows metadata writebacks which are issued via block device
+    writeback to be sent with the current write request flags.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4_jbd2.c b/fs/ext4/ext4_jbd2.c
+index 0e1dc9e70ce5..451eb4045330 100644
+--- a/fs/ext4/ext4_jbd2.c
++++ b/fs/ext4/ext4_jbd2.c
+@@ -215,6 +215,8 @@ int __ext4_handle_dirty_metadata(const char *where, unsigned int line,
+ 
+ 	might_sleep();
+ 
++	set_buffer_meta(bh);
++	set_buffer_prio(bh);
+ 	if (ext4_handle_valid(handle)) {
+ 		err = jbd2_journal_dirty_metadata(handle, bh);
+ 		if (err) {
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 62492e954483..d7518e2728f1 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1080,10 +1080,14 @@ static int ext4_write_begin(struct file *file, struct address_space *mapping,
+ /* For write_end() in data=journal mode */
+ static int write_end_fn(handle_t *handle, struct buffer_head *bh)
+ {
++	int ret;
+ 	if (!buffer_mapped(bh) || buffer_freed(bh))
+ 		return 0;
+ 	set_buffer_uptodate(bh);
+-	return ext4_handle_dirty_metadata(handle, NULL, bh);
++	ret = ext4_handle_dirty_metadata(handle, NULL, bh);
++	clear_buffer_meta(bh);
++	clear_buffer_prio(bh);
++	return ret;
+ }
+ 
+ /*</pre><hr><pre>commit 877f962c5edacfef60ab21cfed6d8d54ce25b8a6
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Apr 20 19:58:37 2013 -0400
+
+    buffer: add BH_Prio and BH_Meta flags
+    
+    Add buffer_head flags so that buffer cache writebacks can be marked
+    with the the appropriate request flags, so that metadata blocks can be
+    marked appropriately in blktrace.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/buffer.c b/fs/buffer.c
+index b4dcb34c9635..a15575c0b9ee 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -2988,6 +2988,11 @@ int submit_bh(int rw, struct buffer_head * bh)
+ 	/* Take care of bh's that straddle the end of the device */
+ 	guard_bh_eod(rw, bio, bh);
+ 
++	if (buffer_meta(bh))
++		rw |= REQ_META;
++	if (buffer_prio(bh))
++		rw |= REQ_PRIO;
++
+ 	bio_get(bio);
+ 	submit_bio(rw, bio);
+ 
+diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
+index 5afc4f94d110..33c0f8103fe4 100644
+--- a/include/linux/buffer_head.h
++++ b/include/linux/buffer_head.h
+@@ -34,6 +34,8 @@ enum bh_state_bits {
+ 	BH_Write_EIO,	/* I/O error on write */
+ 	BH_Unwritten,	/* Buffer is allocated on disk but not written */
+ 	BH_Quiet,	/* Buffer Error Prinks to be quiet */
++	BH_Meta,	/* Buffer contains metadata */
++	BH_Prio,	/* Buffer should be submitted with REQ_PRIO */
+ 
+ 	BH_PrivateStart,/* not a state bit, but the first bit available
+ 			 * for private allocation by other entities
+@@ -124,6 +126,8 @@ BUFFER_FNS(Delay, delay)
+ BUFFER_FNS(Boundary, boundary)
+ BUFFER_FNS(Write_EIO, write_io_error)
+ BUFFER_FNS(Unwritten, unwritten)
++BUFFER_FNS(Meta, meta)
++BUFFER_FNS(Prio, prio)
+ 
+ #define bh_offset(bh)		((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
+ </pre><hr><pre>commit 9f203507ed277ee86e3f76a15e09db1c92e40b94
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Apr 20 15:46:17 2013 -0400
+
+    ext4: mark all metadata I/O with REQ_META
+    
+    As Dave Chinner pointed out at the 2013 LSF/MM workshop, it's
+    important that metadata I/O requests are marked as such to avoid
+    priority inversions caused by I/O bandwidth throttling.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index 8dcaea69e37f..d0f13eada0ed 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -441,7 +441,7 @@ ext4_read_block_bitmap_nowait(struct super_block *sb, ext4_group_t block_group)
+ 	trace_ext4_read_block_bitmap_load(sb, block_group);
+ 	bh-&gt;b_end_io = ext4_end_bitmap_read;
+ 	get_bh(bh);
+-	submit_bh(READ, bh);
++	submit_bh(READ | REQ_META | REQ_PRIO, bh);
+ 	return bh;
+ verify:
+ 	ext4_validate_block_bitmap(sb, desc, block_group, bh);
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index 18d36d85f5c9..00a818d67b54 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -166,7 +166,7 @@ ext4_read_inode_bitmap(struct super_block *sb, ext4_group_t block_group)
+ 	trace_ext4_load_inode_bitmap(sb, block_group);
+ 	bh-&gt;b_end_io = ext4_end_bitmap_read;
+ 	get_bh(bh);
+-	submit_bh(READ, bh);
++	submit_bh(READ | REQ_META | REQ_PRIO, bh);
+ 	wait_on_buffer(bh);
+ 	if (!buffer_uptodate(bh)) {
+ 		put_bh(bh);
+diff --git a/fs/ext4/mmp.c b/fs/ext4/mmp.c
+index b3b1f7d99448..214461e42a05 100644
+--- a/fs/ext4/mmp.c
++++ b/fs/ext4/mmp.c
+@@ -54,7 +54,7 @@ static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
+ 	lock_buffer(bh);
+ 	bh-&gt;b_end_io = end_buffer_write_sync;
+ 	get_bh(bh);
+-	submit_bh(WRITE_SYNC, bh);
++	submit_bh(WRITE_SYNC | REQ_META | REQ_PRIO, bh);
+ 	wait_on_buffer(bh);
+ 	sb_end_write(sb);
+ 	if (unlikely(!buffer_uptodate(bh)))
+@@ -86,7 +86,7 @@ static int read_mmp_block(struct super_block *sb, struct buffer_head **bh,
+ 		get_bh(*bh);
+ 		lock_buffer(*bh);
+ 		(*bh)-&gt;b_end_io = end_buffer_read_sync;
+-		submit_bh(READ_SYNC, *bh);
++		submit_bh(READ_SYNC | REQ_META | REQ_PRIO, *bh);
+ 		wait_on_buffer(*bh);
+ 		if (!buffer_uptodate(*bh)) {
+ 			brelse(*bh);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index bfa29ecfb47a..dbc7c090c13a 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -4252,7 +4252,7 @@ static journal_t *ext4_get_dev_journal(struct super_block *sb,
+ 		goto out_bdev;
+ 	}
+ 	journal-&gt;j_private = sb;
+-	ll_rw_block(READ, 1, &amp;journal-&gt;j_sb_buffer);
++	ll_rw_block(READ | REQ_META | REQ_PRIO, 1, &amp;journal-&gt;j_sb_buffer);
+ 	wait_on_buffer(journal-&gt;j_sb_buffer);
+ 	if (!buffer_uptodate(journal-&gt;j_sb_buffer)) {
+ 		ext4_msg(sb, KERN_ERR, "I/O error on journal device");</pre><hr><pre>commit fd03d8daf417fffbcb27fdb30d60f6c81ed813c8
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Apr 18 14:53:15 2013 -0400
+
+    ext4: reserve xattr index for Rich ACL support
+    
+    Jan Kara &lt;jack@suse.cz&gt;
+    
+    SUSE is carrying out of tree patches for Rich ACL support for ext4 as
+    they didn't get upstream due to opposition of some VFS maintainers.
+    Reserve xattr index for Rich ACLs so that it cannot be taken by
+    anything else which would force users to backup and reset their Rich
+    ACLs on files.
+    
+    Signed-off-by: Jan Kara &lt;jack@suse.cz&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/xattr.h b/fs/ext4/xattr.h
+index aa25deb5c6cd..c767dbdd7fc4 100644
+--- a/fs/ext4/xattr.h
++++ b/fs/ext4/xattr.h
+@@ -22,6 +22,7 @@
+ #define	EXT4_XATTR_INDEX_LUSTRE			5
+ #define EXT4_XATTR_INDEX_SECURITY	        6
+ #define EXT4_XATTR_INDEX_SYSTEM			7
++#define EXT4_XATTR_INDEX_RICHACL		8
+ 
+ struct ext4_xattr_header {
+ 	__le32	h_magic;	/* magic number for identification */</pre><hr><pre>commit d6a771056b32146da1280f7872f6936b0c7770ea
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Apr 9 23:59:55 2013 -0400
+
+    ext4: fix miscellaneous big endian warnings
+    
+    None of these result in any bug, but they makes sparse complain.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 3825d6aa8336..45a5ca89797f 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -416,15 +416,16 @@ static __le32 ext4_dx_csum(struct inode *inode, struct ext4_dir_entry *dirent,
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(inode-&gt;i_sb);
+ 	struct ext4_inode_info *ei = EXT4_I(inode);
+-	__u32 csum, old_csum;
++	__u32 csum;
++	__le32 save_csum;
+ 	int size;
+ 
+ 	size = count_offset + (count * sizeof(struct dx_entry));
+-	old_csum = t-&gt;dt_checksum;
++	save_csum = t-&gt;dt_checksum;
+ 	t-&gt;dt_checksum = 0;
+ 	csum = ext4_chksum(sbi, ei-&gt;i_csum_seed, (__u8 *)dirent, size);
+ 	csum = ext4_chksum(sbi, csum, (__u8 *)t, sizeof(struct dx_tail));
+-	t-&gt;dt_checksum = old_csum;
++	t-&gt;dt_checksum = save_csum;
+ 
+ 	return cpu_to_le32(csum);
+ }
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 6fea87db7daa..f355c28fa080 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1952,16 +1952,16 @@ static __le16 ext4_group_desc_csum(struct ext4_sb_info *sbi, __u32 block_group,
+ 	if ((sbi-&gt;s_es-&gt;s_feature_ro_compat &amp;
+ 	     cpu_to_le32(EXT4_FEATURE_RO_COMPAT_METADATA_CSUM))) {
+ 		/* Use new metadata_csum algorithm */
+-		__u16 old_csum;
++		__le16 save_csum;
+ 		__u32 csum32;
+ 
+-		old_csum = gdp-&gt;bg_checksum;
++		save_csum = gdp-&gt;bg_checksum;
+ 		gdp-&gt;bg_checksum = 0;
+ 		csum32 = ext4_chksum(sbi, sbi-&gt;s_csum_seed, (__u8 *)&amp;le_group,
+ 				     sizeof(le_group));
+ 		csum32 = ext4_chksum(sbi, csum32, (__u8 *)gdp,
+ 				     sbi-&gt;s_desc_size);
+-		gdp-&gt;bg_checksum = old_csum;
++		gdp-&gt;bg_checksum = save_csum;
+ 
+ 		crc = csum32 &amp; 0xFFFF;
+ 		goto out;
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 3a120b277240..c081e34f717f 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -122,17 +122,18 @@ static __le32 ext4_xattr_block_csum(struct inode *inode,
+ 				    struct ext4_xattr_header *hdr)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(inode-&gt;i_sb);
+-	__u32 csum, old;
++	__u32 csum;
++	__le32 save_csum;
++	__le64 dsk_block_nr = cpu_to_le64(block_nr);
+ 
+-	old = hdr-&gt;h_checksum;
++	save_csum = hdr-&gt;h_checksum;
+ 	hdr-&gt;h_checksum = 0;
+-	block_nr = cpu_to_le64(block_nr);
+-	csum = ext4_chksum(sbi, sbi-&gt;s_csum_seed, (__u8 *)&amp;block_nr,
+-			   sizeof(block_nr));
++	csum = ext4_chksum(sbi, sbi-&gt;s_csum_seed, (__u8 *)&amp;dsk_block_nr,
++			   sizeof(dsk_block_nr));
+ 	csum = ext4_chksum(sbi, csum, (__u8 *)hdr,
+ 			   EXT4_BLOCK_SIZE(inode-&gt;i_sb));
+ 
+-	hdr-&gt;h_checksum = old;
++	hdr-&gt;h_checksum = save_csum;
+ 	return cpu_to_le32(csum);
+ }
+ 
+diff --git a/include/trace/events/ext4.h b/include/trace/events/ext4.h
+index 58459b785565..d0e686402df8 100644
+--- a/include/trace/events/ext4.h
++++ b/include/trace/events/ext4.h
+@@ -1948,7 +1948,7 @@ TRACE_EVENT(ext4_remove_blocks,
+ 		__entry-&gt;to		= to;
+ 		__entry-&gt;partial	= partial_cluster;
+ 		__entry-&gt;ee_pblk	= ext4_ext_pblock(ex);
+-		__entry-&gt;ee_lblk	= cpu_to_le32(ex-&gt;ee_block);
++		__entry-&gt;ee_lblk	= le32_to_cpu(ex-&gt;ee_block);
+ 		__entry-&gt;ee_len		= ext4_ext_get_actual_len(ex);
+ 	),
+ 
+@@ -2052,7 +2052,7 @@ TRACE_EVENT(ext4_ext_remove_space,
+ 
+ TRACE_EVENT(ext4_ext_remove_space_done,
+ 	TP_PROTO(struct inode *inode, ext4_lblk_t start, int depth,
+-		ext4_lblk_t partial, unsigned short eh_entries),
++		ext4_lblk_t partial, __le16 eh_entries),
+ 
+ 	TP_ARGS(inode, start, depth, partial, eh_entries),
+ 
+@@ -2071,7 +2071,7 @@ TRACE_EVENT(ext4_ext_remove_space_done,
+ 		__entry-&gt;start		= start;
+ 		__entry-&gt;depth		= depth;
+ 		__entry-&gt;partial	= partial;
+-		__entry-&gt;eh_entries	= eh_entries;
++		__entry-&gt;eh_entries	= le16_to_cpu(eh_entries);
+ 	),
+ 
+ 	TP_printk("dev %d,%d ino %lu since %u depth %d partial %u "</pre><hr><pre>commit 996bb9fddd5b68d1dfb5e27d30ca2c7a72448596
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Apr 3 22:04:52 2013 -0400
+
+    ext4: support simple conversion of extent-mapped inodes to use i_blocks
+    
+    In order to make it simpler to test the code which support
+    i_blocks/indirect-mapped inodes, support the conversion of inodes
+    which are less than 12 blocks and which are contained in no more than
+    a single extent.
+    
+    The primary intended use of this code is to converting freshly created
+    zero-length files and empty directories.
+    
+    Note that the version of chattr in e2fsprogs 1.42.7 and earlier has a
+    check that prevents the clearing of the extent flag.  A simple patch
+    which allows "chattr -e &lt;file&gt;" to work will be checked into the
+    e2fsprogs git repository.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index d05ba3886f33..73f3e60f7078 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -403,7 +403,7 @@ struct flex_groups {
+ #define EXT4_RESERVED_FL		0x80000000 /* reserved for ext4 lib */
+ 
+ #define EXT4_FL_USER_VISIBLE		0x004BDFFF /* User visible flags */
+-#define EXT4_FL_USER_MODIFIABLE		0x004B80FF /* User modifiable flags */
++#define EXT4_FL_USER_MODIFIABLE		0x004380FF /* User modifiable flags */
+ 
+ /* Flags that should be inherited by new inodes from their parent. */
+ #define EXT4_FL_INHERITED (EXT4_SECRM_FL | EXT4_UNRM_FL | EXT4_COMPR_FL |\
+@@ -2608,6 +2608,7 @@ extern int ext4_find_delalloc_range(struct inode *inode,
+ extern int ext4_find_delalloc_cluster(struct inode *inode, ext4_lblk_t lblk);
+ extern int ext4_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 			__u64 start, __u64 len);
++extern int ext4_ind_migrate(struct inode *inode);
+ 
+ 
+ /* move_extent.c */
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index cbbe8a4deac6..235246719074 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4610,3 +4610,62 @@ int ext4_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 
+ 	return error;
+ }
++
++/*
++ * Migrate a simple extent-based inode to use the i_blocks[] array
++ */
++int ext4_ind_migrate(struct inode *inode)
++{
++	struct ext4_extent_header	*eh;
++	struct ext4_super_block		*es = EXT4_SB(inode-&gt;i_sb)-&gt;s_es;
++	struct ext4_inode_info		*ei = EXT4_I(inode);
++	struct ext4_extent		*ex;
++	unsigned int			i, len;
++	ext4_fsblk_t			blk;
++	handle_t			*handle;
++	int				ret;
++
++	if (!EXT4_HAS_INCOMPAT_FEATURE(inode-&gt;i_sb,
++				       EXT4_FEATURE_INCOMPAT_EXTENTS) ||
++	    (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
++		return -EINVAL;
++
++	down_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
++	ret = ext4_ext_check_inode(inode);
++	if (ret)
++		goto errout;
++
++	eh = ext_inode_hdr(inode);
++	ex  = EXT_FIRST_EXTENT(eh);
++	if (ext4_blocks_count(es) &gt; EXT4_MAX_BLOCK_FILE_PHYS ||
++	    eh-&gt;eh_depth != 0 || eh-&gt;eh_entries &gt; 1) {
++		ret = -EOPNOTSUPP;
++		goto errout;
++	}
++	if (eh-&gt;eh_entries == 0)
++		blk = len = 0;
++	else {
++		len = le16_to_cpu(ex-&gt;ee_len);
++		blk = ext4_ext_pblock(ex);
++		if (len &gt; EXT4_NDIR_BLOCKS) {
++			ret = -EOPNOTSUPP;
++			goto errout;
++		}
++	}
++
++	handle = ext4_journal_start(inode, EXT4_HT_MIGRATE, 1);
++	if (IS_ERR(handle)) {
++		ret = PTR_ERR(handle);
++		goto errout;
++	}
++
++	ext4_clear_inode_flag(inode, EXT4_INODE_EXTENTS);
++	memset(ei-&gt;i_data, 0, sizeof(ei-&gt;i_data));
++	for (i=0; i &lt; len; i++)
++		ei-&gt;i_data[i] = cpu_to_le32(blk++);
++	ext4_mark_inode_dirty(handle, inode);
++	ext4_journal_stop(handle);
++errout:
++	up_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
++	return ret;
++}
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 721f4d33e148..a07b7bc0856a 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -83,17 +83,8 @@ long ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 			if (!capable(CAP_SYS_RESOURCE))
+ 				goto flags_out;
+ 		}
+-		if (oldflags &amp; EXT4_EXTENTS_FL) {
+-			/* We don't support clearning extent flags */
+-			if (!(flags &amp; EXT4_EXTENTS_FL)) {
+-				err = -EOPNOTSUPP;
+-				goto flags_out;
+-			}
+-		} else if (flags &amp; EXT4_EXTENTS_FL) {
+-			/* migrate the file */
++		if ((flags ^ oldflags) &amp; EXT4_EXTENTS_FL)
+ 			migrate = 1;
+-			flags &amp;= ~EXT4_EXTENTS_FL;
+-		}
+ 
+ 		if (flags &amp; EXT4_EOFBLOCKS_FL) {
+ 			/* we don't support adding EOFBLOCKS flag */
+@@ -137,8 +128,13 @@ long ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 			err = ext4_change_inode_journal_flag(inode, jflag);
+ 		if (err)
+ 			goto flags_out;
+-		if (migrate)
+-			err = ext4_ext_migrate(inode);
++		if (migrate) {
++			if (flags &amp; EXT4_EXTENTS_FL)
++				err = ext4_ext_migrate(inode);
++			else
++				err = ext4_ind_migrate(inode);
++		}
++
+ flags_out:
+ 		mutex_unlock(&amp;inode-&gt;i_mutex);
+ 		mnt_drop_write_file(filp);</pre><hr><pre>commit d76a3a77113db020d9bb1e894822869410450bd9
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Apr 3 22:02:52 2013 -0400
+
+    ext4/jbd2: don't wait (forever) for stale tid caused by wraparound
+    
+    In the case where an inode has a very stale transaction id (tid) in
+    i_datasync_tid or i_sync_tid, it's possible that after a very large
+    (2**31) number of transactions, that the tid number space might wrap,
+    causing tid_geq()'s calculations to fail.
+    
+    Commit deeeaf13 "jbd2: fix fsync() tid wraparound bug", later modified
+    by commit e7b04ac0 "jbd2: don't wake kjournald unnecessarily",
+    attempted to fix this problem, but it only avoided kjournald spinning
+    forever by fixing the logic in jbd2_log_start_commit().
+    
+    Unfortunately, in the codepaths in fs/ext4/fsync.c and fs/ext4/inode.c
+    that might call jbd2_log_start_commit() with a stale tid, those
+    functions will subsequently call jbd2_log_wait_commit() with the same
+    stale tid, and then wait for a very long time.  To fix this, we
+    replace the calls to jbd2_log_start_commit() and
+    jbd2_log_wait_commit() with a call to a new function,
+    jbd2_complete_transaction(), which will correctly handle stale tid's.
+    
+    As a bonus, jbd2_complete_transaction() will avoid locking
+    j_state_lock for writing unless a commit needs to be started.  This
+    should have a small (but probably not measurable) improvement for
+    ext4's scalability.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Reported-by: Ben Hutchings &lt;ben@decadent.org.uk&gt;
+    Reported-by: George Barnett &lt;gbarnett@atlassian.com&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/fsync.c b/fs/ext4/fsync.c
+index 3278e64e57b6..e0ba8a408def 100644
+--- a/fs/ext4/fsync.c
++++ b/fs/ext4/fsync.c
+@@ -166,8 +166,7 @@ int ext4_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ 	if (journal-&gt;j_flags &amp; JBD2_BARRIER &amp;&amp;
+ 	    !jbd2_trans_will_send_data_barrier(journal, commit_tid))
+ 		needs_barrier = true;
+-	jbd2_log_start_commit(journal, commit_tid);
+-	ret = jbd2_log_wait_commit(journal, commit_tid);
++	ret = jbd2_complete_transaction(journal, commit_tid);
+ 	if (needs_barrier) {
+ 		err = blkdev_issue_flush(inode-&gt;i_sb-&gt;s_bdev, GFP_KERNEL, NULL);
+ 		if (!ret)
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 56ebd662033b..addba9e0a1a4 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -210,8 +210,7 @@ void ext4_evict_inode(struct inode *inode)
+ 			journal_t *journal = EXT4_SB(inode-&gt;i_sb)-&gt;s_journal;
+ 			tid_t commit_tid = EXT4_I(inode)-&gt;i_datasync_tid;
+ 
+-			jbd2_log_start_commit(journal, commit_tid);
+-			jbd2_log_wait_commit(journal, commit_tid);
++			jbd2_complete_transaction(journal, commit_tid);
+ 			filemap_write_and_wait(&amp;inode-&gt;i_data);
+ 		}
+ 		truncate_inode_pages(&amp;inode-&gt;i_data, 0);
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index ed10991ab006..886ec2faa9b4 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -709,6 +709,37 @@ int jbd2_log_wait_commit(journal_t *journal, tid_t tid)
+ 	return err;
+ }
+ 
++/*
++ * When this function returns the transaction corresponding to tid
++ * will be completed.  If the transaction has currently running, start
++ * committing that transaction before waiting for it to complete.  If
++ * the transaction id is stale, it is by definition already completed,
++ * so just return SUCCESS.
++ */
++int jbd2_complete_transaction(journal_t *journal, tid_t tid)
++{
++	int	need_to_wait = 1;
++
++	read_lock(&amp;journal-&gt;j_state_lock);
++	if (journal-&gt;j_running_transaction &amp;&amp;
++	    journal-&gt;j_running_transaction-&gt;t_tid == tid) {
++		if (journal-&gt;j_commit_request != tid) {
++			/* transaction not yet started, so request it */
++			read_unlock(&amp;journal-&gt;j_state_lock);
++			jbd2_log_start_commit(journal, tid);
++			goto wait_commit;
++		}
++	} else if (!(journal-&gt;j_committing_transaction &amp;&amp;
++		     journal-&gt;j_committing_transaction-&gt;t_tid == tid))
++		need_to_wait = 0;
++	read_unlock(&amp;journal-&gt;j_state_lock);
++	if (!need_to_wait)
++		return 0;
++wait_commit:
++	return jbd2_log_wait_commit(journal, tid);
++}
++EXPORT_SYMBOL(jbd2_complete_transaction);
++
+ /*
+  * Log buffer allocation routines:
+  */
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index 50e5a5e6a712..f0289754b464 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1200,6 +1200,7 @@ int __jbd2_log_start_commit(journal_t *journal, tid_t tid);
+ int jbd2_journal_start_commit(journal_t *journal, tid_t *tid);
+ int jbd2_journal_force_commit_nested(journal_t *journal);
+ int jbd2_log_wait_commit(journal_t *journal, tid_t tid);
++int jbd2_complete_transaction(journal_t *journal, tid_t tid);
+ int jbd2_log_do_checkpoint(journal_t *journal);
+ int jbd2_trans_will_send_data_barrier(journal_t *journal, tid_t tid);
+ </pre>
+    <div class="pagination">
+        <a href='1_51.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><span>[52]</span><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_53.html'>Next&gt;&gt;</a>
+    <div>
+</body>

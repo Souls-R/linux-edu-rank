@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Zhejiang University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Zhejiang University</h1>
+    <div class="pagination">
+        <a href='6.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><span>[2]</span><a href='6_3.html'>3</a><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_37.html'>37</a><a href='6_38.html'>38</a><a href='6_3.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 67600ccfc4f38ebd331b9332ac94717bfbc87ea7
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Sep 23 13:13:57 2025 +0800
+
+    thunderbolt: Fix use-after-free in tb_dp_dprx_work
+    
+    The original code relies on cancel_delayed_work() in tb_dp_dprx_stop(),
+    which does not ensure that the delayed work item tunnel-&gt;dprx_work has
+    fully completed if it was already running. This leads to use-after-free
+    scenarios where tb_tunnel is deallocated by tb_tunnel_put(), while
+    tunnel-&gt;dprx_work remains active and attempts to dereference tb_tunnel
+    in tb_dp_dprx_work().
+    
+    A typical race condition is illustrated below:
+    
+    CPU 0                            | CPU 1
+    tb_dp_tunnel_active()            |
+      tb_deactivate_and_free_tunnel()| tb_dp_dprx_start()
+        tb_tunnel_deactivate()       |   queue_delayed_work()
+          tb_dp_activate()           |
+            tb_dp_dprx_stop()        | tb_dp_dprx_work() //delayed worker
+              cancel_delayed_work()  |
+        tb_tunnel_put(tunnel);       |
+                                     |   tunnel = container_of(...); //UAF
+                                     |   tunnel-&gt; //UAF
+    
+    Replacing cancel_delayed_work() with cancel_delayed_work_sync() is
+    not feasible as it would introduce a deadlock: both tb_dp_dprx_work()
+    and the cleanup path acquire tb-&gt;lock, and cancel_delayed_work_sync()
+    would wait indefinitely for the work item that cannot proceed.
+    
+    Instead, implement proper reference counting:
+    - If cancel_delayed_work() returns true (work is pending), we release
+      the reference in the stop function.
+    - If it returns false (work is executing or already completed), the
+      reference is released in delayed work function itself.
+    
+    This ensures the tb_tunnel remains valid during work item execution
+    while preventing memory leaks.
+    
+    This bug was found by static analysis.
+    
+    Fixes: d6d458d42e1e ("thunderbolt: Handle DisplayPort tunnel activation asynchronously")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Mika Westerberg &lt;mika.westerberg@linux.intel.com&gt;
+
+diff --git a/drivers/thunderbolt/tunnel.c b/drivers/thunderbolt/tunnel.c
+index 850d9b107abd..bfa0607b5574 100644
+--- a/drivers/thunderbolt/tunnel.c
++++ b/drivers/thunderbolt/tunnel.c
+@@ -1079,6 +1079,7 @@ static void tb_dp_dprx_work(struct work_struct *work)
+ 
+ 	if (tunnel-&gt;callback)
+ 		tunnel-&gt;callback(tunnel, tunnel-&gt;callback_data);
++	tb_tunnel_put(tunnel);
+ }
+ 
+ static int tb_dp_dprx_start(struct tb_tunnel *tunnel)
+@@ -1106,8 +1107,8 @@ static void tb_dp_dprx_stop(struct tb_tunnel *tunnel)
+ 	if (tunnel-&gt;dprx_started) {
+ 		tunnel-&gt;dprx_started = false;
+ 		tunnel-&gt;dprx_canceled = true;
+-		cancel_delayed_work(&amp;tunnel-&gt;dprx_work);
+-		tb_tunnel_put(tunnel);
++		if (cancel_delayed_work(&amp;tunnel-&gt;dprx_work))
++			tb_tunnel_put(tunnel);
+ 	}
+ }
+ </pre><hr><pre>commit f8b4687151021db61841af983f1cb7be6915d4ef
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Sep 17 14:38:53 2025 +0800
+
+    octeontx2-pf: Fix use-after-free bugs in otx2_sync_tstamp()
+    
+    The original code relies on cancel_delayed_work() in otx2_ptp_destroy(),
+    which does not ensure that the delayed work item synctstamp_work has fully
+    completed if it was already running. This leads to use-after-free scenarios
+    where otx2_ptp is deallocated by otx2_ptp_destroy(), while synctstamp_work
+    remains active and attempts to dereference otx2_ptp in otx2_sync_tstamp().
+    Furthermore, the synctstamp_work is cyclic, the likelihood of triggering
+    the bug is nonnegligible.
+    
+    A typical race condition is illustrated below:
+    
+    CPU 0 (cleanup)           | CPU 1 (delayed work callback)
+    otx2_remove()             |
+      otx2_ptp_destroy()      | otx2_sync_tstamp()
+        cancel_delayed_work() |
+        kfree(ptp)            |
+                              |   ptp = container_of(...); //UAF
+                              |   ptp-&gt; //UAF
+    
+    This is confirmed by a KASAN report:
+    
+    BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+    Write of size 8 at addr ffff88800aa09a18 by task bash/136
+    ...
+    Call Trace:
+     &lt;IRQ&gt;
+     dump_stack_lvl+0x55/0x70
+     print_report+0xcf/0x610
+     ? __run_timer_base.part.0+0x7d7/0x8c0
+     kasan_report+0xb8/0xf0
+     ? __run_timer_base.part.0+0x7d7/0x8c0
+     __run_timer_base.part.0+0x7d7/0x8c0
+     ? __pfx___run_timer_base.part.0+0x10/0x10
+     ? __pfx_read_tsc+0x10/0x10
+     ? ktime_get+0x60/0x140
+     ? lapic_next_event+0x11/0x20
+     ? clockevents_program_event+0x1d4/0x2a0
+     run_timer_softirq+0xd1/0x190
+     handle_softirqs+0x16a/0x550
+     irq_exit_rcu+0xaf/0xe0
+     sysvec_apic_timer_interrupt+0x70/0x80
+     &lt;/IRQ&gt;
+    ...
+    Allocated by task 1:
+     kasan_save_stack+0x24/0x50
+     kasan_save_track+0x14/0x30
+     __kasan_kmalloc+0x7f/0x90
+     otx2_ptp_init+0xb1/0x860
+     otx2_probe+0x4eb/0xc30
+     local_pci_probe+0xdc/0x190
+     pci_device_probe+0x2fe/0x470
+     really_probe+0x1ca/0x5c0
+     __driver_probe_device+0x248/0x310
+     driver_probe_device+0x44/0x120
+     __driver_attach+0xd2/0x310
+     bus_for_each_dev+0xed/0x170
+     bus_add_driver+0x208/0x500
+     driver_register+0x132/0x460
+     do_one_initcall+0x89/0x300
+     kernel_init_freeable+0x40d/0x720
+     kernel_init+0x1a/0x150
+     ret_from_fork+0x10c/0x1a0
+     ret_from_fork_asm+0x1a/0x30
+    
+    Freed by task 136:
+     kasan_save_stack+0x24/0x50
+     kasan_save_track+0x14/0x30
+     kasan_save_free_info+0x3a/0x60
+     __kasan_slab_free+0x3f/0x50
+     kfree+0x137/0x370
+     otx2_ptp_destroy+0x38/0x80
+     otx2_remove+0x10d/0x4c0
+     pci_device_remove+0xa6/0x1d0
+     device_release_driver_internal+0xf8/0x210
+     pci_stop_bus_device+0x105/0x150
+     pci_stop_and_remove_bus_device_locked+0x15/0x30
+     remove_store+0xcc/0xe0
+     kernfs_fop_write_iter+0x2c3/0x440
+     vfs_write+0x871/0xd70
+     ksys_write+0xee/0x1c0
+     do_syscall_64+0xac/0x280
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+    ...
+    
+    Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+    that the delayed work item is properly canceled before the otx2_ptp is
+    deallocated.
+    
+    This bug was initially identified through static analysis. To reproduce
+    and test it, I simulated the OcteonTX2 PCI device in QEMU and introduced
+    artificial delays within the otx2_sync_tstamp() function to increase the
+    likelihood of triggering the bug.
+    
+    Fixes: 2958d17a8984 ("octeontx2-pf: Add support for ptp 1-step mode on CN10K silicon")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Vadim Fedorenko &lt;vadim.fedorenko@linux.dev&gt;
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
+index e52cc6b1a26c..dedd586ed310 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
+@@ -491,7 +491,7 @@ void otx2_ptp_destroy(struct otx2_nic *pfvf)
+ 	if (!ptp)
+ 		return;
+ 
+-	cancel_delayed_work(&amp;pfvf-&gt;ptp-&gt;synctstamp_work);
++	cancel_delayed_work_sync(&amp;pfvf-&gt;ptp-&gt;synctstamp_work);
+ 
+ 	ptp_clock_unregister(ptp-&gt;ptp_clock);
+ 	kfree(ptp);</pre><hr><pre>commit cfa7d9b1e3a8604afc84e9e51d789c29574fb216
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Sep 17 13:46:02 2025 +0800
+
+    cnic: Fix use-after-free bugs in cnic_delete_task
+    
+    The original code uses cancel_delayed_work() in cnic_cm_stop_bnx2x_hw(),
+    which does not guarantee that the delayed work item 'delete_task' has
+    fully completed if it was already running. Additionally, the delayed work
+    item is cyclic, the flush_workqueue() in cnic_cm_stop_bnx2x_hw() only
+    blocks and waits for work items that were already queued to the
+    workqueue prior to its invocation. Any work items submitted after
+    flush_workqueue() is called are not included in the set of tasks that the
+    flush operation awaits. This means that after the cyclic work items have
+    finished executing, a delayed work item may still exist in the workqueue.
+    This leads to use-after-free scenarios where the cnic_dev is deallocated
+    by cnic_free_dev(), while delete_task remains active and attempt to
+    dereference cnic_dev in cnic_delete_task().
+    
+    A typical race condition is illustrated below:
+    
+    CPU 0 (cleanup)              | CPU 1 (delayed work callback)
+    cnic_netdev_event()          |
+      cnic_stop_hw()             | cnic_delete_task()
+        cnic_cm_stop_bnx2x_hw()  | ...
+          cancel_delayed_work()  | /* the queue_delayed_work()
+          flush_workqueue()      |    executes after flush_workqueue()*/
+                                 | queue_delayed_work()
+      cnic_free_dev(dev)//free   | cnic_delete_task() //new instance
+                                 |   dev = cp-&gt;dev; //use
+    
+    Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+    that the cyclic delayed work item is properly canceled and that any
+    ongoing execution of the work item completes before the cnic_dev is
+    deallocated. Furthermore, since cancel_delayed_work_sync() uses
+    __flush_work(work, true) to synchronously wait for any currently
+    executing instance of the work item to finish, the flush_workqueue()
+    becomes redundant and should be removed.
+    
+    This bug was identified through static analysis. To reproduce the issue
+    and validate the fix, I simulated the cnic PCI device in QEMU and
+    introduced intentional delays — such as inserting calls to ssleep()
+    within the cnic_delete_task() function — to increase the likelihood
+    of triggering the bug.
+    
+    Fixes: fdf24086f475 ("cnic: Defer iscsi connection cleanup")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/net/ethernet/broadcom/cnic.c b/drivers/net/ethernet/broadcom/cnic.c
+index a9040c42d2ff..6e97a5a7daaf 100644
+--- a/drivers/net/ethernet/broadcom/cnic.c
++++ b/drivers/net/ethernet/broadcom/cnic.c
+@@ -4230,8 +4230,7 @@ static void cnic_cm_stop_bnx2x_hw(struct cnic_dev *dev)
+ 
+ 	cnic_bnx2x_delete_wait(dev, 0);
+ 
+-	cancel_delayed_work(&amp;cp-&gt;delete_task);
+-	flush_workqueue(cnic_wq);
++	cancel_delayed_work_sync(&amp;cp-&gt;delete_task);
+ 
+ 	if (atomic_read(&amp;cp-&gt;iscsi_conn) != 0)
+ 		netdev_warn(dev-&gt;netdev, "%d iSCSI connections not destroyed\n",</pre><hr><pre>commit 40b7a19f321e65789612ebaca966472055dab48c
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Sep 17 17:56:08 2025 +0800
+
+    media: tuner: xc5000: Fix use-after-free in xc5000_release
+    
+    The original code uses cancel_delayed_work() in xc5000_release(), which
+    does not guarantee that the delayed work item timer_sleep has fully
+    completed if it was already running. This leads to use-after-free scenarios
+    where xc5000_release() may free the xc5000_priv while timer_sleep is still
+    active and attempts to dereference the xc5000_priv.
+    
+    A typical race condition is illustrated below:
+    
+    CPU 0 (release thread)                 | CPU 1 (delayed work callback)
+    xc5000_release()                       | xc5000_do_timer_sleep()
+      cancel_delayed_work()                |
+      hybrid_tuner_release_state(priv)     |
+        kfree(priv)                        |
+                                           |   priv = container_of() // UAF
+    
+    Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+    that the timer_sleep is properly canceled before the xc5000_priv memory
+    is deallocated.
+    
+    A deadlock concern was considered: xc5000_release() is called in a process
+    context and is not holding any locks that the timer_sleep work item might
+    also need. Therefore, the use of the _sync() variant is safe here.
+    
+    This bug was initially identified through static analysis.
+    
+    Fixes: f7a27ff1fb77 ("[media] xc5000: delay tuner sleep to 5 seconds")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Hans Verkuil &lt;hverkuil+cisco@kernel.org&gt;
+    [hverkuil: fix typo in Subject: tunner -&gt; tuner]
+
+diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
+index bf4ff461e082..a28481edd22e 100644
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -1304,7 +1304,7 @@ static void xc5000_release(struct dvb_frontend *fe)
+ 	mutex_lock(&amp;xc5000_list_mutex);
+ 
+ 	if (priv) {
+-		cancel_delayed_work(&amp;priv-&gt;timer_sleep);
++		cancel_delayed_work_sync(&amp;priv-&gt;timer_sleep);
+ 		hybrid_tuner_release_state(priv);
+ 	}
+ </pre><hr><pre>commit 79d10f4f21a92e459b2276a77be62c59c1502c9d
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Sep 17 17:57:42 2025 +0800
+
+    media: i2c: tc358743: Fix use-after-free bugs caused by orphan timer in probe
+    
+    The state-&gt;timer is a cyclic timer that schedules work_i2c_poll and
+    delayed_work_enable_hotplug, while rearming itself. Using timer_delete()
+    fails to guarantee the timer isn't still running when destroyed, similarly
+    cancel_delayed_work() cannot ensure delayed_work_enable_hotplug has
+    terminated if already executing. During probe failure after timer
+    initialization, these may continue running as orphans and reference the
+    already-freed tc358743_state object through tc358743_irq_poll_timer.
+    
+    The following is the trace captured by KASAN.
+    
+    BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+    Write of size 8 at addr ffff88800ded83c8 by task swapper/1/0
+    ...
+    Call Trace:
+     &lt;IRQ&gt;
+     dump_stack_lvl+0x55/0x70
+     print_report+0xcf/0x610
+     ? __pfx_sched_balance_find_src_group+0x10/0x10
+     ? __run_timer_base.part.0+0x7d7/0x8c0
+     kasan_report+0xb8/0xf0
+     ? __run_timer_base.part.0+0x7d7/0x8c0
+     __run_timer_base.part.0+0x7d7/0x8c0
+     ? rcu_sched_clock_irq+0xb06/0x27d0
+     ? __pfx___run_timer_base.part.0+0x10/0x10
+     ? try_to_wake_up+0xb15/0x1960
+     ? tmigr_update_events+0x280/0x740
+     ? _raw_spin_lock_irq+0x80/0xe0
+     ? __pfx__raw_spin_lock_irq+0x10/0x10
+     tmigr_handle_remote_up+0x603/0x7e0
+     ? __pfx_tmigr_handle_remote_up+0x10/0x10
+     ? sched_balance_trigger+0x98/0x9f0
+     ? sched_tick+0x221/0x5a0
+     ? _raw_spin_lock_irq+0x80/0xe0
+     ? __pfx__raw_spin_lock_irq+0x10/0x10
+     ? tick_nohz_handler+0x339/0x440
+     ? __pfx_tmigr_handle_remote_up+0x10/0x10
+     __walk_groups.isra.0+0x42/0x150
+     tmigr_handle_remote+0x1f4/0x2e0
+     ? __pfx_tmigr_handle_remote+0x10/0x10
+     ? ktime_get+0x60/0x140
+     ? lapic_next_event+0x11/0x20
+     ? clockevents_program_event+0x1d4/0x2a0
+     ? hrtimer_interrupt+0x322/0x780
+     handle_softirqs+0x16a/0x550
+     irq_exit_rcu+0xaf/0xe0
+     sysvec_apic_timer_interrupt+0x70/0x80
+     &lt;/IRQ&gt;
+    ...
+    
+    Allocated by task 141:
+     kasan_save_stack+0x24/0x50
+     kasan_save_track+0x14/0x30
+     __kasan_kmalloc+0x7f/0x90
+     __kmalloc_node_track_caller_noprof+0x198/0x430
+     devm_kmalloc+0x7b/0x1e0
+     tc358743_probe+0xb7/0x610  i2c_device_probe+0x51d/0x880
+     really_probe+0x1ca/0x5c0
+     __driver_probe_device+0x248/0x310
+     driver_probe_device+0x44/0x120
+     __device_attach_driver+0x174/0x220
+     bus_for_each_drv+0x100/0x190
+     __device_attach+0x206/0x370
+     bus_probe_device+0x123/0x170
+     device_add+0xd25/0x1470
+     i2c_new_client_device+0x7a0/0xcd0
+     do_one_initcall+0x89/0x300
+     do_init_module+0x29d/0x7f0
+     load_module+0x4f48/0x69e0
+     init_module_from_file+0xe4/0x150
+     idempotent_init_module+0x320/0x670
+     __x64_sys_finit_module+0xbd/0x120
+     do_syscall_64+0xac/0x280
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+    
+    Freed by task 141:
+     kasan_save_stack+0x24/0x50
+     kasan_save_track+0x14/0x30
+     kasan_save_free_info+0x3a/0x60
+     __kasan_slab_free+0x3f/0x50
+     kfree+0x137/0x370
+     release_nodes+0xa4/0x100
+     devres_release_group+0x1b2/0x380
+     i2c_device_probe+0x694/0x880
+     really_probe+0x1ca/0x5c0
+     __driver_probe_device+0x248/0x310
+     driver_probe_device+0x44/0x120
+     __device_attach_driver+0x174/0x220
+     bus_for_each_drv+0x100/0x190
+     __device_attach+0x206/0x370
+     bus_probe_device+0x123/0x170
+     device_add+0xd25/0x1470
+     i2c_new_client_device+0x7a0/0xcd0
+     do_one_initcall+0x89/0x300
+     do_init_module+0x29d/0x7f0
+     load_module+0x4f48/0x69e0
+     init_module_from_file+0xe4/0x150
+     idempotent_init_module+0x320/0x670
+     __x64_sys_finit_module+0xbd/0x120
+     do_syscall_64+0xac/0x280
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+    ...
+    
+    Replace timer_delete() with timer_delete_sync() and cancel_delayed_work()
+    with cancel_delayed_work_sync() to ensure proper termination of timer and
+    work items before resource cleanup.
+    
+    This bug was initially identified through static analysis. For reproduction
+    and testing, I created a functional emulation of the tc358743 device via a
+    kernel module and introduced faults through the debugfs interface.
+    
+    Fixes: 869f38ae07f7 ("media: i2c: tc358743: Fix crash in the probe error path when using polling")
+    Fixes: d32d98642de6 ("[media] Driver for Toshiba TC358743 HDMI to CSI-2 bridge")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Hans Verkuil &lt;hverkuil+cisco@kernel.org&gt;
+
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index aa02a5a6ae3e..a0ca19359c43 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -2326,10 +2326,10 @@ static int tc358743_probe(struct i2c_client *client)
+ err_work_queues:
+ 	cec_unregister_adapter(state-&gt;cec_adap);
+ 	if (!state-&gt;i2c_client-&gt;irq) {
+-		timer_delete(&amp;state-&gt;timer);
++		timer_delete_sync(&amp;state-&gt;timer);
+ 		flush_work(&amp;state-&gt;work_i2c_poll);
+ 	}
+-	cancel_delayed_work(&amp;state-&gt;delayed_work_enable_hotplug);
++	cancel_delayed_work_sync(&amp;state-&gt;delayed_work_enable_hotplug);
+ 	mutex_destroy(&amp;state-&gt;confctl_mutex);
+ err_hdl:
+ 	media_entity_cleanup(&amp;sd-&gt;entity);</pre><hr><pre>commit 01e03fb7db419d39e18d6090d4873c1bff103914
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Sep 17 17:59:26 2025 +0800
+
+    media: b2c2: Fix use-after-free causing by irq_check_work in flexcop_pci_remove
+    
+    The original code uses cancel_delayed_work() in flexcop_pci_remove(), which
+    does not guarantee that the delayed work item irq_check_work has fully
+    completed if it was already running. This leads to use-after-free scenarios
+    where flexcop_pci_remove() may free the flexcop_device while irq_check_work
+    is still active and attempts to dereference the device.
+    
+    A typical race condition is illustrated below:
+    
+    CPU 0 (remove)                         | CPU 1 (delayed work callback)
+    flexcop_pci_remove()                   | flexcop_pci_irq_check_work()
+      cancel_delayed_work()                |
+      flexcop_device_kfree(fc_pci-&gt;fc_dev) |
+                                           |   fc = fc_pci-&gt;fc_dev; // UAF
+    
+    This is confirmed by a KASAN report:
+    
+    ==================================================================
+    BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+    Write of size 8 at addr ffff8880093aa8c8 by task bash/135
+    ...
+    Call Trace:
+     &lt;IRQ&gt;
+     dump_stack_lvl+0x55/0x70
+     print_report+0xcf/0x610
+     ? __run_timer_base.part.0+0x7d7/0x8c0
+     kasan_report+0xb8/0xf0
+     ? __run_timer_base.part.0+0x7d7/0x8c0
+     __run_timer_base.part.0+0x7d7/0x8c0
+     ? __pfx___run_timer_base.part.0+0x10/0x10
+     ? __pfx_read_tsc+0x10/0x10
+     ? ktime_get+0x60/0x140
+     ? lapic_next_event+0x11/0x20
+     ? clockevents_program_event+0x1d4/0x2a0
+     run_timer_softirq+0xd1/0x190
+     handle_softirqs+0x16a/0x550
+     irq_exit_rcu+0xaf/0xe0
+     sysvec_apic_timer_interrupt+0x70/0x80
+     &lt;/IRQ&gt;
+    ...
+    
+    Allocated by task 1:
+     kasan_save_stack+0x24/0x50
+     kasan_save_track+0x14/0x30
+     __kasan_kmalloc+0x7f/0x90
+     __kmalloc_noprof+0x1be/0x460
+     flexcop_device_kmalloc+0x54/0xe0
+     flexcop_pci_probe+0x1f/0x9d0
+     local_pci_probe+0xdc/0x190
+     pci_device_probe+0x2fe/0x470
+     really_probe+0x1ca/0x5c0
+     __driver_probe_device+0x248/0x310
+     driver_probe_device+0x44/0x120
+     __driver_attach+0xd2/0x310
+     bus_for_each_dev+0xed/0x170
+     bus_add_driver+0x208/0x500
+     driver_register+0x132/0x460
+     do_one_initcall+0x89/0x300
+     kernel_init_freeable+0x40d/0x720
+     kernel_init+0x1a/0x150
+     ret_from_fork+0x10c/0x1a0
+     ret_from_fork_asm+0x1a/0x30
+    
+    Freed by task 135:
+     kasan_save_stack+0x24/0x50
+     kasan_save_track+0x14/0x30
+     kasan_save_free_info+0x3a/0x60
+     __kasan_slab_free+0x3f/0x50
+     kfree+0x137/0x370
+     flexcop_device_kfree+0x32/0x50
+     pci_device_remove+0xa6/0x1d0
+     device_release_driver_internal+0xf8/0x210
+     pci_stop_bus_device+0x105/0x150
+     pci_stop_and_remove_bus_device_locked+0x15/0x30
+     remove_store+0xcc/0xe0
+     kernfs_fop_write_iter+0x2c3/0x440
+     vfs_write+0x871/0xd70
+     ksys_write+0xee/0x1c0
+     do_syscall_64+0xac/0x280
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+    ...
+    
+    Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+    that the delayed work item is properly canceled and any executing delayed
+    work has finished before the device memory is deallocated.
+    
+    This bug was initially identified through static analysis. To reproduce
+    and test it, I simulated the B2C2 FlexCop PCI device in QEMU and introduced
+    artificial delays within the flexcop_pci_irq_check_work() function to
+    increase the likelihood of triggering the bug.
+    
+    Fixes: 382c5546d618 ("V4L/DVB (10694): [PATCH] software IRQ watchdog for Flexcop B2C2 DVB PCI cards")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Hans Verkuil &lt;hverkuil+cisco@kernel.org&gt;
+
+diff --git a/drivers/media/pci/b2c2/flexcop-pci.c b/drivers/media/pci/b2c2/flexcop-pci.c
+index 486c8ec0fa60..ab53c5b02c48 100644
+--- a/drivers/media/pci/b2c2/flexcop-pci.c
++++ b/drivers/media/pci/b2c2/flexcop-pci.c
+@@ -411,7 +411,7 @@ static void flexcop_pci_remove(struct pci_dev *pdev)
+ 	struct flexcop_pci *fc_pci = pci_get_drvdata(pdev);
+ 
+ 	if (irq_chk_intv &gt; 0)
+-		cancel_delayed_work(&amp;fc_pci-&gt;irq_check_work);
++		cancel_delayed_work_sync(&amp;fc_pci-&gt;irq_check_work);
+ 
+ 	flexcop_pci_dma_exit(fc_pci);
+ 	flexcop_device_exit(fc_pci-&gt;fc_dev);</pre><hr><pre>commit 8bf935cf789872350b04c1a6468b0a509f67afb2
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Thu Aug 28 16:29:49 2025 +0800
+
+    ptp: ocp: fix use-after-free bugs causing by ptp_ocp_watchdog
+    
+    The ptp_ocp_detach() only shuts down the watchdog timer if it is
+    pending. However, if the timer handler is already running, the
+    timer_delete_sync() is not called. This leads to race conditions
+    where the devlink that contains the ptp_ocp is deallocated while
+    the timer handler is still accessing it, resulting in use-after-free
+    bugs. The following details one of the race scenarios.
+    
+    (thread 1)                           | (thread 2)
+    ptp_ocp_remove()                     |
+      ptp_ocp_detach()                   | ptp_ocp_watchdog()
+        if (timer_pending(&amp;bp-&gt;watchdog))|   bp = timer_container_of()
+          timer_delete_sync()            |
+                                         |
+      devlink_free(devlink) //free       |
+                                         |   bp-&gt; //use
+    
+    Resolve this by unconditionally calling timer_delete_sync() to ensure
+    the timer is reliably deactivated, preventing any access after free.
+    
+    Fixes: 773bda964921 ("ptp: ocp: Expose various resources on the timecard.")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Vadim Fedorenko &lt;vadim.fedorenko@linux.dev&gt;
+    Link: https://patch.msgid.link/20250828082949.28189-1-duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index d39073dc4072..4e1286ce05c9 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -4557,8 +4557,7 @@ ptp_ocp_detach(struct ptp_ocp *bp)
+ 	ptp_ocp_debugfs_remove_device(bp);
+ 	ptp_ocp_detach_sysfs(bp);
+ 	ptp_ocp_attr_group_del(bp);
+-	if (timer_pending(&amp;bp-&gt;watchdog))
+-		timer_delete_sync(&amp;bp-&gt;watchdog);
++	timer_delete_sync(&amp;bp-&gt;watchdog);
+ 	if (bp-&gt;ts0)
+ 		ptp_ocp_unregister_ext(bp-&gt;ts0);
+ 	if (bp-&gt;ts1)</pre><hr><pre>commit 9cb83d4be0b9b697eae93d321e0da999f9cdfcfc
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Aug 22 13:08:39 2025 +0800
+
+    wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
+    
+    The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
+    flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
+    runs as timer handler, sets timer_on to false. This creates critical
+    race conditions:
+    
+    1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
+    is executing, it may observe timer_on as false and skip the call to
+    timer_shutdown_sync().
+    
+    2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
+    worker after the cancel_work_sync() has been executed, resulting in
+    use-after-free bugs.
+    
+    The use-after-free bugs occur in two distinct scenarios, depending on
+    the timing of when the brcmf_btcoex_info struct is freed relative to
+    the execution of its worker thread.
+    
+    Scenario 1: Freed before the worker is scheduled
+    
+    The brcmf_btcoex_info is deallocated before the worker is scheduled.
+    A race condition can occur when schedule_work(&amp;bt_local-&gt;work) is
+    called after the target memory has been freed. The sequence of events
+    is detailed below:
+    
+    CPU0                           | CPU1
+    brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
+                                   |   bt_local-&gt;timer_on = false;
+      if (cfg-&gt;btcoex-&gt;timer_on)   |
+        ...                        |
+      cancel_work_sync();          |
+      ...                          |
+      kfree(cfg-&gt;btcoex); // FREE  |
+                                   |   schedule_work(&amp;bt_local-&gt;work); // USE
+    
+    Scenario 2: Freed after the worker is scheduled
+    
+    The brcmf_btcoex_info is freed after the worker has been scheduled
+    but before or during its execution. In this case, statements within
+    the brcmf_btcoex_handler() — such as the container_of macro and
+    subsequent dereferences of the brcmf_btcoex_info object will cause
+    a use-after-free access. The following timeline illustrates this
+    scenario:
+    
+    CPU0                            | CPU1
+    brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
+                                    |   bt_local-&gt;timer_on = false;
+      if (cfg-&gt;btcoex-&gt;timer_on)    |
+        ...                         |
+      cancel_work_sync();           |
+      ...                           |   schedule_work(); // Reschedule
+                                    |
+      kfree(cfg-&gt;btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
+      /*                            |     btci = container_of(....); // USE
+       The kfree() above could      |     ...
+       also occur at any point      |     btci-&gt; // USE
+       during the worker's execution|
+       */                           |
+    
+    To resolve the race conditions, drop the conditional check and call
+    timer_shutdown_sync() directly. It can deactivate the timer reliably,
+    regardless of its current state. Once stopped, the timer_on state is
+    then set to false.
+    
+    Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
+    Acked-by: Arend van Spriel &lt;arend.vanspriel@broadcom.com&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://patch.msgid.link/20250822050839.4413-1-duoming@zju.edu.cn
+    Signed-off-by: Johannes Berg &lt;johannes.berg@intel.com&gt;
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
+index 69ef8cf203d2..67c0c5a92f99 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
+@@ -393,10 +393,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
+ 	if (!cfg-&gt;btcoex)
+ 		return;
+ 
+-	if (cfg-&gt;btcoex-&gt;timer_on) {
+-		cfg-&gt;btcoex-&gt;timer_on = false;
+-		timer_shutdown_sync(&amp;cfg-&gt;btcoex-&gt;timer);
+-	}
++	timer_shutdown_sync(&amp;cfg-&gt;btcoex-&gt;timer);
++	cfg-&gt;btcoex-&gt;timer_on = false;
+ 
+ 	cancel_work_sync(&amp;cfg-&gt;btcoex-&gt;work);
+ </pre><hr><pre>commit b27055a08ad4b415dcf15b63034f9cb236f7fb40
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Thu Apr 3 00:56:32 2025 +0800
+
+    net: fix geneve_opt length integer overflow
+    
+    struct geneve_opt uses 5 bit length for each single option, which
+    means every vary size option should be smaller than 128 bytes.
+    
+    However, all current related Netlink policies cannot promise this
+    length condition and the attacker can exploit a exact 128-byte size
+    option to *fake* a zero length option and confuse the parsing logic,
+    further achieve heap out-of-bounds read.
+    
+    One example crash log is like below:
+    
+    [    3.905425] ==================================================================
+    [    3.905925] BUG: KASAN: slab-out-of-bounds in nla_put+0xa9/0xe0
+    [    3.906255] Read of size 124 at addr ffff888005f291cc by task poc/177
+    [    3.906646]
+    [    3.906775] CPU: 0 PID: 177 Comm: poc-oob-read Not tainted 6.1.132 #1
+    [    3.907131] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+    [    3.907784] Call Trace:
+    [    3.907925]  &lt;TASK&gt;
+    [    3.908048]  dump_stack_lvl+0x44/0x5c
+    [    3.908258]  print_report+0x184/0x4be
+    [    3.909151]  kasan_report+0xc5/0x100
+    [    3.909539]  kasan_check_range+0xf3/0x1a0
+    [    3.909794]  memcpy+0x1f/0x60
+    [    3.909968]  nla_put+0xa9/0xe0
+    [    3.910147]  tunnel_key_dump+0x945/0xba0
+    [    3.911536]  tcf_action_dump_1+0x1c1/0x340
+    [    3.912436]  tcf_action_dump+0x101/0x180
+    [    3.912689]  tcf_exts_dump+0x164/0x1e0
+    [    3.912905]  fw_dump+0x18b/0x2d0
+    [    3.913483]  tcf_fill_node+0x2ee/0x460
+    [    3.914778]  tfilter_notify+0xf4/0x180
+    [    3.915208]  tc_new_tfilter+0xd51/0x10d0
+    [    3.918615]  rtnetlink_rcv_msg+0x4a2/0x560
+    [    3.919118]  netlink_rcv_skb+0xcd/0x200
+    [    3.919787]  netlink_unicast+0x395/0x530
+    [    3.921032]  netlink_sendmsg+0x3d0/0x6d0
+    [    3.921987]  __sock_sendmsg+0x99/0xa0
+    [    3.922220]  __sys_sendto+0x1b7/0x240
+    [    3.922682]  __x64_sys_sendto+0x72/0x90
+    [    3.922906]  do_syscall_64+0x5e/0x90
+    [    3.923814]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+    [    3.924122] RIP: 0033:0x7e83eab84407
+    [    3.924331] Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 &lt;5b&gt; c3 0f 1f 80 00 00 00 00 83 e2 39 83 faf
+    [    3.925330] RSP: 002b:00007ffff505e370 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+    [    3.925752] RAX: ffffffffffffffda RBX: 00007e83eaafa740 RCX: 00007e83eab84407
+    [    3.926173] RDX: 00000000000001a8 RSI: 00007ffff505e3c0 RDI: 0000000000000003
+    [    3.926587] RBP: 00007ffff505f460 R08: 00007e83eace1000 R09: 000000000000000c
+    [    3.926977] R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffff505f3c0
+    [    3.927367] R13: 00007ffff505f5c8 R14: 00007e83ead1b000 R15: 00005d4fbbe6dcb8
+    
+    Fix these issues by enforing correct length condition in related
+    policies.
+    
+    Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
+    Fixes: 4ece47787077 ("lwtunnel: add options setting and dumping for geneve")
+    Fixes: 0ed5269f9e41 ("net/sched: add tunnel option support to act_tunnel_key")
+    Fixes: 0a6e77784f49 ("net/sched: allow flower to match tunnel options")
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Reviewed-by: Xin Long &lt;lucien.xin@gmail.com&gt;
+    Acked-by: Cong Wang &lt;xiyou.wangcong@gmail.com&gt;
+    Link: https://patch.msgid.link/20250402165632.6958-1-linma@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index 364ea798511e..f65d2f727381 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -451,7 +451,7 @@ static const struct nla_policy
+ geneve_opt_policy[LWTUNNEL_IP_OPT_GENEVE_MAX + 1] = {
+ 	[LWTUNNEL_IP_OPT_GENEVE_CLASS]	= { .type = NLA_U16 },
+ 	[LWTUNNEL_IP_OPT_GENEVE_TYPE]	= { .type = NLA_U8 },
+-	[LWTUNNEL_IP_OPT_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 128 },
++	[LWTUNNEL_IP_OPT_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 127 },
+ };
+ 
+ static const struct nla_policy
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index 681301b46aa4..ec7089ab752c 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -335,7 +335,7 @@ static int nft_tunnel_obj_erspan_init(const struct nlattr *attr,
+ static const struct nla_policy nft_tunnel_opts_geneve_policy[NFTA_TUNNEL_KEY_GENEVE_MAX + 1] = {
+ 	[NFTA_TUNNEL_KEY_GENEVE_CLASS]	= { .type = NLA_U16 },
+ 	[NFTA_TUNNEL_KEY_GENEVE_TYPE]	= { .type = NLA_U8 },
+-	[NFTA_TUNNEL_KEY_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 128 },
++	[NFTA_TUNNEL_KEY_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 127 },
+ };
+ 
+ static int nft_tunnel_obj_geneve_init(const struct nlattr *attr,
+diff --git a/net/sched/act_tunnel_key.c b/net/sched/act_tunnel_key.c
+index ae5dea7c48a8..2cef4b08befb 100644
+--- a/net/sched/act_tunnel_key.c
++++ b/net/sched/act_tunnel_key.c
+@@ -68,7 +68,7 @@ geneve_opt_policy[TCA_TUNNEL_KEY_ENC_OPT_GENEVE_MAX + 1] = {
+ 	[TCA_TUNNEL_KEY_ENC_OPT_GENEVE_CLASS]	   = { .type = NLA_U16 },
+ 	[TCA_TUNNEL_KEY_ENC_OPT_GENEVE_TYPE]	   = { .type = NLA_U8 },
+ 	[TCA_TUNNEL_KEY_ENC_OPT_GENEVE_DATA]	   = { .type = NLA_BINARY,
+-						       .len = 128 },
++						       .len = 127 },
+ };
+ 
+ static const struct nla_policy
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 03505673d523..099ff6a3e1f5 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -766,7 +766,7 @@ geneve_opt_policy[TCA_FLOWER_KEY_ENC_OPT_GENEVE_MAX + 1] = {
+ 	[TCA_FLOWER_KEY_ENC_OPT_GENEVE_CLASS]      = { .type = NLA_U16 },
+ 	[TCA_FLOWER_KEY_ENC_OPT_GENEVE_TYPE]       = { .type = NLA_U8 },
+ 	[TCA_FLOWER_KEY_ENC_OPT_GENEVE_DATA]       = { .type = NLA_BINARY,
+-						       .len = 128 },
++						       .len = 127 },
+ };
+ 
+ static const struct nla_policy</pre><hr><pre>commit 1b755d8eb1ace3870789d48fbd94f386ad6e30be
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Thu Apr 3 01:00:26 2025 +0800
+
+    netfilter: nft_tunnel: fix geneve_opt type confusion addition
+    
+    When handling multiple NFTA_TUNNEL_KEY_OPTS_GENEVE attributes, the
+    parsing logic should place every geneve_opt structure one by one
+    compactly. Hence, when deciding the next geneve_opt position, the
+    pointer addition should be in units of char *.
+    
+    However, the current implementation erroneously does type conversion
+    before the addition, which will lead to heap out-of-bounds write.
+    
+    [    6.989857] ==================================================================
+    [    6.990293] BUG: KASAN: slab-out-of-bounds in nft_tunnel_obj_init+0x977/0xa70
+    [    6.990725] Write of size 124 at addr ffff888005f18974 by task poc/178
+    [    6.991162]
+    [    6.991259] CPU: 0 PID: 178 Comm: poc-oob-write Not tainted 6.1.132 #1
+    [    6.991655] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+    [    6.992281] Call Trace:
+    [    6.992423]  &lt;TASK&gt;
+    [    6.992586]  dump_stack_lvl+0x44/0x5c
+    [    6.992801]  print_report+0x184/0x4be
+    [    6.993790]  kasan_report+0xc5/0x100
+    [    6.994252]  kasan_check_range+0xf3/0x1a0
+    [    6.994486]  memcpy+0x38/0x60
+    [    6.994692]  nft_tunnel_obj_init+0x977/0xa70
+    [    6.995677]  nft_obj_init+0x10c/0x1b0
+    [    6.995891]  nf_tables_newobj+0x585/0x950
+    [    6.996922]  nfnetlink_rcv_batch+0xdf9/0x1020
+    [    6.998997]  nfnetlink_rcv+0x1df/0x220
+    [    6.999537]  netlink_unicast+0x395/0x530
+    [    7.000771]  netlink_sendmsg+0x3d0/0x6d0
+    [    7.001462]  __sock_sendmsg+0x99/0xa0
+    [    7.001707]  ____sys_sendmsg+0x409/0x450
+    [    7.002391]  ___sys_sendmsg+0xfd/0x170
+    [    7.003145]  __sys_sendmsg+0xea/0x170
+    [    7.004359]  do_syscall_64+0x5e/0x90
+    [    7.005817]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+    [    7.006127] RIP: 0033:0x7ec756d4e407
+    [    7.006339] Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 &lt;5b&gt; c3 0f 1f 80 00 00 00 00 83 e2 39 83 faf
+    [    7.007364] RSP: 002b:00007ffed5d46760 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+    [    7.007827] RAX: ffffffffffffffda RBX: 00007ec756cc4740 RCX: 00007ec756d4e407
+    [    7.008223] RDX: 0000000000000000 RSI: 00007ffed5d467f0 RDI: 0000000000000003
+    [    7.008620] RBP: 00007ffed5d468a0 R08: 0000000000000000 R09: 0000000000000000
+    [    7.009039] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+    [    7.009429] R13: 00007ffed5d478b0 R14: 00007ec756ee5000 R15: 00005cbd4e655cb8
+    
+    Fix this bug with correct pointer addition and conversion in parse
+    and dump code.
+    
+    Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Signed-off-by: Pablo Neira Ayuso &lt;pablo@netfilter.org&gt;
+
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index 681301b46aa4..2e40f575aed9 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -341,7 +341,7 @@ static const struct nla_policy nft_tunnel_opts_geneve_policy[NFTA_TUNNEL_KEY_GEN
+ static int nft_tunnel_obj_geneve_init(const struct nlattr *attr,
+ 				      struct nft_tunnel_opts *opts)
+ {
+-	struct geneve_opt *opt = (struct geneve_opt *)opts-&gt;u.data + opts-&gt;len;
++	struct geneve_opt *opt = (struct geneve_opt *)(opts-&gt;u.data + opts-&gt;len);
+ 	struct nlattr *tb[NFTA_TUNNEL_KEY_GENEVE_MAX + 1];
+ 	int err, data_len;
+ 
+@@ -625,7 +625,7 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
+ 		if (!inner)
+ 			goto failure;
+ 		while (opts-&gt;len &gt; offset) {
+-			opt = (struct geneve_opt *)opts-&gt;u.data + offset;
++			opt = (struct geneve_opt *)(opts-&gt;u.data + offset);
+ 			if (nla_put_be16(skb, NFTA_TUNNEL_KEY_GENEVE_CLASS,
+ 					 opt-&gt;opt_class) ||
+ 			    nla_put_u8(skb, NFTA_TUNNEL_KEY_GENEVE_TYPE,</pre>
+    <div class="pagination">
+        <a href='6.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><span>[2]</span><a href='6_3.html'>3</a><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_37.html'>37</a><a href='6_38.html'>38</a><a href='6_3.html'>Next&gt;&gt;</a>
+    <div>
+</body>

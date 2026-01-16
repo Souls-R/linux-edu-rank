@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit c065b6046b3493a878c2ceb810aed845431badb4
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Oct 13 21:50:40 2025 -0400
+
+    Use CONFIG_EXT4_FS instead of CONFIG_EXT3_FS in all of the defconfigs
+    
+    Commit d6ace46c82fd ("ext4: remove obsolete EXT3 config options")
+    removed the obsolete EXT3_CONFIG options, since it had been over a
+    decade since fs/ext3 had been removed.  Unfortunately, there were a
+    number of defconfigs that still used CONFIG_EXT3_FS which the cleanup
+    commit didn't fix up.  This led to a large number of defconfig test
+    builds to fail.  Oops.
+    
+    Fixes: d6ace46c82fd ("ext4: remove obsolete EXT3 config options")
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/arch/arc/configs/axs101_defconfig b/arch/arc/configs/axs101_defconfig
+index a7cd526dd7ca..f930396d9dae 100644
+--- a/arch/arc/configs/axs101_defconfig
++++ b/arch/arc/configs/axs101_defconfig
+@@ -88,7 +88,7 @@ CONFIG_MMC_SDHCI=y
+ CONFIG_MMC_SDHCI_PLTFM=y
+ CONFIG_MMC_DW=y
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_NTFS_FS=y
+diff --git a/arch/arc/configs/axs103_defconfig b/arch/arc/configs/axs103_defconfig
+index afa6a348f444..6b779dee5ea0 100644
+--- a/arch/arc/configs/axs103_defconfig
++++ b/arch/arc/configs/axs103_defconfig
+@@ -86,7 +86,7 @@ CONFIG_MMC_SDHCI=y
+ CONFIG_MMC_SDHCI_PLTFM=y
+ CONFIG_MMC_DW=y
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_NTFS_FS=y
+diff --git a/arch/arc/configs/axs103_smp_defconfig b/arch/arc/configs/axs103_smp_defconfig
+index 2bfa6371953c..a89b50d5369d 100644
+--- a/arch/arc/configs/axs103_smp_defconfig
++++ b/arch/arc/configs/axs103_smp_defconfig
+@@ -88,7 +88,7 @@ CONFIG_MMC_SDHCI=y
+ CONFIG_MMC_SDHCI_PLTFM=y
+ CONFIG_MMC_DW=y
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_NTFS_FS=y
+diff --git a/arch/arc/configs/hsdk_defconfig b/arch/arc/configs/hsdk_defconfig
+index 1558e8e87767..1b8b2a098cda 100644
+--- a/arch/arc/configs/hsdk_defconfig
++++ b/arch/arc/configs/hsdk_defconfig
+@@ -77,7 +77,7 @@ CONFIG_DMADEVICES=y
+ CONFIG_DW_AXI_DMAC=y
+ CONFIG_IIO=y
+ CONFIG_TI_ADC108S102=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_TMPFS=y
+ CONFIG_NFS_FS=y
+diff --git a/arch/arc/configs/vdk_hs38_defconfig b/arch/arc/configs/vdk_hs38_defconfig
+index 03d9ac20baa9..b7120523e09a 100644
+--- a/arch/arc/configs/vdk_hs38_defconfig
++++ b/arch/arc/configs/vdk_hs38_defconfig
+@@ -74,7 +74,7 @@ CONFIG_USB_OHCI_HCD_PLATFORM=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_USB_SERIAL=y
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/arc/configs/vdk_hs38_smp_defconfig b/arch/arc/configs/vdk_hs38_smp_defconfig
+index c09488992f13..4077abd5980c 100644
+--- a/arch/arc/configs/vdk_hs38_smp_defconfig
++++ b/arch/arc/configs/vdk_hs38_smp_defconfig
+@@ -81,7 +81,7 @@ CONFIG_MMC_DW=y
+ CONFIG_UIO=y
+ CONFIG_UIO_PDRV_GENIRQ=y
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_NTFS_FS=y
+diff --git a/arch/arm/configs/axm55xx_defconfig b/arch/arm/configs/axm55xx_defconfig
+index 516689dc6cf1..9b263ea9a878 100644
+--- a/arch/arm/configs/axm55xx_defconfig
++++ b/arch/arm/configs/axm55xx_defconfig
+@@ -194,7 +194,7 @@ CONFIG_MAILBOX=y
+ CONFIG_PL320_MBOX=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_EXT4_FS=y
+ CONFIG_AUTOFS_FS=y
+diff --git a/arch/arm/configs/bcm2835_defconfig b/arch/arm/configs/bcm2835_defconfig
+index 27dc3bf6b124..4a8ac09843d7 100644
+--- a/arch/arm/configs/bcm2835_defconfig
++++ b/arch/arm/configs/bcm2835_defconfig
+@@ -154,8 +154,8 @@ CONFIG_PWM_BCM2835=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_FANOTIFY=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/arm/configs/davinci_all_defconfig b/arch/arm/configs/davinci_all_defconfig
+index e2ddaca0f89d..673408a10888 100644
+--- a/arch/arm/configs/davinci_all_defconfig
++++ b/arch/arm/configs/davinci_all_defconfig
+@@ -228,7 +228,7 @@ CONFIG_PWM=y
+ CONFIG_PWM_TIECAP=m
+ CONFIG_PWM_TIEHRPWM=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_XFS_FS=m
+ CONFIG_AUTOFS_FS=m
+diff --git a/arch/arm/configs/dove_defconfig b/arch/arm/configs/dove_defconfig
+index d76eb12d29a7..bb6c4748bfc8 100644
+--- a/arch/arm/configs/dove_defconfig
++++ b/arch/arm/configs/dove_defconfig
+@@ -95,8 +95,8 @@ CONFIG_RTC_DRV_MV=y
+ CONFIG_DMADEVICES=y
+ CONFIG_MV_XOR=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
+-# CONFIG_EXT3_FS_XATTR is not set
++CONFIG_EXT4_FS=y
++# CONFIG_EXT4_FS_XATTR is not set
+ CONFIG_EXT4_FS=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+diff --git a/arch/arm/configs/ep93xx_defconfig b/arch/arm/configs/ep93xx_defconfig
+index 2248afaf35b5..7f3756d8b086 100644
+--- a/arch/arm/configs/ep93xx_defconfig
++++ b/arch/arm/configs/ep93xx_defconfig
+@@ -103,8 +103,8 @@ CONFIG_RTC_DRV_EP93XX=y
+ CONFIG_DMADEVICES=y
+ CONFIG_EP93XX_DMA=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
+-# CONFIG_EXT3_FS_XATTR is not set
++CONFIG_EXT4_FS=y
++# CONFIG_EXT4_FS_XATTR is not set
+ CONFIG_EXT4_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_TMPFS=y
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 9a57763a8d38..0d55056c6f82 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -436,9 +436,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_QUOTA=y
+ CONFIG_QUOTA_NETLINK_INTERFACE=y
+ CONFIG_AUTOFS_FS=y
+diff --git a/arch/arm/configs/ixp4xx_defconfig b/arch/arm/configs/ixp4xx_defconfig
+index 3cb995b9616a..81199dddcde7 100644
+--- a/arch/arm/configs/ixp4xx_defconfig
++++ b/arch/arm/configs/ixp4xx_defconfig
+@@ -158,8 +158,8 @@ CONFIG_IXP4XX_NPE=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_OVERLAY_FS=y
+ CONFIG_TMPFS=y
+ CONFIG_TMPFS_POSIX_ACL=y
+diff --git a/arch/arm/configs/mmp2_defconfig b/arch/arm/configs/mmp2_defconfig
+index 842a989baa27..f67e9cda73e2 100644
+--- a/arch/arm/configs/mmp2_defconfig
++++ b/arch/arm/configs/mmp2_defconfig
+@@ -53,7 +53,7 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_MAX8925=y
+ # CONFIG_RESET_CONTROLLER is not set
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS=y
+ # CONFIG_DNOTIFY is not set
+ CONFIG_MSDOS_FS=y
+diff --git a/arch/arm/configs/moxart_defconfig b/arch/arm/configs/moxart_defconfig
+index fa06d98e43fc..e2d9f3610063 100644
+--- a/arch/arm/configs/moxart_defconfig
++++ b/arch/arm/configs/moxart_defconfig
+@@ -113,7 +113,7 @@ CONFIG_RTC_DRV_MOXART=y
+ CONFIG_DMADEVICES=y
+ CONFIG_MOXART_DMA=y
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_TMPFS=y
+ CONFIG_CONFIGFS_FS=y
+ CONFIG_JFFS2_FS=y
+diff --git a/arch/arm/configs/multi_v5_defconfig b/arch/arm/configs/multi_v5_defconfig
+index b523bc246c09..59b020e66a0b 100644
+--- a/arch/arm/configs/multi_v5_defconfig
++++ b/arch/arm/configs/multi_v5_defconfig
+@@ -268,7 +268,7 @@ CONFIG_PWM_ATMEL=m
+ CONFIG_PWM_ATMEL_HLCDC_PWM=m
+ CONFIG_PWM_ATMEL_TCB=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_ISO9660_FS=m
+ CONFIG_JOLIET=y
+ CONFIG_UDF_FS=m
+diff --git a/arch/arm/configs/mv78xx0_defconfig b/arch/arm/configs/mv78xx0_defconfig
+index 3343f72de7ea..55f4ab67a306 100644
+--- a/arch/arm/configs/mv78xx0_defconfig
++++ b/arch/arm/configs/mv78xx0_defconfig
+@@ -91,8 +91,8 @@ CONFIG_RTC_DRV_DS1307=y
+ CONFIG_RTC_DRV_RS5C372=y
+ CONFIG_RTC_DRV_M41T80=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
+-# CONFIG_EXT3_FS_XATTR is not set
++CONFIG_EXT4_FS=y
++# CONFIG_EXT4_FS_XATTR is not set
+ CONFIG_EXT4_FS=m
+ CONFIG_ISO9660_FS=m
+ CONFIG_JOLIET=y
+diff --git a/arch/arm/configs/mvebu_v5_defconfig b/arch/arm/configs/mvebu_v5_defconfig
+index 23dbb80fcc2e..d1742a7cae6a 100644
+--- a/arch/arm/configs/mvebu_v5_defconfig
++++ b/arch/arm/configs/mvebu_v5_defconfig
+@@ -168,7 +168,7 @@ CONFIG_MV_XOR=y
+ CONFIG_STAGING=y
+ CONFIG_FB_XGI=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_ISO9660_FS=m
+ CONFIG_JOLIET=y
+ CONFIG_UDF_FS=m
+diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
+index ea28ed8991b4..696b4fbc2412 100644
+--- a/arch/arm/configs/nhk8815_defconfig
++++ b/arch/arm/configs/nhk8815_defconfig
+@@ -116,7 +116,7 @@ CONFIG_IIO_ST_ACCEL_3AXIS=y
+ CONFIG_PWM=y
+ CONFIG_PWM_STMPE=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_FUSE_FS=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
+index 661e5d6894bd..24c54bf1e243 100644
+--- a/arch/arm/configs/omap1_defconfig
++++ b/arch/arm/configs/omap1_defconfig
+@@ -184,7 +184,7 @@ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_OMAP=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_DNOTIFY is not set
+ CONFIG_AUTOFS_FS=y
+ CONFIG_ISO9660_FS=y
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index 939913ed9a73..8f443c20872b 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -679,7 +679,7 @@ CONFIG_TWL4030_USB=m
+ CONFIG_COUNTER=m
+ CONFIG_TI_EQEP=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_FANOTIFY=y
+ CONFIG_QUOTA=y
+diff --git a/arch/arm/configs/orion5x_defconfig b/arch/arm/configs/orion5x_defconfig
+index 62b9c6102789..c28426250ec3 100644
+--- a/arch/arm/configs/orion5x_defconfig
++++ b/arch/arm/configs/orion5x_defconfig
+@@ -115,8 +115,8 @@ CONFIG_RTC_DRV_M48T86=y
+ CONFIG_DMADEVICES=y
+ CONFIG_MV_XOR=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
+-# CONFIG_EXT3_FS_XATTR is not set
++CONFIG_EXT4_FS=y
++# CONFIG_EXT4_FS_XATTR is not set
+ CONFIG_EXT4_FS=m
+ CONFIG_ISO9660_FS=m
+ CONFIG_JOLIET=y
+diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+index 1a80602c1284..4b988a9e2768 100644
+--- a/arch/arm/configs/pxa_defconfig
++++ b/arch/arm/configs/pxa_defconfig
+@@ -580,9 +580,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_XFS_FS=m
+ CONFIG_AUTOFS_FS=m
+ CONFIG_FUSE_FS=m
+diff --git a/arch/arm/configs/qcom_defconfig b/arch/arm/configs/qcom_defconfig
+index ec52ccece0ca..5a0513290547 100644
+--- a/arch/arm/configs/qcom_defconfig
++++ b/arch/arm/configs/qcom_defconfig
+@@ -295,7 +295,7 @@ CONFIG_INTERCONNECT_QCOM_MSM8974=m
+ CONFIG_INTERCONNECT_QCOM_SDX55=m
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_FUSE_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_TMPFS=y
+diff --git a/arch/arm/configs/rpc_defconfig b/arch/arm/configs/rpc_defconfig
+index 24f1fa868230..46df453e224e 100644
+--- a/arch/arm/configs/rpc_defconfig
++++ b/arch/arm/configs/rpc_defconfig
+@@ -77,7 +77,7 @@ CONFIG_SOUND_VIDC=m
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_PCF8583=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_AUTOFS_FS=m
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+diff --git a/arch/arm/configs/s3c6400_defconfig b/arch/arm/configs/s3c6400_defconfig
+index a37e6ac40825..4c635818973c 100644
+--- a/arch/arm/configs/s3c6400_defconfig
++++ b/arch/arm/configs/s3c6400_defconfig
+@@ -53,9 +53,9 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_S3C=y
+ CONFIG_PWM=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_TMPFS=y
+ CONFIG_TMPFS_POSIX_ACL=y
+ CONFIG_CRAMFS=y
+diff --git a/arch/arm/configs/sama7_defconfig b/arch/arm/configs/sama7_defconfig
+index e14720a9a5ac..e2ad9a05566f 100644
+--- a/arch/arm/configs/sama7_defconfig
++++ b/arch/arm/configs/sama7_defconfig
+@@ -201,7 +201,7 @@ CONFIG_MCHP_EIC=y
+ CONFIG_RESET_CONTROLLER=y
+ CONFIG_NVMEM_MICROCHIP_OTPC=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_FANOTIFY=y
+ CONFIG_AUTOFS_FS=m
+ CONFIG_VFAT_FS=y
+diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
+index 294906c8f16e..f2e42846b116 100644
+--- a/arch/arm/configs/socfpga_defconfig
++++ b/arch/arm/configs/socfpga_defconfig
+@@ -136,7 +136,7 @@ CONFIG_FPGA_REGION=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_AUTOFS_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_NTFS_FS=y
+diff --git a/arch/arm/configs/spear13xx_defconfig b/arch/arm/configs/spear13xx_defconfig
+index a8f992fdb30d..8b19af1ea67c 100644
+--- a/arch/arm/configs/spear13xx_defconfig
++++ b/arch/arm/configs/spear13xx_defconfig
+@@ -84,8 +84,8 @@ CONFIG_DMATEST=m
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_AUTOFS_FS=m
+ CONFIG_FUSE_FS=y
+ CONFIG_MSDOS_FS=m
+diff --git a/arch/arm/configs/spear3xx_defconfig b/arch/arm/configs/spear3xx_defconfig
+index 8dc5a388759c..b4e4b96a98af 100644
+--- a/arch/arm/configs/spear3xx_defconfig
++++ b/arch/arm/configs/spear3xx_defconfig
+@@ -67,8 +67,8 @@ CONFIG_DMATEST=m
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_AUTOFS_FS=m
+ CONFIG_MSDOS_FS=m
+ CONFIG_VFAT_FS=m
+diff --git a/arch/arm/configs/spear6xx_defconfig b/arch/arm/configs/spear6xx_defconfig
+index 4e9e1a6ff381..7083b1bd8573 100644
+--- a/arch/arm/configs/spear6xx_defconfig
++++ b/arch/arm/configs/spear6xx_defconfig
+@@ -53,8 +53,8 @@ CONFIG_DMATEST=m
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_AUTOFS_FS=m
+ CONFIG_MSDOS_FS=m
+ CONFIG_VFAT_FS=m
+diff --git a/arch/arm/configs/spitz_defconfig b/arch/arm/configs/spitz_defconfig
+index ac2a0f998c73..395df2f9dc8e 100644
+--- a/arch/arm/configs/spitz_defconfig
++++ b/arch/arm/configs/spitz_defconfig
+@@ -193,8 +193,8 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-# CONFIG_EXT3_FS_XATTR is not set
++CONFIG_EXT4_FS=y
++# CONFIG_EXT4_FS_XATTR is not set
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_TMPFS=y
+diff --git a/arch/arm/configs/stm32_defconfig b/arch/arm/configs/stm32_defconfig
+index dcd9c316072e..82190b155b14 100644
+--- a/arch/arm/configs/stm32_defconfig
++++ b/arch/arm/configs/stm32_defconfig
+@@ -69,7 +69,7 @@ CONFIG_STM32_MDMA=y
+ CONFIG_IIO=y
+ CONFIG_STM32_ADC_CORE=y
+ CONFIG_STM32_ADC=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_FILE_LOCKING is not set
+ # CONFIG_DNOTIFY is not set
+ # CONFIG_INOTIFY_USER is not set
+diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
+index ba863b445417..ab477ca13f89 100644
+--- a/arch/arm/configs/tegra_defconfig
++++ b/arch/arm/configs/tegra_defconfig
+@@ -319,9 +319,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ # CONFIG_DNOTIFY is not set
+ CONFIG_VFAT_FS=y
+ CONFIG_TMPFS=y
+diff --git a/arch/arm/configs/u8500_defconfig b/arch/arm/configs/u8500_defconfig
+index 0f55815eecb3..f3bc967a0f25 100644
+--- a/arch/arm/configs/u8500_defconfig
++++ b/arch/arm/configs/u8500_defconfig
+@@ -175,7 +175,7 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_TMPFS=y
+ CONFIG_TMPFS_POSIX_ACL=y
+diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
+index cdb6065e04fd..b9454f6954f8 100644
+--- a/arch/arm/configs/vexpress_defconfig
++++ b/arch/arm/configs/vexpress_defconfig
+@@ -120,7 +120,7 @@ CONFIG_VIRTIO_BALLOON=y
+ CONFIG_VIRTIO_MMIO=y
+ CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_TMPFS=y
+ CONFIG_JFFS2_FS=y
+diff --git a/arch/hexagon/configs/comet_defconfig b/arch/hexagon/configs/comet_defconfig
+index c6108f000288..b132752693a9 100644
+--- a/arch/hexagon/configs/comet_defconfig
++++ b/arch/hexagon/configs/comet_defconfig
+@@ -46,10 +46,10 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_QUOTA=y
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
+index 34eaee0384c9..f3e2c588e5df 100644
+--- a/arch/loongarch/configs/loongson3_defconfig
++++ b/arch/loongarch/configs/loongson3_defconfig
+@@ -929,9 +929,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_JFS_FS=m
+ CONFIG_JFS_POSIX_ACL=y
+ CONFIG_JFS_SECURITY=y
+diff --git a/arch/m68k/configs/stmark2_defconfig b/arch/m68k/configs/stmark2_defconfig
+index 7787a4dd7c3c..f3268fed02fc 100644
+--- a/arch/m68k/configs/stmark2_defconfig
++++ b/arch/m68k/configs/stmark2_defconfig
+@@ -72,9 +72,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ # CONFIG_FILE_LOCKING is not set
+ # CONFIG_DNOTIFY is not set
+ # CONFIG_INOTIFY_USER is not set
+diff --git a/arch/microblaze/configs/mmu_defconfig b/arch/microblaze/configs/mmu_defconfig
+index 176314f3c9aa..fbbdcb394ca2 100644
+--- a/arch/microblaze/configs/mmu_defconfig
++++ b/arch/microblaze/configs/mmu_defconfig
+@@ -73,7 +73,7 @@ CONFIG_FB_XILINX=y
+ CONFIG_UIO=y
+ CONFIG_UIO_PDRV_GENIRQ=y
+ CONFIG_UIO_DMEM_GENIRQ=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_DNOTIFY is not set
+ CONFIG_TMPFS=y
+ CONFIG_CRAMFS=y
+diff --git a/arch/mips/configs/bigsur_defconfig b/arch/mips/configs/bigsur_defconfig
+index 97d2cd997285..349e9e0b4f54 100644
+--- a/arch/mips/configs/bigsur_defconfig
++++ b/arch/mips/configs/bigsur_defconfig
+@@ -144,9 +144,9 @@ CONFIG_EXT2_FS=m
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=m
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=m
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_EXT4_FS=y
+ CONFIG_QUOTA=y
+ CONFIG_QUOTA_NETLINK_INTERFACE=y
+diff --git a/arch/mips/configs/cobalt_defconfig b/arch/mips/configs/cobalt_defconfig
+index b0b551efac7c..6ee9ee391fdc 100644
+--- a/arch/mips/configs/cobalt_defconfig
++++ b/arch/mips/configs/cobalt_defconfig
+@@ -59,9 +59,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+ CONFIG_TMPFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/decstation_64_defconfig b/arch/mips/configs/decstation_64_defconfig
+index 85a4472cb058..52a63dd7aac7 100644
+--- a/arch/mips/configs/decstation_64_defconfig
++++ b/arch/mips/configs/decstation_64_defconfig
+@@ -133,9 +133,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/mips/configs/decstation_defconfig b/arch/mips/configs/decstation_defconfig
+index a3b2c8da2dde..59fb7ee5eeb0 100644
+--- a/arch/mips/configs/decstation_defconfig
++++ b/arch/mips/configs/decstation_defconfig
+@@ -129,9 +129,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/mips/configs/decstation_r4k_defconfig b/arch/mips/configs/decstation_r4k_defconfig
+index a476717b8a6a..8be1cb433e95 100644
+--- a/arch/mips/configs/decstation_r4k_defconfig
++++ b/arch/mips/configs/decstation_r4k_defconfig
+@@ -129,9 +129,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/mips/configs/fuloong2e_defconfig b/arch/mips/configs/fuloong2e_defconfig
+index cdedbb8a8f53..b6fe3c962464 100644
+--- a/arch/mips/configs/fuloong2e_defconfig
++++ b/arch/mips/configs/fuloong2e_defconfig
+@@ -173,7 +173,7 @@ CONFIG_USB_ISIGHTFW=m
+ CONFIG_UIO=m
+ CONFIG_UIO_CIF=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_AUTOFS_FS=y
+diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
+index 2decf8b98d31..e123848f94ab 100644
+--- a/arch/mips/configs/ip22_defconfig
++++ b/arch/mips/configs/ip22_defconfig
+@@ -232,9 +232,9 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_INTF_DEV_UIE_EMUL=y
+ CONFIG_RTC_DRV_DS1286=y
+ CONFIG_EXT2_FS=m
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_XFS_FS=m
+ CONFIG_XFS_QUOTA=y
+ CONFIG_QUOTA=y
+diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
+index 5d079941fd20..1c10242b148b 100644
+--- a/arch/mips/configs/ip27_defconfig
++++ b/arch/mips/configs/ip27_defconfig
+@@ -272,9 +272,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_XFS_FS=m
+ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/ip28_defconfig b/arch/mips/configs/ip28_defconfig
+index 6db21e498faa..755cbf20f5a5 100644
+--- a/arch/mips/configs/ip28_defconfig
++++ b/arch/mips/configs/ip28_defconfig
+@@ -49,9 +49,9 @@ CONFIG_WATCHDOG=y
+ CONFIG_INDYDOG=y
+ # CONFIG_VGA_CONSOLE is not set
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_QUOTA=y
+ CONFIG_PROC_KCORE=y
+ # CONFIG_PROC_PAGE_MONITOR is not set
+diff --git a/arch/mips/configs/ip30_defconfig b/arch/mips/configs/ip30_defconfig
+index a4524e785469..718f3060d9fa 100644
+--- a/arch/mips/configs/ip30_defconfig
++++ b/arch/mips/configs/ip30_defconfig
+@@ -143,9 +143,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_XFS_FS=m
+ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/ip32_defconfig b/arch/mips/configs/ip32_defconfig
+index d8ac11427f69..7568838eb08b 100644
+--- a/arch/mips/configs/ip32_defconfig
++++ b/arch/mips/configs/ip32_defconfig
+@@ -89,9 +89,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_QUOTA=y
+ CONFIG_QFMT_V1=m
+ CONFIG_QFMT_V2=m
+diff --git a/arch/mips/configs/jazz_defconfig b/arch/mips/configs/jazz_defconfig
+index 65adb538030d..a790c2610fd3 100644
+--- a/arch/mips/configs/jazz_defconfig
++++ b/arch/mips/configs/jazz_defconfig
+@@ -69,7 +69,7 @@ CONFIG_FB_G364=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+ # CONFIG_HWMON is not set
+ CONFIG_EXT2_FS=m
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_XFS_FS=m
+ CONFIG_XFS_QUOTA=y
+ CONFIG_AUTOFS_FS=m
+diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
+index 5038a27d035f..8d3f20ed19b5 100644
+--- a/arch/mips/configs/lemote2f_defconfig
++++ b/arch/mips/configs/lemote2f_defconfig
+@@ -226,9 +226,9 @@ CONFIG_MMC=m
+ CONFIG_LEDS_CLASS=y
+ CONFIG_STAGING=y
+ CONFIG_EXT2_FS=m
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_JFS_FS=m
+ CONFIG_JFS_POSIX_ACL=y
+ CONFIG_XFS_FS=m
+diff --git a/arch/mips/configs/loongson1b_defconfig b/arch/mips/configs/loongson1b_defconfig
+index 68207b31dc20..a64a39447963 100644
+--- a/arch/mips/configs/loongson1b_defconfig
++++ b/arch/mips/configs/loongson1b_defconfig
+@@ -94,9 +94,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ # CONFIG_DNOTIFY is not set
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/mips/configs/loongson1c_defconfig b/arch/mips/configs/loongson1c_defconfig
+index c3910a9dee9e..86d7f64a164a 100644
+--- a/arch/mips/configs/loongson1c_defconfig
++++ b/arch/mips/configs/loongson1c_defconfig
+@@ -95,9 +95,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ # CONFIG_DNOTIFY is not set
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/mips/configs/loongson2k_defconfig b/arch/mips/configs/loongson2k_defconfig
+index 0cc665d3ea34..aec1fd1902eb 100644
+--- a/arch/mips/configs/loongson2k_defconfig
++++ b/arch/mips/configs/loongson2k_defconfig
+@@ -298,9 +298,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_XFS_FS=y
+ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+index 240efff37d98..575aaf242361 100644
+--- a/arch/mips/configs/loongson3_defconfig
++++ b/arch/mips/configs/loongson3_defconfig
+@@ -348,9 +348,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_XFS_FS=y
+ CONFIG_XFS_POSIX_ACL=y
+ CONFIG_QUOTA=y
+diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
+index 9fcbac829920..81704ec67f09 100644
+--- a/arch/mips/configs/malta_defconfig
++++ b/arch/mips/configs/malta_defconfig
+@@ -313,7 +313,7 @@ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_UIO=m
+ CONFIG_UIO_CIF=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_JFS_FS=m
+ CONFIG_JFS_POSIX_ACL=y
+ CONFIG_JFS_SECURITY=y
+diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
+index 19102386a81c..82a97f58bce1 100644
+--- a/arch/mips/configs/malta_kvm_defconfig
++++ b/arch/mips/configs/malta_kvm_defconfig
+@@ -319,7 +319,7 @@ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_UIO=m
+ CONFIG_UIO_CIF=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_JFS_FS=m
+ CONFIG_JFS_POSIX_ACL=y
+ CONFIG_JFS_SECURITY=y
+diff --git a/arch/mips/configs/malta_qemu_32r6_defconfig b/arch/mips/configs/malta_qemu_32r6_defconfig
+index 1b98f6945c2d..accb471a1d93 100644
+--- a/arch/mips/configs/malta_qemu_32r6_defconfig
++++ b/arch/mips/configs/malta_qemu_32r6_defconfig
+@@ -148,7 +148,7 @@ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_XFS_FS=y
+ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/maltaaprp_defconfig b/arch/mips/configs/maltaaprp_defconfig
+index 7b8905cb3400..6bda67c5f68f 100644
+--- a/arch/mips/configs/maltaaprp_defconfig
++++ b/arch/mips/configs/maltaaprp_defconfig
+@@ -149,7 +149,7 @@ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_XFS_FS=y
+ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/maltasmvp_defconfig b/arch/mips/configs/maltasmvp_defconfig
+index 8249f6a51895..e4082537f80f 100644
+--- a/arch/mips/configs/maltasmvp_defconfig
++++ b/arch/mips/configs/maltasmvp_defconfig
+@@ -148,9 +148,9 @@ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_XFS_FS=y
+ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/maltasmvp_eva_defconfig b/arch/mips/configs/maltasmvp_eva_defconfig
+index 21cb37668763..58f5af45fa98 100644
+--- a/arch/mips/configs/maltasmvp_eva_defconfig
++++ b/arch/mips/configs/maltasmvp_eva_defconfig
+@@ -152,7 +152,7 @@ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_XFS_FS=y
+ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/maltaup_defconfig b/arch/mips/configs/maltaup_defconfig
+index 3df9cd669683..9bfef7de0d1c 100644
+--- a/arch/mips/configs/maltaup_defconfig
++++ b/arch/mips/configs/maltaup_defconfig
+@@ -148,7 +148,7 @@ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_XFS_FS=y
+ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+diff --git a/arch/mips/configs/maltaup_xpa_defconfig b/arch/mips/configs/maltaup_xpa_defconfig
+index 1dd07c9d1812..0f9ef20744f9 100644
+--- a/arch/mips/configs/maltaup_xpa_defconfig
++++ b/arch/mips/configs/maltaup_xpa_defconfig
+@@ -319,7 +319,7 @@ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_UIO=m
+ CONFIG_UIO_CIF=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_JFS_FS=m
+ CONFIG_JFS_POSIX_ACL=y
+ CONFIG_JFS_SECURITY=y
+diff --git a/arch/mips/configs/mtx1_defconfig b/arch/mips/configs/mtx1_defconfig
+index e4bcdb64df6c..b4dc2255a81c 100644
+--- a/arch/mips/configs/mtx1_defconfig
++++ b/arch/mips/configs/mtx1_defconfig
+@@ -594,9 +594,9 @@ CONFIG_EXT2_FS=m
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=m
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=m
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_QUOTA=y
+ CONFIG_AUTOFS_FS=y
+ CONFIG_FUSE_FS=m
+diff --git a/arch/mips/configs/rm200_defconfig b/arch/mips/configs/rm200_defconfig
+index 39a2419e1f3e..b507dc4dddd4 100644
+--- a/arch/mips/configs/rm200_defconfig
++++ b/arch/mips/configs/rm200_defconfig
+@@ -307,7 +307,7 @@ CONFIG_USB_SISUSBVGA=m
+ CONFIG_USB_LD=m
+ CONFIG_USB_TEST=m
+ CONFIG_EXT2_FS=m
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_XFS_FS=m
+ CONFIG_XFS_QUOTA=y
+ CONFIG_AUTOFS_FS=m
+diff --git a/arch/openrisc/configs/or1klitex_defconfig b/arch/openrisc/configs/or1klitex_defconfig
+index 3e849d25838a..fb1eb9a68bd6 100644
+--- a/arch/openrisc/configs/or1klitex_defconfig
++++ b/arch/openrisc/configs/or1klitex_defconfig
+@@ -38,7 +38,7 @@ CONFIG_MMC_LITEX=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_LITEX_SOC_CONTROLLER=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_EXFAT_FS=y
+diff --git a/arch/openrisc/configs/virt_defconfig b/arch/openrisc/configs/virt_defconfig
+index c1b69166c500..01d685f3fb17 100644
+--- a/arch/openrisc/configs/virt_defconfig
++++ b/arch/openrisc/configs/virt_defconfig
+@@ -94,8 +94,8 @@ CONFIG_VIRTIO_PCI=y
+ CONFIG_VIRTIO_INPUT=y
+ CONFIG_VIRTIO_MMIO=y
+ CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
+ # CONFIG_DNOTIFY is not set
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/parisc/configs/generic-32bit_defconfig b/arch/parisc/configs/generic-32bit_defconfig
+index 94928d114d4c..52031bde9f17 100644
+--- a/arch/parisc/configs/generic-32bit_defconfig
++++ b/arch/parisc/configs/generic-32bit_defconfig
+@@ -232,8 +232,8 @@ CONFIG_AUXDISPLAY=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_QUOTA=y
+ CONFIG_QUOTA_NETLINK_INTERFACE=y
+ CONFIG_QFMT_V2=y
+diff --git a/arch/parisc/configs/generic-64bit_defconfig b/arch/parisc/configs/generic-64bit_defconfig
+index d8cd7f858b2a..1aec04c09d0b 100644
+--- a/arch/parisc/configs/generic-64bit_defconfig
++++ b/arch/parisc/configs/generic-64bit_defconfig
+@@ -251,8 +251,8 @@ CONFIG_STAGING=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_XFS_FS=m
+ CONFIG_BTRFS_FS=m
+ CONFIG_QUOTA=y
+diff --git a/arch/sh/configs/ap325rxa_defconfig b/arch/sh/configs/ap325rxa_defconfig
+index b6f36c938f1d..336dbacd89bd 100644
+--- a/arch/sh/configs/ap325rxa_defconfig
++++ b/arch/sh/configs/ap325rxa_defconfig
+@@ -81,10 +81,10 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+diff --git a/arch/sh/configs/apsh4a3a_defconfig b/arch/sh/configs/apsh4a3a_defconfig
+index 9c2644443c4d..59daf99ea745 100644
+--- a/arch/sh/configs/apsh4a3a_defconfig
++++ b/arch/sh/configs/apsh4a3a_defconfig
+@@ -60,7 +60,7 @@ CONFIG_FONT_8x16=y
+ CONFIG_LOGO=y
+ # CONFIG_USB_SUPPORT is not set
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/sh/configs/apsh4ad0a_defconfig b/arch/sh/configs/apsh4ad0a_defconfig
+index 137573610ec4..df2a669ea9d8 100644
+--- a/arch/sh/configs/apsh4ad0a_defconfig
++++ b/arch/sh/configs/apsh4ad0a_defconfig
+@@ -88,7 +88,7 @@ CONFIG_USB_MON=y
+ CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/sh/configs/ecovec24_defconfig b/arch/sh/configs/ecovec24_defconfig
+index e76694aace25..dd7e54c451d6 100644
+--- a/arch/sh/configs/ecovec24_defconfig
++++ b/arch/sh/configs/ecovec24_defconfig
+@@ -109,10 +109,10 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+diff --git a/arch/sh/configs/edosk7760_defconfig b/arch/sh/configs/edosk7760_defconfig
+index f427a95bcd21..711db47b65ba 100644
+--- a/arch/sh/configs/edosk7760_defconfig
++++ b/arch/sh/configs/edosk7760_defconfig
+@@ -87,7 +87,7 @@ CONFIG_SND_SOC=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_XIP=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_TMPFS=y
+ CONFIG_TMPFS_POSIX_ACL=y
+diff --git a/arch/sh/configs/espt_defconfig b/arch/sh/configs/espt_defconfig
+index da176f100e00..f8cad1e7a333 100644
+--- a/arch/sh/configs/espt_defconfig
++++ b/arch/sh/configs/espt_defconfig
+@@ -59,7 +59,7 @@ CONFIG_USB_MON=y
+ CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_AUTOFS_FS=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/sh/configs/landisk_defconfig b/arch/sh/configs/landisk_defconfig
+index 924bb3233b0b..08342ceee32e 100644
+--- a/arch/sh/configs/landisk_defconfig
++++ b/arch/sh/configs/landisk_defconfig
+@@ -93,7 +93,7 @@ CONFIG_USB_EMI62=m
+ CONFIG_USB_EMI26=m
+ CONFIG_USB_SISUSBVGA=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_ISO9660_FS=m
+ CONFIG_MSDOS_FS=y
+diff --git a/arch/sh/configs/lboxre2_defconfig b/arch/sh/configs/lboxre2_defconfig
+index 0307bb2be79f..96a21173522d 100644
+--- a/arch/sh/configs/lboxre2_defconfig
++++ b/arch/sh/configs/lboxre2_defconfig
+@@ -49,7 +49,7 @@ CONFIG_SERIAL_SH_SCI_CONSOLE=y
+ CONFIG_HW_RANDOM=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/sh/configs/magicpanelr2_defconfig b/arch/sh/configs/magicpanelr2_defconfig
+index 93b9aa32dc7c..af7f777b20be 100644
+--- a/arch/sh/configs/magicpanelr2_defconfig
++++ b/arch/sh/configs/magicpanelr2_defconfig
+@@ -64,9 +64,9 @@ CONFIG_RTC_CLASS=y
+ # CONFIG_RTC_HCTOSYS is not set
+ CONFIG_RTC_DRV_SH=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-# CONFIG_EXT3_FS_XATTR is not set
++# CONFIG_EXT4_FS_XATTR is not set
+ # CONFIG_DNOTIFY is not set
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+diff --git a/arch/sh/configs/r7780mp_defconfig b/arch/sh/configs/r7780mp_defconfig
+index f28b8c4181c2..11f210517f76 100644
+--- a/arch/sh/configs/r7780mp_defconfig
++++ b/arch/sh/configs/r7780mp_defconfig
+@@ -74,7 +74,7 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_RS5C372=y
+ CONFIG_RTC_DRV_SH=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_FUSE_FS=m
+ CONFIG_MSDOS_FS=y
+diff --git a/arch/sh/configs/r7785rp_defconfig b/arch/sh/configs/r7785rp_defconfig
+index 3a4239f20ff1..ae367d7a14a8 100644
+--- a/arch/sh/configs/r7785rp_defconfig
++++ b/arch/sh/configs/r7785rp_defconfig
+@@ -69,7 +69,7 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_RS5C372=y
+ CONFIG_RTC_DRV_SH=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_FUSE_FS=m
+ CONFIG_MSDOS_FS=y
+diff --git a/arch/sh/configs/rsk7264_defconfig b/arch/sh/configs/rsk7264_defconfig
+index e4ef259425c4..3aba0102304f 100644
+--- a/arch/sh/configs/rsk7264_defconfig
++++ b/arch/sh/configs/rsk7264_defconfig
+@@ -59,7 +59,7 @@ CONFIG_USB_R8A66597_HCD=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_USB_STORAGE_DEBUG=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_VFAT_FS=y
+ CONFIG_NFS_FS=y
+diff --git a/arch/sh/configs/rsk7269_defconfig b/arch/sh/configs/rsk7269_defconfig
+index e0d1560b2bfd..f82f280fc55a 100644
+--- a/arch/sh/configs/rsk7269_defconfig
++++ b/arch/sh/configs/rsk7269_defconfig
+@@ -43,7 +43,7 @@ CONFIG_USB_R8A66597_HCD=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_USB_STORAGE_DEBUG=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_VFAT_FS=y
+ CONFIG_NFS_FS=y
+diff --git a/arch/sh/configs/sdk7780_defconfig b/arch/sh/configs/sdk7780_defconfig
+index 9870d16d9711..3b51195bf1b5 100644
+--- a/arch/sh/configs/sdk7780_defconfig
++++ b/arch/sh/configs/sdk7780_defconfig
+@@ -102,9 +102,9 @@ CONFIG_LEDS_CLASS=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_AUTOFS_FS=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_MSDOS_FS=y
+diff --git a/arch/sh/configs/sdk7786_defconfig b/arch/sh/configs/sdk7786_defconfig
+index 07894f13441e..ebb3f4420ae8 100644
+--- a/arch/sh/configs/sdk7786_defconfig
++++ b/arch/sh/configs/sdk7786_defconfig
+@@ -161,7 +161,7 @@ CONFIG_STAGING=y
+ # CONFIG_STAGING_EXCLUDE_BUILD is not set
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_EXT4_FS=y
+ CONFIG_XFS_FS=y
+diff --git a/arch/sh/configs/se7343_defconfig b/arch/sh/configs/se7343_defconfig
+index 75db12fb9ad1..6ef546ee8a32 100644
+--- a/arch/sh/configs/se7343_defconfig
++++ b/arch/sh/configs/se7343_defconfig
+@@ -84,7 +84,7 @@ CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+ CONFIG_USB_ISP116X_HCD=y
+ CONFIG_UIO=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ # CONFIG_DNOTIFY is not set
+ CONFIG_JFFS2_FS=y
+diff --git a/arch/sh/configs/se7712_defconfig b/arch/sh/configs/se7712_defconfig
+index 8770a72e6a63..4cecf9c06a65 100644
+--- a/arch/sh/configs/se7712_defconfig
++++ b/arch/sh/configs/se7712_defconfig
+@@ -83,7 +83,7 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ # CONFIG_DNOTIFY is not set
+ CONFIG_JFFS2_FS=y
+diff --git a/arch/sh/configs/se7721_defconfig b/arch/sh/configs/se7721_defconfig
+index b15c6406a0e8..c28057b70ad7 100644
+--- a/arch/sh/configs/se7721_defconfig
++++ b/arch/sh/configs/se7721_defconfig
+@@ -107,7 +107,7 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ # CONFIG_DNOTIFY is not set
+ CONFIG_MSDOS_FS=y
+diff --git a/arch/sh/configs/se7722_defconfig b/arch/sh/configs/se7722_defconfig
+index 5327a2f70980..88bfd953ef89 100644
+--- a/arch/sh/configs/se7722_defconfig
++++ b/arch/sh/configs/se7722_defconfig
+@@ -44,7 +44,7 @@ CONFIG_HW_RANDOM=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_SH=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+diff --git a/arch/sh/configs/se7724_defconfig b/arch/sh/configs/se7724_defconfig
+index 9501e69eb886..e1b2616ef921 100644
+--- a/arch/sh/configs/se7724_defconfig
++++ b/arch/sh/configs/se7724_defconfig
+@@ -110,10 +110,10 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+diff --git a/arch/sh/configs/sh03_defconfig b/arch/sh/configs/sh03_defconfig
+index 4d75c92cac10..306e1661fbf5 100644
+--- a/arch/sh/configs/sh03_defconfig
++++ b/arch/sh/configs/sh03_defconfig
+@@ -57,9 +57,9 @@ CONFIG_WATCHDOG=y
+ CONFIG_SH_WDT=m
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_AUTOFS_FS=y
+ CONFIG_ISO9660_FS=m
+ CONFIG_JOLIET=y
+diff --git a/arch/sh/configs/sh2007_defconfig b/arch/sh/configs/sh2007_defconfig
+index cc6292b3235a..889daa5d2faa 100644
+--- a/arch/sh/configs/sh2007_defconfig
++++ b/arch/sh/configs/sh2007_defconfig
+@@ -95,7 +95,7 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_INTF_DEV_UIE_EMUL=y
+ CONFIG_DMADEVICES=y
+ CONFIG_TIMB_DMA=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+ CONFIG_ZISOFS=y
+diff --git a/arch/sh/configs/sh7757lcr_defconfig b/arch/sh/configs/sh7757lcr_defconfig
+index 48a0f9beb116..25e9d22779b3 100644
+--- a/arch/sh/configs/sh7757lcr_defconfig
++++ b/arch/sh/configs/sh7757lcr_defconfig
+@@ -64,7 +64,7 @@ CONFIG_MMC=y
+ CONFIG_MMC_SDHI=y
+ CONFIG_MMC_SH_MMCIF=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/sh/configs/sh7763rdp_defconfig b/arch/sh/configs/sh7763rdp_defconfig
+index b77b3313157e..85ec00b7dbd2 100644
+--- a/arch/sh/configs/sh7763rdp_defconfig
++++ b/arch/sh/configs/sh7763rdp_defconfig
+@@ -61,7 +61,7 @@ CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_MMC=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_AUTOFS_FS=y
+ CONFIG_MSDOS_FS=y
+diff --git a/arch/sh/configs/sh7785lcr_32bit_defconfig b/arch/sh/configs/sh7785lcr_32bit_defconfig
+index 44f9b2317f09..e860a20d3f0f 100644
+--- a/arch/sh/configs/sh7785lcr_32bit_defconfig
++++ b/arch/sh/configs/sh7785lcr_32bit_defconfig
+@@ -113,7 +113,7 @@ CONFIG_RTC_DRV_RS5C372=y
+ CONFIG_DMADEVICES=y
+ CONFIG_UIO=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/sh/configs/sh7785lcr_defconfig b/arch/sh/configs/sh7785lcr_defconfig
+index aec74b0e7003..33c98b4a2adb 100644
+--- a/arch/sh/configs/sh7785lcr_defconfig
++++ b/arch/sh/configs/sh7785lcr_defconfig
+@@ -90,7 +90,7 @@ CONFIG_USB_TEST=m
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_RS5C372=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/sh/configs/shx3_defconfig b/arch/sh/configs/shx3_defconfig
+index 9a0df5ea3866..3169e4dc7004 100644
+--- a/arch/sh/configs/shx3_defconfig
++++ b/arch/sh/configs/shx3_defconfig
+@@ -84,7 +84,7 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_SH=y
+ CONFIG_UIO=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+diff --git a/arch/sh/configs/titan_defconfig b/arch/sh/configs/titan_defconfig
+index 8ef72b8dbcd3..6bff00038072 100644
+--- a/arch/sh/configs/titan_defconfig
++++ b/arch/sh/configs/titan_defconfig
+@@ -215,9 +215,9 @@ CONFIG_USB_SERIAL_PL2303=m
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_SH=m
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-# CONFIG_EXT3_FS_XATTR is not set
++# CONFIG_EXT4_FS_XATTR is not set
+ CONFIG_XFS_FS=m
+ CONFIG_FUSE_FS=m
+ CONFIG_ISO9660_FS=m
+diff --git a/arch/sh/configs/ul2_defconfig b/arch/sh/configs/ul2_defconfig
+index 103b81ec1ffb..b89eb8f5cc5c 100644
+--- a/arch/sh/configs/ul2_defconfig
++++ b/arch/sh/configs/ul2_defconfig
+@@ -66,7 +66,7 @@ CONFIG_USB_R8A66597_HCD=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_MMC=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/sh/configs/urquell_defconfig b/arch/sh/configs/urquell_defconfig
+index 00ef62133b04..60cb716ef195 100644
+--- a/arch/sh/configs/urquell_defconfig
++++ b/arch/sh/configs/urquell_defconfig
+@@ -114,7 +114,7 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_SH=y
+ CONFIG_RTC_DRV_GENERIC=y
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+ CONFIG_EXT4_FS=y
+ CONFIG_BTRFS_FS=y
+diff --git a/arch/sparc/configs/sparc64_defconfig b/arch/sparc/configs/sparc64_defconfig
+index 7a7c4dec2925..200640b93e05 100644
+--- a/arch/sparc/configs/sparc64_defconfig
++++ b/arch/sparc/configs/sparc64_defconfig
+@@ -187,10 +187,10 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+ CONFIG_HUGETLBFS=y
+diff --git a/arch/xtensa/configs/audio_kc705_defconfig b/arch/xtensa/configs/audio_kc705_defconfig
+index f2af1a32c9c7..dc942bbac69f 100644
+--- a/arch/xtensa/configs/audio_kc705_defconfig
++++ b/arch/xtensa/configs/audio_kc705_defconfig
+@@ -103,7 +103,7 @@ CONFIG_SND_SIMPLE_CARD=y
+ # CONFIG_USB_SUPPORT is not set
+ CONFIG_COMMON_CLK_CDCE706=y
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS=y
+ CONFIG_FANOTIFY=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/xtensa/configs/cadence_csp_defconfig b/arch/xtensa/configs/cadence_csp_defconfig
+index 88ed5284e21c..81a057f25f21 100644
+--- a/arch/xtensa/configs/cadence_csp_defconfig
++++ b/arch/xtensa/configs/cadence_csp_defconfig
+@@ -80,7 +80,7 @@ CONFIG_SOFT_WATCHDOG=y
+ # CONFIG_VGA_CONSOLE is not set
+ # CONFIG_USB_SUPPORT is not set
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_FANOTIFY=y
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/xtensa/configs/generic_kc705_defconfig b/arch/xtensa/configs/generic_kc705_defconfig
+index 4427907becca..3ee7e1c56556 100644
+--- a/arch/xtensa/configs/generic_kc705_defconfig
++++ b/arch/xtensa/configs/generic_kc705_defconfig
+@@ -90,7 +90,7 @@ CONFIG_SOFT_WATCHDOG=y
+ # CONFIG_VGA_CONSOLE is not set
+ # CONFIG_USB_SUPPORT is not set
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS=y
+ CONFIG_FANOTIFY=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/xtensa/configs/nommu_kc705_defconfig b/arch/xtensa/configs/nommu_kc705_defconfig
+index 5828228522ba..c6e96f0aa700 100644
+--- a/arch/xtensa/configs/nommu_kc705_defconfig
++++ b/arch/xtensa/configs/nommu_kc705_defconfig
+@@ -91,7 +91,7 @@ CONFIG_WATCHDOG_NOWAYOUT=y
+ CONFIG_SOFT_WATCHDOG=y
+ # CONFIG_VGA_CONSOLE is not set
+ # CONFIG_USB_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS=y
+ CONFIG_FANOTIFY=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/xtensa/configs/smp_lx200_defconfig b/arch/xtensa/configs/smp_lx200_defconfig
+index 326966ca7831..373d42b9e510 100644
+--- a/arch/xtensa/configs/smp_lx200_defconfig
++++ b/arch/xtensa/configs/smp_lx200_defconfig
+@@ -94,7 +94,7 @@ CONFIG_SOFT_WATCHDOG=y
+ # CONFIG_VGA_CONSOLE is not set
+ # CONFIG_USB_SUPPORT is not set
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS=y
+ CONFIG_FANOTIFY=y
+ CONFIG_VFAT_FS=y
+diff --git a/arch/xtensa/configs/virt_defconfig b/arch/xtensa/configs/virt_defconfig
+index e37048985b47..72628d31e87a 100644
+--- a/arch/xtensa/configs/virt_defconfig
++++ b/arch/xtensa/configs/virt_defconfig
+@@ -76,7 +76,7 @@ CONFIG_LOGO=y
+ CONFIG_VIRTIO_PCI=y
+ CONFIG_VIRTIO_INPUT=y
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_FANOTIFY=y
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/xtensa/configs/xip_kc705_defconfig b/arch/xtensa/configs/xip_kc705_defconfig
+index ee47438f9b51..5d6013ea70fc 100644
+--- a/arch/xtensa/configs/xip_kc705_defconfig
++++ b/arch/xtensa/configs/xip_kc705_defconfig
+@@ -82,7 +82,7 @@ CONFIG_SOFT_WATCHDOG=y
+ # CONFIG_VGA_CONSOLE is not set
+ # CONFIG_USB_SUPPORT is not set
+ # CONFIG_IOMMU_SUPPORT is not set
+-CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ CONFIG_FANOTIFY=y
+ CONFIG_VFAT_FS=y
+ CONFIG_PROC_KCORE=y</pre><hr><pre>commit 04a91570ac67760301e5458d65eaf1342ecca314
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Sep 16 23:22:49 2025 -0400
+
+    ext4: implemet new ioctls to set and get superblock parameters
+    
+    Implement the EXT4_IOC_GET_TUNE_SB_PARAM and
+    EXT4_IOC_SET_TUNE_SB_PARAM ioctls, which allow certains superblock
+    parameters to be set while the file system is mounted, without needing
+    write access to the block device.
+    
+    Reviewed-by: Darrick J. Wong &lt;djwong@kernel.org&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Message-ID: &lt;20250916-tune2fs-v2-3-d594dc7486f0@mit.edu&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 84e3c73952d7..a93a7baae990 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -27,14 +27,16 @@
+ #include "fsmap.h"
+ #include &lt;trace/events/ext4.h&gt;
+ 
+-typedef void ext4_update_sb_callback(struct ext4_super_block *es,
+-				       const void *arg);
++typedef void ext4_update_sb_callback(struct ext4_sb_info *sbi,
++				     struct ext4_super_block *es,
++				     const void *arg);
+ 
+ /*
+  * Superblock modification callback function for changing file system
+  * label
+  */
+-static void ext4_sb_setlabel(struct ext4_super_block *es, const void *arg)
++static void ext4_sb_setlabel(struct ext4_sb_info *sbi,
++			     struct ext4_super_block *es, const void *arg)
+ {
+ 	/* Sanity check, this should never happen */
+ 	BUILD_BUG_ON(sizeof(es-&gt;s_volume_name) &lt; EXT4_LABEL_MAX);
+@@ -46,7 +48,8 @@ static void ext4_sb_setlabel(struct ext4_super_block *es, const void *arg)
+  * Superblock modification callback function for changing file system
+  * UUID.
+  */
+-static void ext4_sb_setuuid(struct ext4_super_block *es, const void *arg)
++static void ext4_sb_setuuid(struct ext4_sb_info *sbi,
++			    struct ext4_super_block *es, const void *arg)
+ {
+ 	memcpy(es-&gt;s_uuid, (__u8 *)arg, UUID_SIZE);
+ }
+@@ -71,7 +74,7 @@ int ext4_update_primary_sb(struct super_block *sb, handle_t *handle,
+ 		goto out_err;
+ 
+ 	lock_buffer(bh);
+-	func(es, arg);
++	func(sbi, es, arg);
+ 	ext4_superblock_csum_set(sb);
+ 	unlock_buffer(bh);
+ 
+@@ -149,7 +152,7 @@ static int ext4_update_backup_sb(struct super_block *sb,
+ 		unlock_buffer(bh);
+ 		goto out_bh;
+ 	}
+-	func(es, arg);
++	func(EXT4_SB(sb), es, arg);
+ 	if (ext4_has_feature_metadata_csum(sb))
+ 		es-&gt;s_checksum = ext4_superblock_csum(es);
+ 	set_buffer_uptodate(bh);
+@@ -1230,6 +1233,295 @@ static int ext4_ioctl_setuuid(struct file *filp,
+ 	return ret;
+ }
+ 
++
++#define TUNE_OPS_SUPPORTED (EXT4_TUNE_FL_ERRORS_BEHAVIOR |    \
++	EXT4_TUNE_FL_MNT_COUNT | EXT4_TUNE_FL_MAX_MNT_COUNT | \
++	EXT4_TUNE_FL_CHECKINTRVAL | EXT4_TUNE_FL_LAST_CHECK_TIME | \
++	EXT4_TUNE_FL_RESERVED_BLOCKS | EXT4_TUNE_FL_RESERVED_UID | \
++	EXT4_TUNE_FL_RESERVED_GID | EXT4_TUNE_FL_DEFAULT_MNT_OPTS | \
++	EXT4_TUNE_FL_DEF_HASH_ALG | EXT4_TUNE_FL_RAID_STRIDE | \
++	EXT4_TUNE_FL_RAID_STRIPE_WIDTH | EXT4_TUNE_FL_MOUNT_OPTS | \
++	EXT4_TUNE_FL_FEATURES | EXT4_TUNE_FL_EDIT_FEATURES | \
++	EXT4_TUNE_FL_FORCE_FSCK | EXT4_TUNE_FL_ENCODING | \
++	EXT4_TUNE_FL_ENCODING_FLAGS)
++
++#define EXT4_TUNE_SET_COMPAT_SUPP \
++		(EXT4_FEATURE_COMPAT_DIR_INDEX |	\
++		 EXT4_FEATURE_COMPAT_STABLE_INODES)
++#define EXT4_TUNE_SET_INCOMPAT_SUPP \
++		(EXT4_FEATURE_INCOMPAT_EXTENTS |	\
++		 EXT4_FEATURE_INCOMPAT_EA_INODE |	\
++		 EXT4_FEATURE_INCOMPAT_ENCRYPT |	\
++		 EXT4_FEATURE_INCOMPAT_CSUM_SEED |	\
++		 EXT4_FEATURE_INCOMPAT_LARGEDIR |	\
++		 EXT4_FEATURE_INCOMPAT_CASEFOLD)
++#define EXT4_TUNE_SET_RO_COMPAT_SUPP \
++		(EXT4_FEATURE_RO_COMPAT_LARGE_FILE |	\
++		 EXT4_FEATURE_RO_COMPAT_DIR_NLINK |	\
++		 EXT4_FEATURE_RO_COMPAT_EXTRA_ISIZE |	\
++		 EXT4_FEATURE_RO_COMPAT_PROJECT |	\
++		 EXT4_FEATURE_RO_COMPAT_VERITY)
++
++#define EXT4_TUNE_CLEAR_COMPAT_SUPP (0)
++#define EXT4_TUNE_CLEAR_INCOMPAT_SUPP (0)
++#define EXT4_TUNE_CLEAR_RO_COMPAT_SUPP (0)
++
++#define SB_ENC_SUPP_MASK (SB_ENC_STRICT_MODE_FL |	\
++			  SB_ENC_NO_COMPAT_FALLBACK_FL)
++
++static int ext4_ioctl_get_tune_sb(struct ext4_sb_info *sbi,
++				  struct ext4_tune_sb_params __user *params)
++{
++	struct ext4_tune_sb_params ret;
++	struct ext4_super_block *es = sbi-&gt;s_es;
++
++	memset(&amp;ret, 0, sizeof(ret));
++	ret.set_flags = TUNE_OPS_SUPPORTED;
++	ret.errors_behavior = le16_to_cpu(es-&gt;s_errors);
++	ret.mnt_count = le16_to_cpu(es-&gt;s_mnt_count);
++	ret.max_mnt_count = le16_to_cpu(es-&gt;s_max_mnt_count);
++	ret.checkinterval = le32_to_cpu(es-&gt;s_checkinterval);
++	ret.last_check_time = le32_to_cpu(es-&gt;s_lastcheck);
++	ret.reserved_blocks = ext4_r_blocks_count(es);
++	ret.blocks_count = ext4_blocks_count(es);
++	ret.reserved_uid = ext4_get_resuid(es);
++	ret.reserved_gid = ext4_get_resgid(es);
++	ret.default_mnt_opts = le32_to_cpu(es-&gt;s_default_mount_opts);
++	ret.def_hash_alg = es-&gt;s_def_hash_version;
++	ret.raid_stride = le16_to_cpu(es-&gt;s_raid_stride);
++	ret.raid_stripe_width = le32_to_cpu(es-&gt;s_raid_stripe_width);
++	ret.encoding = le16_to_cpu(es-&gt;s_encoding);
++	ret.encoding_flags = le16_to_cpu(es-&gt;s_encoding_flags);
++	strscpy_pad(ret.mount_opts, es-&gt;s_mount_opts);
++	ret.feature_compat = le32_to_cpu(es-&gt;s_feature_compat);
++	ret.feature_incompat = le32_to_cpu(es-&gt;s_feature_incompat);
++	ret.feature_ro_compat = le32_to_cpu(es-&gt;s_feature_ro_compat);
++	ret.set_feature_compat_mask = EXT4_TUNE_SET_COMPAT_SUPP;
++	ret.set_feature_incompat_mask = EXT4_TUNE_SET_INCOMPAT_SUPP;
++	ret.set_feature_ro_compat_mask = EXT4_TUNE_SET_RO_COMPAT_SUPP;
++	ret.clear_feature_compat_mask = EXT4_TUNE_CLEAR_COMPAT_SUPP;
++	ret.clear_feature_incompat_mask = EXT4_TUNE_CLEAR_INCOMPAT_SUPP;
++	ret.clear_feature_ro_compat_mask = EXT4_TUNE_CLEAR_RO_COMPAT_SUPP;
++	if (copy_to_user(params, &amp;ret, sizeof(ret)))
++		return -EFAULT;
++	return 0;
++}
++
++static void ext4_sb_setparams(struct ext4_sb_info *sbi,
++			      struct ext4_super_block *es, const void *arg)
++{
++	const struct ext4_tune_sb_params *params = arg;
++
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_ERRORS_BEHAVIOR)
++		es-&gt;s_errors = cpu_to_le16(params-&gt;errors_behavior);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_MNT_COUNT)
++		es-&gt;s_mnt_count = cpu_to_le16(params-&gt;mnt_count);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_MAX_MNT_COUNT)
++		es-&gt;s_max_mnt_count = cpu_to_le16(params-&gt;max_mnt_count);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_CHECKINTRVAL)
++		es-&gt;s_checkinterval = cpu_to_le32(params-&gt;checkinterval);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_LAST_CHECK_TIME)
++		es-&gt;s_lastcheck = cpu_to_le32(params-&gt;last_check_time);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_RESERVED_BLOCKS) {
++		ext4_fsblk_t blk = params-&gt;reserved_blocks;
++
++		es-&gt;s_r_blocks_count_lo = cpu_to_le32((u32)blk);
++		es-&gt;s_r_blocks_count_hi = cpu_to_le32(blk &gt;&gt; 32);
++	}
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_RESERVED_UID) {
++		int uid = params-&gt;reserved_uid;
++
++		es-&gt;s_def_resuid = cpu_to_le16(uid &amp; 0xFFFF);
++		es-&gt;s_def_resuid_hi = cpu_to_le16(uid &gt;&gt; 16);
++	}
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_RESERVED_GID) {
++		int gid = params-&gt;reserved_gid;
++
++		es-&gt;s_def_resgid = cpu_to_le16(gid &amp; 0xFFFF);
++		es-&gt;s_def_resgid_hi = cpu_to_le16(gid &gt;&gt; 16);
++	}
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_DEFAULT_MNT_OPTS)
++		es-&gt;s_default_mount_opts = cpu_to_le32(params-&gt;default_mnt_opts);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_DEF_HASH_ALG)
++		es-&gt;s_def_hash_version = params-&gt;def_hash_alg;
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_RAID_STRIDE)
++		es-&gt;s_raid_stride = cpu_to_le16(params-&gt;raid_stride);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_RAID_STRIPE_WIDTH)
++		es-&gt;s_raid_stripe_width =
++			cpu_to_le32(params-&gt;raid_stripe_width);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_ENCODING)
++		es-&gt;s_encoding = cpu_to_le16(params-&gt;encoding);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_ENCODING_FLAGS)
++		es-&gt;s_encoding_flags = cpu_to_le16(params-&gt;encoding_flags);
++	strscpy_pad(es-&gt;s_mount_opts, params-&gt;mount_opts);
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_EDIT_FEATURES) {
++		es-&gt;s_feature_compat |=
++			cpu_to_le32(params-&gt;set_feature_compat_mask);
++		es-&gt;s_feature_incompat |=
++			cpu_to_le32(params-&gt;set_feature_incompat_mask);
++		es-&gt;s_feature_ro_compat |=
++			cpu_to_le32(params-&gt;set_feature_ro_compat_mask);
++		es-&gt;s_feature_compat &amp;=
++			~cpu_to_le32(params-&gt;clear_feature_compat_mask);
++		es-&gt;s_feature_incompat &amp;=
++			~cpu_to_le32(params-&gt;clear_feature_incompat_mask);
++		es-&gt;s_feature_ro_compat &amp;=
++			~cpu_to_le32(params-&gt;clear_feature_ro_compat_mask);
++		if (params-&gt;set_feature_compat_mask &amp;
++		    EXT4_FEATURE_COMPAT_DIR_INDEX)
++			es-&gt;s_def_hash_version = sbi-&gt;s_def_hash_version;
++		if (params-&gt;set_feature_incompat_mask &amp;
++		    EXT4_FEATURE_INCOMPAT_CSUM_SEED)
++			es-&gt;s_checksum_seed = cpu_to_le32(sbi-&gt;s_csum_seed);
++	}
++	if (params-&gt;set_flags &amp; EXT4_TUNE_FL_FORCE_FSCK)
++		es-&gt;s_state |= cpu_to_le16(EXT4_ERROR_FS);
++}
++
++static int ext4_ioctl_set_tune_sb(struct file *filp,
++				  struct ext4_tune_sb_params __user *in)
++{
++	struct ext4_tune_sb_params params;
++	struct super_block *sb = file_inode(filp)-&gt;i_sb;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
++	struct ext4_super_block *es = sbi-&gt;s_es;
++	int enabling_casefold = 0;
++	int ret;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
++
++	if (copy_from_user(&amp;params, in, sizeof(params)))
++		return -EFAULT;
++
++	if ((params.set_flags &amp; ~TUNE_OPS_SUPPORTED) != 0)
++		return -EOPNOTSUPP;
++
++	if ((params.set_flags &amp; EXT4_TUNE_FL_ERRORS_BEHAVIOR) &amp;&amp;
++	    (params.errors_behavior &gt; EXT4_ERRORS_PANIC))
++		return -EINVAL;
++
++	if ((params.set_flags &amp; EXT4_TUNE_FL_RESERVED_BLOCKS) &amp;&amp;
++	    (params.reserved_blocks &gt; ext4_blocks_count(sbi-&gt;s_es) / 2))
++		return -EINVAL;
++	if ((params.set_flags &amp; EXT4_TUNE_FL_DEF_HASH_ALG) &amp;&amp;
++	    ((params.def_hash_alg &gt; DX_HASH_LAST) ||
++	     (params.def_hash_alg == DX_HASH_SIPHASH)))
++		return -EINVAL;
++	if ((params.set_flags &amp; EXT4_TUNE_FL_FEATURES) &amp;&amp;
++	    (params.set_flags &amp; EXT4_TUNE_FL_EDIT_FEATURES))
++		return -EINVAL;
++
++	if (params.set_flags &amp; EXT4_TUNE_FL_FEATURES) {
++		params.set_feature_compat_mask =
++			params.feature_compat &amp;
++			~le32_to_cpu(es-&gt;s_feature_compat);
++		params.set_feature_incompat_mask =
++			params.feature_incompat &amp;
++			~le32_to_cpu(es-&gt;s_feature_incompat);
++		params.set_feature_ro_compat_mask =
++			params.feature_ro_compat &amp;
++			~le32_to_cpu(es-&gt;s_feature_ro_compat);
++		params.clear_feature_compat_mask =
++			~params.feature_compat &amp;
++			le32_to_cpu(es-&gt;s_feature_compat);
++		params.clear_feature_incompat_mask =
++			~params.feature_incompat &amp;
++			le32_to_cpu(es-&gt;s_feature_incompat);
++		params.clear_feature_ro_compat_mask =
++			~params.feature_ro_compat &amp;
++			le32_to_cpu(es-&gt;s_feature_ro_compat);
++		params.set_flags |= EXT4_TUNE_FL_EDIT_FEATURES;
++	}
++	if (params.set_flags &amp; EXT4_TUNE_FL_EDIT_FEATURES) {
++		if ((params.set_feature_compat_mask &amp;
++		     ~EXT4_TUNE_SET_COMPAT_SUPP) ||
++		    (params.set_feature_incompat_mask &amp;
++		     ~EXT4_TUNE_SET_INCOMPAT_SUPP) ||
++		    (params.set_feature_ro_compat_mask &amp;
++		     ~EXT4_TUNE_SET_RO_COMPAT_SUPP) ||
++		    (params.clear_feature_compat_mask &amp;
++		     ~EXT4_TUNE_CLEAR_COMPAT_SUPP) ||
++		    (params.clear_feature_incompat_mask &amp;
++		     ~EXT4_TUNE_CLEAR_INCOMPAT_SUPP) ||
++		    (params.clear_feature_ro_compat_mask &amp;
++		     ~EXT4_TUNE_CLEAR_RO_COMPAT_SUPP))
++			return -EOPNOTSUPP;
++
++		/*
++		 * Filter out the features that are already set from
++		 * the set_mask.
++		 */
++		params.set_feature_compat_mask &amp;=
++			~le32_to_cpu(es-&gt;s_feature_compat);
++		params.set_feature_incompat_mask &amp;=
++			~le32_to_cpu(es-&gt;s_feature_incompat);
++		params.set_feature_ro_compat_mask &amp;=
++			~le32_to_cpu(es-&gt;s_feature_ro_compat);
++		if ((params.set_feature_incompat_mask &amp;
++		     EXT4_FEATURE_INCOMPAT_CASEFOLD)) {
++			enabling_casefold = 1;
++			if (!(params.set_flags &amp; EXT4_TUNE_FL_ENCODING)) {
++				params.encoding = EXT4_ENC_UTF8_12_1;
++				params.set_flags |= EXT4_TUNE_FL_ENCODING;
++			}
++			if (!(params.set_flags &amp; EXT4_TUNE_FL_ENCODING_FLAGS)) {
++				params.encoding_flags = 0;
++				params.set_flags |= EXT4_TUNE_FL_ENCODING_FLAGS;
++			}
++		}
++		if ((params.set_feature_compat_mask &amp;
++		     EXT4_FEATURE_COMPAT_DIR_INDEX)) {
++			uuid_t	uu;
++
++			memcpy(&amp;uu, sbi-&gt;s_hash_seed, UUID_SIZE);
++			if (uuid_is_null(&amp;uu))
++				generate_random_uuid((char *)
++						     &amp;sbi-&gt;s_hash_seed);
++			if (params.set_flags &amp; EXT4_TUNE_FL_DEF_HASH_ALG)
++				sbi-&gt;s_def_hash_version = params.def_hash_alg;
++			else if (sbi-&gt;s_def_hash_version == 0)
++				sbi-&gt;s_def_hash_version = DX_HASH_HALF_MD4;
++			if (!(es-&gt;s_flags &amp;
++			      cpu_to_le32(EXT2_FLAGS_UNSIGNED_HASH)) &amp;&amp;
++			    !(es-&gt;s_flags &amp;
++			      cpu_to_le32(EXT2_FLAGS_SIGNED_HASH))) {
++#ifdef __CHAR_UNSIGNED__
++				sbi-&gt;s_hash_unsigned = 3;
++#else
++				sbi-&gt;s_hash_unsigned = 0;
++#endif
++			}
++		}
++	}
++	if (params.set_flags &amp; EXT4_TUNE_FL_ENCODING) {
++		if (!enabling_casefold)
++			return -EINVAL;
++		if (params.encoding == 0)
++			params.encoding = EXT4_ENC_UTF8_12_1;
++		else if (params.encoding != EXT4_ENC_UTF8_12_1)
++			return -EINVAL;
++	}
++	if (params.set_flags &amp; EXT4_TUNE_FL_ENCODING_FLAGS) {
++		if (!enabling_casefold)
++			return -EINVAL;
++		if (params.encoding_flags &amp; ~SB_ENC_SUPP_MASK)
++			return -EINVAL;
++	}
++
++	ret = mnt_want_write_file(filp);
++	if (ret)
++		return ret;
++
++	ret = ext4_update_superblocks_fn(sb, ext4_sb_setparams, &amp;params);
++	mnt_drop_write_file(filp);
++
++	if (params.set_flags &amp; EXT4_TUNE_FL_DEF_HASH_ALG)
++		sbi-&gt;s_def_hash_version = params.def_hash_alg;
++
++	return ret;
++}
++
+ static long __ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ {
+ 	struct inode *inode = file_inode(filp);
+@@ -1616,6 +1908,11 @@ static long __ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		return ext4_ioctl_getuuid(EXT4_SB(sb), (void __user *)arg);
+ 	case EXT4_IOC_SETFSUUID:
+ 		return ext4_ioctl_setuuid(filp, (const void __user *)arg);
++	case EXT4_IOC_GET_TUNE_SB_PARAM:
++		return ext4_ioctl_get_tune_sb(EXT4_SB(sb),
++					      (void __user *)arg);
++	case EXT4_IOC_SET_TUNE_SB_PARAM:
++		return ext4_ioctl_set_tune_sb(filp, (void __user *)arg);
+ 	default:
+ 		return -ENOTTY;
+ 	}
+@@ -1703,7 +2000,8 @@ long ext4_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ }
+ #endif
+ 
+-static void set_overhead(struct ext4_super_block *es, const void *arg)
++static void set_overhead(struct ext4_sb_info *sbi,
++			 struct ext4_super_block *es, const void *arg)
+ {
+ 	es-&gt;s_overhead_clusters = cpu_to_le32(*((unsigned long *) arg));
+ }
+diff --git a/include/uapi/linux/ext4.h b/include/uapi/linux/ext4.h
+index 1c4c2dd29112..411dcc1e4a35 100644
+--- a/include/uapi/linux/ext4.h
++++ b/include/uapi/linux/ext4.h
+@@ -33,6 +33,8 @@
+ #define EXT4_IOC_CHECKPOINT		_IOW('f', 43, __u32)
+ #define EXT4_IOC_GETFSUUID		_IOR('f', 44, struct fsuuid)
+ #define EXT4_IOC_SETFSUUID		_IOW('f', 44, struct fsuuid)
++#define EXT4_IOC_GET_TUNE_SB_PARAM	_IOR('f', 45, struct ext4_tune_sb_params)
++#define EXT4_IOC_SET_TUNE_SB_PARAM	_IOW('f', 46, struct ext4_tune_sb_params)
+ 
+ #define EXT4_IOC_SHUTDOWN _IOR('X', 125, __u32)
+ 
+@@ -108,6 +110,57 @@ struct ext4_new_group_input {
+ 	__u16 unused;
+ };
+ 
++struct ext4_tune_sb_params {
++	__u32 set_flags;
++	__u32 checkinterval;
++	__u16 errors_behavior;
++	__u16 mnt_count;
++	__u16 max_mnt_count;
++	__u16 raid_stride;
++	__u64 last_check_time;
++	__u64 reserved_blocks;
++	__u64 blocks_count;
++	__u32 default_mnt_opts;
++	__u32 reserved_uid;
++	__u32 reserved_gid;
++	__u32 raid_stripe_width;
++	__u16 encoding;
++	__u16 encoding_flags;
++	__u8  def_hash_alg;
++	__u8  pad_1;
++	__u16 pad_2;
++	__u32 feature_compat;
++	__u32 feature_incompat;
++	__u32 feature_ro_compat;
++	__u32 set_feature_compat_mask;
++	__u32 set_feature_incompat_mask;
++	__u32 set_feature_ro_compat_mask;
++	__u32 clear_feature_compat_mask;
++	__u32 clear_feature_incompat_mask;
++	__u32 clear_feature_ro_compat_mask;
++	__u8  mount_opts[64];
++	__u8  pad[64];
++};
++
++#define EXT4_TUNE_FL_ERRORS_BEHAVIOR	0x00000001
++#define EXT4_TUNE_FL_MNT_COUNT		0x00000002
++#define EXT4_TUNE_FL_MAX_MNT_COUNT	0x00000004
++#define EXT4_TUNE_FL_CHECKINTRVAL	0x00000008
++#define EXT4_TUNE_FL_LAST_CHECK_TIME	0x00000010
++#define EXT4_TUNE_FL_RESERVED_BLOCKS	0x00000020
++#define EXT4_TUNE_FL_RESERVED_UID	0x00000040
++#define EXT4_TUNE_FL_RESERVED_GID	0x00000080
++#define EXT4_TUNE_FL_DEFAULT_MNT_OPTS	0x00000100
++#define EXT4_TUNE_FL_DEF_HASH_ALG	0x00000200
++#define EXT4_TUNE_FL_RAID_STRIDE	0x00000400
++#define EXT4_TUNE_FL_RAID_STRIPE_WIDTH	0x00000800
++#define EXT4_TUNE_FL_MOUNT_OPTS		0x00001000
++#define EXT4_TUNE_FL_FEATURES		0x00002000
++#define EXT4_TUNE_FL_EDIT_FEATURES	0x00004000
++#define EXT4_TUNE_FL_FORCE_FSCK		0x00008000
++#define EXT4_TUNE_FL_ENCODING		0x00010000
++#define EXT4_TUNE_FL_ENCODING_FLAGS	0x00020000
++
+ /*
+  * Returned by EXT4_IOC_GET_ES_CACHE as an additional possible flag.
+  * It indicates that the entry in extent status cache is for a hole.</pre><hr><pre>commit 12c84dd4d308551568d85203fd6ed2685e861fda
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Sep 16 23:22:48 2025 -0400
+
+    ext4: add support for 32-bit default reserved uid and gid values
+    
+    Support for specifying the default user id and group id that is
+    allowed to use the reserved block space was added way back when Linux
+    only supported 16-bit uid's and gid's.  (Yeah, that long ago.)  It's
+    not a commonly used feature, but let's add support for 32-bit user and
+    group id's.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Message-ID: &lt;20250916-tune2fs-v2-2-d594dc7486f0@mit.edu&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 95b99a916ed8..a31cf47681b9 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1442,7 +1442,9 @@ struct ext4_super_block {
+ 	__le16  s_encoding;		/* Filename charset encoding */
+ 	__le16  s_encoding_flags;	/* Filename charset encoding flags */
+ 	__le32  s_orphan_file_inum;	/* Inode for tracking orphan inodes */
+-	__le32	s_reserved[94];		/* Padding to the end of the block */
++	__le16	s_def_resuid_hi;
++	__le16	s_def_resgid_hi;
++	__le32	s_reserved[93];		/* Padding to the end of the block */
+ 	__le32	s_checksum;		/* crc32c(superblock) */
+ };
+ 
+@@ -1812,6 +1814,18 @@ static inline int ext4_valid_inum(struct super_block *sb, unsigned long ino)
+ 		 ino &lt;= le32_to_cpu(EXT4_SB(sb)-&gt;s_es-&gt;s_inodes_count));
+ }
+ 
++static inline int ext4_get_resuid(struct ext4_super_block *es)
++{
++	return le16_to_cpu(es-&gt;s_def_resuid) |
++		le16_to_cpu(es-&gt;s_def_resuid_hi) &lt;&lt; 16;
++}
++
++static inline int ext4_get_resgid(struct ext4_super_block *es)
++{
++	return le16_to_cpu(es-&gt;s_def_resgid) |
++		le16_to_cpu(es-&gt;s_def_resgid_hi) &lt;&lt; 16;
++}
++
+ /*
+  * Returns: sbi-&gt;field[index]
+  * Used to access an array element from the following sbi fields which require
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 488f4c281a3f..5988440460c8 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2960,11 +2960,11 @@ static int _ext4_show_options(struct seq_file *seq, struct super_block *sb,
+ 	}
+ 
+ 	if (nodefs || !uid_eq(sbi-&gt;s_resuid, make_kuid(&amp;init_user_ns, EXT4_DEF_RESUID)) ||
+-	    le16_to_cpu(es-&gt;s_def_resuid) != EXT4_DEF_RESUID)
++	    ext4_get_resuid(es) != EXT4_DEF_RESUID)
+ 		SEQ_OPTS_PRINT("resuid=%u",
+ 				from_kuid_munged(&amp;init_user_ns, sbi-&gt;s_resuid));
+ 	if (nodefs || !gid_eq(sbi-&gt;s_resgid, make_kgid(&amp;init_user_ns, EXT4_DEF_RESGID)) ||
+-	    le16_to_cpu(es-&gt;s_def_resgid) != EXT4_DEF_RESGID)
++	    ext4_get_resgid(es) != EXT4_DEF_RESGID)
+ 		SEQ_OPTS_PRINT("resgid=%u",
+ 				from_kgid_munged(&amp;init_user_ns, sbi-&gt;s_resgid));
+ 	def_errors = nodefs ? -1 : le16_to_cpu(es-&gt;s_errors);
+@@ -5279,8 +5279,8 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 
+ 	ext4_set_def_opts(sb, es);
+ 
+-	sbi-&gt;s_resuid = make_kuid(&amp;init_user_ns, le16_to_cpu(es-&gt;s_def_resuid));
+-	sbi-&gt;s_resgid = make_kgid(&amp;init_user_ns, le16_to_cpu(es-&gt;s_def_resgid));
++	sbi-&gt;s_resuid = make_kuid(&amp;init_user_ns, ext4_get_resuid(es));
++	sbi-&gt;s_resgid = make_kgid(&amp;init_user_ns, ext4_get_resuid(es));
+ 	sbi-&gt;s_commit_interval = JBD2_DEFAULT_MAX_COMMIT_AGE * HZ;
+ 	sbi-&gt;s_min_batch_time = EXT4_DEF_MIN_BATCH_TIME;
+ 	sbi-&gt;s_max_batch_time = EXT4_DEF_MAX_BATCH_TIME;</pre><hr><pre>commit 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Sep 16 23:22:47 2025 -0400
+
+    ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
+    
+    Unlike other strings in the ext4 superblock, we rely on tune2fs to
+    make sure s_mount_opts is NUL terminated.  Harden
+    parse_apply_sb_mount_options() by treating s_mount_opts as a potential
+    __nonstring.
+    
+    Cc: stable@vger.kernel.org
+    Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+    Reviewed-by: Darrick J. Wong &lt;djwong@kernel.org&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Message-ID: &lt;20250916-tune2fs-v2-1-d594dc7486f0@mit.edu&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index d26e5c0731e5..488f4c281a3f 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2469,7 +2469,7 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+ 					struct ext4_fs_context *m_ctx)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	char *s_mount_opts = NULL;
++	char s_mount_opts[65];
+ 	struct ext4_fs_context *s_ctx = NULL;
+ 	struct fs_context *fc = NULL;
+ 	int ret = -ENOMEM;
+@@ -2477,15 +2477,11 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+ 	if (!sbi-&gt;s_es-&gt;s_mount_opts[0])
+ 		return 0;
+ 
+-	s_mount_opts = kstrndup(sbi-&gt;s_es-&gt;s_mount_opts,
+-				sizeof(sbi-&gt;s_es-&gt;s_mount_opts),
+-				GFP_KERNEL);
+-	if (!s_mount_opts)
+-		return ret;
++	strscpy_pad(s_mount_opts, sbi-&gt;s_es-&gt;s_mount_opts);
+ 
+ 	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+ 	if (!fc)
+-		goto out_free;
++		return -ENOMEM;
+ 
+ 	s_ctx = kzalloc(sizeof(struct ext4_fs_context), GFP_KERNEL);
+ 	if (!s_ctx)
+@@ -2517,11 +2513,8 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+ 	ret = 0;
+ 
+ out_free:
+-	if (fc) {
+-		ext4_fc_free(fc);
+-		kfree(fc);
+-	}
+-	kfree(s_mount_opts);
++	ext4_fc_free(fc);
++	kfree(fc);
+ 	return ret;
+ }
+ </pre><hr><pre>commit c5e104a91e7b6fa12c1dc2d8bf84abb7ef9b89ad
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Aug 7 09:35:20 2025 -0400
+
+    ext4: don't try to clear the orphan_present feature block device is r/o
+    
+    When the file system is frozen in preparation for taking an LVM
+    snapshot, the journal is checkpointed and if the orphan_file feature
+    is enabled, and the orphan file is empty, we clear the orphan_present
+    feature flag.  But if there are pending inodes that need to be removed
+    the orphan_present feature flag can't be cleared.
+    
+    The problem comes if the block device is read-only.  In that case, we
+    can't process the orphan inode list, so it is skipped in
+    ext4_orphan_cleanup().  But then in ext4_mark_recovery_complete(),
+    this results in the ext4 error "Orphan file not empty on read-only fs"
+    firing and the file system mount is aborted.
+    
+    Fix this by clearing the needs_recovery flag in the block device is
+    read-only.  We do this after the call to ext4_load_and_init-journal()
+    since there are some error checks need to be done in case the journal
+    needs to be replayed and the block device is read-only, or if the
+    block device containing the externa journal is read-only, etc.
+    
+    Cc: stable@kernel.org
+    Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1108271
+    Cc: stable@vger.kernel.org
+    Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index b16ffa507b84..699c15db28a8 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5416,6 +5416,8 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 		err = ext4_load_and_init_journal(sb, es, ctx);
+ 		if (err)
+ 			goto failed_mount3a;
++		if (bdev_read_only(sb-&gt;s_bdev))
++		    needs_recovery = 0;
+ 	} else if (test_opt(sb, NOLOAD) &amp;&amp; !sb_rdonly(sb) &amp;&amp;
+ 		   ext4_has_feature_journal_needs_recovery(sb)) {
+ 		ext4_msg(sb, KERN_ERR, "required journal recovery "</pre><hr><pre>commit 59d8731c887bf2f5bb8406ace26cbb6f6b36d6cc
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Jul 31 16:00:07 2025 -0400
+
+    ext4: fix unused variable warning in ext4_init_new_dir
+    
+    Cc: stable@kernel.org
+    Fixes: 90f097b1403f ("ext4: refactor the inline directory conversion and...")
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 01f379f5fd04..2cd36f59c9e3 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2965,7 +2965,6 @@ int ext4_init_new_dir(handle_t *handle, struct inode *dir,
+ 			     struct inode *inode)
+ {
+ 	struct buffer_head *dir_block = NULL;
+-	struct ext4_dir_entry_2 *de;
+ 	ext4_lblk_t block = 0;
+ 	int err;
+ 
+@@ -2982,7 +2981,6 @@ int ext4_init_new_dir(handle_t *handle, struct inode *dir,
+ 	dir_block = ext4_append(handle, inode, &amp;block);
+ 	if (IS_ERR(dir_block))
+ 		return PTR_ERR(dir_block);
+-	de = (struct ext4_dir_entry_2 *)dir_block-&gt;b_data;
+ 	err = ext4_init_dirblock(handle, inode, dir_block, dir-&gt;i_ino, NULL, 0);
+ out:
+ 	brelse(dir_block);</pre><hr><pre>commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Jul 17 10:54:34 2025 -0400
+
+    ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
+    
+    A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
+    when an inode had the INLINE_DATA_FL flag set but was missing the
+    system.data extended attribute.
+    
+    Since this can happen due to a maiciouly fuzzed file system, we
+    shouldn't BUG, but rather, report it as a corrupted file system.
+    
+    Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
+    ext4_create_inline_data() and ext4_inline_data_truncate().
+    
+    Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 640133adef38..1b094a4f3866 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -303,7 +303,11 @@ static int ext4_create_inline_data(handle_t *handle,
+ 	if (error)
+ 		goto out;
+ 
+-	BUG_ON(!is.s.not_found);
++	if (!is.s.not_found) {
++		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
++		error = -EFSCORRUPTED;
++		goto out;
++	}
+ 
+ 	error = ext4_xattr_ibody_set(handle, inode, &amp;i, &amp;is);
+ 	if (error) {
+@@ -354,7 +358,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
+ 	if (error)
+ 		goto out;
+ 
+-	BUG_ON(is.s.not_found);
++	if (is.s.not_found) {
++		EXT4_ERROR_INODE(inode, "missing inline data xattr");
++		error = -EFSCORRUPTED;
++		goto out;
++	}
+ 
+ 	len -= EXT4_MIN_INLINE_DATA_SIZE;
+ 	value = kzalloc(len, GFP_NOFS);
+@@ -1869,7 +1877,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
+ 			if ((err = ext4_xattr_ibody_find(inode, &amp;i, &amp;is)) != 0)
+ 				goto out_error;
+ 
+-			BUG_ON(is.s.not_found);
++			if (is.s.not_found) {
++				EXT4_ERROR_INODE(inode,
++						 "missing inline data xattr");
++				err = -EFSCORRUPTED;
++				goto out_error;
++			}
+ 
+ 			value_len = le32_to_cpu(is.s.here-&gt;e_value_size);
+ 			value = kmalloc(value_len, GFP_NOFS);</pre><hr><pre>commit 90f097b1403f232a202c501bfd49b1b196e840ea
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Jul 12 14:12:49 2025 -0400
+
+    ext4: refactor the inline directory conversion and new directory codepaths
+    
+    There was a lot of common code in the codepaths used to convert an
+    inline directory and to creaet a new directory.  To address this,
+    rename ext4_init_dot_dotdot() to ext4_init_dirblock() and then move
+    common code into that function.
+    
+    This reduces the lines of code count in fs/ext4/inline.c and
+    fs/ext4/namei.c, as well as reducing the size of their object files.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Link: https://patch.msgid.link/20250712181249.434530-3-tytso@mit.edu
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 9ac0a7d4fa0c..d377e02c9767 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3612,6 +3612,7 @@ extern loff_t ext4_llseek(struct file *file, loff_t offset, int origin);
+ extern int ext4_get_max_inline_size(struct inode *inode);
+ extern int ext4_find_inline_data_nolock(struct inode *inode);
+ extern int ext4_destroy_inline_data(handle_t *handle, struct inode *inode);
++extern void ext4_update_final_de(void *de_buf, int old_size, int new_size);
+ 
+ int ext4_readpage_inline(struct inode *inode, struct folio *folio);
+ extern int ext4_try_to_write_inline_data(struct address_space *mapping,
+@@ -3671,10 +3672,10 @@ static inline int ext4_has_inline_data(struct inode *inode)
+ extern const struct inode_operations ext4_dir_inode_operations;
+ extern const struct inode_operations ext4_special_inode_operations;
+ extern struct dentry *ext4_get_parent(struct dentry *child);
+-extern struct ext4_dir_entry_2 *ext4_init_dot_dotdot(struct inode *inode,
+-				 struct ext4_dir_entry_2 *de,
+-				 int blocksize, int csum_size,
+-				 unsigned int parent_ino, int dotdot_real_len);
++extern int ext4_init_dirblock(handle_t *handle, struct inode *inode,
++			      struct buffer_head *dir_block,
++			      unsigned int parent_ino, void *inline_buf,
++			      int inline_size);
+ extern void ext4_initialize_dirent_tail(struct buffer_head *bh,
+ 					unsigned int blocksize);
+ extern int ext4_handle_dirty_dirblock(handle_t *handle, struct inode *inode,
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 77e8b7707650..640133adef38 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -997,7 +997,7 @@ static void *ext4_get_inline_xattr_pos(struct inode *inode,
+ }
+ 
+ /* Set the final de to cover the whole block. */
+-static void ext4_update_final_de(void *de_buf, int old_size, int new_size)
++void ext4_update_final_de(void *de_buf, int old_size, int new_size)
+ {
+ 	struct ext4_dir_entry_2 *de, *prev_de;
+ 	void *limit;
+@@ -1061,51 +1061,6 @@ static void ext4_restore_inline_data(handle_t *handle, struct inode *inode,
+ 	ext4_set_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
+ }
+ 
+-static int ext4_finish_convert_inline_dir(handle_t *handle,
+-					  struct inode *inode,
+-					  struct buffer_head *dir_block,
+-					  void *buf,
+-					  int inline_size)
+-{
+-	int err, csum_size = 0, header_size = 0;
+-	struct ext4_dir_entry_2 *de;
+-	void *target = dir_block-&gt;b_data;
+-
+-	/*
+-	 * First create "." and ".." and then copy the dir information
+-	 * back to the block.
+-	 */
+-	de = target;
+-	de = ext4_init_dot_dotdot(inode, de,
+-		inode-&gt;i_sb-&gt;s_blocksize, csum_size,
+-		le32_to_cpu(((struct ext4_dir_entry_2 *)buf)-&gt;inode), 1);
+-	header_size = (void *)de - target;
+-
+-	memcpy((void *)de, buf + EXT4_INLINE_DOTDOT_SIZE,
+-		inline_size - EXT4_INLINE_DOTDOT_SIZE);
+-
+-	if (ext4_has_feature_metadata_csum(inode-&gt;i_sb))
+-		csum_size = sizeof(struct ext4_dir_entry_tail);
+-
+-	inode-&gt;i_size = inode-&gt;i_sb-&gt;s_blocksize;
+-	i_size_write(inode, inode-&gt;i_sb-&gt;s_blocksize);
+-	EXT4_I(inode)-&gt;i_disksize = inode-&gt;i_sb-&gt;s_blocksize;
+-	ext4_update_final_de(dir_block-&gt;b_data,
+-			inline_size - EXT4_INLINE_DOTDOT_SIZE + header_size,
+-			inode-&gt;i_sb-&gt;s_blocksize - csum_size);
+-
+-	if (csum_size)
+-		ext4_initialize_dirent_tail(dir_block,
+-					    inode-&gt;i_sb-&gt;s_blocksize);
+-	set_buffer_uptodate(dir_block);
+-	unlock_buffer(dir_block);
+-	err = ext4_handle_dirty_dirblock(handle, inode, dir_block);
+-	if (err)
+-		return err;
+-	set_buffer_verified(dir_block);
+-	return ext4_mark_inode_dirty(handle, inode);
+-}
+-
+ static int ext4_convert_inline_data_nolock(handle_t *handle,
+ 					   struct inode *inode,
+ 					   struct ext4_iloc *iloc)
+@@ -1177,8 +1132,17 @@ static int ext4_convert_inline_data_nolock(handle_t *handle,
+ 		error = ext4_handle_dirty_metadata(handle,
+ 						   inode, data_bh);
+ 	} else {
+-		error = ext4_finish_convert_inline_dir(handle, inode, data_bh,
+-						       buf, inline_size);
++		unlock_buffer(data_bh);
++		inode-&gt;i_size = inode-&gt;i_sb-&gt;s_blocksize;
++		i_size_write(inode, inode-&gt;i_sb-&gt;s_blocksize);
++		EXT4_I(inode)-&gt;i_disksize = inode-&gt;i_sb-&gt;s_blocksize;
++
++		error = ext4_init_dirblock(handle, inode, data_bh,
++			  le32_to_cpu(((struct ext4_dir_entry_2 *)buf)-&gt;inode),
++			  buf + EXT4_INLINE_DOTDOT_SIZE,
++			  inline_size - EXT4_INLINE_DOTDOT_SIZE);
++		if (!error)
++			error = ext4_mark_inode_dirty(handle, inode);
+ 	}
+ 
+ out_restore:
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 9913a94b6a6d..d83f91b62317 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2915,11 +2915,17 @@ static int ext4_tmpfile(struct mnt_idmap *idmap, struct inode *dir,
+ 	return err;
+ }
+ 
+-struct ext4_dir_entry_2 *ext4_init_dot_dotdot(struct inode *inode,
+-			  struct ext4_dir_entry_2 *de,
+-			  int blocksize, int csum_size,
+-			  unsigned int parent_ino, int dotdot_real_len)
++int ext4_init_dirblock(handle_t *handle, struct inode *inode,
++		       struct buffer_head *bh, unsigned int parent_ino,
++		       void *inline_buf, int inline_size)
+ {
++	struct ext4_dir_entry_2 *de = (struct ext4_dir_entry_2 *) bh-&gt;b_data;
++	size_t			blocksize = bh-&gt;b_size;
++	int			csum_size = 0, header_size;
++
++	if (ext4_has_feature_metadata_csum(inode-&gt;i_sb))
++		csum_size = sizeof(struct ext4_dir_entry_tail);
++
+ 	de-&gt;inode = cpu_to_le32(inode-&gt;i_ino);
+ 	de-&gt;name_len = 1;
+ 	de-&gt;rec_len = ext4_rec_len_to_disk(ext4_dir_rec_len(de-&gt;name_len, NULL),
+@@ -2930,18 +2936,29 @@ struct ext4_dir_entry_2 *ext4_init_dot_dotdot(struct inode *inode,
+ 	de = ext4_next_entry(de, blocksize);
+ 	de-&gt;inode = cpu_to_le32(parent_ino);
+ 	de-&gt;name_len = 2;
+-	if (!dotdot_real_len)
+-		de-&gt;rec_len = ext4_rec_len_to_disk(blocksize -
+-					(csum_size + ext4_dir_rec_len(1, NULL)),
+-					blocksize);
+-	else
++	memcpy(de-&gt;name, "..", 3);
++	ext4_set_de_type(inode-&gt;i_sb, de, S_IFDIR);
++	if (inline_buf) {
+ 		de-&gt;rec_len = ext4_rec_len_to_disk(
+ 					ext4_dir_rec_len(de-&gt;name_len, NULL),
+ 					blocksize);
+-	memcpy(de-&gt;name, "..", 3);
+-	ext4_set_de_type(inode-&gt;i_sb, de, S_IFDIR);
++		de = ext4_next_entry(de, blocksize);
++		header_size = (char *)de - bh-&gt;b_data;
++		memcpy((void *)de, inline_buf, inline_size);
++		ext4_update_final_de(bh-&gt;b_data, inline_size + header_size,
++			blocksize - csum_size);
++	} else {
++		de-&gt;rec_len = ext4_rec_len_to_disk(blocksize -
++					(csum_size + ext4_dir_rec_len(1, NULL)),
++					blocksize);
++	}
+ 
+-	return ext4_next_entry(de, blocksize);
++	if (csum_size)
++		ext4_initialize_dirent_tail(bh, blocksize);
++	BUFFER_TRACE(dir_block, "call ext4_handle_dirty_metadata");
++	set_buffer_uptodate(bh);
++	set_buffer_verified(bh);
++	return ext4_handle_dirty_dirblock(handle, inode, bh);
+ }
+ 
+ int ext4_init_new_dir(handle_t *handle, struct inode *dir,
+@@ -2950,13 +2967,8 @@ int ext4_init_new_dir(handle_t *handle, struct inode *dir,
+ 	struct buffer_head *dir_block = NULL;
+ 	struct ext4_dir_entry_2 *de;
+ 	ext4_lblk_t block = 0;
+-	unsigned int blocksize = dir-&gt;i_sb-&gt;s_blocksize;
+-	int csum_size = 0;
+ 	int err;
+ 
+-	if (ext4_has_feature_metadata_csum(dir-&gt;i_sb))
+-		csum_size = sizeof(struct ext4_dir_entry_tail);
+-
+ 	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA)) {
+ 		err = ext4_try_create_inline_dir(handle, dir, inode);
+ 		if (err &lt; 0 &amp;&amp; err != -ENOSPC)
+@@ -2965,21 +2977,15 @@ int ext4_init_new_dir(handle_t *handle, struct inode *dir,
+ 			goto out;
+ 	}
+ 
++	set_nlink(inode, 2);
+ 	inode-&gt;i_size = 0;
+ 	dir_block = ext4_append(handle, inode, &amp;block);
+ 	if (IS_ERR(dir_block))
+ 		return PTR_ERR(dir_block);
+ 	de = (struct ext4_dir_entry_2 *)dir_block-&gt;b_data;
+-	ext4_init_dot_dotdot(inode, de, blocksize, csum_size, dir-&gt;i_ino, 0);
+-	set_nlink(inode, 2);
+-	if (csum_size)
+-		ext4_initialize_dirent_tail(dir_block, blocksize);
+-
+-	BUFFER_TRACE(dir_block, "call ext4_handle_dirty_metadata");
+-	err = ext4_handle_dirty_dirblock(handle, inode, dir_block);
++	err = ext4_init_dirblock(handle, inode, dir_block, dir-&gt;i_ino, NULL, 0);
+ 	if (err)
+ 		goto out;
+-	set_buffer_verified(dir_block);
+ out:
+ 	brelse(dir_block);
+ 	return err;</pre><hr><pre>commit a35454ecf8a320c49954fdcdae0e8d3323067632
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Jul 12 14:12:48 2025 -0400
+
+    ext4: use memcpy() instead of strcpy()
+    
+    The strcpy() function is considered dangerous and eeeevil by people
+    who are using sophisticated code analysis tools such as "grep".  This
+    is true even when a quick inspection would show that the source is a
+    constant string ("." or "..") and the destination is a fixed array
+    which is guaranteed to have enough space.  Make the "grep" code
+    analysis tool happy by using memcpy() isstead of strcpy().  :-)
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Link: https://patch.msgid.link/20250712181249.434530-2-tytso@mit.edu
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 121279f84bef..77e8b7707650 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -1317,7 +1317,7 @@ int ext4_inlinedir_to_tree(struct file *dir_file,
+ 		if (pos == 0) {
+ 			fake.inode = cpu_to_le32(inode-&gt;i_ino);
+ 			fake.name_len = 1;
+-			strcpy(fake.name, ".");
++			memcpy(fake.name, ".", 2);
+ 			fake.rec_len = ext4_rec_len_to_disk(
+ 					  ext4_dir_rec_len(fake.name_len, NULL),
+ 					  inline_size);
+@@ -1327,7 +1327,7 @@ int ext4_inlinedir_to_tree(struct file *dir_file,
+ 		} else if (pos == EXT4_INLINE_DOTDOT_OFFSET) {
+ 			fake.inode = cpu_to_le32(parent_ino);
+ 			fake.name_len = 2;
+-			strcpy(fake.name, "..");
++			memcpy(fake.name, "..", 3);
+ 			fake.rec_len = ext4_rec_len_to_disk(
+ 					  ext4_dir_rec_len(fake.name_len, NULL),
+ 					  inline_size);
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index b82f5841c65a..9913a94b6a6d 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2924,7 +2924,7 @@ struct ext4_dir_entry_2 *ext4_init_dot_dotdot(struct inode *inode,
+ 	de-&gt;name_len = 1;
+ 	de-&gt;rec_len = ext4_rec_len_to_disk(ext4_dir_rec_len(de-&gt;name_len, NULL),
+ 					   blocksize);
+-	strcpy(de-&gt;name, ".");
++	memcpy(de-&gt;name, ".", 2);
+ 	ext4_set_de_type(inode-&gt;i_sb, de, S_IFDIR);
+ 
+ 	de = ext4_next_entry(de, blocksize);
+@@ -2938,7 +2938,7 @@ struct ext4_dir_entry_2 *ext4_init_dot_dotdot(struct inode *inode,
+ 		de-&gt;rec_len = ext4_rec_len_to_disk(
+ 					ext4_dir_rec_len(de-&gt;name_len, NULL),
+ 					blocksize);
+-	strcpy(de-&gt;name, "..");
++	memcpy(de-&gt;name, "..", 3);
+ 	ext4_set_de_type(inode-&gt;i_sb, de, S_IFDIR);
+ 
+ 	return ext4_next_entry(de, blocksize);</pre><hr><pre>commit 3658b8b3398eb2a49ee8d1ac88e5cdc41764f1c9
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Jul 12 14:12:47 2025 -0400
+
+    ext4: replace strcmp with direct comparison for '.' and '..'
+    
+    In a discussion over a proposed patch, "ext4: replace strcpy() with
+    '.' assignment"[1], I had asserted that directory entries in ext4 were
+    not NUL terminated, and hence it was safe to replace strcpy() with a
+    direct assignment.  As it turns out, this was incorrect.  It's true
+    for all all directory entries *except* for '.' and '..' where the
+    kernel was using strcmp() and where e2fsck actually checks and offers
+    to fix things if '.'  and '..' are not NUL terminated.
+    
+    [1] https://lore.kernel.org/r/202505191316.JJMnPobO-lkp@intel.com
+    
+    We can't change this without breaking old kernel versions, but in the
+    spirit of "be liberal in what you receive", use direct comparison of
+    de-&gt;name_len and de-&gt;name[0,1] instead of strcmp().  This has the side
+    benefit of reducing the compiled text size by 96 bytes on x86_64.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Link: https://patch.msgid.link/20250712181249.434530-1-tytso@mit.edu
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index a178ac229489..b82f5841c65a 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -3082,7 +3082,8 @@ bool ext4_empty_dir(struct inode *inode)
+ 	de = (struct ext4_dir_entry_2 *) bh-&gt;b_data;
+ 	if (ext4_check_dir_entry(inode, NULL, de, bh, bh-&gt;b_data, bh-&gt;b_size,
+ 				 0) ||
+-	    le32_to_cpu(de-&gt;inode) != inode-&gt;i_ino || strcmp(".", de-&gt;name)) {
++	    le32_to_cpu(de-&gt;inode) != inode-&gt;i_ino || de-&gt;name_len != 1 ||
++	    de-&gt;name[0] != '.') {
+ 		ext4_warning_inode(inode, "directory missing '.'");
+ 		brelse(bh);
+ 		return false;
+@@ -3091,7 +3092,8 @@ bool ext4_empty_dir(struct inode *inode)
+ 	de = ext4_next_entry(de, sb-&gt;s_blocksize);
+ 	if (ext4_check_dir_entry(inode, NULL, de, bh, bh-&gt;b_data, bh-&gt;b_size,
+ 				 offset) ||
+-	    le32_to_cpu(de-&gt;inode) == 0 || strcmp("..", de-&gt;name)) {
++	    le32_to_cpu(de-&gt;inode) == 0 || de-&gt;name_len != 2 ||
++	    de-&gt;name[0] != '.' || de-&gt;name[1] != '.') {
+ 		ext4_warning_inode(inode, "directory missing '..'");
+ 		brelse(bh);
+ 		return false;
+@@ -3532,7 +3534,7 @@ static struct buffer_head *ext4_get_first_dir_block(handle_t *handle,
+ 		if (ext4_check_dir_entry(inode, NULL, de, bh, bh-&gt;b_data,
+ 					 bh-&gt;b_size, 0) ||
+ 		    le32_to_cpu(de-&gt;inode) != inode-&gt;i_ino ||
+-		    strcmp(".", de-&gt;name)) {
++		    de-&gt;name_len != 1 || de-&gt;name[0] != '.') {
+ 			EXT4_ERROR_INODE(inode, "directory missing '.'");
+ 			brelse(bh);
+ 			*retval = -EFSCORRUPTED;
+@@ -3543,7 +3545,8 @@ static struct buffer_head *ext4_get_first_dir_block(handle_t *handle,
+ 		de = ext4_next_entry(de, inode-&gt;i_sb-&gt;s_blocksize);
+ 		if (ext4_check_dir_entry(inode, NULL, de, bh, bh-&gt;b_data,
+ 					 bh-&gt;b_size, offset) ||
+-		    le32_to_cpu(de-&gt;inode) == 0 || strcmp("..", de-&gt;name)) {
++		    le32_to_cpu(de-&gt;inode) == 0 || de-&gt;name_len != 2 ||
++		    de-&gt;name[0] != '.' || de-&gt;name[1] != '.') {
+ 			EXT4_ERROR_INODE(inode, "directory missing '..'");
+ 			brelse(bh);
+ 			*retval = -EFSCORRUPTED;</pre>
+    <div class="pagination">
+        <span>[1]</span><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

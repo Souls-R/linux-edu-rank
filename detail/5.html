@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of South Carolina</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of South Carolina</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='5_2.html'>2</a><a href='5_3.html'>3</a><a href='5_4.html'>4</a><a href='5_5.html'>5</a><a href='5_6.html'>6</a><a href='5_7.html'>7</a><a href='5_8.html'>8</a><a href='5_9.html'>9</a><a href='5_10.html'>10</a><a href='5_11.html'>11</a><a href='5_12.html'>12</a><a href='5_13.html'>13</a><a href='5_14.html'>14</a><a href='5_15.html'>15</a><a href='5_16.html'>16</a><a href='5_17.html'>17</a><a href='5_18.html'>18</a><a href='5_19.html'>19</a><a href='5_20.html'>20</a><a href='5_21.html'>21</a><a href='5_22.html'>22</a><a href='5_23.html'>23</a><a href='5_24.html'>24</a><a href='5_25.html'>25</a><a href='5_26.html'>26</a><a href='5_27.html'>27</a><a href='5_28.html'>28</a><a href='5_29.html'>29</a><a href='5_30.html'>30</a><a href='5_31.html'>31</a><a href='5_32.html'>32</a><a href='5_33.html'>33</a><a href='5_34.html'>34</a><a href='5_35.html'>35</a><a href='5_36.html'>36</a><a href='5_37.html'>37</a><a href='5_38.html'>38</a><a href='5_39.html'>39</a><a href='5_40.html'>40</a><a href='5_41.html'>41</a><a href='5_42.html'>42</a><a href='5_43.html'>43</a><a href='5_44.html'>44</a><a href='5_45.html'>45</a><a href='5_46.html'>46</a><a href='5_47.html'>47</a><a href='5_48.html'>48</a><a href='5_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 2773d282cd56464f62e9b4703c41d2f733a67842
+Author: Junxuan Liao &lt;ljx@cs.wisc.edu&gt;
+Date:   Sun Jun 22 23:01:32 2025 -0500
+
+    docs/vfs: update references to i_mutex to i_rwsem
+    
+    VFS has switched to i_rwsem for ten years now (9902af79c01a: parallel
+    lookups actual switch to rwsem), but the VFS documentation and comments
+    still has references to i_mutex.
+    
+    Signed-off-by: Junxuan Liao &lt;ljx@cs.wisc.edu&gt;
+    Link: https://lore.kernel.org/72223729-5471-474a-af3c-f366691fba82@cs.wisc.edu
+    Signed-off-by: Christian Brauner &lt;brauner@kernel.org&gt;
+
+diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
+index fd32a9a17bfb..dd9da7e04a99 100644
+--- a/Documentation/filesystems/vfs.rst
++++ b/Documentation/filesystems/vfs.rst
+@@ -758,8 +758,9 @@ process is more complicated and uses write_begin/write_end or
+ dirty_folio to write data into the address_space, and
+ writepages to writeback data to storage.
+ 
+-Adding and removing pages to/from an address_space is protected by the
+-inode's i_mutex.
++Removing pages from an address_space requires holding the inode's i_rwsem
++exclusively, while adding pages to the address_space requires holding the
++inode's i_mapping-&gt;invalidate_lock exclusively.
+ 
+ When data is written to a page, the PG_Dirty flag should be set.  It
+ typically remains set until writepages asks for it to be written.  This
+diff --git a/fs/attr.c b/fs/attr.c
+index 9caf63d20d03..5425c1dbbff9 100644
+--- a/fs/attr.c
++++ b/fs/attr.c
+@@ -230,7 +230,7 @@ EXPORT_SYMBOL(setattr_prepare);
+  * @inode:	the inode to be truncated
+  * @offset:	the new size to assign to the inode
+  *
+- * inode_newsize_ok must be called with i_mutex held.
++ * inode_newsize_ok must be called with i_rwsem held exclusively.
+  *
+  * inode_newsize_ok will check filesystem limits and ulimits to check that the
+  * new inode size is within limits. inode_newsize_ok will also send SIGXFSZ
+@@ -318,7 +318,7 @@ static void setattr_copy_mgtime(struct inode *inode, const struct iattr *attr)
+  * @inode:	the inode to be updated
+  * @attr:	the new attributes
+  *
+- * setattr_copy must be called with i_mutex held.
++ * setattr_copy must be called with i_rwsem held exclusively.
+  *
+  * setattr_copy updates the inode's metadata with that specified
+  * in attr on idmapped mounts. Necessary permission checks to determine
+@@ -403,13 +403,13 @@ EXPORT_SYMBOL(may_setattr);
+  * @attr:	new attributes
+  * @delegated_inode: returns inode, if the inode is delegated
+  *
+- * The caller must hold the i_mutex on the affected object.
++ * The caller must hold the i_rwsem exclusively on the affected object.
+  *
+  * If notify_change discovers a delegation in need of breaking,
+  * it will return -EWOULDBLOCK and return a reference to the inode in
+  * delegated_inode.  The caller should then break the delegation and
+  * retry.  Because breaking a delegation may take a long time, the
+- * caller should drop the i_mutex before doing so.
++ * caller should drop the i_rwsem before doing so.
+  *
+  * Alternatively, a caller may pass NULL for delegated_inode.  This may
+  * be appropriate for callers that expect the underlying filesystem not
+@@ -456,7 +456,7 @@ int notify_change(struct mnt_idmap *idmap, struct dentry *dentry,
+ 		if (S_ISLNK(inode-&gt;i_mode))
+ 			return -EOPNOTSUPP;
+ 
+-		/* Flag setting protected by i_mutex */
++		/* Flag setting protected by i_rwsem */
+ 		if (is_sxid(attr-&gt;ia_mode))
+ 			inode-&gt;i_flags &amp;= ~S_NOSEC;
+ 	}
+diff --git a/fs/buffer.c b/fs/buffer.c
+index a14d281c6a74..1d34200f69c8 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -2609,7 +2609,7 @@ EXPORT_SYMBOL(cont_write_begin);
+  * holes and correct delalloc and unwritten extent mapping on filesystems that
+  * support these features.
+  *
+- * We are not allowed to take the i_mutex here so we have to play games to
++ * We are not allowed to take the i_rwsem here so we have to play games to
+  * protect against truncate races as the page could now be beyond EOF.  Because
+  * truncate writes the inode size before removing pages, once we have the
+  * page lock we can determine safely if the page is beyond EOF. If it is not
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 03d58b2d4fa3..ab8465ae9cad 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -2774,10 +2774,10 @@ static void copy_name(struct dentry *dentry, struct dentry *target)
+  * @target: new dentry
+  * @exchange: exchange the two dentries
+  *
+- * Update the dcache to reflect the move of a file name. Negative
+- * dcache entries should not be moved in this way. Caller must hold
+- * rename_lock, the i_mutex of the source and target directories,
+- * and the sb-&gt;s_vfs_rename_mutex if they differ. See lock_rename().
++ * Update the dcache to reflect the move of a file name. Negative dcache
++ * entries should not be moved in this way. Caller must hold rename_lock, the
++ * i_rwsem of the source and target directories (exclusively), and the sb-&gt;
++ * s_vfs_rename_mutex if they differ. See lock_rename().
+  */
+ static void __d_move(struct dentry *dentry, struct dentry *target,
+ 		     bool exchange)
+@@ -2923,7 +2923,7 @@ struct dentry *d_ancestor(struct dentry *p1, struct dentry *p2)
+  * This helper attempts to cope with remotely renamed directories
+  *
+  * It assumes that the caller is already holding
+- * dentry-&gt;d_parent-&gt;d_inode-&gt;i_mutex, and rename_lock
++ * dentry-&gt;d_parent-&gt;d_inode-&gt;i_rwsem, and rename_lock
+  *
+  * Note: If ever the locking in lock_rename() changes, then please
+  * remember to update this too...
+diff --git a/fs/direct-io.c b/fs/direct-io.c
+index bbd05f1a2145..1694ee9a9382 100644
+--- a/fs/direct-io.c
++++ b/fs/direct-io.c
+@@ -1083,8 +1083,8 @@ static inline int drop_refcount(struct dio *dio)
+  * The locking rules are governed by the flags parameter:
+  *  - if the flags value contains DIO_LOCKING we use a fancy locking
+  *    scheme for dumb filesystems.
+- *    For writes this function is called under i_mutex and returns with
+- *    i_mutex held, for reads, i_mutex is not held on entry, but it is
++ *    For writes this function is called under i_rwsem and returns with
++ *    i_rwsem held, for reads, i_rwsem is not held on entry, but it is
+  *    taken and dropped again before returning.
+  *  - if the flags value does NOT contain DIO_LOCKING we don't use any
+  *    internal locking but rather rely on the filesystem to synchronize
+@@ -1094,7 +1094,7 @@ static inline int drop_refcount(struct dio *dio)
+  * counter before starting direct I/O, and decrement it once we are done.
+  * Truncate can wait for it to reach zero to provide exclusion.  It is
+  * expected that filesystem provide exclusion between new direct I/O
+- * and truncates.  For DIO_LOCKING filesystems this is done by i_mutex,
++ * and truncates.  For DIO_LOCKING filesystems this is done by i_rwsem,
+  * but other filesystems need to take care of this on their own.
+  *
+  * NOTE: if you pass "sdio" to anything by pointer make sure that function
+@@ -1279,7 +1279,7 @@ ssize_t __blockdev_direct_IO(struct kiocb *iocb, struct inode *inode,
+ 
+ 	/*
+ 	 * All block lookups have been performed. For READ requests
+-	 * we can let i_mutex go now that its achieved its purpose
++	 * we can let i_rwsem go now that its achieved its purpose
+ 	 * of protecting us from looking up uninitialized blocks.
+ 	 */
+ 	if (iov_iter_rw(iter) == READ &amp;&amp; (dio-&gt;flags &amp; DIO_LOCKING))
+diff --git a/fs/inode.c b/fs/inode.c
+index 99318b157a9a..a0150e2ef22a 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -1158,9 +1158,8 @@ void lockdep_annotate_inode_mutex_key(struct inode *inode)
+ 		/* Set new key only if filesystem hasn't already changed it */
+ 		if (lockdep_match_class(&amp;inode-&gt;i_rwsem, &amp;type-&gt;i_mutex_key)) {
+ 			/*
+-			 * ensure nobody is actually holding i_mutex
++			 * ensure nobody is actually holding i_rwsem
+ 			 */
+-			// mutex_destroy(&amp;inode-&gt;i_mutex);
+ 			init_rwsem(&amp;inode-&gt;i_rwsem);
+ 			lockdep_set_class(&amp;inode-&gt;i_rwsem,
+ 					  &amp;type-&gt;i_mutex_dir_key);
+@@ -2615,7 +2614,7 @@ EXPORT_SYMBOL(inode_dio_finished);
+  * proceed with a truncate or equivalent operation.
+  *
+  * Must be called under a lock that serializes taking new references
+- * to i_dio_count, usually by inode-&gt;i_mutex.
++ * to i_dio_count, usually by inode-&gt;i_rwsem.
+  */
+ void inode_dio_wait(struct inode *inode)
+ {
+@@ -2633,7 +2632,7 @@ EXPORT_SYMBOL(inode_dio_wait_interruptible);
+ /*
+  * inode_set_flags - atomically set some inode flags
+  *
+- * Note: the caller should be holding i_mutex, or else be sure that
++ * Note: the caller should be holding i_rwsem exclusively, or else be sure that
+  * they have exclusive access to the inode structure (i.e., while the
+  * inode is being instantiated).  The reason for the cmpxchg() loop
+  * --- which wouldn't be necessary if all code paths which modify
+@@ -2641,7 +2640,7 @@ EXPORT_SYMBOL(inode_dio_wait_interruptible);
+  * code path which doesn't today so we use cmpxchg() out of an abundance
+  * of caution.
+  *
+- * In the long run, i_mutex is overkill, and we should probably look
++ * In the long run, i_rwsem is overkill, and we should probably look
+  * at using the i_lock spinlock to protect i_flags, and then make sure
+  * it is so documented in include/linux/fs.h and that all code follows
+  * the locking convention!!
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 9ea0ecc325a8..4d1862f589e8 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -946,7 +946,8 @@ EXPORT_SYMBOL(simple_write_begin);
+  * simple_write_end does the minimum needed for updating a folio after
+  * writing is done. It has the same API signature as the .write_end of
+  * address_space_operations vector. So it can just be set onto .write_end for
+- * FSes that don't need any other processing. i_mutex is assumed to be held.
++ * FSes that don't need any other processing. i_rwsem is assumed to be held
++ * exclusively.
+  * Block based filesystems should use generic_write_end().
+  * NOTE: Even though i_size might get updated by this function, mark_inode_dirty
+  * is not called, so a filesystem that actually does store data in .write_inode
+@@ -973,7 +974,7 @@ static int simple_write_end(struct file *file, struct address_space *mapping,
+ 	}
+ 	/*
+ 	 * No need to use i_size_read() here, the i_size
+-	 * cannot change under us because we hold the i_mutex.
++	 * cannot change under us because we hold the i_rwsem.
+ 	 */
+ 	if (last_pos &gt; inode-&gt;i_size)
+ 		i_size_write(inode, last_pos);
+diff --git a/fs/locks.c b/fs/locks.c
+index f96024feab17..559f02aa4172 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -1794,7 +1794,7 @@ generic_add_lease(struct file *filp, int arg, struct file_lease **flp, void **pr
+ 
+ 	/*
+ 	 * In the delegation case we need mutual exclusion with
+-	 * a number of operations that take the i_mutex.  We trylock
++	 * a number of operations that take the i_rwsem.  We trylock
+ 	 * because delegations are an optional optimization, and if
+ 	 * there's some chance of a conflict--we'd rather not
+ 	 * bother, maybe that's a sign this just isn't a good file to
+diff --git a/fs/namei.c b/fs/namei.c
+index 981da44e1291..f5c157290ce2 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -1469,7 +1469,7 @@ static int __traverse_mounts(struct path *path, unsigned flags, bool *jumped,
+ 	int ret = 0;
+ 
+ 	while (flags &amp; DCACHE_MANAGED_DENTRY) {
+-		/* Allow the filesystem to manage the transit without i_mutex
++		/* Allow the filesystem to manage the transit without i_rwsem
+ 		 * being held. */
+ 		if (flags &amp; DCACHE_MANAGE_TRANSIT) {
+ 			ret = path-&gt;dentry-&gt;d_op-&gt;d_manage(path, false);
+@@ -2945,7 +2945,7 @@ EXPORT_SYMBOL(try_lookup_noperm);
+  * Note that this routine is purely a helper for filesystem usage and should
+  * not be called by generic code.  It does no permission checking.
+  *
+- * The caller must hold base-&gt;i_mutex.
++ * The caller must hold base-&gt;i_rwsem.
+  */
+ struct dentry *lookup_noperm(struct qstr *name, struct dentry *base)
+ {
+@@ -2971,7 +2971,7 @@ EXPORT_SYMBOL(lookup_noperm);
+  *
+  * This can be used for in-kernel filesystem clients such as file servers.
+  *
+- * The caller must hold base-&gt;i_mutex.
++ * The caller must hold base-&gt;i_rwsem.
+  */
+ struct dentry *lookup_one(struct mnt_idmap *idmap, struct qstr *name,
+ 			  struct dentry *base)
+@@ -4542,13 +4542,13 @@ SYSCALL_DEFINE1(rmdir, const char __user *, pathname)
+  * @dentry:	victim
+  * @delegated_inode: returns victim inode, if the inode is delegated.
+  *
+- * The caller must hold dir-&gt;i_mutex.
++ * The caller must hold dir-&gt;i_rwsem exclusively.
+  *
+  * If vfs_unlink discovers a delegation, it will return -EWOULDBLOCK and
+  * return a reference to the inode in delegated_inode.  The caller
+  * should then break the delegation on that inode and retry.  Because
+  * breaking a delegation may take a long time, the caller should drop
+- * dir-&gt;i_mutex before doing so.
++ * dir-&gt;i_rwsem before doing so.
+  *
+  * Alternatively, a caller may pass NULL for delegated_inode.  This may
+  * be appropriate for callers that expect the underlying filesystem not
+@@ -4607,7 +4607,7 @@ EXPORT_SYMBOL(vfs_unlink);
+ 
+ /*
+  * Make sure that the actual truncation of the file will occur outside its
+- * directory's i_mutex.  Truncate can take a long time if there is a lot of
++ * directory's i_rwsem.  Truncate can take a long time if there is a lot of
+  * writeout happening, and we don't want to prevent access to the directory
+  * while waiting on the I/O.
+  */
+@@ -4785,13 +4785,13 @@ SYSCALL_DEFINE2(symlink, const char __user *, oldname, const char __user *, newn
+  * @new_dentry:	where to create the new link
+  * @delegated_inode: returns inode needing a delegation break
+  *
+- * The caller must hold dir-&gt;i_mutex
++ * The caller must hold dir-&gt;i_rwsem exclusively.
+  *
+  * If vfs_link discovers a delegation on the to-be-linked file in need
+  * of breaking, it will return -EWOULDBLOCK and return a reference to the
+  * inode in delegated_inode.  The caller should then break the delegation
+  * and retry.  Because breaking a delegation may take a long time, the
+- * caller should drop the i_mutex before doing so.
++ * caller should drop the i_rwsem before doing so.
+  *
+  * Alternatively, a caller may pass NULL for delegated_inode.  This may
+  * be appropriate for callers that expect the underlying filesystem not
+@@ -4987,7 +4987,7 @@ SYSCALL_DEFINE2(link, const char __user *, oldname, const char __user *, newname
+  *	c) we may have to lock up to _four_ objects - parents and victim (if it exists),
+  *	   and source (if it's a non-directory or a subdirectory that moves to
+  *	   different parent).
+- *	   And that - after we got -&gt;i_mutex on parents (until then we don't know
++ *	   And that - after we got -&gt;i_rwsem on parents (until then we don't know
+  *	   whether the target exists).  Solution: try to be smart with locking
+  *	   order for inodes.  We rely on the fact that tree topology may change
+  *	   only under -&gt;s_vfs_rename_mutex _and_ that parent of the object we
+@@ -4999,9 +4999,9 @@ SYSCALL_DEFINE2(link, const char __user *, oldname, const char __user *, newname
+  *	   has no more than 1 dentry.  If "hybrid" objects will ever appear,
+  *	   we'd better make sure that there's no link(2) for them.
+  *	d) conversion from fhandle to dentry may come in the wrong moment - when
+- *	   we are removing the target. Solution: we will have to grab -&gt;i_mutex
++ *	   we are removing the target. Solution: we will have to grab -&gt;i_rwsem
+  *	   in the fhandle_to_dentry code. [FIXME - current nfsfh.c relies on
+- *	   -&gt;i_mutex on parents, which works but leads to some truly excessive
++ *	   -&gt;i_rwsem on parents, which works but leads to some truly excessive
+  *	   locking].
+  */
+ int vfs_rename(struct renamedata *rd)
+diff --git a/fs/namespace.c b/fs/namespace.c
+index e13d9ab4f564..8a1bfdf862f8 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2053,7 +2053,7 @@ static int do_umount(struct mount *mnt, int flags)
+  * detach_mounts allows lazily unmounting those mounts instead of
+  * leaking them.
+  *
+- * The caller may hold dentry-&gt;d_inode-&gt;i_mutex.
++ * The caller may hold dentry-&gt;d_inode-&gt;i_rwsem.
+  */
+ void __detach_mounts(struct dentry *dentry)
+ {
+diff --git a/fs/stack.c b/fs/stack.c
+index f18920119944..d8c782e064e3 100644
+--- a/fs/stack.c
++++ b/fs/stack.c
+@@ -3,7 +3,7 @@
+ #include &lt;linux/fs.h&gt;
+ #include &lt;linux/fs_stack.h&gt;
+ 
+-/* does _NOT_ require i_mutex to be held.
++/* does _NOT_ require i_rwsem to be held.
+  *
+  * This function cannot be inlined since i_size_{read,write} is rather
+  * heavy-weight on 32-bit systems
+@@ -41,7 +41,7 @@ void fsstack_copy_inode_size(struct inode *dst, struct inode *src)
+ 	 * If CONFIG_SMP or CONFIG_PREEMPTION on 32-bit, it's vital for
+ 	 * fsstack_copy_inode_size() to hold some lock around
+ 	 * i_size_write(), otherwise i_size_read() may spin forever (see
+-	 * include/linux/fs.h).  We don't necessarily hold i_mutex when this
++	 * include/linux/fs.h).  We don't necessarily hold i_rwsem when this
+ 	 * is called, so take i_lock for that case.
+ 	 *
+ 	 * And if on 32-bit, continue our effort to keep the two halves of
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 8ec5b0204bfd..c32e7d56a5d3 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -215,7 +215,7 @@ EXPORT_SYMBOL(__vfs_setxattr);
+  *
+  *  returns the result of the internal setxattr or setsecurity operations.
+  *
+- *  This function requires the caller to lock the inode's i_mutex before it
++ *  This function requires the caller to lock the inode's i_rwsem before it
+  *  is executed. It also assumes that the caller will make the appropriate
+  *  permission checks.
+  */
+diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
+index 25c4a5afbd44..cfb0dd1ea49c 100644
+--- a/include/linux/exportfs.h
++++ b/include/linux/exportfs.h
+@@ -230,7 +230,7 @@ struct handle_to_path_ctx {
+  *    directory.  The name should be stored in the @name (with the
+  *    understanding that it is already pointing to a %NAME_MAX+1 sized
+  *    buffer.   get_name() should return %0 on success, a negative error code
+- *    or error.  @get_name will be called without @parent-&gt;i_mutex held.
++ *    or error.  @get_name will be called without @parent-&gt;i_rwsem held.
+  *
+  * get_parent:
+  *    @get_parent should find the parent directory for the given @child which
+@@ -247,7 +247,7 @@ struct handle_to_path_ctx {
+  *    @commit_metadata should commit metadata changes to stable storage.
+  *
+  * Locking rules:
+- *    get_parent is called with child-&gt;d_inode-&gt;i_mutex down
++ *    get_parent is called with child-&gt;d_inode-&gt;i_rwsem down
+  *    get_name is not (which is possibly inconsistent)
+  */
+ 
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 1d9586a78041..09e3e80b0528 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -837,7 +837,7 @@ static inline void inode_fake_hash(struct inode *inode)
+ }
+ 
+ /*
+- * inode-&gt;i_mutex nesting subclasses for the lock validator:
++ * inode-&gt;i_rwsem nesting subclasses for the lock validator:
+  *
+  * 0: the object of the current VFS operation
+  * 1: parent
+@@ -989,7 +989,7 @@ static inline loff_t i_size_read(const struct inode *inode)
+ 
+ /*
+  * NOTE: unlike i_size_read(), i_size_write() does need locking around it
+- * (normally i_mutex), otherwise on 32bit/SMP an update of i_size_seqcount
++ * (normally i_rwsem), otherwise on 32bit/SMP an update of i_size_seqcount
+  * can be lost, resulting in subsequent i_size_read() calls spinning forever.
+  */
+ static inline void i_size_write(struct inode *inode, loff_t i_size)
+@@ -1921,7 +1921,7 @@ static inline void sb_end_intwrite(struct super_block *sb)
+  * freeze protection should be the outermost lock. In particular, we have:
+  *
+  * sb_start_write
+- *   -&gt; i_mutex			(write path, truncate, directory ops, ...)
++ *   -&gt; i_rwsem			(write path, truncate, directory ops, ...)
+  *   -&gt; s_umount		(freeze_super, thaw_super)
+  */
+ static inline void sb_start_write(struct super_block *sb)
+diff --git a/include/linux/fs_stack.h b/include/linux/fs_stack.h
+index 2b1f74b24070..0cc2fa283305 100644
+--- a/include/linux/fs_stack.h
++++ b/include/linux/fs_stack.h
+@@ -3,7 +3,7 @@
+ #define _LINUX_FS_STACK_H
+ 
+ /* This file defines generic functions used primarily by stackable
+- * filesystems; none of these functions require i_mutex to be held.
++ * filesystems; none of these functions require i_rwsem to be held.
+  */
+ 
+ #include &lt;linux/fs.h&gt;
+diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
+index 06cc8888199e..c334f82ed385 100644
+--- a/include/linux/quotaops.h
++++ b/include/linux/quotaops.h
+@@ -19,7 +19,7 @@ static inline struct quota_info *sb_dqopt(struct super_block *sb)
+ 	return &amp;sb-&gt;s_dquot;
+ }
+ 
+-/* i_mutex must being held */
++/* i_rwsem must being held */
+ static inline bool is_quota_modification(struct mnt_idmap *idmap,
+ 					 struct inode *inode, struct iattr *ia)
+ {</pre><hr><pre>commit 35e9a9f93994d7f7d12afa41169c7ba05513721b
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Mon Apr 20 22:42:24 2015 -0500
+
+    SCSI: add 1024 max sectors black list flag
+    
+    This works around a issue with qnap iscsi targets not handling large IOs
+    very well.
+    
+    The target returns:
+    
+    VPD INQUIRY: Block limits page (SBC)
+      Maximum compare and write length: 1 blocks
+      Optimal transfer length granularity: 1 blocks
+      Maximum transfer length: 4294967295 blocks
+      Optimal transfer length: 4294967295 blocks
+      Maximum prefetch, xdread, xdwrite transfer length: 0 blocks
+      Maximum unmap LBA count: 8388607
+      Maximum unmap block descriptor count: 1
+      Optimal unmap granularity: 16383
+      Unmap granularity alignment valid: 0
+      Unmap granularity alignment: 0
+      Maximum write same length: 0xffffffff blocks
+      Maximum atomic transfer length: 0
+      Atomic alignment: 0
+      Atomic transfer length granularity: 0
+    
+    and it is *sometimes* able to handle at least one IO of size up to 8 MB. We
+    have seen in traces where it will sometimes work, but other times it
+    looks like it fails and it looks like it returns failures if we send
+    multiple large IOs sometimes. Also it looks like it can return 2 different
+    errors. It will sometimes send iscsi reject errors indicating out of
+    resources or it will send invalid cdb illegal requests check conditions.
+    And then when it sends iscsi rejects it does not seem to handle retries
+    when there are command sequence holes, so I could not just add code to
+    try and gracefully handle that error code.
+    
+    The problem is that we do not have a good contact for the company,
+    so we are not able to determine under what conditions it returns
+    which error and why it sometimes works.
+    
+    So, this patch just adds a new black list flag to set targets like this to
+    the old max safe sectors of 1024. The max_hw_sectors changes added in 3.19
+    caused this regression, so I also ccing stable.
+    
+    Reported-by: Christian Hesse &lt;list@eworm.de&gt;
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Cc: stable@vger.kernel.org
+    Reviewed-by: Christoph Hellwig &lt;hch@lst.de&gt;
+    Signed-off-by: James Bottomley &lt;JBottomley@Odin.com&gt;
+
+diff --git a/drivers/scsi/scsi_devinfo.c b/drivers/scsi/scsi_devinfo.c
+index 262ab837a704..9f77d23239a2 100644
+--- a/drivers/scsi/scsi_devinfo.c
++++ b/drivers/scsi/scsi_devinfo.c
+@@ -226,6 +226,7 @@ static struct {
+ 	{"PIONEER", "CD-ROM DRM-624X", NULL, BLIST_FORCELUN | BLIST_SINGLELUN},
+ 	{"Promise", "VTrak E610f", NULL, BLIST_SPARSELUN | BLIST_NO_RSOC},
+ 	{"Promise", "", NULL, BLIST_SPARSELUN},
++	{"QNAP", "iSCSI Storage", NULL, BLIST_MAX_1024},
+ 	{"QUANTUM", "XP34301", "1071", BLIST_NOTQ},
+ 	{"REGAL", "CDC-4X", NULL, BLIST_MAX5LUN | BLIST_SINGLELUN},
+ 	{"SanDisk", "ImageMate CF-SD1", NULL, BLIST_FORCELUN},
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index 60aae01caa89..6efab1c455e1 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -897,6 +897,12 @@ static int scsi_add_lun(struct scsi_device *sdev, unsigned char *inq_result,
+ 	 */
+ 	if (*bflags &amp; BLIST_MAX_512)
+ 		blk_queue_max_hw_sectors(sdev-&gt;request_queue, 512);
++	/*
++	 * Max 1024 sector transfer length for targets that report incorrect
++	 * max/optimal lengths and relied on the old block layer safe default
++	 */
++	else if (*bflags &amp; BLIST_MAX_1024)
++		blk_queue_max_hw_sectors(sdev-&gt;request_queue, 1024);
+ 
+ 	/*
+ 	 * Some devices may not want to have a start command automatically
+diff --git a/include/scsi/scsi_devinfo.h b/include/scsi/scsi_devinfo.h
+index 183eaab7c380..96e3f56519e7 100644
+--- a/include/scsi/scsi_devinfo.h
++++ b/include/scsi/scsi_devinfo.h
+@@ -36,5 +36,6 @@
+ 					     for sequential scan */
+ #define BLIST_TRY_VPD_PAGES	0x10000000 /* Attempt to read VPD pages */
+ #define BLIST_NO_RSOC		0x20000000 /* don't try to issue RSOC */
++#define BLIST_MAX_1024		0x40000000 /* maximum 1024 sector cdb length */
+ 
+ #endif</pre><hr><pre>commit b815fc12d4dd2b5586184fb4f867caff05a810d4
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Fri Apr 10 02:47:27 2015 -0500
+
+    iscsi target: fix oops when adding reject pdu
+    
+    This fixes a oops due to a double list add when adding a reject PDU for
+    iscsit_allocate_iovecs allocation failures. The cmd has already been
+    added to the conn_cmd_list in iscsit_setup_scsi_cmd, so this has us call
+    iscsit_reject_cmd.
+    
+    Note that for ERL0 the reject PDU is not actually sent, so this patch
+    is not completely tested. Just verified we do not oops. The problem is the
+    add reject functions return -1 which is returned all the way up to
+    iscsi_target_rx_thread which for ERL0 will drop the connection.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Cc: &lt;stable@vger.kernel.org&gt; # v3.10+
+    Signed-off-by: Nicholas Bellinger &lt;nab@linux-iscsi.org&gt;
+
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index d5f66be6988e..77d64251af40 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -1181,7 +1181,7 @@ iscsit_handle_scsi_cmd(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
+ 	 * traditional iSCSI block I/O.
+ 	 */
+ 	if (iscsit_allocate_iovecs(cmd) &lt; 0) {
+-		return iscsit_add_reject_cmd(cmd,
++		return iscsit_reject_cmd(cmd,
+ 				ISCSI_REASON_BOOKMARK_NO_RESOURCES, buf);
+ 	}
+ 	immed_data = cmd-&gt;immediate_data;</pre><hr><pre>commit 28072ad50ca7328bd99f9dba94ac27c723da0053
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Wed Jan 28 03:46:53 2015 -0600
+
+    scsi: fix device handler detach oops
+    
+    This fixes a regression caused by commit 1d5203 ("scsi: handle more device
+    handler setup/teardown in common code").
+    
+    The bug is that the alua detach() callout will try to access the
+    sddev-&gt;scsi_dh_data, but we have already set it to NULL. This patch
+    moves the clearing of that field to after detach() is called.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/device_handler/scsi_dh.c b/drivers/scsi/device_handler/scsi_dh.c
+index 1dba62c5cf6a..1efebc9eedfb 100644
+--- a/drivers/scsi/device_handler/scsi_dh.c
++++ b/drivers/scsi/device_handler/scsi_dh.c
+@@ -136,11 +136,12 @@ static void __detach_handler (struct kref *kref)
+ 	struct scsi_device_handler *scsi_dh = scsi_dh_data-&gt;scsi_dh;
+ 	struct scsi_device *sdev = scsi_dh_data-&gt;sdev;
+ 
++	scsi_dh-&gt;detach(sdev);
++
+ 	spin_lock_irq(sdev-&gt;request_queue-&gt;queue_lock);
+ 	sdev-&gt;scsi_dh_data = NULL;
+ 	spin_unlock_irq(sdev-&gt;request_queue-&gt;queue_lock);
+ 
+-	scsi_dh-&gt;detach(sdev);
+ 	sdev_printk(KERN_NOTICE, sdev, "%s: Detached\n", scsi_dh-&gt;name);
+ 	module_put(scsi_dh-&gt;module);
+ }</pre><hr><pre>commit 89baaa570ab0b476db09408d209578cfed700e9f
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Thu Oct 16 01:50:19 2014 -0500
+
+    libceph: use memalloc flags for net IO
+    
+    This patch has ceph's lib code use the memalloc flags.
+    
+    If the VM layer needs to write data out to free up memory to handle new
+    allocation requests, the block layer must be able to make forward progress.
+    To handle that requirement we use structs like mempools to reserve memory for
+    objects like bios and requests.
+    
+    The problem is when we send/receive block layer requests over the network
+    layer, net skb allocations can fail and the system can lock up.
+    To solve this, the memalloc related flags were added. NBD, iSCSI
+    and NFS uses these flags to tell the network/vm layer that it should
+    use memory reserves to fullfill allcation requests for structs like
+    skbs.
+    
+    I am running ceph in a bunch of VMs in my laptop, so this patch was
+    not tested very harshly.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Reviewed-by: Ilya Dryomov &lt;idryomov@redhat.com&gt;
+
+diff --git a/net/ceph/messenger.c b/net/ceph/messenger.c
+index 559c9f619c20..8d1653caffdb 100644
+--- a/net/ceph/messenger.c
++++ b/net/ceph/messenger.c
+@@ -484,7 +484,7 @@ static int ceph_tcp_connect(struct ceph_connection *con)
+ 			       IPPROTO_TCP, &amp;sock);
+ 	if (ret)
+ 		return ret;
+-	sock-&gt;sk-&gt;sk_allocation = GFP_NOFS;
++	sock-&gt;sk-&gt;sk_allocation = GFP_NOFS | __GFP_MEMALLOC;
+ 
+ #ifdef CONFIG_LOCKDEP
+ 	lockdep_set_class(&amp;sock-&gt;sk-&gt;sk_lock, &amp;socket_class);
+@@ -509,6 +509,9 @@ static int ceph_tcp_connect(struct ceph_connection *con)
+ 
+ 		return ret;
+ 	}
++
++	sk_set_memalloc(sock-&gt;sk);
++
+ 	con-&gt;sock = sock;
+ 	return 0;
+ }
+@@ -2769,8 +2772,11 @@ static void con_work(struct work_struct *work)
+ {
+ 	struct ceph_connection *con = container_of(work, struct ceph_connection,
+ 						   work.work);
++	unsigned long pflags = current-&gt;flags;
+ 	bool fault;
+ 
++	current-&gt;flags |= PF_MEMALLOC;
++
+ 	mutex_lock(&amp;con-&gt;mutex);
+ 	while (true) {
+ 		int ret;
+@@ -2824,6 +2830,8 @@ static void con_work(struct work_struct *work)
+ 		con_fault_finish(con);
+ 
+ 	con-&gt;ops-&gt;put(con);
++
++	tsk_restore_flags(current, pflags, PF_MEMALLOC);
+ }
+ 
+ /*</pre><hr><pre>commit a41a9ad3bbf61fae0b6bfb232153da60d14fdbd9
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Mon Sep 29 13:55:41 2014 -0500
+
+    be2iscsi: check ip buffer before copying
+    
+    Dan Carpenter found a issue where be2iscsi would copy the ip
+    from userspace to the driver buffer before checking the len
+    of the data being copied:
+    http://marc.info/?l=linux-scsi&amp;m=140982651504251&amp;w=2
+    
+    This patch just has us only copy what we the driver buffer
+    can support.
+    
+    Cc: &lt;stable@vger.kernel.org&gt;
+    Tested-by: John Soni Jose &lt;sony.john-n@emulex.com&gt;
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/be2iscsi/be_mgmt.c b/drivers/scsi/be2iscsi/be_mgmt.c
+index 8478506739fb..681d4e8f003a 100644
+--- a/drivers/scsi/be2iscsi/be_mgmt.c
++++ b/drivers/scsi/be2iscsi/be_mgmt.c
+@@ -943,17 +943,20 @@ mgmt_static_ip_modify(struct beiscsi_hba *phba,
+ 
+ 	if (ip_action == IP_ACTION_ADD) {
+ 		memcpy(req-&gt;ip_params.ip_record.ip_addr.addr, ip_param-&gt;value,
+-		       ip_param-&gt;len);
++		       sizeof(req-&gt;ip_params.ip_record.ip_addr.addr));
+ 
+ 		if (subnet_param)
+ 			memcpy(req-&gt;ip_params.ip_record.ip_addr.subnet_mask,
+-			       subnet_param-&gt;value, subnet_param-&gt;len);
++			       subnet_param-&gt;value,
++			       sizeof(req-&gt;ip_params.ip_record.ip_addr.subnet_mask));
+ 	} else {
+ 		memcpy(req-&gt;ip_params.ip_record.ip_addr.addr,
+-		       if_info-&gt;ip_addr.addr, ip_param-&gt;len);
++		       if_info-&gt;ip_addr.addr,
++		       sizeof(req-&gt;ip_params.ip_record.ip_addr.addr));
+ 
+ 		memcpy(req-&gt;ip_params.ip_record.ip_addr.subnet_mask,
+-		       if_info-&gt;ip_addr.subnet_mask, ip_param-&gt;len);
++		       if_info-&gt;ip_addr.subnet_mask,
++		       sizeof(req-&gt;ip_params.ip_record.ip_addr.subnet_mask));
+ 	}
+ 
+ 	rc = mgmt_exec_nonemb_cmd(phba, &amp;nonemb_cmd, NULL, 0);
+@@ -981,7 +984,7 @@ static int mgmt_modify_gateway(struct beiscsi_hba *phba, uint8_t *gt_addr,
+ 	req-&gt;action = gtway_action;
+ 	req-&gt;ip_addr.ip_type = BE2_IPV4;
+ 
+-	memcpy(req-&gt;ip_addr.addr, gt_addr, param_len);
++	memcpy(req-&gt;ip_addr.addr, gt_addr, sizeof(req-&gt;ip_addr.addr));
+ 
+ 	return mgmt_exec_nonemb_cmd(phba, &amp;nonemb_cmd, NULL, 0);
+ }</pre><hr><pre>commit 4bfb8ebf4c21f372a8677f9aa99963985e9e6539
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Mon Sep 29 13:55:42 2014 -0500
+
+    iscsi_tcp: export port being used
+    
+    This just has iscsi_tcp support ISCSI_PARAM_LOCAL_PORT which
+    exports the local port being used by the iscsi connection.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/iscsi_tcp.c b/drivers/scsi/iscsi_tcp.c
+index a669f2d11c31..427af0f24b0f 100644
+--- a/drivers/scsi/iscsi_tcp.c
++++ b/drivers/scsi/iscsi_tcp.c
+@@ -726,13 +726,18 @@ static int iscsi_sw_tcp_conn_get_param(struct iscsi_cls_conn *cls_conn,
+ 	switch(param) {
+ 	case ISCSI_PARAM_CONN_PORT:
+ 	case ISCSI_PARAM_CONN_ADDRESS:
++	case ISCSI_PARAM_LOCAL_PORT:
+ 		spin_lock_bh(&amp;conn-&gt;session-&gt;frwd_lock);
+ 		if (!tcp_sw_conn || !tcp_sw_conn-&gt;sock) {
+ 			spin_unlock_bh(&amp;conn-&gt;session-&gt;frwd_lock);
+ 			return -ENOTCONN;
+ 		}
+-		rc = kernel_getpeername(tcp_sw_conn-&gt;sock,
+-					(struct sockaddr *)&amp;addr, &amp;len);
++		if (param == ISCSI_PARAM_LOCAL_PORT)
++			rc = kernel_getsockname(tcp_sw_conn-&gt;sock,
++						(struct sockaddr *)&amp;addr, &amp;len);
++		else
++			rc = kernel_getpeername(tcp_sw_conn-&gt;sock,
++						(struct sockaddr *)&amp;addr, &amp;len);
+ 		spin_unlock_bh(&amp;conn-&gt;session-&gt;frwd_lock);
+ 		if (rc)
+ 			return rc;
+@@ -895,6 +900,7 @@ static umode_t iscsi_sw_tcp_attr_is_visible(int param_type, int param)
+ 		case ISCSI_PARAM_DATADGST_EN:
+ 		case ISCSI_PARAM_CONN_ADDRESS:
+ 		case ISCSI_PARAM_CONN_PORT:
++		case ISCSI_PARAM_LOCAL_PORT:
+ 		case ISCSI_PARAM_EXP_STATSN:
+ 		case ISCSI_PARAM_PERSISTENT_ADDRESS:
+ 		case ISCSI_PARAM_PERSISTENT_PORT:
+diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
+index 191b59793519..0d8bc6c66650 100644
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -3505,6 +3505,7 @@ int iscsi_conn_get_addr_param(struct sockaddr_storage *addr,
+ 			len = sprintf(buf, "%pI6\n", &amp;sin6-&gt;sin6_addr);
+ 		break;
+ 	case ISCSI_PARAM_CONN_PORT:
++	case ISCSI_PARAM_LOCAL_PORT:
+ 		if (sin)
+ 			len = sprintf(buf, "%hu\n", be16_to_cpu(sin-&gt;sin_port));
+ 		else</pre><hr><pre>commit db9bfd64b14a3a8f1868d2164518fdeab1b26ad1
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Wed Sep 3 00:00:39 2014 -0500
+
+    [SCSI] libiscsi: fix potential buffer overrun in __iscsi_conn_send_pdu
+    
+    This patches fixes a potential buffer overrun in __iscsi_conn_send_pdu.
+    This function is used by iscsi drivers and userspace to send iscsi PDUs/
+    commands. For login commands, we have a set buffer size. For all other
+    commands we do not support data buffers.
+    
+    This was reported by Dan Carpenter here:
+    http://www.spinics.net/lists/linux-scsi/msg66838.html
+    
+    Reported-by: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Reviewed-by: Sagi Grimberg &lt;sagig@mellanox.com&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+    Cc: stable@vger.kernel.org
+    Signed-off-by: James Bottomley &lt;JBottomley@Parallels.com&gt;
+
+diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
+index ea025e4806b6..191b59793519 100644
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -717,11 +717,21 @@ __iscsi_conn_send_pdu(struct iscsi_conn *conn, struct iscsi_hdr *hdr,
+ 			return NULL;
+ 		}
+ 
++		if (data_size &gt; ISCSI_DEF_MAX_RECV_SEG_LEN) {
++			iscsi_conn_printk(KERN_ERR, conn, "Invalid buffer len of %u for login task. Max len is %u\n", data_size, ISCSI_DEF_MAX_RECV_SEG_LEN);
++			return NULL;
++		}
++
+ 		task = conn-&gt;login_task;
+ 	} else {
+ 		if (session-&gt;state != ISCSI_STATE_LOGGED_IN)
+ 			return NULL;
+ 
++		if (data_size != 0) {
++			iscsi_conn_printk(KERN_ERR, conn, "Can not send data buffer of len %u for op 0x%x\n", data_size, opcode);
++			return NULL;
++		}
++
+ 		BUG_ON(conn-&gt;c_stage == ISCSI_CONN_INITIAL_STAGE);
+ 		BUG_ON(conn-&gt;c_stage == ISCSI_CONN_STOPPED);
+ </pre><hr><pre>commit cbaa42213461e9a722a391b3800d7c111de7049b
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Wed Sep 3 00:00:39 2014 -0500
+
+    libiscsi: fix potential buffer overrun in __iscsi_conn_send_pdu
+    
+    This patches fixes a potential buffer overrun in __iscsi_conn_send_pdu.
+    This function is used by iscsi drivers and userspace to send iscsi PDUs/
+    commands. For login commands, we have a set buffer size. For all other
+    commands we do not support data buffers.
+    
+    This was reported by Dan Carpenter here:
+    http://www.spinics.net/lists/linux-scsi/msg66838.html
+    
+    Reported-by: Dan Carpenter &lt;dan.carpenter@oracle.com&gt;
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Reviewed-by: Sagi Grimberg &lt;sagig@mellanox.com&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
+index ea025e4806b6..191b59793519 100644
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -717,11 +717,21 @@ __iscsi_conn_send_pdu(struct iscsi_conn *conn, struct iscsi_hdr *hdr,
+ 			return NULL;
+ 		}
+ 
++		if (data_size &gt; ISCSI_DEF_MAX_RECV_SEG_LEN) {
++			iscsi_conn_printk(KERN_ERR, conn, "Invalid buffer len of %u for login task. Max len is %u\n", data_size, ISCSI_DEF_MAX_RECV_SEG_LEN);
++			return NULL;
++		}
++
+ 		task = conn-&gt;login_task;
+ 	} else {
+ 		if (session-&gt;state != ISCSI_STATE_LOGGED_IN)
+ 			return NULL;
+ 
++		if (data_size != 0) {
++			iscsi_conn_printk(KERN_ERR, conn, "Can not send data buffer of len %u for op 0x%x\n", data_size, opcode);
++			return NULL;
++		}
++
+ 		BUG_ON(conn-&gt;c_stage == ISCSI_CONN_INITIAL_STAGE);
+ 		BUG_ON(conn-&gt;c_stage == ISCSI_CONN_STOPPED);
+ </pre><hr><pre>commit bfb5087924921f147d4c5d731cbc8c3a069bed0b
+Author: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+Date:   Sun Aug 3 18:37:52 2014 -0500
+
+    iscsi class: Fix freeing of skb in get host error path
+    
+    If get_host_stats failes we are using kfree to free the
+    skb. We should be using kfree_skb.
+    
+    This patch was made over Christoph's scsi-queue drivers-for-3.17 branch.
+    
+    Signed-off-by: Mike Christie &lt;michaelc@cs.wisc.edu&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 534d3fb87658..67d43e35693d 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3468,7 +3468,7 @@ iscsi_get_host_stats(struct iscsi_transport *transport, struct nlmsghdr *nlh)
+ 
+ 		err = transport-&gt;get_host_stats(shost, buf, host_stats_size);
+ 		if (err) {
+-			kfree(skbhost_stats);
++			kfree_skb(skbhost_stats);
+ 			goto exit_host_stats;
+ 		}
+ </pre>
+    <div class="pagination">
+        <span>[1]</span><a href='5_2.html'>2</a><a href='5_3.html'>3</a><a href='5_4.html'>4</a><a href='5_5.html'>5</a><a href='5_6.html'>6</a><a href='5_7.html'>7</a><a href='5_8.html'>8</a><a href='5_9.html'>9</a><a href='5_10.html'>10</a><a href='5_11.html'>11</a><a href='5_12.html'>12</a><a href='5_13.html'>13</a><a href='5_14.html'>14</a><a href='5_15.html'>15</a><a href='5_16.html'>16</a><a href='5_17.html'>17</a><a href='5_18.html'>18</a><a href='5_19.html'>19</a><a href='5_20.html'>20</a><a href='5_21.html'>21</a><a href='5_22.html'>22</a><a href='5_23.html'>23</a><a href='5_24.html'>24</a><a href='5_25.html'>25</a><a href='5_26.html'>26</a><a href='5_27.html'>27</a><a href='5_28.html'>28</a><a href='5_29.html'>29</a><a href='5_30.html'>30</a><a href='5_31.html'>31</a><a href='5_32.html'>32</a><a href='5_33.html'>33</a><a href='5_34.html'>34</a><a href='5_35.html'>35</a><a href='5_36.html'>36</a><a href='5_37.html'>37</a><a href='5_38.html'>38</a><a href='5_39.html'>39</a><a href='5_40.html'>40</a><a href='5_41.html'>41</a><a href='5_42.html'>42</a><a href='5_43.html'>43</a><a href='5_44.html'>44</a><a href='5_45.html'>45</a><a href='5_46.html'>46</a><a href='5_47.html'>47</a><a href='5_48.html'>48</a><a href='5_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

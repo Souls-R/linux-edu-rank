@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of Illinois Urbana-Champaign</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of Illinois Urbana-Champaign</h1>
+    <div class="pagination">
+        <a href='23_3.html'>&lt;&lt;Prev</a><a href='23.html'>1</a><a href='23_2.html'>2</a><a href='23_3.html'>3</a><span>[4]</span>
+    </div>
+    <hr>
+    <pre>commit 9b30a26bf3d2c56dcb1c3afaca28b73fcd6ed405
+Author: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+Date:   Thu Jul 30 05:25:29 2009 -0500
+
+    perf tools: Fix faulty check
+    
+    This patch fixes a spelling error that has resulted from copy
+    and pasting. The location of the error was found using a
+    semantic patch but the semantic patch was not trying to find
+    these errors. After looking things over it seemed logical that
+    this change was needed. Please review it and then include the
+    patch if it is in fact the correct change.
+    
+    Signed-off-by: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+    Signed-off-by: Peter Zijlstra &lt;a.p.zijlstra@chello.nl&gt;
+    Cc: Mike Galbraith &lt;efault@gmx.de&gt;
+    Cc: Paul Mackerras &lt;paulus@samba.org&gt;
+    Cc: Arnaldo Carvalho de Melo &lt;acme@redhat.com&gt;
+    Cc: Frederic Weisbecker &lt;fweisbec@gmail.com&gt;
+    LKML-Reference: &lt;1248949529-20891-1-git-send-email-sgayda2@uiuc.edu&gt;
+    Signed-off-by: Ingo Molnar &lt;mingo@elte.hu&gt;
+
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 28106059bf12..b4fe0579bd6b 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -565,7 +565,7 @@ static int dso__load_sym(struct dso *self, int fd, const char *name,
+ 		goto out_elf_end;
+ 
+ 	secstrs = elf_getdata(sec_strndx, NULL);
+-	if (symstrs == NULL)
++	if (secstrs == NULL)
+ 		goto out_elf_end;
+ 
+ 	nr_syms = shdr.sh_size / shdr.sh_entsize;</pre><hr><pre>commit 450d6e306b4717bfae11218a02648509baf04ce1
+Author: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+Date:   Thu Jul 30 10:25:19 2009 +0000
+
+    parisc: fixed faulty check in lba_pci
+    
+    This patche fixes a spelling error that has resulted from copy and pasting.
+    The location of the error was found using a semantic patch but the semantic
+    patch was not trying to find these errors. After looking things over it
+    seemed logical that this change was needed.
+    
+    Signed-off-by: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+    Signed-off-by: Helge Deller &lt;deller@gmx.de&gt;
+
+diff --git a/drivers/parisc/lba_pci.c b/drivers/parisc/lba_pci.c
+index ede614616f8e..3aeb3279c92a 100644
+--- a/drivers/parisc/lba_pci.c
++++ b/drivers/parisc/lba_pci.c
+@@ -992,7 +992,7 @@ lba_pat_resources(struct parisc_device *pa_dev, struct lba_device *lba_dev)
+ 		return;
+ 
+ 	io_pdc_cell = kzalloc(sizeof(pdc_pat_cell_mod_maddr_block_t), GFP_KERNEL);
+-	if (!pa_pdc_cell) {
++	if (!io_pdc_cell) {
+ 		kfree(pa_pdc_cell);
+ 		return;
+ 	}</pre>
+    <div class="pagination">
+        <a href='23_3.html'>&lt;&lt;Prev</a><a href='23.html'>1</a><a href='23_2.html'>2</a><a href='23_3.html'>3</a><span>[4]</span>
+    <div>
+</body>

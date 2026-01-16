@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Carnegie Mellon University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Carnegie Mellon University</h1>
+    <div class="pagination">
+        <a href='15_5.html'>&lt;&lt;Prev</a><a href='15.html'>1</a><a href='15_2.html'>2</a><a href='15_3.html'>3</a><a href='15_4.html'>4</a><a href='15_5.html'>5</a><span>[6]</span><a href='15_7.html'>7</a><a href='15_8.html'>8</a><a href='15_7.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 75f3e8e47f381074801d0034874d20c638d9e3d9
+Author: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+Date:   Thu Jan 28 09:23:11 2016 -0500
+
+    firmware: introduce sysfs driver for QEMU's fw_cfg device
+    
+    Make fw_cfg entries of type "file" available via sysfs. Entries
+    are listed under /sys/firmware/qemu_fw_cfg/by_key, in folders
+    named after each entry's selector key. Filename, selector value,
+    and size read-only attributes are included for each entry. Also,
+    a "raw" attribute allows retrieval of the full binary content of
+    each entry.
+    
+    The fw_cfg device can be instantiated automatically from ACPI or
+    the Device Tree, or manually by using a kernel module (or command
+    line) parameter, with a syntax outlined in the documentation file.
+    
+    Signed-off-by: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/Documentation/ABI/testing/sysfs-firmware-qemu_fw_cfg b/Documentation/ABI/testing/sysfs-firmware-qemu_fw_cfg
+new file mode 100644
+index 000000000000..e9e58d4ea60a
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-firmware-qemu_fw_cfg
+@@ -0,0 +1,58 @@
++What:		/sys/firmware/qemu_fw_cfg/
++Date:		August 2015
++Contact:	Gabriel Somlo &lt;somlo@cmu.edu&gt;
++Description:
++		Several different architectures supported by QEMU (x86, arm,
++		sun4*, ppc/mac) are provisioned with a firmware configuration
++		(fw_cfg) device, originally intended as a way for the host to
++		provide configuration data to the guest firmware. Starting
++		with QEMU v2.4, arbitrary fw_cfg file entries may be specified
++		by the user on the command line, which makes fw_cfg additionally
++		useful as an out-of-band, asynchronous mechanism for providing
++		configuration data to the guest userspace.
++
++		The authoritative guest-side hardware interface documentation
++		to the fw_cfg device can be found in "docs/specs/fw_cfg.txt"
++		in the QEMU source tree.
++
++		=== SysFS fw_cfg Interface ===
++
++		The fw_cfg sysfs interface described in this document is only
++		intended to display discoverable blobs (i.e., those registered
++		with the file directory), as there is no way to determine the
++		presence or size of "legacy" blobs (with selector keys between
++		0x0002 and 0x0018) programmatically.
++
++		All fw_cfg information is shown under:
++
++			/sys/firmware/qemu_fw_cfg/
++
++		The only legacy blob displayed is the fw_cfg device revision:
++
++			/sys/firmware/qemu_fw_cfg/rev
++
++		--- Discoverable fw_cfg blobs by selector key ---
++
++		All discoverable blobs listed in the fw_cfg file directory are
++		displayed as entries named after their unique selector key
++		value, e.g.:
++
++			/sys/firmware/qemu_fw_cfg/by_key/32
++			/sys/firmware/qemu_fw_cfg/by_key/33
++			/sys/firmware/qemu_fw_cfg/by_key/34
++			...
++
++		Each such fw_cfg sysfs entry has the following values exported
++		as attributes:
++
++		name  	: The 56-byte nul-terminated ASCII string used as the
++			  blob's 'file name' in the fw_cfg directory.
++		size  	: The length of the blob, as given in the fw_cfg
++			  directory.
++		key	: The value of the blob's selector key as given in the
++			  fw_cfg directory. This value is the same as used in
++			  the parent directory name.
++		raw	: The raw bytes of the blob, obtained by selecting the
++			  entry via the control register, and reading a number
++			  of bytes equal to the blob size from the data
++			  register.
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index 49a3a1185bb6..5130f74ae3bd 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -161,6 +161,25 @@ config RASPBERRYPI_FIRMWARE
+ 	  This option enables support for communicating with the firmware on the
+ 	  Raspberry Pi.
+ 
++config FW_CFG_SYSFS
++	tristate "QEMU fw_cfg device support in sysfs"
++	depends on SYSFS &amp;&amp; (ARM || ARM64 || PPC_PMAC || SPARC || X86)
++	default n
++	help
++	  Say Y or M here to enable the exporting of the QEMU firmware
++	  configuration (fw_cfg) file entries via sysfs. Entries are
++	  found under /sys/firmware/fw_cfg when this option is enabled
++	  and loaded.
++
++config FW_CFG_SYSFS_CMDLINE
++	bool "QEMU fw_cfg device parameter parsing"
++	depends on FW_CFG_SYSFS
++	help
++	  Allow the qemu_fw_cfg device to be initialized via the kernel
++	  command line or using a module parameter.
++	  WARNING: Using incorrect parameters (base address in particular)
++	  may crash your system.
++
+ config QCOM_SCM
+ 	bool
+ 	depends on ARM || ARM64
+diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+index 48dd4175297e..474bada56fcd 100644
+--- a/drivers/firmware/Makefile
++++ b/drivers/firmware/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_ISCSI_IBFT_FIND)	+= iscsi_ibft_find.o
+ obj-$(CONFIG_ISCSI_IBFT)	+= iscsi_ibft.o
+ obj-$(CONFIG_FIRMWARE_MEMMAP)	+= memmap.o
+ obj-$(CONFIG_RASPBERRYPI_FIRMWARE) += raspberrypi.o
++obj-$(CONFIG_FW_CFG_SYSFS)	+= qemu_fw_cfg.o
+ obj-$(CONFIG_QCOM_SCM)		+= qcom_scm.o
+ obj-$(CONFIG_QCOM_SCM_64)	+= qcom_scm-64.o
+ obj-$(CONFIG_QCOM_SCM_32)	+= qcom_scm-32.o
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+new file mode 100644
+index 000000000000..83e8a5c8f887
+--- /dev/null
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -0,0 +1,648 @@
++/*
++ * drivers/firmware/qemu_fw_cfg.c
++ *
++ * Copyright 2015 Carnegie Mellon University
++ *
++ * Expose entries from QEMU's firmware configuration (fw_cfg) device in
++ * sysfs (read-only, under "/sys/firmware/qemu_fw_cfg/...").
++ *
++ * The fw_cfg device may be instantiated via either an ACPI node (on x86
++ * and select subsets of aarch64), a Device Tree node (on arm), or using
++ * a kernel module (or command line) parameter with the following syntax:
++ *
++ *      [fw_cfg.]ioport=&lt;size&gt;@&lt;base&gt;[:&lt;ctrl_off&gt;:&lt;data_off&gt;]
++ * or
++ *      [fw_cfg.]mmio=&lt;size&gt;@&lt;base&gt;[:&lt;ctrl_off&gt;:&lt;data_off&gt;]
++ *
++ * where:
++ *      &lt;size&gt;     := size of ioport or mmio range
++ *      &lt;base&gt;     := physical base address of ioport or mmio range
++ *      &lt;ctrl_off&gt; := (optional) offset of control register
++ *      &lt;data_off&gt; := (optional) offset of data register
++ *
++ * e.g.:
++ *      fw_cfg.ioport=2@0x510:0:1		(the default on x86)
++ * or
++ *      fw_cfg.mmio=0xA@0x9020000:8:0		(the default on arm)
++ */
++
++#include &lt;linux/module.h&gt;
++#include &lt;linux/platform_device.h&gt;
++#include &lt;linux/acpi.h&gt;
++#include &lt;linux/slab.h&gt;
++#include &lt;linux/io.h&gt;
++#include &lt;linux/ioport.h&gt;
++
++MODULE_AUTHOR("Gabriel L. Somlo &lt;somlo@cmu.edu&gt;");
++MODULE_DESCRIPTION("QEMU fw_cfg sysfs support");
++MODULE_LICENSE("GPL");
++
++/* selector key values for "well-known" fw_cfg entries */
++#define FW_CFG_SIGNATURE  0x00
++#define FW_CFG_ID         0x01
++#define FW_CFG_FILE_DIR   0x19
++
++/* size in bytes of fw_cfg signature */
++#define FW_CFG_SIG_SIZE 4
++
++/* fw_cfg "file name" is up to 56 characters (including terminating nul) */
++#define FW_CFG_MAX_FILE_PATH 56
++
++/* fw_cfg file directory entry type */
++struct fw_cfg_file {
++	u32 size;
++	u16 select;
++	u16 reserved;
++	char name[FW_CFG_MAX_FILE_PATH];
++};
++
++/* fw_cfg device i/o register addresses */
++static bool fw_cfg_is_mmio;
++static phys_addr_t fw_cfg_p_base;
++static resource_size_t fw_cfg_p_size;
++static void __iomem *fw_cfg_dev_base;
++static void __iomem *fw_cfg_reg_ctrl;
++static void __iomem *fw_cfg_reg_data;
++
++/* atomic access to fw_cfg device (potentially slow i/o, so using mutex) */
++static DEFINE_MUTEX(fw_cfg_dev_lock);
++
++/* pick appropriate endianness for selector key */
++static inline u16 fw_cfg_sel_endianness(u16 key)
++{
++	return fw_cfg_is_mmio ? cpu_to_be16(key) : cpu_to_le16(key);
++}
++
++/* read chunk of given fw_cfg blob (caller responsible for sanity-check) */
++static inline void fw_cfg_read_blob(u16 key,
++				    void *buf, loff_t pos, size_t count)
++{
++	mutex_lock(&amp;fw_cfg_dev_lock);
++	iowrite16(fw_cfg_sel_endianness(key), fw_cfg_reg_ctrl);
++	while (pos-- &gt; 0)
++		ioread8(fw_cfg_reg_data);
++	ioread8_rep(fw_cfg_reg_data, buf, count);
++	mutex_unlock(&amp;fw_cfg_dev_lock);
++}
++
++/* clean up fw_cfg device i/o */
++static void fw_cfg_io_cleanup(void)
++{
++	if (fw_cfg_is_mmio) {
++		iounmap(fw_cfg_dev_base);
++		release_mem_region(fw_cfg_p_base, fw_cfg_p_size);
++	} else {
++		ioport_unmap(fw_cfg_dev_base);
++		release_region(fw_cfg_p_base, fw_cfg_p_size);
++	}
++}
++
++/* arch-specific ctrl &amp; data register offsets are not available in ACPI, DT */
++#if !(defined(FW_CFG_CTRL_OFF) &amp;&amp; defined(FW_CTRL_DATA_OFF))
++# if (defined(CONFIG_ARM) || defined(CONFIG_ARM64))
++#  define FW_CFG_CTRL_OFF 0x08
++#  define FW_CFG_DATA_OFF 0x00
++# elif (defined(CONFIG_PPC_PMAC) || defined(CONFIG_SPARC32)) /* ppc/mac,sun4m */
++#  define FW_CFG_CTRL_OFF 0x00
++#  define FW_CFG_DATA_OFF 0x02
++# elif (defined(CONFIG_X86) || defined(CONFIG_SPARC64)) /* x86, sun4u */
++#  define FW_CFG_CTRL_OFF 0x00
++#  define FW_CFG_DATA_OFF 0x01
++# else
++#  warning "QEMU FW_CFG may not be available on this architecture!"
++#  define FW_CFG_CTRL_OFF 0x00
++#  define FW_CFG_DATA_OFF 0x01
++# endif
++#endif
++
++/* initialize fw_cfg device i/o from platform data */
++static int fw_cfg_do_platform_probe(struct platform_device *pdev)
++{
++	char sig[FW_CFG_SIG_SIZE];
++	struct resource *range, *ctrl, *data;
++
++	/* acquire i/o range details */
++	fw_cfg_is_mmio = false;
++	range = platform_get_resource(pdev, IORESOURCE_IO, 0);
++	if (!range) {
++		fw_cfg_is_mmio = true;
++		range = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++		if (!range)
++			return -EINVAL;
++	}
++	fw_cfg_p_base = range-&gt;start;
++	fw_cfg_p_size = resource_size(range);
++
++	if (fw_cfg_is_mmio) {
++		if (!request_mem_region(fw_cfg_p_base,
++					fw_cfg_p_size, "fw_cfg_mem"))
++			return -EBUSY;
++		fw_cfg_dev_base = ioremap(fw_cfg_p_base, fw_cfg_p_size);
++		if (!fw_cfg_dev_base) {
++			release_mem_region(fw_cfg_p_base, fw_cfg_p_size);
++			return -EFAULT;
++		}
++	} else {
++		if (!request_region(fw_cfg_p_base,
++				    fw_cfg_p_size, "fw_cfg_io"))
++			return -EBUSY;
++		fw_cfg_dev_base = ioport_map(fw_cfg_p_base, fw_cfg_p_size);
++		if (!fw_cfg_dev_base) {
++			release_region(fw_cfg_p_base, fw_cfg_p_size);
++			return -EFAULT;
++		}
++	}
++
++	/* were custom register offsets provided (e.g. on the command line)? */
++	ctrl = platform_get_resource_byname(pdev, IORESOURCE_REG, "ctrl");
++	data = platform_get_resource_byname(pdev, IORESOURCE_REG, "data");
++	if (ctrl &amp;&amp; data) {
++		fw_cfg_reg_ctrl = fw_cfg_dev_base + ctrl-&gt;start;
++		fw_cfg_reg_data = fw_cfg_dev_base + data-&gt;start;
++	} else {
++		/* use architecture-specific offsets */
++		fw_cfg_reg_ctrl = fw_cfg_dev_base + FW_CFG_CTRL_OFF;
++		fw_cfg_reg_data = fw_cfg_dev_base + FW_CFG_DATA_OFF;
++	}
++
++	/* verify fw_cfg device signature */
++	fw_cfg_read_blob(FW_CFG_SIGNATURE, sig, 0, FW_CFG_SIG_SIZE);
++	if (memcmp(sig, "QEMU", FW_CFG_SIG_SIZE) != 0) {
++		fw_cfg_io_cleanup();
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++/* fw_cfg revision attribute, in /sys/firmware/qemu_fw_cfg top-level dir. */
++static u32 fw_cfg_rev;
++
++static ssize_t fw_cfg_showrev(struct kobject *k, struct attribute *a, char *buf)
++{
++	return sprintf(buf, "%u\n", fw_cfg_rev);
++}
++
++static const struct {
++	struct attribute attr;
++	ssize_t (*show)(struct kobject *k, struct attribute *a, char *buf);
++} fw_cfg_rev_attr = {
++	.attr = { .name = "rev", .mode = S_IRUSR },
++	.show = fw_cfg_showrev,
++};
++
++/* fw_cfg_sysfs_entry type */
++struct fw_cfg_sysfs_entry {
++	struct kobject kobj;
++	struct fw_cfg_file f;
++	struct list_head list;
++};
++
++/* get fw_cfg_sysfs_entry from kobject member */
++static inline struct fw_cfg_sysfs_entry *to_entry(struct kobject *kobj)
++{
++	return container_of(kobj, struct fw_cfg_sysfs_entry, kobj);
++}
++
++/* fw_cfg_sysfs_attribute type */
++struct fw_cfg_sysfs_attribute {
++	struct attribute attr;
++	ssize_t (*show)(struct fw_cfg_sysfs_entry *entry, char *buf);
++};
++
++/* get fw_cfg_sysfs_attribute from attribute member */
++static inline struct fw_cfg_sysfs_attribute *to_attr(struct attribute *attr)
++{
++	return container_of(attr, struct fw_cfg_sysfs_attribute, attr);
++}
++
++/* global cache of fw_cfg_sysfs_entry objects */
++static LIST_HEAD(fw_cfg_entry_cache);
++
++/* kobjects removed lazily by kernel, mutual exclusion needed */
++static DEFINE_SPINLOCK(fw_cfg_cache_lock);
++
++static inline void fw_cfg_sysfs_cache_enlist(struct fw_cfg_sysfs_entry *entry)
++{
++	spin_lock(&amp;fw_cfg_cache_lock);
++	list_add_tail(&amp;entry-&gt;list, &amp;fw_cfg_entry_cache);
++	spin_unlock(&amp;fw_cfg_cache_lock);
++}
++
++static inline void fw_cfg_sysfs_cache_delist(struct fw_cfg_sysfs_entry *entry)
++{
++	spin_lock(&amp;fw_cfg_cache_lock);
++	list_del(&amp;entry-&gt;list);
++	spin_unlock(&amp;fw_cfg_cache_lock);
++}
++
++static void fw_cfg_sysfs_cache_cleanup(void)
++{
++	struct fw_cfg_sysfs_entry *entry, *next;
++
++	list_for_each_entry_safe(entry, next, &amp;fw_cfg_entry_cache, list) {
++		/* will end up invoking fw_cfg_sysfs_cache_delist()
++		 * via each object's release() method (i.e. destructor)
++		 */
++		kobject_put(&amp;entry-&gt;kobj);
++	}
++}
++
++/* default_attrs: per-entry attributes and show methods */
++
++#define FW_CFG_SYSFS_ATTR(_attr) \
++struct fw_cfg_sysfs_attribute fw_cfg_sysfs_attr_##_attr = { \
++	.attr = { .name = __stringify(_attr), .mode = S_IRUSR }, \
++	.show = fw_cfg_sysfs_show_##_attr, \
++}
++
++static ssize_t fw_cfg_sysfs_show_size(struct fw_cfg_sysfs_entry *e, char *buf)
++{
++	return sprintf(buf, "%u\n", e-&gt;f.size);
++}
++
++static ssize_t fw_cfg_sysfs_show_key(struct fw_cfg_sysfs_entry *e, char *buf)
++{
++	return sprintf(buf, "%u\n", e-&gt;f.select);
++}
++
++static ssize_t fw_cfg_sysfs_show_name(struct fw_cfg_sysfs_entry *e, char *buf)
++{
++	return sprintf(buf, "%s\n", e-&gt;f.name);
++}
++
++static FW_CFG_SYSFS_ATTR(size);
++static FW_CFG_SYSFS_ATTR(key);
++static FW_CFG_SYSFS_ATTR(name);
++
++static struct attribute *fw_cfg_sysfs_entry_attrs[] = {
++	&amp;fw_cfg_sysfs_attr_size.attr,
++	&amp;fw_cfg_sysfs_attr_key.attr,
++	&amp;fw_cfg_sysfs_attr_name.attr,
++	NULL,
++};
++
++/* sysfs_ops: find fw_cfg_[entry, attribute] and call appropriate show method */
++static ssize_t fw_cfg_sysfs_attr_show(struct kobject *kobj, struct attribute *a,
++				      char *buf)
++{
++	struct fw_cfg_sysfs_entry *entry = to_entry(kobj);
++	struct fw_cfg_sysfs_attribute *attr = to_attr(a);
++
++	return attr-&gt;show(entry, buf);
++}
++
++static const struct sysfs_ops fw_cfg_sysfs_attr_ops = {
++	.show = fw_cfg_sysfs_attr_show,
++};
++
++/* release: destructor, to be called via kobject_put() */
++static void fw_cfg_sysfs_release_entry(struct kobject *kobj)
++{
++	struct fw_cfg_sysfs_entry *entry = to_entry(kobj);
++
++	fw_cfg_sysfs_cache_delist(entry);
++	kfree(entry);
++}
++
++/* kobj_type: ties together all properties required to register an entry */
++static struct kobj_type fw_cfg_sysfs_entry_ktype = {
++	.default_attrs = fw_cfg_sysfs_entry_attrs,
++	.sysfs_ops = &amp;fw_cfg_sysfs_attr_ops,
++	.release = fw_cfg_sysfs_release_entry,
++};
++
++/* raw-read method and attribute */
++static ssize_t fw_cfg_sysfs_read_raw(struct file *filp, struct kobject *kobj,
++				     struct bin_attribute *bin_attr,
++				     char *buf, loff_t pos, size_t count)
++{
++	struct fw_cfg_sysfs_entry *entry = to_entry(kobj);
++
++	if (pos &gt; entry-&gt;f.size)
++		return -EINVAL;
++
++	if (count &gt; entry-&gt;f.size - pos)
++		count = entry-&gt;f.size - pos;
++
++	fw_cfg_read_blob(entry-&gt;f.select, buf, pos, count);
++	return count;
++}
++
++static struct bin_attribute fw_cfg_sysfs_attr_raw = {
++	.attr = { .name = "raw", .mode = S_IRUSR },
++	.read = fw_cfg_sysfs_read_raw,
++};
++
++/* kobjects representing top-level and by_key folders */
++static struct kobject *fw_cfg_top_ko;
++static struct kobject *fw_cfg_sel_ko;
++
++/* register an individual fw_cfg file */
++static int fw_cfg_register_file(const struct fw_cfg_file *f)
++{
++	int err;
++	struct fw_cfg_sysfs_entry *entry;
++
++	/* allocate new entry */
++	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
++	if (!entry)
++		return -ENOMEM;
++
++	/* set file entry information */
++	memcpy(&amp;entry-&gt;f, f, sizeof(struct fw_cfg_file));
++
++	/* register entry under "/sys/firmware/qemu_fw_cfg/by_key/" */
++	err = kobject_init_and_add(&amp;entry-&gt;kobj, &amp;fw_cfg_sysfs_entry_ktype,
++				   fw_cfg_sel_ko, "%d", entry-&gt;f.select);
++	if (err)
++		goto err_register;
++
++	/* add raw binary content access */
++	err = sysfs_create_bin_file(&amp;entry-&gt;kobj, &amp;fw_cfg_sysfs_attr_raw);
++	if (err)
++		goto err_add_raw;
++
++	/* success, add entry to global cache */
++	fw_cfg_sysfs_cache_enlist(entry);
++	return 0;
++
++err_add_raw:
++	kobject_del(&amp;entry-&gt;kobj);
++err_register:
++	kfree(entry);
++	return err;
++}
++
++/* iterate over all fw_cfg directory entries, registering each one */
++static int fw_cfg_register_dir_entries(void)
++{
++	int ret = 0;
++	u32 count, i;
++	struct fw_cfg_file *dir;
++	size_t dir_size;
++
++	fw_cfg_read_blob(FW_CFG_FILE_DIR, &amp;count, 0, sizeof(count));
++	count = be32_to_cpu(count);
++	dir_size = count * sizeof(struct fw_cfg_file);
++
++	dir = kmalloc(dir_size, GFP_KERNEL);
++	if (!dir)
++		return -ENOMEM;
++
++	fw_cfg_read_blob(FW_CFG_FILE_DIR, dir, sizeof(count), dir_size);
++
++	for (i = 0; i &lt; count; i++) {
++		dir[i].size = be32_to_cpu(dir[i].size);
++		dir[i].select = be16_to_cpu(dir[i].select);
++		ret = fw_cfg_register_file(&amp;dir[i]);
++		if (ret)
++			break;
++	}
++
++	kfree(dir);
++	return ret;
++}
++
++/* unregister top-level or by_key folder */
++static inline void fw_cfg_kobj_cleanup(struct kobject *kobj)
++{
++	kobject_del(kobj);
++	kobject_put(kobj);
++}
++
++static int fw_cfg_sysfs_probe(struct platform_device *pdev)
++{
++	int err;
++
++	/* NOTE: If we supported multiple fw_cfg devices, we'd first create
++	 * a subdirectory named after e.g. pdev-&gt;id, then hang per-device
++	 * by_key subdirectories underneath it. However, only
++	 * one fw_cfg device exist system-wide, so if one was already found
++	 * earlier, we might as well stop here.
++	 */
++	if (fw_cfg_sel_ko)
++		return -EBUSY;
++
++	/* create by_key subdirectory of /sys/firmware/qemu_fw_cfg/ */
++	err = -ENOMEM;
++	fw_cfg_sel_ko = kobject_create_and_add("by_key", fw_cfg_top_ko);
++	if (!fw_cfg_sel_ko)
++		goto err_sel;
++
++	/* initialize fw_cfg device i/o from platform data */
++	err = fw_cfg_do_platform_probe(pdev);
++	if (err)
++		goto err_probe;
++
++	/* get revision number, add matching top-level attribute */
++	fw_cfg_read_blob(FW_CFG_ID, &amp;fw_cfg_rev, 0, sizeof(fw_cfg_rev));
++	fw_cfg_rev = le32_to_cpu(fw_cfg_rev);
++	err = sysfs_create_file(fw_cfg_top_ko, &amp;fw_cfg_rev_attr.attr);
++	if (err)
++		goto err_rev;
++
++	/* process fw_cfg file directory entry, registering each file */
++	err = fw_cfg_register_dir_entries();
++	if (err)
++		goto err_dir;
++
++	/* success */
++	pr_debug("fw_cfg: loaded.\n");
++	return 0;
++
++err_dir:
++	fw_cfg_sysfs_cache_cleanup();
++	sysfs_remove_file(fw_cfg_top_ko, &amp;fw_cfg_rev_attr.attr);
++err_rev:
++	fw_cfg_io_cleanup();
++err_probe:
++	fw_cfg_kobj_cleanup(fw_cfg_sel_ko);
++err_sel:
++	return err;
++}
++
++static int fw_cfg_sysfs_remove(struct platform_device *pdev)
++{
++	pr_debug("fw_cfg: unloading.\n");
++	fw_cfg_sysfs_cache_cleanup();
++	fw_cfg_kobj_cleanup(fw_cfg_sel_ko);
++	fw_cfg_io_cleanup();
++	return 0;
++}
++
++static const struct of_device_id fw_cfg_sysfs_mmio_match[] = {
++	{ .compatible = "qemu,fw-cfg-mmio", },
++	{},
++};
++MODULE_DEVICE_TABLE(of, fw_cfg_sysfs_mmio_match);
++
++#ifdef CONFIG_ACPI
++static const struct acpi_device_id fw_cfg_sysfs_acpi_match[] = {
++	{ "QEMU0002", },
++	{},
++};
++MODULE_DEVICE_TABLE(acpi, fw_cfg_sysfs_acpi_match);
++#endif
++
++static struct platform_driver fw_cfg_sysfs_driver = {
++	.probe = fw_cfg_sysfs_probe,
++	.remove = fw_cfg_sysfs_remove,
++	.driver = {
++		.name = "fw_cfg",
++		.of_match_table = fw_cfg_sysfs_mmio_match,
++		.acpi_match_table = ACPI_PTR(fw_cfg_sysfs_acpi_match),
++	},
++};
++
++#ifdef CONFIG_FW_CFG_SYSFS_CMDLINE
++
++static struct platform_device *fw_cfg_cmdline_dev;
++
++/* this probably belongs in e.g. include/linux/types.h,
++ * but right now we are the only ones doing it...
++ */
++#ifdef CONFIG_PHYS_ADDR_T_64BIT
++#define __PHYS_ADDR_PREFIX "ll"
++#else
++#define __PHYS_ADDR_PREFIX ""
++#endif
++
++/* use special scanf/printf modifier for phys_addr_t, resource_size_t */
++#define PH_ADDR_SCAN_FMT "@%" __PHYS_ADDR_PREFIX "i%n" \
++			 ":%" __PHYS_ADDR_PREFIX "i" \
++			 ":%" __PHYS_ADDR_PREFIX "i%n"
++
++#define PH_ADDR_PR_1_FMT "0x%" __PHYS_ADDR_PREFIX "x@" \
++			 "0x%" __PHYS_ADDR_PREFIX "x"
++
++#define PH_ADDR_PR_3_FMT PH_ADDR_PR_1_FMT \
++			 ":%" __PHYS_ADDR_PREFIX "u" \
++			 ":%" __PHYS_ADDR_PREFIX "u"
++
++static int fw_cfg_cmdline_set(const char *arg, const struct kernel_param *kp)
++{
++	struct resource res[3] = {};
++	char *str;
++	phys_addr_t base;
++	resource_size_t size, ctrl_off, data_off;
++	int processed, consumed = 0;
++
++	/* only one fw_cfg device can exist system-wide, so if one
++	 * was processed on the command line already, we might as
++	 * well stop here.
++	 */
++	if (fw_cfg_cmdline_dev) {
++		/* avoid leaking previously registered device */
++		platform_device_unregister(fw_cfg_cmdline_dev);
++		return -EINVAL;
++	}
++
++	/* consume "&lt;size&gt;" portion of command line argument */
++	size = memparse(arg, &amp;str);
++
++	/* get "@&lt;base&gt;[:&lt;ctrl_off&gt;:&lt;data_off&gt;]" chunks */
++	processed = sscanf(str, PH_ADDR_SCAN_FMT,
++			   &amp;base, &amp;consumed,
++			   &amp;ctrl_off, &amp;data_off, &amp;consumed);
++
++	/* sscanf() must process precisely 1 or 3 chunks:
++	 * &lt;base&gt; is mandatory, optionally followed by &lt;ctrl_off&gt;
++	 * and &lt;data_off&gt;;
++	 * there must be no extra characters after the last chunk,
++	 * so str[consumed] must be '\0'.
++	 */
++	if (str[consumed] ||
++	    (processed != 1 &amp;&amp; processed != 3))
++		return -EINVAL;
++
++	res[0].start = base;
++	res[0].end = base + size - 1;
++	res[0].flags = !strcmp(kp-&gt;name, "mmio") ? IORESOURCE_MEM :
++						   IORESOURCE_IO;
++
++	/* insert register offsets, if provided */
++	if (processed &gt; 1) {
++		res[1].name = "ctrl";
++		res[1].start = ctrl_off;
++		res[1].flags = IORESOURCE_REG;
++		res[2].name = "data";
++		res[2].start = data_off;
++		res[2].flags = IORESOURCE_REG;
++	}
++
++	/* "processed" happens to nicely match the number of resources
++	 * we need to pass in to this platform device.
++	 */
++	fw_cfg_cmdline_dev = platform_device_register_simple("fw_cfg",
++					PLATFORM_DEVID_NONE, res, processed);
++	if (IS_ERR(fw_cfg_cmdline_dev))
++		return PTR_ERR(fw_cfg_cmdline_dev);
++
++	return 0;
++}
++
++static int fw_cfg_cmdline_get(char *buf, const struct kernel_param *kp)
++{
++	/* stay silent if device was not configured via the command
++	 * line, or if the parameter name (ioport/mmio) doesn't match
++	 * the device setting
++	 */
++	if (!fw_cfg_cmdline_dev ||
++	    (!strcmp(kp-&gt;name, "mmio") ^
++	     (fw_cfg_cmdline_dev-&gt;resource[0].flags == IORESOURCE_MEM)))
++		return 0;
++
++	switch (fw_cfg_cmdline_dev-&gt;num_resources) {
++	case 1:
++		return snprintf(buf, PAGE_SIZE, PH_ADDR_PR_1_FMT,
++				resource_size(&amp;fw_cfg_cmdline_dev-&gt;resource[0]),
++				fw_cfg_cmdline_dev-&gt;resource[0].start);
++	case 3:
++		return snprintf(buf, PAGE_SIZE, PH_ADDR_PR_3_FMT,
++				resource_size(&amp;fw_cfg_cmdline_dev-&gt;resource[0]),
++				fw_cfg_cmdline_dev-&gt;resource[0].start,
++				fw_cfg_cmdline_dev-&gt;resource[1].start,
++				fw_cfg_cmdline_dev-&gt;resource[2].start);
++	}
++
++	/* Should never get here */
++	WARN(1, "Unexpected number of resources: %d\n",
++		fw_cfg_cmdline_dev-&gt;num_resources);
++	return 0;
++}
++
++static const struct kernel_param_ops fw_cfg_cmdline_param_ops = {
++	.set = fw_cfg_cmdline_set,
++	.get = fw_cfg_cmdline_get,
++};
++
++device_param_cb(ioport, &amp;fw_cfg_cmdline_param_ops, NULL, S_IRUSR);
++device_param_cb(mmio, &amp;fw_cfg_cmdline_param_ops, NULL, S_IRUSR);
++
++#endif /* CONFIG_FW_CFG_SYSFS_CMDLINE */
++
++static int __init fw_cfg_sysfs_init(void)
++{
++	/* create /sys/firmware/qemu_fw_cfg/ top level directory */
++	fw_cfg_top_ko = kobject_create_and_add("qemu_fw_cfg", firmware_kobj);
++	if (!fw_cfg_top_ko)
++		return -ENOMEM;
++
++	return platform_driver_register(&amp;fw_cfg_sysfs_driver);
++}
++
++static void __exit fw_cfg_sysfs_exit(void)
++{
++	platform_driver_unregister(&amp;fw_cfg_sysfs_driver);
++
++#ifdef CONFIG_FW_CFG_SYSFS_CMDLINE
++	platform_device_unregister(fw_cfg_cmdline_dev);
++#endif
++
++	/* clean up /sys/firmware/qemu_fw_cfg/ */
++	fw_cfg_kobj_cleanup(fw_cfg_top_ko);
++}
++
++module_init(fw_cfg_sysfs_init);
++module_exit(fw_cfg_sysfs_exit);</pre><hr><pre>commit 2fe829aca9d7bed5fd6b49c6a1452e5e486b6cc3
+Author: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+Date:   Thu Jan 28 09:23:12 2016 -0500
+
+    kobject: export kset_find_obj() for module use
+    
+    Signed-off-by: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/lib/kobject.c b/lib/kobject.c
+index 7cbccd2b4c72..445dcaeb0f56 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -861,6 +861,7 @@ struct kobject *kset_find_obj(struct kset *kset, const char *name)
+ 	spin_unlock(&amp;kset-&gt;list_lock);
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(kset_find_obj);
+ 
+ static void kset_release(struct kobject *kobj)
+ {</pre><hr><pre>commit fa40ae34441286b2cb595468ef781e24573e9e7d
+Author: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+Date:   Mon Aug 10 15:51:43 2015 -0400
+
+    kobject: move EXPORT_SYMBOL() macros next to corresponding definitions
+    
+    Move EXPORT_SYMBOL() macros in kobject.c from the end of the file
+    next to the function definitions to which they belong.
+    
+    Signed-off-by: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/lib/kobject.c b/lib/kobject.c
+index 3e3a5c3cb330..055407746266 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -568,6 +568,7 @@ void kobject_del(struct kobject *kobj)
+ 	kobject_put(kobj-&gt;parent);
+ 	kobj-&gt;parent = NULL;
+ }
++EXPORT_SYMBOL(kobject_del);
+ 
+ /**
+  * kobject_get - increment refcount for object.
+@@ -584,6 +585,7 @@ struct kobject *kobject_get(struct kobject *kobj)
+ 	}
+ 	return kobj;
+ }
++EXPORT_SYMBOL(kobject_get);
+ 
+ static struct kobject * __must_check kobject_get_unless_zero(struct kobject *kobj)
+ {
+@@ -675,6 +677,7 @@ void kobject_put(struct kobject *kobj)
+ 		kref_put(&amp;kobj-&gt;kref, kobject_release);
+ 	}
+ }
++EXPORT_SYMBOL(kobject_put);
+ 
+ static void dynamic_kobj_release(struct kobject *kobj)
+ {
+@@ -803,6 +806,7 @@ int kset_register(struct kset *k)
+ 	kobject_uevent(&amp;k-&gt;kobj, KOBJ_ADD);
+ 	return 0;
+ }
++EXPORT_SYMBOL(kset_register);
+ 
+ /**
+  * kset_unregister - remove a kset.
+@@ -815,6 +819,7 @@ void kset_unregister(struct kset *k)
+ 	kobject_del(&amp;k-&gt;kobj);
+ 	kobject_put(&amp;k-&gt;kobj);
+ }
++EXPORT_SYMBOL(kset_unregister);
+ 
+ /**
+  * kset_find_obj - search for object in kset.
+@@ -1051,10 +1056,3 @@ void kobj_ns_drop(enum kobj_ns_type type, void *ns)
+ 		kobj_ns_ops_tbl[type]-&gt;drop_ns(ns);
+ 	spin_unlock(&amp;kobj_ns_type_lock);
+ }
+-
+-EXPORT_SYMBOL(kobject_get);
+-EXPORT_SYMBOL(kobject_put);
+-EXPORT_SYMBOL(kobject_del);
+-
+-EXPORT_SYMBOL(kset_register);
+-EXPORT_SYMBOL(kset_unregister);</pre><hr><pre>commit 9c15364f83201802e995cbf72d833e5e1b3b9adb
+Author: Eric Cooper &lt;ecc@cmu.edu&gt;
+Date:   Wed Feb 2 17:16:11 2011 -0500
+
+    [ARM] Kirkwood: enable PCIe for kexec
+    
+    Use the machine-specific kexec_reinit hook to make sure
+    PCIe is enabled before starting a new kernel.
+    
+    Signed-off-by: Eric Cooper &lt;ecc@cmu.edu&gt;
+    Signed-off-by: Nicolas Pitre &lt;nico@fluxnic.net&gt;
+
+diff --git a/arch/arm/mach-kirkwood/common.c b/arch/arm/mach-kirkwood/common.c
+index 3688123b5ad8..966df630b76f 100644
+--- a/arch/arm/mach-kirkwood/common.c
++++ b/arch/arm/mach-kirkwood/common.c
+@@ -21,6 +21,7 @@
+ #include &lt;net/dsa.h&gt;
+ #include &lt;asm/page.h&gt;
+ #include &lt;asm/timex.h&gt;
++#include &lt;asm/kexec.h&gt;
+ #include &lt;asm/mach/map.h&gt;
+ #include &lt;asm/mach/time.h&gt;
+ #include &lt;mach/kirkwood.h&gt;
+@@ -1003,6 +1004,10 @@ void __init kirkwood_init(void)
+ 	kirkwood_xor0_init();
+ 	kirkwood_xor1_init();
+ 	kirkwood_crypto_init();
++
++#ifdef CONFIG_KEXEC 
++	kexec_reinit = kirkwood_enable_pcie;
++#endif
+ }
+ 
+ static int __init kirkwood_clock_gate(void)</pre><hr><pre>commit 0e0cdd37709ba7ac9f0bff5de1b22f1b7987b04c
+Author: Eric Cooper &lt;ecc@cmu.edu&gt;
+Date:   Wed Feb 2 17:16:10 2011 -0500
+
+    [ARM] Kirkwood: enable PCIe before reading device ID register
+    
+    PCIe may have been disabled (by kirkwood_clock_gate)
+    if this kernel was started by kexec.  Make sure PCIe
+    is enabled before attempting to access the device ID
+    register, otherwise the system will hang.
+    
+    Signed-off-by: Eric Cooper &lt;ecc@cmu.edu&gt;
+    Signed-off-by: Nicolas Pitre &lt;nico@fluxnic.net&gt;
+
+diff --git a/arch/arm/mach-kirkwood/common.h b/arch/arm/mach-kirkwood/common.h
+index 95bb0a73adfb..a35b86235772 100644
+--- a/arch/arm/mach-kirkwood/common.h
++++ b/arch/arm/mach-kirkwood/common.h
+@@ -32,6 +32,7 @@ void kirkwood_init_irq(void);
+ extern struct mbus_dram_target_info kirkwood_mbus_dram_info;
+ void kirkwood_setup_cpu_mbus(void);
+ 
++void kirkwood_enable_pcie(void);
+ void kirkwood_pcie_id(u32 *dev, u32 *rev);
+ 
+ void kirkwood_ehci_init(void);
+diff --git a/arch/arm/mach-kirkwood/pcie.c b/arch/arm/mach-kirkwood/pcie.c
+index 513ad3102d7c..ca294ff6d5be 100644
+--- a/arch/arm/mach-kirkwood/pcie.c
++++ b/arch/arm/mach-kirkwood/pcie.c
+@@ -18,8 +18,16 @@
+ #include &lt;mach/bridge-regs.h&gt;
+ #include "common.h"
+ 
++void kirkwood_enable_pcie(void)
++{
++	u32 curr = readl(CLOCK_GATING_CTRL);
++	if (!(curr &amp; CGC_PEX0))
++		writel(curr | CGC_PEX0, CLOCK_GATING_CTRL);
++}
++
+ void __init kirkwood_pcie_id(u32 *dev, u32 *rev)
+ {
++	kirkwood_enable_pcie();
+ 	*dev = orion_pcie_dev_id((void __iomem *)PCIE_VIRT_BASE);
+ 	*rev = orion_pcie_rev((void __iomem *)PCIE_VIRT_BASE);
+ }</pre><hr><pre>commit 868d172b8ac23070418ec6265195e88e8d5dbe92
+Author: Eric Cooper &lt;ecc@cmu.edu&gt;
+Date:   Wed Feb 2 17:16:09 2011 -0500
+
+    [ARM] add machine-specific hook to machine_kexec
+    
+    Provide the option to call a machine-specific function
+    before kexec'ing a new kernel.
+    
+    Signed-off-by: Eric Cooper &lt;ecc@cmu.edu&gt;
+    Signed-off-by: Nicolas Pitre &lt;nico@fluxnic.net&gt;
+
+diff --git a/arch/arm/include/asm/kexec.h b/arch/arm/include/asm/kexec.h
+index c0094d8edae4..c2b9b4bdec00 100644
+--- a/arch/arm/include/asm/kexec.h
++++ b/arch/arm/include/asm/kexec.h
+@@ -50,6 +50,9 @@ static inline void crash_setup_regs(struct pt_regs *newregs,
+ 	}
+ }
+ 
++/* Function pointer to optional machine-specific reinitialization */
++extern void (*kexec_reinit)(void);
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif /* CONFIG_KEXEC */
+diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
+index 30ead135ff5f..e59bbd496c39 100644
+--- a/arch/arm/kernel/machine_kexec.c
++++ b/arch/arm/kernel/machine_kexec.c
+@@ -75,6 +75,11 @@ void machine_crash_shutdown(struct pt_regs *regs)
+ 	printk(KERN_INFO "Loading crashdump kernel...\n");
+ }
+ 
++/*
++ * Function pointer to optional machine-specific reinitialization
++ */
++void (*kexec_reinit)(void);
++
+ void machine_kexec(struct kimage *image)
+ {
+ 	unsigned long page_list;
+@@ -104,6 +109,8 @@ void machine_kexec(struct kimage *image)
+ 			   (unsigned long) reboot_code_buffer + KEXEC_CONTROL_PAGE_SIZE);
+ 	printk(KERN_INFO "Bye!\n");
+ 
++	if (kexec_reinit)
++		kexec_reinit();
+ 	local_irq_disable();
+ 	local_fiq_disable();
+ 	setup_mm_for_reboot(0); /* mode is not used, so just pass 0*/</pre><hr><pre>commit 709406494c0ed7da843bad624f6b16f9a2df4a6c
+Author: Eric Cooper &lt;ecc@cmu.edu&gt;
+Date:   Wed Sep 15 10:49:41 2010 -0400
+
+    [ARM] Kirkwood: support for Seagate DockStar
+    
+    This patch adds support for the Seagate FreeAgent DockStar,
+    a Marvell SheevaPlug variant.
+    
+    Signed-off-by: Eric Cooper &lt;ecc@cmu.edu&gt;
+    Signed-off-by: Nicolas Pitre &lt;nico@fluxnic.net&gt;
+
+diff --git a/arch/arm/configs/kirkwood_defconfig b/arch/arm/configs/kirkwood_defconfig
+index ccc9c9959b82..2f7042813765 100644
+--- a/arch/arm/configs/kirkwood_defconfig
++++ b/arch/arm/configs/kirkwood_defconfig
+@@ -15,6 +15,7 @@ CONFIG_MACH_MV88F6281GTW_GE=y
+ CONFIG_MACH_SHEEVAPLUG=y
+ CONFIG_MACH_ESATA_SHEEVAPLUG=y
+ CONFIG_MACH_GURUPLUG=y
++CONFIG_MACH_DOCKSTAR=y
+ CONFIG_MACH_TS219=y
+ CONFIG_MACH_TS41X=y
+ CONFIG_MACH_OPENRD_BASE=y
+diff --git a/arch/arm/mach-kirkwood/Kconfig b/arch/arm/mach-kirkwood/Kconfig
+index cc25501b57fa..3d5d66e7aaa0 100644
+--- a/arch/arm/mach-kirkwood/Kconfig
++++ b/arch/arm/mach-kirkwood/Kconfig
+@@ -58,6 +58,12 @@ config MACH_TS41X
+ 	  QNAP TS-410, TS-410U, TS-419P and TS-419U Turbo NAS
+ 	  devices.
+ 
++config MACH_DOCKSTAR
++	bool "Seagate FreeAgent DockStar"
++	help
++	  Say 'Y' here if you want your kernel to support the
++	  Seagate FreeAgent DockStar.
++
+ config MACH_OPENRD
+         bool
+ 
+diff --git a/arch/arm/mach-kirkwood/Makefile b/arch/arm/mach-kirkwood/Makefile
+index 295d7baa6ae1..9e43e953226e 100644
+--- a/arch/arm/mach-kirkwood/Makefile
++++ b/arch/arm/mach-kirkwood/Makefile
+@@ -7,6 +7,7 @@ obj-$(CONFIG_MACH_MV88F6281GTW_GE)	+= mv88f6281gtw_ge-setup.o
+ obj-$(CONFIG_MACH_SHEEVAPLUG)		+= sheevaplug-setup.o
+ obj-$(CONFIG_MACH_ESATA_SHEEVAPLUG)	+= sheevaplug-setup.o
+ obj-$(CONFIG_MACH_GURUPLUG)		+= guruplug-setup.o
++obj-$(CONFIG_MACH_DOCKSTAR)		+= dockstar-setup.o
+ obj-$(CONFIG_MACH_TS219)		+= ts219-setup.o tsx1x-common.o
+ obj-$(CONFIG_MACH_TS41X)		+= ts41x-setup.o tsx1x-common.o
+ obj-$(CONFIG_MACH_OPENRD)		+= openrd-setup.o
+diff --git a/arch/arm/mach-kirkwood/dockstar-setup.c b/arch/arm/mach-kirkwood/dockstar-setup.c
+new file mode 100644
+index 000000000000..a90475d5059c
+--- /dev/null
++++ b/arch/arm/mach-kirkwood/dockstar-setup.c
+@@ -0,0 +1,112 @@
++/*
++ * arch/arm/mach-kirkwood/dockstar-setup.c
++ *
++ * Seagate FreeAgent DockStar Setup
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2.  This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
++
++#include &lt;linux/kernel.h&gt;
++#include &lt;linux/init.h&gt;
++#include &lt;linux/platform_device.h&gt;
++#include &lt;linux/ata_platform.h&gt;
++#include &lt;linux/mtd/partitions.h&gt;
++#include &lt;linux/mv643xx_eth.h&gt;
++#include &lt;linux/gpio.h&gt;
++#include &lt;linux/leds.h&gt;
++#include &lt;asm/mach-types.h&gt;
++#include &lt;asm/mach/arch.h&gt;
++#include &lt;mach/kirkwood.h&gt;
++#include &lt;plat/mvsdio.h&gt;
++#include "common.h"
++#include "mpp.h"
++
++static struct mtd_partition dockstar_nand_parts[] = {
++	{
++		.name = "u-boot",
++		.offset = 0,
++		.size = SZ_1M
++	}, {
++		.name = "uImage",
++		.offset = MTDPART_OFS_NXTBLK,
++		.size = SZ_4M
++	}, {
++		.name = "root",
++		.offset = MTDPART_OFS_NXTBLK,
++		.size = MTDPART_SIZ_FULL
++	},
++};
++
++static struct mv643xx_eth_platform_data dockstar_ge00_data = {
++	.phy_addr	= MV643XX_ETH_PHY_ADDR(0),
++};
++
++static struct gpio_led dockstar_led_pins[] = {
++	{
++		.name			= "dockstar:green:health",
++		.default_trigger	= "default-on",
++		.gpio			= 46,
++		.active_low		= 1,
++	},
++	{
++		.name			= "dockstar:orange:misc",
++		.default_trigger	= "none",
++		.gpio			= 47,
++		.active_low		= 1,
++	},
++};
++
++static struct gpio_led_platform_data dockstar_led_data = {
++	.leds		= dockstar_led_pins,
++	.num_leds	= ARRAY_SIZE(dockstar_led_pins),
++};
++
++static struct platform_device dockstar_leds = {
++	.name	= "leds-gpio",
++	.id	= -1,
++	.dev	= {
++		.platform_data	= &amp;dockstar_led_data,
++	}
++};
++
++static unsigned int dockstar_mpp_config[] __initdata = {
++	MPP29_GPIO,	/* USB Power Enable */
++	MPP46_GPIO,	/* LED green */
++	MPP47_GPIO,	/* LED orange */
++	0
++};
++
++static void __init dockstar_init(void)
++{
++	/*
++	 * Basic setup. Needs to be called early.
++	 */
++	kirkwood_init();
++
++	/* setup gpio pin select */
++	kirkwood_mpp_conf(dockstar_mpp_config);
++
++	kirkwood_uart0_init();
++	kirkwood_nand_init(ARRAY_AND_SIZE(dockstar_nand_parts), 25);
++
++	if (gpio_request(29, "USB Power Enable") != 0 ||
++	    gpio_direction_output(29, 1) != 0)
++		printk(KERN_ERR "can't set up GPIO 29 (USB Power Enable)\n");
++	kirkwood_ehci_init();
++
++	kirkwood_ge00_init(&amp;dockstar_ge00_data);
++
++	platform_device_register(&amp;dockstar_leds);
++}
++
++MACHINE_START(DOCKSTAR, "Seagate FreeAgent DockStar")
++	.phys_io	= KIRKWOOD_REGS_PHYS_BASE,
++	.io_pg_offst	= ((KIRKWOOD_REGS_VIRT_BASE) &gt;&gt; 18) &amp; 0xfffc,
++	.boot_params	= 0x00000100,
++	.init_machine	= dockstar_init,
++	.map_io		= kirkwood_map_io,
++	.init_irq	= kirkwood_init_irq,
++	.timer		= &amp;kirkwood_timer,
++MACHINE_END</pre><hr><pre>commit 096486eece7ef38cf1ee46b704482c75c4010fb1
+Author: Nik A. Melchior &lt;melchior+kernel@cmu.edu&gt;
+Date:   Mon Jun 21 12:47:05 2010 +0800
+
+    ACPI video: fix string mismatch for Sony SR290 laptop
+    
+    Fix string mismatch for Sony SR290 laptop.
+    https://bugzilla.kernel.org/show_bug.cgi?id=12904#c45
+    
+    Signed-off-by: Nik A. Melchior &lt;melchior+kernel@cmu.edu&gt;
+    Signed-off-by: Len Brown &lt;len.brown@intel.com&gt;
+
+diff --git a/drivers/acpi/blacklist.c b/drivers/acpi/blacklist.c
+index 01381be05e96..2bb28b9d91c4 100644
+--- a/drivers/acpi/blacklist.c
++++ b/drivers/acpi/blacklist.c
+@@ -214,7 +214,7 @@ static struct dmi_system_id acpi_osi_dmi_table[] __initdata = {
+ 	.ident = "Sony VGN-SR290J",
+ 	.matches = {
+ 		     DMI_MATCH(DMI_SYS_VENDOR, "Sony Corporation"),
+-		     DMI_MATCH(DMI_PRODUCT_NAME, "Sony VGN-SR290J"),
++		     DMI_MATCH(DMI_PRODUCT_NAME, "VGN-SR290J"),
+ 		},
+ 	},
+ 	{</pre><hr><pre>commit e59f87966adef2cb03d419530e3ade5159487d6d
+Author: Eric Cooper &lt;ecc@cmu.edu&gt;
+Date:   Thu Mar 13 12:55:46 2008 +0100
+
+    eeepc-laptop: add base driver
+    
+    This patch is based on Eric Cooper's work to clean the original asus_acpi
+    given by Asus.  It's a platform driver (/sys/devices/platform/eeepc/)
+    wich support:
+         - hotkeys - wlan on/off - camera on/off - cardr on/off
+    
+    Signed-off-by: Corentin Chary &lt;corentincj@iksaif.net&gt;
+    Signed-off-by: Len Brown &lt;len.brown@intel.com&gt;
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c1dd1ae7b133..37debda36661 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1531,6 +1531,13 @@ L:	bluesmoke-devel@lists.sourceforge.net
+ W:	bluesmoke.sourceforge.net
+ S:	Maintained
+ 
++EEEPC LAPTOP EXTRAS DRIVER
++P:	Corentin Chary
++M:	corentincj@iksaif.net
++L:	acpi4asus-user@lists.sourceforge.net
++W:	http://sourceforge.net/projects/acpi4asus
++S:	Maintained
++
+ EEPRO100 NETWORK DRIVER
+ P:	Andrey V. Savochkin
+ M:	saw@saw.sw.com.sg
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 297a48f85446..2264127afac7 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -351,6 +351,17 @@ config INTEL_MENLOW
+ 
+ 	  If unsure, say N.
+ 
++config EEEPC_LAPTOP
++	tristate "Eee PC Hotkey Driver (EXPERIMENTAL)"
++	depends on X86
++	depends on ACPI
++	depends on EXPERIMENTAL
++	---help---
++	  This driver supports the Fn-Fx keys on Eee PC laptops.
++	  It also adds the ability to switch camera/wlan on/off.
++
++	  If you have an Eee PC laptop, say Y or M here.
++
+ config ENCLOSURE_SERVICES
+ 	tristate "Enclosure Services"
+ 	default n
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index 5914da434854..1952875a272e 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -7,7 +7,8 @@ obj-$(CONFIG_IBM_ASM)		+= ibmasm/
+ obj-$(CONFIG_HDPU_FEATURES)	+= hdpuftrs/
+ obj-$(CONFIG_MSI_LAPTOP)     += msi-laptop.o
+ obj-$(CONFIG_ACER_WMI)     += acer-wmi.o
+-obj-$(CONFIG_ASUS_LAPTOP)     += asus-laptop.o
++obj-$(CONFIG_ASUS_LAPTOP)	+= asus-laptop.o
++obj-$(CONFIG_EEEPC_LAPTOP)	+= eeepc-laptop.o
+ obj-$(CONFIG_ATMEL_PWM)		+= atmel_pwm.o
+ obj-$(CONFIG_ATMEL_SSC)		+= atmel-ssc.o
+ obj-$(CONFIG_ATMEL_TCLIB)	+= atmel_tclib.o
+diff --git a/drivers/misc/eeepc-laptop.c b/drivers/misc/eeepc-laptop.c
+new file mode 100644
+index 000000000000..e34ff97530cd
+--- /dev/null
++++ b/drivers/misc/eeepc-laptop.c
+@@ -0,0 +1,442 @@
++/*
++ *  eepc-laptop.c - Asus Eee PC extras
++ *
++ *  Based on asus_acpi.c as patched for the Eee PC by Asus:
++ *  ftp://ftp.asus.com/pub/ASUS/EeePC/701/ASUS_ACPI_071126.rar
++ *  Based on eee.c from eeepc-linux
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ */
++
++#include &lt;linux/kernel.h&gt;
++#include &lt;linux/module.h&gt;
++#include &lt;linux/init.h&gt;
++#include &lt;linux/types.h&gt;
++#include &lt;linux/platform_device.h&gt;
++#include &lt;acpi/acpi_drivers.h&gt;
++#include &lt;acpi/acpi_bus.h&gt;
++#include &lt;linux/uaccess.h&gt;
++
++#define EEEPC_LAPTOP_VERSION	"0.1"
++
++#define EEEPC_HOTK_NAME		"Eee PC Hotkey Driver"
++#define EEEPC_HOTK_FILE		"eeepc"
++#define EEEPC_HOTK_CLASS	"hotkey"
++#define EEEPC_HOTK_DEVICE_NAME	"Hotkey"
++#define EEEPC_HOTK_HID		"ASUS010"
++
++#define EEEPC_LOG	EEEPC_HOTK_FILE ": "
++#define EEEPC_ERR	KERN_ERR	EEEPC_LOG
++#define EEEPC_WARNING	KERN_WARNING	EEEPC_LOG
++#define EEEPC_NOTICE	KERN_NOTICE	EEEPC_LOG
++#define EEEPC_INFO	KERN_INFO	EEEPC_LOG
++
++/*
++ * Definitions for Asus EeePC
++ */
++#define	NOTIFY_WLAN_ON	0x10
++
++enum {
++	DISABLE_ASL_WLAN = 0x0001,
++	DISABLE_ASL_BLUETOOTH = 0x0002,
++	DISABLE_ASL_IRDA = 0x0004,
++	DISABLE_ASL_CAMERA = 0x0008,
++	DISABLE_ASL_TV = 0x0010,
++	DISABLE_ASL_GPS = 0x0020,
++	DISABLE_ASL_DISPLAYSWITCH = 0x0040,
++	DISABLE_ASL_MODEM = 0x0080,
++	DISABLE_ASL_CARDREADER = 0x0100
++};
++
++enum {
++	CM_ASL_WLAN = 0,
++	CM_ASL_BLUETOOTH,
++	CM_ASL_IRDA,
++	CM_ASL_1394,
++	CM_ASL_CAMERA,
++	CM_ASL_TV,
++	CM_ASL_GPS,
++	CM_ASL_DVDROM,
++	CM_ASL_DISPLAYSWITCH,
++	CM_ASL_PANELBRIGHT,
++	CM_ASL_BIOSFLASH,
++	CM_ASL_ACPIFLASH,
++	CM_ASL_CPUFV,
++	CM_ASL_CPUTEMPERATURE,
++	CM_ASL_FANCPU,
++	CM_ASL_FANCHASSIS,
++	CM_ASL_USBPORT1,
++	CM_ASL_USBPORT2,
++	CM_ASL_USBPORT3,
++	CM_ASL_MODEM,
++	CM_ASL_CARDREADER,
++	CM_ASL_LID
++};
++
++const char *cm_getv[] = {
++	"WLDG", NULL, NULL, NULL,
++	"CAMG", NULL, NULL, NULL,
++	NULL, "PBLG", NULL, NULL,
++	"CFVG", NULL, NULL, NULL,
++	"USBG", NULL, NULL, "MODG",
++	"CRDG", "LIDG"
++};
++
++const char *cm_setv[] = {
++	"WLDS", NULL, NULL, NULL,
++	"CAMS", NULL, NULL, NULL,
++	"SDSP", "PBLS", "HDPS", NULL,
++	"CFVS", NULL, NULL, NULL,
++	"USBG", NULL, NULL, "MODS",
++	"CRDS", NULL
++};
++
++/*
++ * This is the main structure, we can use it to store useful information
++ * about the hotk device
++ */
++struct eeepc_hotk {
++	struct acpi_device *device;	/* the device we are in */
++	acpi_handle handle;		/* the handle of the hotk device */
++	u32 cm_supported;		/* the control methods supported
++					   by this BIOS */
++	uint init_flag;			/* Init flags */
++	u16 event_count[128];		/* count for each event */
++};
++
++/* The actual device the driver binds to */
++static struct eeepc_hotk *ehotk;
++
++/* Platform device/driver */
++static struct platform_driver platform_driver = {
++	.driver = {
++		.name = EEEPC_HOTK_FILE,
++		.owner = THIS_MODULE,
++	}
++};
++
++static struct platform_device *platform_device;
++
++/*
++ * The hotkey driver declaration
++ */
++static int eeepc_hotk_add(struct acpi_device *device);
++static int eeepc_hotk_remove(struct acpi_device *device, int type);
++
++static const struct acpi_device_id eeepc_device_ids[] = {
++	{EEEPC_HOTK_HID, 0},
++	{"", 0},
++};
++MODULE_DEVICE_TABLE(acpi, eeepc_device_ids);
++
++static struct acpi_driver eeepc_hotk_driver = {
++	.name = EEEPC_HOTK_NAME,
++	.class = EEEPC_HOTK_CLASS,
++	.ids = eeepc_device_ids,
++	.ops = {
++		.add = eeepc_hotk_add,
++		.remove = eeepc_hotk_remove,
++	},
++};
++
++MODULE_AUTHOR("Corentin Chary, Eric Cooper");
++MODULE_DESCRIPTION(EEEPC_HOTK_NAME);
++MODULE_LICENSE("GPL");
++
++/*
++ * ACPI Helpers
++ */
++static int write_acpi_int(acpi_handle handle, const char *method, int val,
++			  struct acpi_buffer *output)
++{
++	struct acpi_object_list params;
++	union acpi_object in_obj;
++	acpi_status status;
++
++	params.count = 1;
++	params.pointer = &amp;in_obj;
++	in_obj.type = ACPI_TYPE_INTEGER;
++	in_obj.integer.value = val;
++
++	status = acpi_evaluate_object(handle, (char *)method, &amp;params, output);
++	return (status == AE_OK ? 0 : -1);
++}
++
++static int read_acpi_int(acpi_handle handle, const char *method, int *val)
++{
++	acpi_status status;
++	ulong result;
++
++	status = acpi_evaluate_integer(handle, (char *)method, NULL, &amp;result);
++	if (ACPI_FAILURE(status)) {
++		*val = -1;
++		return -1;
++	} else {
++		*val = result;
++		return 0;
++	}
++}
++
++static int set_acpi(int cm, int value)
++{
++	if (ehotk-&gt;cm_supported &amp; (0x1 &lt;&lt; cm)) {
++		const char *method = cm_setv[cm];
++		if (method == NULL)
++			return -ENODEV;
++		if (write_acpi_int(ehotk-&gt;handle, method, value, NULL))
++			printk(EEEPC_WARNING "Error writing %s\n", method);
++	}
++	return 0;
++}
++
++static int get_acpi(int cm)
++{
++	int value = -1;
++	if ((ehotk-&gt;cm_supported &amp; (0x1 &lt;&lt; cm))) {
++		const char *method = cm_getv[cm];
++		if (method == NULL)
++			return -ENODEV;
++		if (read_acpi_int(ehotk-&gt;handle, method, &amp;value))
++			printk(EEEPC_WARNING "Error reading %s\n", method);
++	}
++	return value;
++}
++
++/*
++ * Sys helpers
++ */
++static int parse_arg(const char *buf, unsigned long count, int *val)
++{
++	if (!count)
++		return 0;
++	if (sscanf(buf, "%i", val) != 1)
++		return -EINVAL;
++	return count;
++}
++
++static ssize_t store_sys_acpi(int cm, const char *buf, size_t count)
++{
++	int rv, value;
++
++	rv = parse_arg(buf, count, &amp;value);
++	if (rv &gt; 0)
++		set_acpi(cm, value);
++	return rv;
++}
++
++static ssize_t show_sys_acpi(int cm, char *buf)
++{
++	return sprintf(buf, "%d\n", get_acpi(cm));
++}
++
++#define EEEPC_CREATE_DEVICE_ATTR(_name, _cm)				\
++	static ssize_t show_##_name(struct device *dev,			\
++				    struct device_attribute *attr,	\
++				    char *buf)				\
++	{								\
++		return show_sys_acpi(_cm, buf);				\
++	}								\
++	static ssize_t store_##_name(struct device *dev,		\
++				     struct device_attribute *attr,	\
++				     const char *buf, size_t count)	\
++	{								\
++		return store_sys_acpi(_cm, buf, count);			\
++	}								\
++	static struct device_attribute dev_attr_##_name = {		\
++		.attr = {						\
++			.name = __stringify(_name),			\
++			.mode = 0644 },					\
++		.show   = show_##_name,					\
++		.store  = store_##_name,				\
++	}
++
++EEEPC_CREATE_DEVICE_ATTR(camera, CM_ASL_CAMERA);
++EEEPC_CREATE_DEVICE_ATTR(cardr, CM_ASL_CARDREADER);
++EEEPC_CREATE_DEVICE_ATTR(disp, CM_ASL_DISPLAYSWITCH);
++EEEPC_CREATE_DEVICE_ATTR(wlan, CM_ASL_WLAN);
++
++static struct attribute *platform_attributes[] = {
++	&amp;dev_attr_camera.attr,
++	&amp;dev_attr_cardr.attr,
++	&amp;dev_attr_disp.attr,
++	&amp;dev_attr_wlan.attr,
++	NULL
++};
++
++static struct attribute_group platform_attribute_group = {
++	.attrs = platform_attributes
++};
++
++/*
++ * Hotkey functions
++ */
++static int eeepc_hotk_check(void)
++{
++	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
++	int result;
++
++	result = acpi_bus_get_status(ehotk-&gt;device);
++	if (result)
++		return result;
++	if (ehotk-&gt;device-&gt;status.present) {
++		if (write_acpi_int(ehotk-&gt;handle, "INIT", ehotk-&gt;init_flag,
++				    &amp;buffer)) {
++			printk(EEEPC_ERR "Hotkey initialization failed\n");
++			return -ENODEV;
++		} else {
++			printk(EEEPC_NOTICE "Hotkey init flags 0x%x\n",
++			       ehotk-&gt;init_flag);
++		}
++		/* get control methods supported */
++		if (read_acpi_int(ehotk-&gt;handle, "CMSG"
++				   , &amp;ehotk-&gt;cm_supported)) {
++			printk(EEEPC_ERR
++			       "Get control methods supported failed\n");
++			return -ENODEV;
++		} else {
++			printk(EEEPC_INFO
++			       "Get control methods supported: 0x%x\n",
++			       ehotk-&gt;cm_supported);
++		}
++	} else {
++		printk(EEEPC_ERR "Hotkey device not present, aborting\n");
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static void notify_wlan(u32 *event)
++{
++	/* if DISABLE_ASL_WLAN is set, the notify code for fn+f2
++	   will always be 0x10 */
++	if (ehotk-&gt;cm_supported &amp; (0x1 &lt;&lt; CM_ASL_WLAN)) {
++		const char *method = cm_getv[CM_ASL_WLAN];
++		int value;
++		if (read_acpi_int(ehotk-&gt;handle, method, &amp;value))
++			printk(EEEPC_WARNING "Error reading %s\n",
++			       method);
++		else if (value == 1)
++			*event = 0x11;
++	}
++}
++
++static void eeepc_hotk_notify(acpi_handle handle, u32 event, void *data)
++{
++	if (!ehotk)
++		return;
++	if (event == NOTIFY_WLAN_ON &amp;&amp; (DISABLE_ASL_WLAN &amp; ehotk-&gt;init_flag))
++		notify_wlan(&amp;event);
++	acpi_bus_generate_proc_event(ehotk-&gt;device, event,
++				     ehotk-&gt;event_count[event % 128]++);
++}
++
++static int eeepc_hotk_add(struct acpi_device *device)
++{
++	acpi_status status = AE_OK;
++	int result;
++
++	if (!device)
++		 return -EINVAL;
++	printk(EEEPC_NOTICE EEEPC_HOTK_NAME "\n");
++	ehotk = kzalloc(sizeof(struct eeepc_hotk), GFP_KERNEL);
++	if (!ehotk)
++		return -ENOMEM;
++	ehotk-&gt;init_flag = DISABLE_ASL_WLAN | DISABLE_ASL_DISPLAYSWITCH;
++	ehotk-&gt;handle = device-&gt;handle;
++	strcpy(acpi_device_name(device), EEEPC_HOTK_DEVICE_NAME);
++	strcpy(acpi_device_class(device), EEEPC_HOTK_CLASS);
++	acpi_driver_data(device) = ehotk;
++	ehotk-&gt;device = device;
++	result = eeepc_hotk_check();
++	if (result)
++		goto end;
++	status = acpi_install_notify_handler(ehotk-&gt;handle, ACPI_SYSTEM_NOTIFY,
++					     eeepc_hotk_notify, ehotk);
++	if (ACPI_FAILURE(status))
++		printk(EEEPC_ERR "Error installing notify handler\n");
++ end:
++	if (result) {
++		kfree(ehotk);
++		ehotk = NULL;
++	}
++	return result;
++}
++
++static int eeepc_hotk_remove(struct acpi_device *device, int type)
++{
++	acpi_status status = 0;
++
++	if (!device || !acpi_driver_data(device))
++		 return -EINVAL;
++	status = acpi_remove_notify_handler(ehotk-&gt;handle, ACPI_SYSTEM_NOTIFY,
++					    eeepc_hotk_notify);
++	if (ACPI_FAILURE(status))
++		printk(EEEPC_ERR "Error removing notify handler\n");
++	kfree(ehotk);
++	return 0;
++}
++
++/*
++ * exit/init
++ */
++static void __exit eeepc_laptop_exit(void)
++{
++	acpi_bus_unregister_driver(&amp;eeepc_hotk_driver);
++	sysfs_remove_group(&amp;platform_device-&gt;dev.kobj,
++			   &amp;platform_attribute_group);
++	platform_device_unregister(platform_device);
++	platform_driver_unregister(&amp;platform_driver);
++}
++
++static int __init eeepc_laptop_init(void)
++{
++	struct device *dev;
++	int result;
++
++	if (acpi_disabled)
++		return -ENODEV;
++	result = acpi_bus_register_driver(&amp;eeepc_hotk_driver);
++	if (result &lt; 0)
++		return result;
++	if (!ehotk) {
++		acpi_bus_unregister_driver(&amp;eeepc_hotk_driver);
++		return -ENODEV;
++	}
++	dev = acpi_get_physical_device(ehotk-&gt;device-&gt;handle);
++	/* Register platform stuff */
++	result = platform_driver_register(&amp;platform_driver);
++	if (result)
++		goto fail_platform_driver;
++	platform_device = platform_device_alloc(EEEPC_HOTK_FILE, -1);
++	if (!platform_device) {
++		result = -ENOMEM;
++		goto fail_platform_device1;
++	}
++	result = platform_device_add(platform_device);
++	if (result)
++		goto fail_platform_device2;
++	result = sysfs_create_group(&amp;platform_device-&gt;dev.kobj,
++				    &amp;platform_attribute_group);
++	if (result)
++		goto fail_sysfs;
++	return 0;
++fail_sysfs:
++	platform_device_del(platform_device);
++fail_platform_device2:
++	platform_device_put(platform_device);
++fail_platform_device1:
++	platform_driver_unregister(&amp;platform_driver);
++fail_platform_driver:
++	return result;
++}
++
++module_init(eeepc_laptop_init);
++module_exit(eeepc_laptop_exit);</pre><hr><pre>commit bbc60c18ed17df75270da504bbd8f7bc4a52d43d
+Author: Michael Abd-El-Malek &lt;mabdelmalek@cmu.edu&gt;
+Date:   Fri Apr 4 02:33:48 2008 -0700
+
+    xen: fix grant table bug
+    
+    fix memory corruption and crash due to mis-sized grant table.
+    
+    A PV OS has two grant table data structures: the grant table itself
+    and a free list.  The free list is composed of an array of pages,
+    which grow dynamically as the guest OS requires more grants.  While
+    the grant table contains 8-byte entries, the free list contains 4-byte
+    entries.  So we have half as many pages in the free list than in the
+    grant table.
+    
+    There was a bug in the free list allocation code. The free list was
+    indexed as if it was the same size as the grant table.  But it's only
+    half as large.  So memory got corrupted, and I was seeing crashes in
+    the slab allocator later on.
+    
+    Taken from:
+    
+      http://xenbits.xensource.com/linux-2.6.18-xen.hg?rev/4018c0da3360
+    
+    Signed-off-by: Michael Abd-El-Malek &lt;mabdelmalek@cmu.edu&gt;
+    Signed-off-by: Mark McLoughlin &lt;markmc@redhat.com&gt;
+    Signed-off-by: Jeremy Fitzhardinge &lt;jeremy.fitzhardinge@citrix.com&gt;
+    Signed-off-by: Ingo Molnar &lt;mingo@elte.hu&gt;
+
+diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
+index ea94dbabf9a9..d85dc6d41c2a 100644
+--- a/drivers/xen/grant-table.c
++++ b/drivers/xen/grant-table.c
+@@ -381,11 +381,15 @@ EXPORT_SYMBOL_GPL(gnttab_cancel_free_callback);
+ static int grow_gnttab_list(unsigned int more_frames)
+ {
+ 	unsigned int new_nr_grant_frames, extra_entries, i;
++	unsigned int nr_glist_frames, new_nr_glist_frames;
+ 
+ 	new_nr_grant_frames = nr_grant_frames + more_frames;
+ 	extra_entries       = more_frames * GREFS_PER_GRANT_FRAME;
+ 
+-	for (i = nr_grant_frames; i &lt; new_nr_grant_frames; i++) {
++	nr_glist_frames = (nr_grant_frames * GREFS_PER_GRANT_FRAME + RPP - 1) / RPP;
++	new_nr_glist_frames =
++		(new_nr_grant_frames * GREFS_PER_GRANT_FRAME + RPP - 1) / RPP;
++	for (i = nr_glist_frames; i &lt; new_nr_glist_frames; i++) {
+ 		gnttab_list[i] = (grant_ref_t *)__get_free_page(GFP_ATOMIC);
+ 		if (!gnttab_list[i])
+ 			goto grow_nomem;
+@@ -407,7 +411,7 @@ static int grow_gnttab_list(unsigned int more_frames)
+ 	return 0;
+ 
+ grow_nomem:
+-	for ( ; i &gt;= nr_grant_frames; i--)
++	for ( ; i &gt;= nr_glist_frames; i--)
+ 		free_page((unsigned long) gnttab_list[i]);
+ 	return -ENOMEM;
+ }
+@@ -530,7 +534,7 @@ static int gnttab_expand(unsigned int req_entries)
+ static int __devinit gnttab_init(void)
+ {
+ 	int i;
+-	unsigned int max_nr_glist_frames;
++	unsigned int max_nr_glist_frames, nr_glist_frames;
+ 	unsigned int nr_init_grefs;
+ 
+ 	if (!is_running_on_xen())
+@@ -543,15 +547,15 @@ static int __devinit gnttab_init(void)
+ 	 * grant reference free list on the current hypervisor.
+ 	 */
+ 	max_nr_glist_frames = (boot_max_nr_grant_frames *
+-			       GREFS_PER_GRANT_FRAME /
+-			       (PAGE_SIZE / sizeof(grant_ref_t)));
++			       GREFS_PER_GRANT_FRAME / RPP);
+ 
+ 	gnttab_list = kmalloc(max_nr_glist_frames * sizeof(grant_ref_t *),
+ 			      GFP_KERNEL);
+ 	if (gnttab_list == NULL)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i &lt; nr_grant_frames; i++) {
++	nr_glist_frames = (nr_grant_frames * GREFS_PER_GRANT_FRAME + RPP - 1) / RPP;
++	for (i = 0; i &lt; nr_glist_frames; i++) {
+ 		gnttab_list[i] = (grant_ref_t *)__get_free_page(GFP_KERNEL);
+ 		if (gnttab_list[i] == NULL)
+ 			goto ini_nomem;</pre>
+    <div class="pagination">
+        <a href='15_5.html'>&lt;&lt;Prev</a><a href='15.html'>1</a><a href='15_2.html'>2</a><a href='15_3.html'>3</a><a href='15_4.html'>4</a><a href='15_5.html'>5</a><span>[6]</span><a href='15_7.html'>7</a><a href='15_8.html'>8</a><a href='15_7.html'>Next&gt;&gt;</a>
+    <div>
+</body>

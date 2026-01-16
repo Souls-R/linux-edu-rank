@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Jimei University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Jimei University</h1>
+    <div class="pagination">
+        <a href='14_3.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><a href='14_3.html'>3</a><span>[4]</span><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_9.html'>9</a><a href='14_5.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 7f3e3e7228bb4c0b9b40987d5725c75ac2ea21f5
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Mar 6 20:38:08 2025 +0800
+
+    dt-bindings: mfd: syscon: Add rk3528 QoS register compatible
+    
+    Document rk3528 compatible for QoS registers.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Acked-by: Conor Dooley &lt;conor.dooley@microchip.com&gt;
+    Link: https://lore.kernel.org/r/20250306123809.273655-2-amadeus@jmu.edu.cn
+    Signed-off-by: Lee Jones &lt;lee@kernel.org&gt;
+
+diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/Documentation/devicetree/bindings/mfd/syscon.yaml
+index 4d67ff26d445..2836e4793afc 100644
+--- a/Documentation/devicetree/bindings/mfd/syscon.yaml
++++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
+@@ -103,6 +103,7 @@ select:
+           - rockchip,rk3288-qos
+           - rockchip,rk3368-qos
+           - rockchip,rk3399-qos
++          - rockchip,rk3528-qos
+           - rockchip,rk3562-qos
+           - rockchip,rk3568-qos
+           - rockchip,rk3576-qos
+@@ -202,6 +203,7 @@ properties:
+           - rockchip,rk3288-qos
+           - rockchip,rk3368-qos
+           - rockchip,rk3399-qos
++          - rockchip,rk3528-qos
+           - rockchip,rk3562-qos
+           - rockchip,rk3568-qos
+           - rockchip,rk3576-qos</pre><hr><pre>commit 8fbb9376f0c489dfdc7e20d16e90686b29dec8f2
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sat Mar 8 18:00:01 2025 +0800
+
+    arm64: dts: rockchip: Move rk356x scmi SHMEM to reserved memory
+    
+    0x0 to 0xf0000000 are SDRAM memory areas where 0x10f000 is located.
+    So move the SHMEM memory of arm_scmi to the reserved memory node.
+    
+    Fixes: a3adc0b9071d ("arm64: dts: rockchip: add core dtsi for RK3568 SoC")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250308100001.572657-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi b/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
+index de5e6c0c3d24..81e635620301 100644
+--- a/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
+@@ -174,6 +174,18 @@ psci {
+ 		method = "smc";
+ 	};
+ 
++	reserved-memory {
++		#address-cells = &lt;2&gt;;
++		#size-cells = &lt;2&gt;;
++		ranges;
++
++		scmi_shmem: shmem@10f000 {
++			compatible = "arm,scmi-shmem";
++			reg = &lt;0x0 0x0010f000 0x0 0x100&gt;;
++			no-map;
++		};
++	};
++
+ 	timer {
+ 		compatible = "arm,armv8-timer";
+ 		interrupts = &lt;GIC_PPI 13 IRQ_TYPE_LEVEL_HIGH&gt;,
+@@ -199,19 +211,6 @@ xin32k: xin32k {
+ 		#clock-cells = &lt;0&gt;;
+ 	};
+ 
+-	sram@10f000 {
+-		compatible = "mmio-sram";
+-		reg = &lt;0x0 0x0010f000 0x0 0x100&gt;;
+-		#address-cells = &lt;1&gt;;
+-		#size-cells = &lt;1&gt;;
+-		ranges = &lt;0 0x0 0x0010f000 0x100&gt;;
+-
+-		scmi_shmem: sram@0 {
+-			compatible = "arm,scmi-shmem";
+-			reg = &lt;0x0 0x100&gt;;
+-		};
+-	};
+-
+ 	sata1: sata@fc400000 {
+ 		compatible = "rockchip,rk3568-dwc-ahci", "snps,dwc-ahci";
+ 		reg = &lt;0 0xfc400000 0 0x1000&gt;;</pre><hr><pre>commit 20f23ad377592722f7b5a591e4169c0716c51543
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Fri Mar 7 20:00:03 2025 +0800
+
+    dt-bindings: pwm: rockchip: Add rockchip,rk3528-pwm
+    
+    Document pwm compatible for rk3528 which is fallback compatible
+    of rk3328-pwm group.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Acked-by: Conor Dooley &lt;conor.dooley@microchip.com&gt;
+    Acked-by: Uwe Kleine-König &lt;ukleinek@kernel.org&gt;
+    Reviewed-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+    Link: https://lore.kernel.org/r/20250307120004.959980-2-amadeus@jmu.edu.cn
+    Signed-off-by: Uwe Kleine-König &lt;ukleinek@kernel.org&gt;
+
+diff --git a/Documentation/devicetree/bindings/pwm/pwm-rockchip.yaml b/Documentation/devicetree/bindings/pwm/pwm-rockchip.yaml
+index e4e1976c542d..c8cdfb723336 100644
+--- a/Documentation/devicetree/bindings/pwm/pwm-rockchip.yaml
++++ b/Documentation/devicetree/bindings/pwm/pwm-rockchip.yaml
+@@ -30,6 +30,7 @@ properties:
+           - enum:
+               - rockchip,px30-pwm
+               - rockchip,rk3308-pwm
++              - rockchip,rk3528-pwm
+               - rockchip,rk3562-pwm
+               - rockchip,rk3568-pwm
+               - rockchip,rk3588-pwm</pre><hr><pre>commit fbcbc1fb93e14729bd87ab386b7f62694dcc8b51
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Fri Mar 7 18:00:08 2025 +0800
+
+    arm64: dts: rockchip: enable SCMI clk for RK3528 SoC
+    
+    Same as RK3568, RK3528 uses SCMI clk instead of ARMCLK.
+    Add SCMI clk for CPU, GPU and RNG will also use it.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250307100008.789129-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index 0c0e7f151462..4be53868f324 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -59,6 +59,7 @@ cpu0: cpu@0 {
+ 			reg = &lt;0x0&gt;;
+ 			device_type = "cpu";
+ 			enable-method = "psci";
++			clocks = &lt;&amp;scmi_clk SCMI_CLK_CPU&gt;;
+ 		};
+ 
+ 		cpu1: cpu@1 {
+@@ -66,6 +67,7 @@ cpu1: cpu@1 {
+ 			reg = &lt;0x1&gt;;
+ 			device_type = "cpu";
+ 			enable-method = "psci";
++			clocks = &lt;&amp;scmi_clk SCMI_CLK_CPU&gt;;
+ 		};
+ 
+ 		cpu2: cpu@2 {
+@@ -73,6 +75,7 @@ cpu2: cpu@2 {
+ 			reg = &lt;0x2&gt;;
+ 			device_type = "cpu";
+ 			enable-method = "psci";
++			clocks = &lt;&amp;scmi_clk SCMI_CLK_CPU&gt;;
+ 		};
+ 
+ 		cpu3: cpu@3 {
+@@ -80,6 +83,22 @@ cpu3: cpu@3 {
+ 			reg = &lt;0x3&gt;;
+ 			device_type = "cpu";
+ 			enable-method = "psci";
++			clocks = &lt;&amp;scmi_clk SCMI_CLK_CPU&gt;;
++		};
++	};
++
++	firmware {
++		scmi: scmi {
++			compatible = "arm,scmi-smc";
++			arm,smc-id = &lt;0x82000010&gt;;
++			shmem = &lt;&amp;scmi_shmem&gt;;
++			#address-cells = &lt;1&gt;;
++			#size-cells = &lt;0&gt;;
++
++			scmi_clk: protocol@14 {
++				reg = &lt;0x14&gt;;
++				#clock-cells = &lt;1&gt;;
++			};
+ 		};
+ 	};
+ 
+@@ -88,6 +107,18 @@ psci {
+ 		method = "smc";
+ 	};
+ 
++	reserved-memory {
++		#address-cells = &lt;2&gt;;
++		#size-cells = &lt;2&gt;;
++		ranges;
++
++		scmi_shmem: shmem@10f000 {
++			compatible = "arm,scmi-shmem";
++			reg = &lt;0x0 0x0010f000 0x0 0x100&gt;;
++			no-map;
++		};
++	};
++
+ 	timer {
+ 		compatible = "arm,armv8-timer";
+ 		interrupts = &lt;GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)&gt;,</pre><hr><pre>commit 61a05d8ca3030a544175671f5fab7a8f29c24085
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Mar 6 20:38:09 2025 +0800
+
+    arm64: dts: rockchip: Add rk3528 QoS register node
+    
+    The Quality-of-Service (QsS) node stores/restores specific
+    register contents when the power domains is turned off/on.
+    Add QoS node so that they can connect to the power domain.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250306123809.273655-3-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index b1713ed4d7e2..0c0e7f151462 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -129,6 +129,166 @@ gic: interrupt-controller@fed01000 {
+ 			#interrupt-cells = &lt;3&gt;;
+ 		};
+ 
++		qos_crypto_a: qos@ff200000 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff200000 0x0 0x20&gt;;
++		};
++
++		qos_crypto_p: qos@ff200080 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff200080 0x0 0x20&gt;;
++		};
++
++		qos_dcf: qos@ff200100 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff200100 0x0 0x20&gt;;
++		};
++
++		qos_dft2apb: qos@ff200200 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff200200 0x0 0x20&gt;;
++		};
++
++		qos_dma2ddr: qos@ff200280 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff200280 0x0 0x20&gt;;
++		};
++
++		qos_dmac: qos@ff200300 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff200300 0x0 0x20&gt;;
++		};
++
++		qos_keyreader: qos@ff200380 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff200380 0x0 0x20&gt;;
++		};
++
++		qos_cpu: qos@ff210000 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff210000 0x0 0x20&gt;;
++		};
++
++		qos_debug: qos@ff210080 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff210080 0x0 0x20&gt;;
++		};
++
++		qos_gpu_m0: qos@ff220000 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff220000 0x0 0x20&gt;;
++		};
++
++		qos_gpu_m1: qos@ff220080 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff220080 0x0 0x20&gt;;
++		};
++
++		qos_pmu_mcu: qos@ff240000 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff240000 0x0 0x20&gt;;
++		};
++
++		qos_rkvdec: qos@ff250000 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff250000 0x0 0x20&gt;;
++		};
++
++		qos_rkvenc: qos@ff260000 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff260000 0x0 0x20&gt;;
++		};
++
++		qos_gmac0: qos@ff270000 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270000 0x0 0x20&gt;;
++		};
++
++		qos_hdcp: qos@ff270080 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270080 0x0 0x20&gt;;
++		};
++
++		qos_jpegdec: qos@ff270100 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270100 0x0 0x20&gt;;
++		};
++
++		qos_rga2_m0ro: qos@ff270200 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270200 0x0 0x20&gt;;
++		};
++
++		qos_rga2_m0wo: qos@ff270280 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270280 0x0 0x20&gt;;
++		};
++
++		qos_sdmmc0: qos@ff270300 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270300 0x0 0x20&gt;;
++		};
++
++		qos_usb2host: qos@ff270380 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270380 0x0 0x20&gt;;
++		};
++
++		qos_vdpp: qos@ff270480 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270480 0x0 0x20&gt;;
++		};
++
++		qos_vop: qos@ff270500 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff270500 0x0 0x20&gt;;
++		};
++
++		qos_emmc: qos@ff280000 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280000 0x0 0x20&gt;;
++		};
++
++		qos_fspi: qos@ff280080 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280080 0x0 0x20&gt;;
++		};
++
++		qos_gmac1: qos@ff280100 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280100 0x0 0x20&gt;;
++		};
++
++		qos_pcie: qos@ff280180 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280180 0x0 0x20&gt;;
++		};
++
++		qos_sdio0: qos@ff280200 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280200 0x0 0x20&gt;;
++		};
++
++		qos_sdio1: qos@ff280280 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280280 0x0 0x20&gt;;
++		};
++
++		qos_tsp: qos@ff280300 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280300 0x0 0x20&gt;;
++		};
++
++		qos_usb3otg: qos@ff280380 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280380 0x0 0x20&gt;;
++		};
++
++		qos_vpu: qos@ff280400 {
++			compatible = "rockchip,rk3528-qos", "syscon";
++			reg = &lt;0x0 0xff280400 0x0 0x20&gt;;
++		};
++
+ 		cru: clock-controller@ff4a0000 {
+ 			compatible = "rockchip,rk3528-cru";
+ 			reg = &lt;0x0 0xff4a0000 0x0 0x30000&gt;;</pre><hr><pre>commit 19a634195c1abe498798b564cd6b81e6dd4533f7
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Mar 6 20:38:08 2025 +0800
+
+    dt-bindings: mfd: syscon: Add rk3528 QoS register compatible
+    
+    Document rk3528 compatible for QoS registers.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Acked-by: Conor Dooley &lt;conor.dooley@microchip.com&gt;
+    Link: https://lore.kernel.org/r/20250306123809.273655-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/Documentation/devicetree/bindings/mfd/syscon.yaml
+index 4d67ff26d445..2836e4793afc 100644
+--- a/Documentation/devicetree/bindings/mfd/syscon.yaml
++++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
+@@ -103,6 +103,7 @@ select:
+           - rockchip,rk3288-qos
+           - rockchip,rk3368-qos
+           - rockchip,rk3399-qos
++          - rockchip,rk3528-qos
+           - rockchip,rk3562-qos
+           - rockchip,rk3568-qos
+           - rockchip,rk3576-qos
+@@ -202,6 +203,7 @@ properties:
+           - rockchip,rk3288-qos
+           - rockchip,rk3368-qos
+           - rockchip,rk3399-qos
++          - rockchip,rk3528-qos
+           - rockchip,rk3562-qos
+           - rockchip,rk3568-qos
+           - rockchip,rk3576-qos</pre><hr><pre>commit a566fb9ba8ffecb56c50729390a9ea076f5c9532
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Mon Feb 10 15:01:22 2025 +0800
+
+    arm64: dts: qcom: ipq6018: add LDOA2 regulator
+    
+    Add LDOA2 regulator from MP5496 to support SDCC voltage scaling.
+    
+    Suggested-by: Robert Marko &lt;robimarko@gmail.com&gt;
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Reviewed-by: Konrad Dybcio &lt;konrad.dybcio@oss.qualcomm.com&gt;
+    Link: https://lore.kernel.org/r/20250210070122.208842-6-amadeus@jmu.edu.cn
+    Signed-off-by: Bjorn Andersson &lt;andersson@kernel.org&gt;
+
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi b/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi
+index 08b54b1e5249..d6b111a77f79 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi
+@@ -31,5 +31,14 @@ mp5496_s2: s2 {
+ 			regulator-max-microvolt = &lt;1062500&gt;;
+ 			regulator-always-on;
+ 		};
++
++		mp5496_l2: l2 {
++			regulator-min-microvolt = &lt;1800000&gt;;
++			regulator-max-microvolt = &lt;3300000&gt;;
++		};
+ 	};
+ };
++
++&amp;sdhc {
++	vqmmc-supply = &lt;&amp;mp5496_l2&gt;;
++};</pre><hr><pre>commit e60f872c2dc4c1d9227977c8714373fe6328699c
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Mon Feb 10 15:01:21 2025 +0800
+
+    arm64: dts: qcom: ipq6018: rename labels of mp5496 regulator
+    
+    Change the labels of mp5496 regulator from ipq6018 to mp5496.
+    
+    Suggested-by: Konrad Dybcio &lt;konrad.dybcio@oss.qualcomm.com&gt;
+    Suggested-by: Dmitry Baryshkov &lt;dmitry.baryshkov@linaro.org&gt;
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250210070122.208842-5-amadeus@jmu.edu.cn
+    Signed-off-by: Bjorn Andersson &lt;andersson@kernel.org&gt;
+
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi b/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi
+index fe2152df69f4..08b54b1e5249 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi
+@@ -7,26 +7,26 @@
+ #include "ipq6018.dtsi"
+ 
+ &amp;cpu0 {
+-	cpu-supply = &lt;&amp;ipq6018_s2&gt;;
++	cpu-supply = &lt;&amp;mp5496_s2&gt;;
+ };
+ 
+ &amp;cpu1 {
+-	cpu-supply = &lt;&amp;ipq6018_s2&gt;;
++	cpu-supply = &lt;&amp;mp5496_s2&gt;;
+ };
+ 
+ &amp;cpu2 {
+-	cpu-supply = &lt;&amp;ipq6018_s2&gt;;
++	cpu-supply = &lt;&amp;mp5496_s2&gt;;
+ };
+ 
+ &amp;cpu3 {
+-	cpu-supply = &lt;&amp;ipq6018_s2&gt;;
++	cpu-supply = &lt;&amp;mp5496_s2&gt;;
+ };
+ 
+ &amp;rpm_requests {
+ 	regulators {
+ 		compatible = "qcom,rpm-mp5496-regulators";
+ 
+-		ipq6018_s2: s2 {
++		mp5496_s2: s2 {
+ 			regulator-min-microvolt = &lt;725000&gt;;
+ 			regulator-max-microvolt = &lt;1062500&gt;;
+ 			regulator-always-on;</pre><hr><pre>commit 0c4c0f14b7d704bcb728d018a74788771dc9286b
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Mon Feb 10 15:01:20 2025 +0800
+
+    arm64: dts: qcom: ipq6018: move mp5496 regulator out of soc dtsi
+    
+    Some IPQ60xx SoCs don't come with the mp5496 pmic chip. The mp5496
+    pmic was never part of the IPQ60xx SoC, it's optional, so we moved
+    it out of the soc dtsi.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Reviewed-by: Dmitry Baryshkov &lt;dmitry.baryshkov@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20250210070122.208842-4-amadeus@jmu.edu.cn
+    Signed-off-by: Bjorn Andersson &lt;andersson@kernel.org&gt;
+
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018-cp01-c1.dts b/arch/arm64/boot/dts/qcom/ipq6018-cp01-c1.dts
+index f5f4827c0e17..9c69d3027b43 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018-cp01-c1.dts
++++ b/arch/arm64/boot/dts/qcom/ipq6018-cp01-c1.dts
+@@ -7,7 +7,7 @@
+ 
+ /dts-v1/;
+ 
+-#include "ipq6018.dtsi"
++#include "ipq6018-mp5496.dtsi"
+ 
+ / {
+ 	model = "Qualcomm Technologies, Inc. IPQ6018/AP-CP01-C1";
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi b/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi
+new file mode 100644
+index 000000000000..fe2152df69f4
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/ipq6018-mp5496.dtsi
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * ipq6018-mp5496.dtsi describes common properties (e.g. regulators) that
++ * apply to most devices that make use of the IPQ6018 SoC and MP5496 PMIC.
++ */
++
++#include "ipq6018.dtsi"
++
++&amp;cpu0 {
++	cpu-supply = &lt;&amp;ipq6018_s2&gt;;
++};
++
++&amp;cpu1 {
++	cpu-supply = &lt;&amp;ipq6018_s2&gt;;
++};
++
++&amp;cpu2 {
++	cpu-supply = &lt;&amp;ipq6018_s2&gt;;
++};
++
++&amp;cpu3 {
++	cpu-supply = &lt;&amp;ipq6018_s2&gt;;
++};
++
++&amp;rpm_requests {
++	regulators {
++		compatible = "qcom,rpm-mp5496-regulators";
++
++		ipq6018_s2: s2 {
++			regulator-min-microvolt = &lt;725000&gt;;
++			regulator-max-microvolt = &lt;1062500&gt;;
++			regulator-always-on;
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+index 7514919132b6..a02aa641cb90 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -43,7 +43,6 @@ cpu0: cpu@0 {
+ 			clocks = &lt;&amp;apcs_glb APCS_ALIAS0_CORE_CLK&gt;;
+ 			clock-names = "cpu";
+ 			operating-points-v2 = &lt;&amp;cpu_opp_table&gt;;
+-			cpu-supply = &lt;&amp;ipq6018_s2&gt;;
+ 			#cooling-cells = &lt;2&gt;;
+ 		};
+ 
+@@ -56,7 +55,6 @@ cpu1: cpu@1 {
+ 			clocks = &lt;&amp;apcs_glb APCS_ALIAS0_CORE_CLK&gt;;
+ 			clock-names = "cpu";
+ 			operating-points-v2 = &lt;&amp;cpu_opp_table&gt;;
+-			cpu-supply = &lt;&amp;ipq6018_s2&gt;;
+ 			#cooling-cells = &lt;2&gt;;
+ 		};
+ 
+@@ -69,7 +67,6 @@ cpu2: cpu@2 {
+ 			clocks = &lt;&amp;apcs_glb APCS_ALIAS0_CORE_CLK&gt;;
+ 			clock-names = "cpu";
+ 			operating-points-v2 = &lt;&amp;cpu_opp_table&gt;;
+-			cpu-supply = &lt;&amp;ipq6018_s2&gt;;
+ 			#cooling-cells = &lt;2&gt;;
+ 		};
+ 
+@@ -82,7 +79,6 @@ cpu3: cpu@3 {
+ 			clocks = &lt;&amp;apcs_glb APCS_ALIAS0_CORE_CLK&gt;;
+ 			clock-names = "cpu";
+ 			operating-points-v2 = &lt;&amp;cpu_opp_table&gt;;
+-			cpu-supply = &lt;&amp;ipq6018_s2&gt;;
+ 			#cooling-cells = &lt;2&gt;;
+ 		};
+ 
+@@ -184,16 +180,6 @@ glink-edge {
+ 			rpm_requests: rpm-requests {
+ 				compatible = "qcom,rpm-ipq6018", "qcom,glink-smd-rpm";
+ 				qcom,glink-channels = "rpm_requests";
+-
+-				regulators {
+-					compatible = "qcom,rpm-mp5496-regulators";
+-
+-					ipq6018_s2: s2 {
+-						regulator-min-microvolt = &lt;725000&gt;;
+-						regulator-max-microvolt = &lt;1062500&gt;;
+-						regulator-always-on;
+-					};
+-				};
+ 			};
+ 		};
+ 	};</pre><hr><pre>commit a96e765a7b3f64429f7eec3471a2093355ab041e
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Mon Feb 10 15:01:19 2025 +0800
+
+    arm64: dts: qcom: ipq6018: add 1.5GHz CPU Frequency
+    
+    The early version of IPQ6000 (SoC id: IPQ6018, SBL version:
+    BOOT.XF.0.3-00077-IPQ60xxLZB-2) and IPQ6005 SoCs can reach
+    a max frequency of 1.5GHz, so add this CPU frequency.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Reviewed-by: Konrad Dybcio &lt;konrad.dybcio@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20250210070122.208842-3-amadeus@jmu.edu.cn
+    Signed-off-by: Bjorn Andersson &lt;andersson@kernel.org&gt;
+
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+index 57ad6f0e6e34..7514919132b6 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -140,6 +140,13 @@ opp-1440000000 {
+ 			clock-latency-ns = &lt;200000&gt;;
+ 		};
+ 
++		opp-1512000000 {
++			opp-hz = /bits/ 64 &lt;1512000000&gt;;
++			opp-microvolt = &lt;937500&gt;;
++			opp-supported-hw = &lt;0x2&gt;;
++			clock-latency-ns = &lt;200000&gt;;
++		};
++
+ 		opp-1608000000 {
+ 			opp-hz = /bits/ 64 &lt;1608000000&gt;;
+ 			opp-microvolt = &lt;987500&gt;;</pre>
+    <div class="pagination">
+        <a href='14_3.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><a href='14_3.html'>3</a><span>[4]</span><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_9.html'>9</a><a href='14_5.html'>Next&gt;&gt;</a>
+    <div>
+</body>

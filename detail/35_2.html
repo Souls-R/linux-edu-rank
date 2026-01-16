@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Shanghai Jiaotong University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Shanghai Jiaotong University</h1>
+    <div class="pagination">
+        <a href='35.html'>&lt;&lt;Prev</a><a href='35.html'>1</a><span>[2]</span>
+    </div>
+    <hr>
+    <pre>commit 91d99a724e9c60e14332c26ab2284bf696b94c8e
+Author: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+Date:   Fri Sep 20 14:55:47 2019 +0800
+
+    nios2: force the string buffer NULL-terminated
+    
+    strncpy() does not ensure NULL-termination when the input string
+    size equals to the destination buffer size COMMAND_LINE_SIZE.
+    Besides, grep under arch/ with 'boot_command_line' shows
+    no other arch-specific code uses strncpy() when copying
+    boot_command_line.
+    
+    Use strlcpy() instead.
+    
+    This issue is identified by a Coccinelle script.
+    
+    Signed-off-by: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+    Signed-off-by: Ley Foon Tan &lt;ley.foon.tan@intel.com&gt;
+
+diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
+index 6bbd4ae2beb0..4cf35b09c0ec 100644
+--- a/arch/nios2/kernel/setup.c
++++ b/arch/nios2/kernel/setup.c
+@@ -123,7 +123,7 @@ asmlinkage void __init nios2_boot_init(unsigned r4, unsigned r5, unsigned r6,
+ 		dtb_passed = r6;
+ 
+ 		if (r7)
+-			strncpy(cmdline_passed, (char *)r7, COMMAND_LINE_SIZE);
++			strlcpy(cmdline_passed, (char *)r7, COMMAND_LINE_SIZE);
+ 	}
+ #endif
+ 
+@@ -131,10 +131,10 @@ asmlinkage void __init nios2_boot_init(unsigned r4, unsigned r5, unsigned r6,
+ 
+ #ifndef CONFIG_CMDLINE_FORCE
+ 	if (cmdline_passed[0])
+-		strncpy(boot_command_line, cmdline_passed, COMMAND_LINE_SIZE);
++		strlcpy(boot_command_line, cmdline_passed, COMMAND_LINE_SIZE);
+ #ifdef CONFIG_NIOS2_CMDLINE_IGNORE_DTB
+ 	else
+-		strncpy(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
++		strlcpy(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
+ #endif
+ #endif
+ </pre><hr><pre>commit 3690c8c9a8edff0db077a38783112d8fe12a7dd2
+Author: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+Date:   Wed Jul 31 16:15:42 2019 +0800
+
+    net/ethernet/qlogic/qed: force the string buffer NULL-terminated
+    
+    strncpy() does not ensure NULL-termination when the input string
+    size equals to the destination buffer size 30.
+    The output string is passed to qed_int_deassertion_aeu_bit()
+    which calls DP_INFO() and relies NULL-termination.
+    
+    Use strlcpy instead. The other conditional branch above strncpy()
+    needs no fix as snprintf() ensures NULL-termination.
+    
+    This issue is identified by a Coccinelle script.
+    
+    Signed-off-by: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_int.c b/drivers/net/ethernet/qlogic/qed/qed_int.c
+index 4e8118a08654..9f5113639eaf 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_int.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_int.c
+@@ -1093,7 +1093,7 @@ static int qed_int_deassertion(struct qed_hwfn  *p_hwfn,
+ 						snprintf(bit_name, 30,
+ 							 p_aeu-&gt;bit_name, num);
+ 					else
+-						strncpy(bit_name,
++						strlcpy(bit_name,
+ 							p_aeu-&gt;bit_name, 30);
+ 
+ 					/* We now need to pass bitmask in its</pre><hr><pre>commit e787f19373b8a5fa24087800ed78314fd17b984a
+Author: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+Date:   Wed Jul 31 15:25:59 2019 +0800
+
+    can: peak_usb: force the string buffer NULL-terminated
+    
+    strncpy() does not ensure NULL-termination when the input string size
+    equals to the destination buffer size IFNAMSIZ. The output string is
+    passed to dev_info() which relies on the NULL-termination.
+    
+    Use strlcpy() instead.
+    
+    This issue is identified by a Coccinelle script.
+    
+    Signed-off-by: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+    Signed-off-by: Marc Kleine-Budde &lt;mkl@pengutronix.de&gt;
+
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_core.c b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+index 22b9c8e6d040..65dce642b86b 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_core.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+@@ -855,7 +855,7 @@ static void peak_usb_disconnect(struct usb_interface *intf)
+ 
+ 		dev_prev_siblings = dev-&gt;prev_siblings;
+ 		dev-&gt;state &amp;= ~PCAN_USB_STATE_CONNECTED;
+-		strncpy(name, netdev-&gt;name, IFNAMSIZ);
++		strlcpy(name, netdev-&gt;name, IFNAMSIZ);
+ 
+ 		unregister_netdev(netdev);
+ </pre><hr><pre>commit cd28aa2e056cd1ea79fc5f24eed0ce868c6cab5c
+Author: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+Date:   Wed Jul 31 15:31:14 2019 +0800
+
+    can: sja1000: force the string buffer NULL-terminated
+    
+    strncpy() does not ensure NULL-termination when the input string size
+    equals to the destination buffer size IFNAMSIZ. The output string
+    'name' is passed to dev_info which relies on NULL-termination.
+    
+    Use strlcpy() instead.
+    
+    This issue is identified by a Coccinelle script.
+    
+    Signed-off-by: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+    Signed-off-by: Marc Kleine-Budde &lt;mkl@pengutronix.de&gt;
+
+diff --git a/drivers/net/can/sja1000/peak_pcmcia.c b/drivers/net/can/sja1000/peak_pcmcia.c
+index 185c7f7d38a4..5e0d5e8101c8 100644
+--- a/drivers/net/can/sja1000/peak_pcmcia.c
++++ b/drivers/net/can/sja1000/peak_pcmcia.c
+@@ -479,7 +479,7 @@ static void pcan_free_channels(struct pcan_pccard *card)
+ 		if (!netdev)
+ 			continue;
+ 
+-		strncpy(name, netdev-&gt;name, IFNAMSIZ);
++		strlcpy(name, netdev-&gt;name, IFNAMSIZ);
+ 
+ 		unregister_sja1000dev(netdev);
+ </pre><hr><pre>commit 929e571c04c285861e0bb049a396a2bdaea63282
+Author: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+Date:   Sat Jul 27 17:30:30 2019 +0800
+
+    drm/amdgpu: fix a potential information leaking bug
+    
+    Coccinelle reports a path that the array "data" is never initialized.
+    The path skips the checks in the conditional branches when either
+    of callback functions, read_wave_vgprs and read_wave_sgprs, is not
+    registered. Later, the uninitialized "data" array is read
+    in the while-loop below and passed to put_user().
+    
+    Fix the path by allocating the array with kcalloc().
+    
+    The patch is simplier than adding a fall-back branch that explicitly
+    calls memset(data, 0, ...). Also it does not need the multiplication
+    1024*sizeof(*data) as the size parameter for memset() though there is
+    no risk of integer overflow.
+    
+    Signed-off-by: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+    Reviewed-by: Chunming Zhou &lt;david1.zhou@amd.com&gt;
+    Reviewed-by: Christian König &lt;christian.koenig@amd.com&gt;
+    Signed-off-by: Alex Deucher &lt;alexander.deucher@amd.com&gt;
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index 6d54decef7f8..5652cc72ed3a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -707,7 +707,7 @@ static ssize_t amdgpu_debugfs_gpr_read(struct file *f, char __user *buf,
+ 	thread = (*pos &amp; GENMASK_ULL(59, 52)) &gt;&gt; 52;
+ 	bank = (*pos &amp; GENMASK_ULL(61, 60)) &gt;&gt; 60;
+ 
+-	data = kmalloc_array(1024, sizeof(*data), GFP_KERNEL);
++	data = kcalloc(1024, sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ </pre><hr><pre>commit 1a2c29bce06083e0f53f3a328f0bb43a2856b622
+Author: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+Date:   Sat Jul 27 17:30:30 2019 +0800
+
+    drm/amdgpu: fix a potential information leaking bug
+    
+    Coccinelle reports a path that the array "data" is never initialized.
+    The path skips the checks in the conditional branches when either
+    of callback functions, read_wave_vgprs and read_wave_sgprs, is not
+    registered. Later, the uninitialized "data" array is read
+    in the while-loop below and passed to put_user().
+    
+    Fix the path by allocating the array with kcalloc().
+    
+    The patch is simplier than adding a fall-back branch that explicitly
+    calls memset(data, 0, ...). Also it does not need the multiplication
+    1024*sizeof(*data) as the size parameter for memset() though there is
+    no risk of integer overflow.
+    
+    Signed-off-by: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+    Reviewed-by: Chunming Zhou &lt;david1.zhou@amd.com&gt;
+    Reviewed-by: Christian König &lt;christian.koenig@amd.com&gt;
+    Signed-off-by: Alex Deucher &lt;alexander.deucher@amd.com&gt;
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index 6d54decef7f8..5652cc72ed3a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -707,7 +707,7 @@ static ssize_t amdgpu_debugfs_gpr_read(struct file *f, char __user *buf,
+ 	thread = (*pos &amp; GENMASK_ULL(59, 52)) &gt;&gt; 52;
+ 	bank = (*pos &amp; GENMASK_ULL(61, 60)) &gt;&gt; 60;
+ 
+-	data = kmalloc_array(1024, sizeof(*data), GFP_KERNEL);
++	data = kcalloc(1024, sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ </pre><hr><pre>commit 3bd532692d93a9c72f4f11e38437b30c0e13007f
+Author: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+Date:   Mon Jul 15 16:53:01 2019 +0800
+
+    drm/amdgpu: replace simple_strtol() by kstrtou32()
+    
+    The simple_strtol() function is deprecated. kstrto[l,u32]() is
+    the correct replacement as it can properly handle overflows.
+    
+    This patch replaces the deprecated simple_strtol() use introduced recently.
+    As clk is of type uint32_t, we are safe to use kstrtou32().
+    
+    It is also safe to return zero on string parsing error,
+    similar to the case of returning zero if buf is empty in parse_clk().
+    
+    Fixes: bb5a2bdf36a8 ("drm/amdgpu: support dpm level modification under virtualization v3")
+    Signed-off-by: Wang Xiayang &lt;xywang.sjtu@sjtu.edu.cn&gt;
+    Signed-off-by: Alex Deucher &lt;alexander.deucher@amd.com&gt;
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 07a7e3820b7b..59dd204498c5 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -390,7 +390,8 @@ static uint32_t parse_clk(char *buf, bool min)
+                 if (!ptr)
+                         break;
+                 ptr+=2;
+-                clk = simple_strtoul(ptr, NULL, 10);
++		if (kstrtou32(ptr, 10, &amp;clk))
++			return 0;
+         } while (!min);
+ 
+         return clk * 100;</pre><hr><pre>commit 48282969826b3d3c76e908182f69724d86d995fe
+Author: 王振杰 &lt;zhenjie.wang@sjtu.edu.cn&gt;
+Date:   Wed Jan 10 16:12:22 2018 -0800
+
+    Input: synaptics - Lenovo Thinkpad T460p devices should use RMI
+    
+    The tpouchpad/trackpoint on Lenovo Thinkpad T460p work with smbus/RMI.
+    
+    Signed-off-by: Zhenjie Wang &lt;zhenjie.wang@sjtu.edu.cn&gt;
+    Signed-off-by: Dmitry Torokhov &lt;dmitry.torokhov@gmail.com&gt;
+
+diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
+index ee5466a374bf..cd9f61cb3fc6 100644
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -173,6 +173,7 @@ static const char * const smbus_pnp_ids[] = {
+ 	"LEN0046", /* X250 */
+ 	"LEN004a", /* W541 */
+ 	"LEN200f", /* T450s */
++	"LEN2018", /* T460p */
+ 	NULL
+ };
+ </pre><hr><pre>commit 82836372311a5cbf9cc5f4f47f9b56cb9edfe90d
+Author: Colin &lt;colins@sjtu.edu.cn&gt;
+Date:   Tue May 27 00:04:43 2008 +0800
+
+    [IPV6] TUNNEL6: Fix incoming packet length check for inter-protocol tunnel.
+    
+    I discover a strange behavior in [ipv4 in ipv6] tunnel. When IPv6 tunnel
+    payload is less than 40(0x28), packet can be sent to network, received in
+    physical interface, but not seen in IP tunnel interface. No counter increase
+    in tunnel interface.
+    
+    Signed-off-by: YOSHIFUJI Hideaki &lt;yoshfuji@linux-ipv6.org&gt;
+
+diff --git a/net/ipv6/tunnel6.c b/net/ipv6/tunnel6.c
+index 6323921b40be..669f280989c3 100644
+--- a/net/ipv6/tunnel6.c
++++ b/net/ipv6/tunnel6.c
+@@ -109,7 +109,7 @@ static int tunnel46_rcv(struct sk_buff *skb)
+ {
+ 	struct xfrm6_tunnel *handler;
+ 
+-	if (!pskb_may_pull(skb, sizeof(struct ipv6hdr)))
++	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
+ 		goto drop;
+ 
+ 	for (handler = tunnel46_handlers; handler; handler = handler-&gt;next)</pre>
+    <div class="pagination">
+        <a href='35.html'>&lt;&lt;Prev</a><a href='35.html'>1</a><span>[2]</span>
+    <div>
+</body>

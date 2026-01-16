@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Jimei University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Jimei University</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_9.html'>9</a><a href='14_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit e34003dd2fb05da8f420bbd7b8ec62ab88242c45
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Nov 20 20:00:11 2025 +0800
+
+    arm64: dts: rockchip: enable RTC for 100ASK DshanPi A1
+    
+    Enable RTC support for the 100ASK DshanPi A1 board.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251120120011.279104-6-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index d23c87fe6a9d..b19f9b6be6bf 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -655,6 +655,15 @@ regulator-state-mem {
+ 	};
+ };
+ 
++&amp;i2c2 {
++	status = "okay";
++
++	rtc@68 {
++		compatible = "dallas,ds1338";
++		reg = &lt;0x68&gt;;
++	};
++};
++
+ &amp;i2c4 {
+ 	status = "okay";
+ </pre><hr><pre>commit d43935da2bfada9e83f5f7e46f7d72e5d4665bd6
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Nov 20 20:00:10 2025 +0800
+
+    arm64: dts: rockchip: enable USB for 100ASK DshanPi A1
+    
+    Enable USB support for the 100ASK DshanPi A1 board.
+    Note that the HUSB311 Type-C chip is not supported.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251120120011.279104-5-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index 9ef41f0c6920..d23c87fe6a9d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -800,6 +800,19 @@ &amp;uart0 {
+ 	status = "okay";
+ };
+ 
++&amp;usbdp_phy {
++	status = "okay";
++};
++
++&amp;usb_drd0_dwc3 {
++	status = "okay";
++};
++
++&amp;usb_drd1_dwc3 {
++	dr_mode = "host";
++	status = "okay";
++};
++
+ &amp;vop {
+ 	status = "okay";
+ };</pre><hr><pre>commit 80ec14d1d2173cc3f225102a7db09a457541fe04
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Nov 20 20:00:09 2025 +0800
+
+    arm64: dts: rockchip: enable button for 100ASK DshanPi A1
+    
+    The 100ASK DshanPi A1 board has three ADC buttons and one
+    GPIO button. Enable them.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251120120011.279104-4-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index 815f75e7cd70..9ef41f0c6920 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -7,6 +7,7 @@
+ /dts-v1/;
+ 
+ #include &lt;dt-bindings/gpio/gpio.h&gt;
++#include &lt;dt-bindings/input/input.h&gt;
+ #include &lt;dt-bindings/leds/common.h&gt;
+ #include &lt;dt-bindings/pinctrl/rockchip.h&gt;
+ #include &lt;dt-bindings/soc/rockchip,vop2.h&gt;
+@@ -66,6 +67,61 @@ hdmi_con_in: endpoint {
+ 		};
+ 	};
+ 
++	keys-0 {
++		compatible = "adc-keys";
++		io-channels = &lt;&amp;saradc 0&gt;;
++		io-channel-names = "buttons";
++		keyup-threshold-microvolt = &lt;1800000&gt;;
++		poll-interval = &lt;100&gt;;
++
++		button-maskrom {
++			label = "MASKROM";
++			linux,code = &lt;KEY_SETUP&gt;;
++			press-threshold-microvolt = &lt;0&gt;;
++		};
++	};
++
++	keys-1 {
++		compatible = "adc-keys";
++		io-channels = &lt;&amp;saradc 1&gt;;
++		io-channel-names = "buttons";
++		keyup-threshold-microvolt = &lt;1800000&gt;;
++		poll-interval = &lt;100&gt;;
++
++		button-recovery {
++			label = "RECOVERY";
++			linux,code = &lt;KEY_VENDOR&gt;;
++			press-threshold-microvolt = &lt;0&gt;;
++		};
++	};
++
++	keys-2 {
++		compatible = "adc-keys";
++		io-channels = &lt;&amp;saradc 4&gt;;
++		io-channel-names = "buttons";
++		keyup-threshold-microvolt = &lt;1800000&gt;;
++		poll-interval = &lt;100&gt;;
++
++		button-user2 {
++			label = "USER2";
++			linux,code = &lt;BTN_2&gt;;
++			press-threshold-microvolt = &lt;0&gt;;
++		};
++	};
++
++	keys-3 {
++		compatible = "gpio-keys";
++		pinctrl-names = "default";
++		pinctrl-0 = &lt;&amp;gpio0_a0_d&gt;;
++
++		button-user1 {
++			gpios = &lt;&amp;gpio0 RK_PA0 GPIO_ACTIVE_LOW&gt;;
++			label = "USER1";
++			linux,code = &lt;BTN_1&gt;;
++			wakeup-source;
++		};
++	};
++
+ 	vcc_in: regulator-vcc-12v0-dcin {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc_in";
+@@ -661,6 +717,12 @@ gmac1_rst: gmac1-rst {
+ 		};
+ 	};
+ 
++	gpio-keys {
++		gpio0_a0_d: gpio0-a0-d {
++			rockchip,pins = &lt;0 RK_PA0 RK_FUNC_GPIO &amp;pcfg_pull_up&gt;;
++		};
++	};
++
+ 	headphone {
+ 		hp_det: hp-det {
+ 			rockchip,pins = &lt;0 RK_PA2 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
+@@ -688,6 +750,11 @@ &amp;sai6 {
+ 	status = "okay";
+ };
+ 
++&amp;saradc {
++	vref-supply = &lt;&amp;vcca1v8_pldo2_s0&gt;;
++	status = "okay";
++};
++
+ &amp;sdhci {
+ 	bus-width = &lt;8&gt;;
+ 	full-pwr-cycle-in-suspend;</pre><hr><pre>commit 98461b5e3cdffd126aec610691078408c296d79f
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Nov 20 20:00:08 2025 +0800
+
+    arm64: dts: rockchip: add mmc aliases for 100ASK DshanPi A1
+    
+    Add missing MMC aliases for 100ASK DshanPi A1 board.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251120120011.279104-3-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index f9dc4fa39167..815f75e7cd70 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -19,6 +19,8 @@ / {
+ 	aliases {
+ 		ethernet0 = &amp;gmac0;
+ 		ethernet1 = &amp;gmac1;
++		mmc0 = &amp;sdhci;
++		mmc1 = &amp;sdmmc;
+ 	};
+ 
+ 	chosen {</pre><hr><pre>commit b120a9df264eab51952d0cf44c16f13f2606281d
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Nov 20 20:00:07 2025 +0800
+
+    arm64: dts: rockchip: remove mmc max-frequency for 100ASK DshanPi A1
+    
+    The max-frequency property is already defined in the mmc
+    node of rk3576.dtsi. Remove the redundant definition.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Reviewed-by: Shawn Lin &lt;shawn.lin@rock-chips.com&gt;
+    Link: https://patch.msgid.link/20251120120011.279104-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index cb04ab96d1e8..f9dc4fa39167 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -689,7 +689,6 @@ &amp;sai6 {
+ &amp;sdhci {
+ 	bus-width = &lt;8&gt;;
+ 	full-pwr-cycle-in-suspend;
+-	max-frequency = &lt;200000000&gt;;
+ 	mmc-hs400-1_8v;
+ 	mmc-hs400-enhanced-strobe;
+ 	no-sdio;
+@@ -703,7 +702,6 @@ &amp;sdmmc {
+ 	cap-mmc-highspeed;
+ 	cap-sd-highspeed;
+ 	disable-wp;
+-	max-frequency = &lt;200000000&gt;;
+ 	sd-uhs-sdr104;
+ 	vmmc-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 	vqmmc-supply = &lt;&amp;vccio_sd_s0&gt;;</pre><hr><pre>commit f2bd5a0f59d052d16749bccf637690e51947a5d6
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sat Nov 15 18:00:00 2025 +0800
+
+    pinctrl: airoha: fix pinctrl function mismatch issue
+    
+    The blamed commit made the following changes:
+    
+    -#define PINCTRL_FUNC_DESC(id)...
+    -               .desc = PINCTRL_PINFUNCTION(#id, ...
+    +#define PINCTRL_FUNC_DESC(id, table)...
+    +               .desc = PINCTRL_PINFUNCTION(#id, ...
+    
+    -       PINCTRL_FUNC_DESC(pon)...
+    +       PINCTRL_FUNC_DESC("pon", pon)...
+    
+    It's clear that the id of funcs doesn't match the definition.
+    Remove redundant #string from the definition to fix this issue:
+    pinctrl-airoha ...: invalid function mdio in map table
+    
+    Fixes: 4043b0c45f85 ("pinctrl: airoha: generalize pins/group/function/confs handling")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Acked-by: Christian Marangi &lt;ansuelsmth@gmail.com&gt;
+    Signed-off-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+
+diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+index 983d96fd399a..2a5b9b6f08d9 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
++++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+@@ -35,7 +35,7 @@
+ 
+ #define PINCTRL_FUNC_DESC(id, table)					\
+ 	{								\
+-		.desc = PINCTRL_PINFUNCTION(#id, table##_groups,	\
++		.desc = PINCTRL_PINFUNCTION(id, table##_groups,	\
+ 					    ARRAY_SIZE(table##_groups)),\
+ 		.groups = table##_func_group,				\
+ 		.group_size = ARRAY_SIZE(table##_func_group),		\</pre><hr><pre>commit 4e8cb8e0328a4b3ba17905f0051ac98ab709c3ab
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sat Nov 1 20:00:09 2025 +0800
+
+    arm64: dts: rockchip: fixes audio for 100ASK DshanPi A1
+    
+    Correct the i2c address of the ES8388 chip and the gpio of hp_det pin.
+    
+    According to the schematic, the ES8388 chip is connected to the SoC's
+    sai2 controller instead of sai1, fix it.
+    
+    Fixes: d809417c5a40 ("arm64: dts: rockchip: add DTs for 100ASK DShanPi A1")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251101120010.41729-5-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index 6c08279953c0..cb04ab96d1e8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -44,7 +44,7 @@ es8388_sound: es8388-sound {
+ 		simple-audio-card,pin-switches = "Headphone", "Line Out";
+ 
+ 		simple-audio-card,cpu {
+-			sound-dai = &lt;&amp;sai1&gt;;
++			sound-dai = &lt;&amp;sai2&gt;;
+ 		};
+ 
+ 		simple-audio-card,codec {
+@@ -600,18 +600,18 @@ regulator-state-mem {
+ &amp;i2c4 {
+ 	status = "okay";
+ 
+-	es8388: audio-codec@10 {
++	es8388: audio-codec@11 {
+ 		compatible = "everest,es8388", "everest,es8328";
+-		reg = &lt;0x10&gt;;
+-		clocks = &lt;&amp;cru CLK_SAI1_MCLKOUT_TO_IO&gt;;
++		reg = &lt;0x11&gt;;
++		clocks = &lt;&amp;cru CLK_SAI2_MCLKOUT_TO_IO&gt;;
++		assigned-clocks = &lt;&amp;cru CLK_SAI2_MCLKOUT_TO_IO&gt;;
++		assigned-clock-rates = &lt;12288000&gt;;
+ 		AVDD-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 		DVDD-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 		HPVDD-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 		PVDD-supply = &lt;&amp;vcc_3v3_s0&gt;;
+-		assigned-clocks = &lt;&amp;cru CLK_SAI1_MCLKOUT_TO_IO&gt;;
+-		assigned-clock-rates = &lt;12288000&gt;;
+ 		pinctrl-names = "default";
+-		pinctrl-0 = &lt;&amp;sai1m0_mclk&gt;;
++		pinctrl-0 = &lt;&amp;sai2m0_mclk&gt;;
+ 		#sound-dai-cells = &lt;0&gt;;
+ 	};
+ };
+@@ -661,7 +661,7 @@ gmac1_rst: gmac1-rst {
+ 
+ 	headphone {
+ 		hp_det: hp-det {
+-			rockchip,pins = &lt;0 RK_PD3 RK_FUNC_GPIO &amp;pcfg_pull_up&gt;;
++			rockchip,pins = &lt;0 RK_PA2 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
+ 		};
+ 	};
+ 
+@@ -678,12 +678,7 @@ typec5v_pwren_h: typec5v-pwren-h {
+ 	};
+ };
+ 
+-&amp;sai1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = &lt;&amp;sai1m0_lrck
+-		     &amp;sai1m0_sclk
+-		     &amp;sai1m0_sdi0
+-		     &amp;sai1m0_sdo0&gt;;
++&amp;sai2 {
+ 	status = "okay";
+ };
+ </pre><hr><pre>commit eaf661552b0f67278d8af4d42e6a5f97ceb0281f
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sat Nov 1 20:00:08 2025 +0800
+
+    arm64: dts: rockchip: fixes vcc3v3_s0 supply for 100ASK DshanPi A1
+    
+    From the schematic, the supply of ES8388 chip and the vmmc-supply
+    of SD card both originate from the VCC3V3_S0 regulator, fix it.
+    
+    Fixes: d809417c5a40 ("arm64: dts: rockchip: add DTs for 100ASK DShanPi A1")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251101120010.41729-4-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index 7f64dfbf736e..6c08279953c0 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -604,9 +604,9 @@ es8388: audio-codec@10 {
+ 		compatible = "everest,es8388", "everest,es8328";
+ 		reg = &lt;0x10&gt;;
+ 		clocks = &lt;&amp;cru CLK_SAI1_MCLKOUT_TO_IO&gt;;
+-		AVDD-supply = &lt;&amp;vcca_3v3_s0&gt;;
++		AVDD-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 		DVDD-supply = &lt;&amp;vcc_3v3_s0&gt;;
+-		HPVDD-supply = &lt;&amp;vcca_3v3_s0&gt;;
++		HPVDD-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 		PVDD-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 		assigned-clocks = &lt;&amp;cru CLK_SAI1_MCLKOUT_TO_IO&gt;;
+ 		assigned-clock-rates = &lt;12288000&gt;;
+@@ -710,7 +710,7 @@ &amp;sdmmc {
+ 	disable-wp;
+ 	max-frequency = &lt;200000000&gt;;
+ 	sd-uhs-sdr104;
+-	vmmc-supply = &lt;&amp;vcc_3v3_s3&gt;;
++	vmmc-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 	vqmmc-supply = &lt;&amp;vccio_sd_s0&gt;;
+ 	status = "okay";
+ };</pre><hr><pre>commit 9c79c9e03547068404cca5139dfea281d655ff90
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sat Nov 1 20:00:07 2025 +0800
+
+    arm64: dts: rockchip: fixes ethernet for 100ASK DshanPi A1
+    
+    Currently, Ethernet is unusable due to an incorrect PHY address.
+    This commit fixes this, removes the incorrect 25M clock pinctrl,
+    and adds the missing PHY supply.
+    
+    Fixes: d809417c5a40 ("arm64: dts: rockchip: add DTs for 100ASK DShanPi A1")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251101120010.41729-3-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index a399987c1bc2..7f64dfbf736e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -190,6 +190,7 @@ &amp;gmac0 {
+ 	clock_in_out = "output";
+ 	phy-mode = "rgmii-id";
+ 	phy-handle = &lt;&amp;rgmii_phy0&gt;;
++	phy-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = &lt;&amp;eth0m0_miim
+ 		     &amp;eth0m0_tx_bus2
+@@ -203,13 +204,13 @@ &amp;gmac1 {
+ 	clock_in_out = "output";
+ 	phy-mode = "rgmii-id";
+ 	phy-handle = &lt;&amp;rgmii_phy1&gt;;
++	phy-supply = &lt;&amp;vcc_3v3_s0&gt;;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = &lt;&amp;eth1m0_miim
+ 		     &amp;eth1m0_tx_bus2
+ 		     &amp;eth1m0_rx_bus2
+ 		     &amp;eth1m0_rgmii_clk
+-		     &amp;eth1m0_rgmii_bus
+-		     &amp;ethm0_clk1_25m_out&gt;;
++		     &amp;eth1m0_rgmii_bus&gt;;
+ 	status = "okay";
+ };
+ 
+@@ -616,10 +617,9 @@ es8388: audio-codec@10 {
+ };
+ 
+ &amp;mdio0 {
+-	rgmii_phy0: phy@1 {
++	rgmii_phy0: phy@0 {
+ 		compatible = "ethernet-phy-ieee802.3-c22";
+-		reg = &lt;0x1&gt;;
+-		clocks = &lt;&amp;cru REFCLKO25M_GMAC0_OUT&gt;;
++		reg = &lt;0&gt;;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = &lt;&amp;gmac0_rst&gt;;
+ 		reset-assert-us = &lt;20000&gt;;
+@@ -629,10 +629,9 @@ rgmii_phy0: phy@1 {
+ };
+ 
+ &amp;mdio1 {
+-	rgmii_phy1: phy@1 {
++	rgmii_phy1: phy@0 {
+ 		compatible = "ethernet-phy-ieee802.3-c22";
+-		reg = &lt;0x1&gt;;
+-		clocks = &lt;&amp;cru REFCLKO25M_GMAC1_OUT&gt;;
++		reg = &lt;0&gt;;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = &lt;&amp;gmac1_rst&gt;;
+ 		reset-assert-us = &lt;20000&gt;;</pre><hr><pre>commit 0b822c59c826f47dc63d9470b4710bd251266cae
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sat Nov 1 20:00:06 2025 +0800
+
+    arm64: dts: rockchip: fixes regulator for 100ASK DshanPi A1
+    
+    Referencing the schematic [1], correct the names of the USB
+    regulator, remove these non-existent RTC and UFS regulators.
+    
+    [1] https://dl.100ask.net/Hardware/MPU/RK3576-DshanPi-A1/DshanPi-A1-RK3576-SCH_V1.1.pdf
+    
+    Fixes: d809417c5a40 ("arm64: dts: rockchip: add DTs for 100ASK DShanPi A1")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251101120010.41729-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+index 59c172573cf8..a399987c1bc2 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dts
+@@ -83,16 +83,6 @@ vcc_1v1_nldo_s3: regulator-vcc-1v1-nldo-s3 {
+ 		vin-supply = &lt;&amp;vcc_5v0_sys&gt;;
+ 	};
+ 
+-	vcc_1v2_ufs_vccq_s0: regulator-vcc-1v2-ufs-vccq-s0 {
+-		compatible = "regulator-fixed";
+-		regulator-name = "vcc_1v2_ufs_vccq_s0";
+-		regulator-always-on;
+-		regulator-boot-on;
+-		regulator-min-microvolt = &lt;1200000&gt;;
+-		regulator-max-microvolt = &lt;1200000&gt;;
+-		vin-supply = &lt;&amp;vcc_5v0_sys&gt;;
+-	};
+-
+ 	vcc_1v8_s0: regulator-vcc-1v8-s0 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc_1v8_s0";
+@@ -103,16 +93,6 @@ vcc_1v8_s0: regulator-vcc-1v8-s0 {
+ 		vin-supply = &lt;&amp;vcc_1v8_s3&gt;;
+ 	};
+ 
+-	vcc_1v8_ufs_vccq2_s0: regulator-vcc-1v8-ufs-vccq2-s0 {
+-		compatible = "regulator-fixed";
+-		regulator-name = "vcc_1v8_ufs_vccq2_s0";
+-		regulator-always-on;
+-		regulator-boot-on;
+-		regulator-min-microvolt = &lt;1800000&gt;;
+-		regulator-max-microvolt = &lt;1800000&gt;;
+-		vin-supply = &lt;&amp;vcc_1v8_s3&gt;;
+-	};
+-
+ 	vcc_2v0_pldo_s3: regulator-vcc-2v0-pldo-s3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc_2v0_pldo_s3";
+@@ -133,16 +113,6 @@ vcc_3v3_m2: regulator-vcc-3v3-m2 {
+ 		vin-supply = &lt;&amp;vcc_5v0_sys&gt;;
+ 	};
+ 
+-	vcc_3v3_rtc_s5: regulator-vcc-3v3-rtc-s5 {
+-		compatible = "regulator-fixed";
+-		regulator-name = "vcc_3v3_rtc_s5";
+-		regulator-always-on;
+-		regulator-boot-on;
+-		regulator-min-microvolt = &lt;3300000&gt;;
+-		regulator-max-microvolt = &lt;3300000&gt;;
+-		vin-supply = &lt;&amp;vcc_5v0_sys&gt;;
+-	};
+-
+ 	vcc_3v3_s0: regulator-vcc-3v3-s0 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc_3v3_s0";
+@@ -163,27 +133,17 @@ vcc_5v0_sys: regulator-vcc-5v0-sys {
+ 		vin-supply = &lt;&amp;vcc_in&gt;;
+ 	};
+ 
+-	vcc_5v0_typec0: regulator-vcc-5v0-typec0 {
++	vbus5v0_typec: regulator-vbus5v0-typec {
+ 		compatible = "regulator-fixed";
+ 		enable-active-high;
+ 		gpios = &lt;&amp;gpio1 RK_PC1 GPIO_ACTIVE_HIGH&gt;;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = &lt;&amp;typec5v_pwren_h&gt;;
+-		regulator-name = "vcc_5v0_typec0";
++		regulator-name = "vbus5v0_typec";
+ 		regulator-min-microvolt = &lt;5000000&gt;;
+ 		regulator-max-microvolt = &lt;5000000&gt;;
+ 		vin-supply = &lt;&amp;vcc_5v0_sys&gt;;
+ 	};
+-
+-	vcc_3v3_ufs_s0: regulator-vcc-ufs-s0 {
+-		compatible = "regulator-fixed";
+-		regulator-name = "vcc_3v3_ufs_s0";
+-		regulator-always-on;
+-		regulator-boot-on;
+-		regulator-min-microvolt = &lt;3300000&gt;;
+-		regulator-max-microvolt = &lt;3300000&gt;;
+-		vin-supply = &lt;&amp;vcc_5v0_sys&gt;;
+-	};
+ };
+ 
+ &amp;combphy0_ps {
+@@ -761,7 +721,7 @@ &amp;u2phy0 {
+ };
+ 
+ &amp;u2phy0_otg {
+-	phy-supply = &lt;&amp;vcc_5v0_typec0&gt;;
++	phy-supply = &lt;&amp;vbus5v0_typec&gt;;
+ 	status = "okay";
+ };
+ </pre>
+    <div class="pagination">
+        <span>[1]</span><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_9.html'>9</a><a href='14_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

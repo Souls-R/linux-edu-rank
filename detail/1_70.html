@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_69.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><span>[70]</span><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_71.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit decbd919f4bb9cb698486880c026c4104b13d3c3
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Sep 6 02:37:06 2011 -0400
+
+    ext4: only call ext4_jbd2_file_inode when an inode has been extended
+    
+    In delayed allocation mode, it's important to only call
+    ext4_jbd2_file_inode when the file has been extended.  This is
+    necessary to avoid a race which first got introduced in commit
+    678aaf481, but which was made much more common with the introduction
+    of the "punch hole" functionality.  (Especially when dioread_nolock
+    was enabled; when I could reliably reproduce this problem with
+    xfstests #74.)
+    
+    The race is this: If while trying to writeback a delayed allocation
+    inode, there is a need to map delalloc blocks, and we run out of space
+    in the journal, *and* at the same time the inode is already on the
+    committing transaction's t_inode_list (because for example while doing
+    the punch hole operation, ext4_jbd2_file_inode() is called), then the
+    commit operation will wait for the inode to finish all of its pending
+    writebacks by calling filemap_fdatawait(), but since that inode has
+    one or more pages with the PageWriteback flag set, the commit
+    operation will wait forever, and the so the writeback of the inode can
+    never take place, and the kjournald thread and the writeback thread
+    end up waiting for each other --- forever.
+    
+    It's important at this point to recall why an inode is placed on the
+    t_inode_list; it is to provide the data=ordered guarantees that we
+    don't end up exposing stale data.  In the case where we are truncating
+    or punching a hole in the inode, there is no possibility that stale
+    data could be exposed in the first place, so we don't need to put the
+    inode on the t_inode_list!
+    
+    The right long-term fix is to get rid of data=ordered mode altogether,
+    and only update the extent tree or indirect blocks after the data has
+    been written.  Until then, this change will also avoid some
+    unnecessary waiting in the commit operation.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: Allison Henderson &lt;achender@linux.vnet.ibm.com&gt;
+    Cc: Jan Kara &lt;jack@suse.cz&gt;
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index d1b1ef71e5b7..f86b149fb8b1 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1471,13 +1471,13 @@ static void mpage_da_map_and_submit(struct mpage_da_data *mpd)
+ 
+ 		for (i = 0; i &lt; map.m_len; i++)
+ 			unmap_underlying_metadata(bdev, map.m_pblk + i);
+-	}
+ 
+-	if (ext4_should_order_data(mpd-&gt;inode)) {
+-		err = ext4_jbd2_file_inode(handle, mpd-&gt;inode);
+-		if (err)
+-			/* This only happens if the journal is aborted */
+-			return;
++		if (ext4_should_order_data(mpd-&gt;inode)) {
++			err = ext4_jbd2_file_inode(handle, mpd-&gt;inode);
++			if (err)
++				/* Only if the journal is aborted */
++				return;
++		}
+ 	}
+ 
+ 	/*
+@@ -3173,12 +3173,8 @@ int ext4_discard_partial_page_buffers_no_lock(handle_t *handle,
+ 		err = 0;
+ 		if (ext4_should_journal_data(inode)) {
+ 			err = ext4_handle_dirty_metadata(handle, inode, bh);
+-		} else {
+-			if (ext4_should_order_data(inode) &amp;&amp;
+-			   EXT4_I(inode)-&gt;jinode)
+-				err = ext4_jbd2_file_inode(handle, inode);
++		} else
+ 			mark_buffer_dirty(bh);
+-		}
+ 
+ 		BUFFER_TRACE(bh, "Partial buffer zeroed");
+ next:
+@@ -3301,11 +3297,8 @@ int ext4_block_zero_page_range(handle_t *handle,
+ 	err = 0;
+ 	if (ext4_should_journal_data(inode)) {
+ 		err = ext4_handle_dirty_metadata(handle, inode, bh);
+-	} else {
+-		if (ext4_should_order_data(inode) &amp;&amp; EXT4_I(inode)-&gt;jinode)
+-			err = ext4_jbd2_file_inode(handle, inode);
++	} else
+ 		mark_buffer_dirty(bh);
+-	}
+ 
+ unlock:
+ 	unlock_page(page);</pre><hr><pre>commit 9ea7a0df63630ad8197716cd313ea66e28906fc0
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Sep 4 10:18:14 2011 -0400
+
+    jbd2: add debugging information to jbd2_journal_dirty_metadata()
+    
+    Add debugging information in case jbd2_journal_dirty_metadata() is
+    called with a buffer_head which didn't have
+    jbd2_journal_get_write_access() called on it, or if the journal_head
+    has the wrong transaction in it.  In addition, return an error code.
+    This won't change anything for ocfs2, which will BUG_ON() the non-zero
+    exit code.
+    
+    For ext4, the caller of this function is ext4_handle_dirty_metadata(),
+    and on seeing a non-zero return code, will call __ext4_journal_stop(),
+    which will print the function and line number of the (buggy) calling
+    function and abort the journal.  This will allow us to recover instead
+    of bug halting, which is better from a robustness and reliability
+    point of view.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4_jbd2.c b/fs/ext4/ext4_jbd2.c
+index f5240aa15601..aca179017582 100644
+--- a/fs/ext4/ext4_jbd2.c
++++ b/fs/ext4/ext4_jbd2.c
+@@ -109,9 +109,11 @@ int __ext4_handle_dirty_metadata(const char *where, unsigned int line,
+ 
+ 	if (ext4_handle_valid(handle)) {
+ 		err = jbd2_journal_dirty_metadata(handle, bh);
+-		if (err)
+-			ext4_journal_abort_handle(where, line, __func__,
+-						  bh, handle, err);
++		if (err) {
++			/* Errors can only happen if there is a bug */
++			handle-&gt;h_err = err;
++			__ext4_journal_stop(where, line, handle);
++		}
+ 	} else {
+ 		if (inode)
+ 			mark_buffer_dirty_inode(bh, inode);
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 9124cd24e093..2c5216a8d03b 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -96,13 +96,17 @@ static int ext4_ext_get_access(handle_t *handle, struct inode *inode,
+  *  - ENOMEM
+  *  - EIO
+  */
+-static int ext4_ext_dirty(handle_t *handle, struct inode *inode,
+-				struct ext4_ext_path *path)
++#define ext4_ext_dirty(handle, inode, path) \
++		__ext4_ext_dirty(__func__, __LINE__, (handle), (inode), (path))
++static int __ext4_ext_dirty(const char *where, unsigned int line,
++			    handle_t *handle, struct inode *inode,
++			    struct ext4_ext_path *path)
+ {
+ 	int err;
+ 	if (path-&gt;p_bh) {
+ 		/* path points to block */
+-		err = ext4_handle_dirty_metadata(handle, inode, path-&gt;p_bh);
++		err = __ext4_handle_dirty_metadata(where, line, handle,
++						   inode, path-&gt;p_bh);
+ 	} else {
+ 		/* path points to leaf/index in inode body */
+ 		err = ext4_mark_inode_dirty(handle, inode);
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 2d7109414cdd..cb56fe9aaabb 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1049,6 +1049,10 @@ void jbd2_buffer_abort_trigger(struct journal_head *jh,
+  * mark dirty metadata which needs to be journaled as part of the current
+  * transaction.
+  *
++ * The buffer must have previously had jbd2_journal_get_write_access()
++ * called so that it has a valid journal_head attached to the buffer
++ * head.
++ *
+  * The buffer is placed on the transaction's metadata list and is marked
+  * as belonging to the transaction.
+  *
+@@ -1065,11 +1069,16 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
+ 	transaction_t *transaction = handle-&gt;h_transaction;
+ 	journal_t *journal = transaction-&gt;t_journal;
+ 	struct journal_head *jh = bh2jh(bh);
++	int ret = 0;
+ 
+ 	jbd_debug(5, "journal_head %p\n", jh);
+ 	JBUFFER_TRACE(jh, "entry");
+ 	if (is_handle_aborted(handle))
+ 		goto out;
++	if (!buffer_jbd(bh)) {
++		ret = -EUCLEAN;
++		goto out;
++	}
+ 
+ 	jbd_lock_bh_state(bh);
+ 
+@@ -1093,8 +1102,20 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
+ 	 */
+ 	if (jh-&gt;b_transaction == transaction &amp;&amp; jh-&gt;b_jlist == BJ_Metadata) {
+ 		JBUFFER_TRACE(jh, "fastpath");
+-		J_ASSERT_JH(jh, jh-&gt;b_transaction ==
+-					journal-&gt;j_running_transaction);
++		if (unlikely(jh-&gt;b_transaction !=
++			     journal-&gt;j_running_transaction)) {
++			printk(KERN_EMERG "JBD: %s: "
++			       "jh-&gt;b_transaction (%llu, %p, %u) != "
++			       "journal-&gt;j_running_transaction (%p, %u)",
++			       journal-&gt;j_devname,
++			       (unsigned long long) bh-&gt;b_blocknr,
++			       jh-&gt;b_transaction,
++			       jh-&gt;b_transaction ? jh-&gt;b_transaction-&gt;t_tid : 0,
++			       journal-&gt;j_running_transaction,
++			       journal-&gt;j_running_transaction ?
++			       journal-&gt;j_running_transaction-&gt;t_tid : 0);
++			ret = -EINVAL;
++		}
+ 		goto out_unlock_bh;
+ 	}
+ 
+@@ -1108,9 +1129,32 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
+ 	 */
+ 	if (jh-&gt;b_transaction != transaction) {
+ 		JBUFFER_TRACE(jh, "already on other transaction");
+-		J_ASSERT_JH(jh, jh-&gt;b_transaction ==
+-					journal-&gt;j_committing_transaction);
+-		J_ASSERT_JH(jh, jh-&gt;b_next_transaction == transaction);
++		if (unlikely(jh-&gt;b_transaction !=
++			     journal-&gt;j_committing_transaction)) {
++			printk(KERN_EMERG "JBD: %s: "
++			       "jh-&gt;b_transaction (%llu, %p, %u) != "
++			       "journal-&gt;j_committing_transaction (%p, %u)",
++			       journal-&gt;j_devname,
++			       (unsigned long long) bh-&gt;b_blocknr,
++			       jh-&gt;b_transaction,
++			       jh-&gt;b_transaction ? jh-&gt;b_transaction-&gt;t_tid : 0,
++			       journal-&gt;j_committing_transaction,
++			       journal-&gt;j_committing_transaction ?
++			       journal-&gt;j_committing_transaction-&gt;t_tid : 0);
++			ret = -EINVAL;
++		}
++		if (unlikely(jh-&gt;b_next_transaction != transaction)) {
++			printk(KERN_EMERG "JBD: %s: "
++			       "jh-&gt;b_next_transaction (%llu, %p, %u) != "
++			       "transaction (%p, %u)",
++			       journal-&gt;j_devname,
++			       (unsigned long long) bh-&gt;b_blocknr,
++			       jh-&gt;b_next_transaction,
++			       jh-&gt;b_next_transaction ?
++			       jh-&gt;b_next_transaction-&gt;t_tid : 0,
++			       transaction, transaction-&gt;t_tid);
++			ret = -EINVAL;
++		}
+ 		/* And this case is illegal: we can't reuse another
+ 		 * transaction's data buffer, ever. */
+ 		goto out_unlock_bh;
+@@ -1127,7 +1171,9 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
+ 	jbd_unlock_bh_state(bh);
+ out:
+ 	JBUFFER_TRACE(jh, "exit");
+-	return 0;
++	if (ret)
++		__WARN();	/* All errors are bugs, so dump the stack */
++	return ret;
+ }
+ 
+ /*</pre><hr><pre>commit 56889787cfa77dfd96f0b3a3e6a4f26c2e4a5134
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Sep 3 18:22:38 2011 -0400
+
+    ext4: improve handling of conflicting mount options
+    
+    If the user explicitly specifies conflicting mount options for
+    delalloc or dioread_nolock and data=journal, fail the mount, instead
+    of printing a warning and continuing (since many user's won't look at
+    dmesg and notice the warning).
+    
+    Also, print a single warning that data=journal implies that delayed
+    allocation is not on by default (since it's not supported), and
+    furthermore that O_DIRECT is not supported.  Improve the text in
+    Documentation/filesystems/ext4.txt so this is clear there as well.
+    
+    Similarly, if the dioread_nolock mount option is specified when the
+    file system block size != PAGE_SIZE, fail the mount instead of
+    printing a warning message and ignoring the mount option.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/Documentation/filesystems/ext4.txt b/Documentation/filesystems/ext4.txt
+index 232a575a0c48..168242b5c045 100644
+--- a/Documentation/filesystems/ext4.txt
++++ b/Documentation/filesystems/ext4.txt
+@@ -160,7 +160,9 @@ noload			if the filesystem was not unmounted cleanly,
+                      	lead to any number of problems.
+ 
+ data=journal		All data are committed into the journal prior to being
+-			written into the main file system.
++			written into the main file system.  Enabling
++			this mode will disable delayed allocation and
++			O_DIRECT support.
+ 
+ data=ordered	(*)	All data are forced directly out to the main file
+ 			system prior to its metadata being committed to the
+@@ -419,8 +421,8 @@ written to the journal first, and then to its final location.
+ In the event of a crash, the journal can be replayed, bringing both data and
+ metadata into a consistent state.  This mode is the slowest except when data
+ needs to be read from and written to disk at the same time where it
+-outperforms all others modes.  Currently ext4 does not have delayed
+-allocation support if this data journalling mode is selected.
++outperforms all others modes.  Enabling this mode will disable delayed
++allocation and O_DIRECT support.
+ 
+ /proc entries
+ =============
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index ccfa81f33bb0..48ae98819d35 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -922,6 +922,9 @@ struct ext4_inode_info {
+ #define EXT4_MOUNT_DISCARD		0x40000000 /* Issue DISCARD requests */
+ #define EXT4_MOUNT_INIT_INODE_TABLE	0x80000000 /* Initialize uninitialized itables */
+ 
++#define EXT4_MOUNT2_EXPLICIT_DELALLOC	0x00000001 /* User explicitly
++						      specified delalloc */
++
+ #define clear_opt(sb, opt)		EXT4_SB(sb)-&gt;s_mount_opt &amp;= \
+ 						~EXT4_MOUNT_##opt
+ #define set_opt(sb, opt)		EXT4_SB(sb)-&gt;s_mount_opt |= \
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 44d0c8db2239..ee2f74a7084d 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1801,6 +1801,7 @@ static int parse_options(char *options, struct super_block *sb,
+ 			break;
+ 		case Opt_nodelalloc:
+ 			clear_opt(sb, DELALLOC);
++			clear_opt2(sb, EXPLICIT_DELALLOC);
+ 			break;
+ 		case Opt_mblk_io_submit:
+ 			set_opt(sb, MBLK_IO_SUBMIT);
+@@ -1817,6 +1818,7 @@ static int parse_options(char *options, struct super_block *sb,
+ 			break;
+ 		case Opt_delalloc:
+ 			set_opt(sb, DELALLOC);
++			set_opt2(sb, EXPLICIT_DELALLOC);
+ 			break;
+ 		case Opt_block_validity:
+ 			set_opt(sb, BLOCK_VALIDITY);
+@@ -3224,6 +3226,33 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 			   &amp;journal_ioprio, NULL, 0))
+ 		goto failed_mount;
+ 
++	if (test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA) {
++		printk_once(KERN_WARNING "EXT4-fs: Warning: mounting "
++			    "with data=journal disables delayed "
++			    "allocation and O_DIRECT support!\n");
++		if (test_opt2(sb, EXPLICIT_DELALLOC)) {
++			ext4_msg(sb, KERN_ERR, "can't mount with "
++				 "both data=journal and delalloc");
++			goto failed_mount;
++		}
++		if (test_opt(sb, DIOREAD_NOLOCK)) {
++			ext4_msg(sb, KERN_ERR, "can't mount with "
++				 "both data=journal and delalloc");
++			goto failed_mount;
++		}
++		if (test_opt(sb, DELALLOC))
++			clear_opt(sb, DELALLOC);
++	}
++
++	blocksize = BLOCK_SIZE &lt;&lt; le32_to_cpu(es-&gt;s_log_block_size);
++	if (test_opt(sb, DIOREAD_NOLOCK)) {
++		if (blocksize &lt; PAGE_SIZE) {
++			ext4_msg(sb, KERN_ERR, "can't mount with "
++				 "dioread_nolock if block size != PAGE_SIZE");
++			goto failed_mount;
++		}
++	}
++
+ 	sb-&gt;s_flags = (sb-&gt;s_flags &amp; ~MS_POSIXACL) |
+ 		(test_opt(sb, POSIX_ACL) ? MS_POSIXACL : 0);
+ 
+@@ -3265,8 +3294,6 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 	if (!ext4_feature_set_ok(sb, (sb-&gt;s_flags &amp; MS_RDONLY)))
+ 		goto failed_mount;
+ 
+-	blocksize = BLOCK_SIZE &lt;&lt; le32_to_cpu(es-&gt;s_log_block_size);
+-
+ 	if (blocksize &lt; EXT4_MIN_BLOCK_SIZE ||
+ 	    blocksize &gt; EXT4_MAX_BLOCK_SIZE) {
+ 		ext4_msg(sb, KERN_ERR,
+@@ -3679,25 +3706,6 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 			 "available");
+ 	}
+ 
+-	if (test_opt(sb, DELALLOC) &amp;&amp;
+-	    (test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA)) {
+-		ext4_msg(sb, KERN_WARNING, "Ignoring delalloc option - "
+-			 "requested data journaling mode");
+-		clear_opt(sb, DELALLOC);
+-	}
+-	if (test_opt(sb, DIOREAD_NOLOCK)) {
+-		if (test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA) {
+-			ext4_msg(sb, KERN_WARNING, "Ignoring dioread_nolock "
+-				"option - requested data journaling mode");
+-			clear_opt(sb, DIOREAD_NOLOCK);
+-		}
+-		if (sb-&gt;s_blocksize &lt; PAGE_SIZE) {
+-			ext4_msg(sb, KERN_WARNING, "Ignoring dioread_nolock "
+-				"option - block size is too small");
+-			clear_opt(sb, DIOREAD_NOLOCK);
+-		}
+-	}
+-
+ 	err = ext4_setup_system_zone(sb);
+ 	if (err) {
+ 		ext4_msg(sb, KERN_ERR, "failed to initialize system "</pre><hr><pre>commit 5930ea643805feb50a2f8383ae12eb6f10935e49
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Aug 31 12:02:51 2011 -0400
+
+    ext4: call ext4_handle_dirty_metadata with correct inode in ext4_dx_add_entry
+    
+    ext4_dx_add_entry manipulates bh2 and frames[0].bh, which are two buffer_heads
+    that point to directory blocks assigned to the directory inode.  However, the
+    function calls ext4_handle_dirty_metadata with the inode of the file that's
+    being added to the directory, not the directory inode itself.  Therefore,
+    correct the code to dirty the directory buffers with the directory inode, not
+    the file inode.
+    
+    Signed-off-by: Darrick J. Wong &lt;djwong@us.ibm.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@kernel.org
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index f0abe4323136..a067835bbac1 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -1585,7 +1585,7 @@ static int ext4_dx_add_entry(handle_t *handle, struct dentry *dentry,
+ 			dxtrace(dx_show_index("node", frames[1].entries));
+ 			dxtrace(dx_show_index("node",
+ 			       ((struct dx_node *) bh2-&gt;b_data)-&gt;entries));
+-			err = ext4_handle_dirty_metadata(handle, inode, bh2);
++			err = ext4_handle_dirty_metadata(handle, dir, bh2);
+ 			if (err)
+ 				goto journal_error;
+ 			brelse (bh2);
+@@ -1611,7 +1611,7 @@ static int ext4_dx_add_entry(handle_t *handle, struct dentry *dentry,
+ 			if (err)
+ 				goto journal_error;
+ 		}
+-		err = ext4_handle_dirty_metadata(handle, inode, frames[0].bh);
++		err = ext4_handle_dirty_metadata(handle, dir, frames[0].bh);
+ 		if (err) {
+ 			ext4_std_error(inode-&gt;i_sb, err);
+ 			goto cleanup;</pre><hr><pre>commit 84ebd795613488992b273220c2937d575d27d2a9
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Aug 31 11:56:51 2011 -0400
+
+    ext4: fake direct I/O mode for data=journal
+    
+    Currently attempts to open a file with O_DIRECT in data=journal mode
+    causes the open to fail with -EINVAL.  This makes it very hard to test
+    data=journal mode.  So we will let the open succeed, but then always
+    fall back to O_DSYNC buffered writes.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 18d2558b7624..b84f127c085d 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -2854,6 +2854,12 @@ static ssize_t ext4_direct_IO(int rw, struct kiocb *iocb,
+ 	struct inode *inode = file-&gt;f_mapping-&gt;host;
+ 	ssize_t ret;
+ 
++	/*
++	 * If we are doing data journalling we don't support O_DIRECT
++	 */
++	if (ext4_should_journal_data(inode))
++		return 0;
++
+ 	trace_ext4_direct_IO_enter(inode, offset, iov_length(iov, nr_segs), rw);
+ 	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+ 		ret = ext4_ext_direct_IO(rw, iocb, iov, offset, nr_segs);
+@@ -2923,6 +2929,7 @@ static const struct address_space_operations ext4_journalled_aops = {
+ 	.bmap			= ext4_bmap,
+ 	.invalidatepage		= ext4_invalidatepage,
+ 	.releasepage		= ext4_releasepage,
++	.direct_IO		= ext4_direct_IO,
+ 	.is_partially_uptodate  = block_is_partially_uptodate,
+ 	.error_remove_page	= generic_error_remove_page,
+ };</pre><hr><pre>commit 1cd9f0976aa4606db8d6e3dc3edd0aca8019372a
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Aug 31 11:54:51 2011 -0400
+
+    ext2,ext3,ext4: don't inherit APPEND_FL or IMMUTABLE_FL for new inodes
+    
+    This doesn't make much sense, and it exposes a bug in the kernel where
+    attempts to create a new file in an append-only directory using
+    O_CREAT will fail (but still leave a zero-length file).  This was
+    discovered when xfstests #79 was generalized so it could run on all
+    file systems.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc:stable@kernel.org
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index b7d7bd0f066e..5c38120c389c 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -358,8 +358,7 @@ struct flex_groups {
+ 
+ /* Flags that should be inherited by new inodes from their parent. */
+ #define EXT4_FL_INHERITED (EXT4_SECRM_FL | EXT4_UNRM_FL | EXT4_COMPR_FL |\
+-			   EXT4_SYNC_FL | EXT4_IMMUTABLE_FL | EXT4_APPEND_FL |\
+-			   EXT4_NODUMP_FL | EXT4_NOATIME_FL |\
++			   EXT4_SYNC_FL | EXT4_NODUMP_FL | EXT4_NOATIME_FL |\
+ 			   EXT4_NOCOMPR_FL | EXT4_JOURNAL_DATA_FL |\
+ 			   EXT4_NOTAIL_FL | EXT4_DIRSYNC_FL)
+ 
+diff --git a/include/linux/ext2_fs.h b/include/linux/ext2_fs.h
+index 53792bf36c71..ce1b719e8bd4 100644
+--- a/include/linux/ext2_fs.h
++++ b/include/linux/ext2_fs.h
+@@ -197,8 +197,8 @@ struct ext2_group_desc
+ 
+ /* Flags that should be inherited by new inodes from their parent. */
+ #define EXT2_FL_INHERITED (EXT2_SECRM_FL | EXT2_UNRM_FL | EXT2_COMPR_FL |\
+-			   EXT2_SYNC_FL | EXT2_IMMUTABLE_FL | EXT2_APPEND_FL |\
+-			   EXT2_NODUMP_FL | EXT2_NOATIME_FL | EXT2_COMPRBLK_FL|\
++			   EXT2_SYNC_FL | EXT2_NODUMP_FL |\
++			   EXT2_NOATIME_FL | EXT2_COMPRBLK_FL |\
+ 			   EXT2_NOCOMP_FL | EXT2_JOURNAL_DATA_FL |\
+ 			   EXT2_NOTAIL_FL | EXT2_DIRSYNC_FL)
+ 
+diff --git a/include/linux/ext3_fs.h b/include/linux/ext3_fs.h
+index 67a803aee619..0244611eb2b8 100644
+--- a/include/linux/ext3_fs.h
++++ b/include/linux/ext3_fs.h
+@@ -180,8 +180,8 @@ struct ext3_group_desc
+ 
+ /* Flags that should be inherited by new inodes from their parent. */
+ #define EXT3_FL_INHERITED (EXT3_SECRM_FL | EXT3_UNRM_FL | EXT3_COMPR_FL |\
+-			   EXT3_SYNC_FL | EXT3_IMMUTABLE_FL | EXT3_APPEND_FL |\
+-			   EXT3_NODUMP_FL | EXT3_NOATIME_FL | EXT3_COMPRBLK_FL|\
++			   EXT3_SYNC_FL | EXT3_NODUMP_FL |\
++			   EXT3_NOATIME_FL | EXT3_COMPRBLK_FL |\
+ 			   EXT3_NOCOMPR_FL | EXT3_JOURNAL_DATA_FL |\
+ 			   EXT3_NOTAIL_FL | EXT3_DIRSYNC_FL)
+ </pre><hr><pre>commit b4ca46e4e82a0a5976fe5eab85be585d75f8202f
+Author: Andy Lutomirski &lt;luto@mit.edu&gt;
+Date:   Thu Aug 25 16:10:33 2011 -0400
+
+    x86-32: Fix boot with CONFIG_X86_INVD_BUG
+    
+    entry_32.S contained a hardcoded alternative instruction entry, and the
+    format changed in commit 59e97e4d6fbc ("x86: Make alternative
+    instruction pointers relative").
+    
+    Replace the hardcoded entry with the altinstruction_entry macro.  This
+    fixes the 32-bit boot with CONFIG_X86_INVD_BUG=y.
+    
+    Reported-and-tested-by: Arnaud Lacombe &lt;lacombar@gmail.com&gt;
+    Signed-off-by: Andy Lutomirski &lt;luto@mit.edu&gt;
+    Cc: Peter Anvin &lt;hpa@zytor.com&gt;
+    Cc: Ingo Molnar &lt;mingo@elte.hu&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/arch/x86/kernel/entry_32.S b/arch/x86/kernel/entry_32.S
+index 5c1a91974918..f3f6f5344001 100644
+--- a/arch/x86/kernel/entry_32.S
++++ b/arch/x86/kernel/entry_32.S
+@@ -54,6 +54,7 @@
+ #include &lt;asm/ftrace.h&gt;
+ #include &lt;asm/irq_vectors.h&gt;
+ #include &lt;asm/cpufeature.h&gt;
++#include &lt;asm/alternative-asm.h&gt;
+ 
+ /* Avoid __ASSEMBLER__'ifying &lt;linux/audit.h&gt; just for this.  */
+ #include &lt;linux/elf-em.h&gt;
+@@ -873,12 +874,7 @@ ENTRY(simd_coprocessor_error)
+ 661:	pushl_cfi $do_general_protection
+ 662:
+ .section .altinstructions,"a"
+-	.balign 4
+-	.long 661b
+-	.long 663f
+-	.word X86_FEATURE_XMM
+-	.byte 662b-661b
+-	.byte 664f-663f
++	altinstruction_entry 661b, 663f, X86_FEATURE_XMM, 662b-661b, 664f-663f
+ .previous
+ .section .altinstr_replacement,"ax"
+ 663:	pushl $do_simd_coprocessor_error</pre><hr><pre>commit 7e49b1c8c6d64f55ac83e1f5901b22fa9e51ab80
+Author: Andy Lutomirski &lt;luto@mit.edu&gt;
+Date:   Wed Aug 24 10:19:44 2011 -0400
+
+    x86-64, unistd: Remove bogus __IGNORE_getcpu
+    
+    The change:
+    
+    commit fce8dc06423d6fb2709469dc5c55b04e09c1d126
+    Author: Andy Lutomirski &lt;luto@mit.edu&gt;
+    Date:   Wed Aug 10 11:15:31 2011 -0400
+    
+        x86-64: Wire up getcpu syscall
+    
+    added getcpu as a real syscall, so we shouldn't ignore it any more.
+    
+    Signed-off-by: Andy Lutomirski &lt;luto@mit.edu&gt;
+    Link: http://lkml.kernel.org/r/b4cb60ef45db3a675a0e2b9d51bcb022b0a9ab9c.1314195481.git.luto@mit.edu
+    Reported-by: H.J. Lu &lt;hjl.tools@gmail.com&gt;
+    Signed-off-by: H. Peter Anvin &lt;hpa@linux.intel.com&gt;
+
+diff --git a/arch/x86/include/asm/unistd_64.h b/arch/x86/include/asm/unistd_64.h
+index d92641cc7acc..940d7204b89d 100644
+--- a/arch/x86/include/asm/unistd_64.h
++++ b/arch/x86/include/asm/unistd_64.h
+@@ -624,7 +624,6 @@ __SYSCALL(__NR_vmsplice, sys_vmsplice)
+ __SYSCALL(__NR_move_pages, sys_move_pages)
+ #define __NR_utimensat				280
+ __SYSCALL(__NR_utimensat, sys_utimensat)
+-#define __IGNORE_getcpu		/* implemented as a vsyscall */
+ #define __NR_epoll_pwait			281
+ __SYSCALL(__NR_epoll_pwait, sys_epoll_pwait)
+ #define __NR_signalfd				282</pre><hr><pre>commit d5c073caf050bc713271a02e016b1672d9b7b935
+Author: Geoffrey Thomas &lt;geofft@mit.edu&gt;
+Date:   Mon Aug 22 11:28:57 2011 -0700
+
+    net: Documentation: RFC 2553bis is now RFC 3493
+    
+    Signed-off-by: Geoffrey Thomas &lt;geofft@mit.edu&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/Documentation/networking/ip-sysctl.txt b/Documentation/networking/ip-sysctl.txt
+index db2a4067013c..81546990f41c 100644
+--- a/Documentation/networking/ip-sysctl.txt
++++ b/Documentation/networking/ip-sysctl.txt
+@@ -992,7 +992,7 @@ bindv6only - BOOLEAN
+ 		TRUE: disable IPv4-mapped address feature
+ 		FALSE: enable IPv4-mapped address feature
+ 
+-	Default: FALSE (as specified in RFC2553bis)
++	Default: FALSE (as specified in RFC3493)
+ 
+ IPv6 Fragmentation:
+ </pre><hr><pre>commit 9dd75f1f1a02d656a11a7b9b9e6c2759b9c1e946
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Aug 13 12:58:21 2011 -0400
+
+    ext4: fix nomblk_io_submit option so it correctly converts uninit blocks
+    
+    Bug discovered by Jan Kara:
+    
+    Finally, commit 1449032be17abb69116dbc393f67ceb8bd034f92 returned back
+    the old IO submission code but apparently it forgot to return the old
+    handling of uninitialized buffers so we unconditionnaly call
+    block_write_full_page() without specifying end_io function. So AFAICS
+    we never convert unwritten extents to written in some cases. For
+    example when I mount the fs as: mount -t ext4 -o
+    nomblk_io_submit,dioread_nolock /dev/ubdb /mnt and do
+            int fd = open(argv[1], O_RDWR | O_CREAT | O_TRUNC, 0600);
+            char buf[1024];
+            memset(buf, 'a', sizeof(buf));
+            fallocate(fd, 0, 0, 16384);
+            write(fd, buf, sizeof(buf));
+    
+    I get a file full of zeros (after remounting the filesystem so that
+    pagecache is dropped) instead of seeing the first KB contain 'a's.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@kernel.org
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 762e8037c888..c4da98a959ae 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1291,7 +1291,12 @@ static int mpage_da_submit_io(struct mpage_da_data *mpd,
+ 			else if (test_opt(inode-&gt;i_sb, MBLK_IO_SUBMIT))
+ 				err = ext4_bio_write_page(&amp;io_submit, page,
+ 							  len, mpd-&gt;wbc);
+-			else
++			else if (buffer_uninit(page_bufs)) {
++				ext4_set_bh_endio(page_bufs, inode);
++				err = block_write_full_page_endio(page,
++					noalloc_get_block_write,
++					mpd-&gt;wbc, ext4_end_io_buffer_write);
++			} else
+ 				err = block_write_full_page(page,
+ 					noalloc_get_block_write, mpd-&gt;wbc);
+ </pre>
+    <div class="pagination">
+        <a href='1_69.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><span>[70]</span><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_71.html'>Next&gt;&gt;</a>
+    <div>
+</body>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by National University of Singapore</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by National University of Singapore</h1>
+    <div class="pagination">
+        <span>[1]</span>
+    </div>
+    <hr>
+    <pre>commit a4685408ff6c3e2af366ad9a7274f45ff3f394ee
+Author: Dylan Wolff &lt;wolffd@comp.nus.edu.sg&gt;
+Date:   Wed Mar 12 16:02:00 2025 +0800
+
+    jfs: Fix null-ptr-deref in jfs_ioc_trim
+    
+    [ Syzkaller Report ]
+    
+    Oops: general protection fault, probably for non-canonical address
+    0xdffffc0000000087: 0000 [#1
+    KASAN: null-ptr-deref in range [0x0000000000000438-0x000000000000043f]
+    CPU: 2 UID: 0 PID: 10614 Comm: syz-executor.0 Not tainted
+    6.13.0-rc6-gfbfd64d25c7a-dirty #1
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+    Sched_ext: serialise (enabled+all), task: runnable_at=-30ms
+    RIP: 0010:jfs_ioc_trim+0x34b/0x8f0
+    Code: e7 e8 59 a4 87 fe 4d 8b 24 24 4d 8d bc 24 38 04 00 00 48 8d 93
+    90 82 fe ff 4c 89 ff 31 f6
+    RSP: 0018:ffffc900055f7cd0 EFLAGS: 00010206
+    RAX: 0000000000000087 RBX: 00005866a9e67ff8 RCX: 000000000000000a
+    RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000001
+    RBP: dffffc0000000000 R08: ffff88807c180003 R09: 1ffff1100f830000
+    R10: dffffc0000000000 R11: ffffed100f830001 R12: 0000000000000000
+    R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000438
+    FS:  00007fe520225640(0000) GS:ffff8880b7e80000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 00005593c91b2c88 CR3: 000000014927c000 CR4: 00000000000006f0
+    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    Call Trace:
+    &lt;TASK&gt;
+    ? __die_body+0x61/0xb0
+    ? die_addr+0xb1/0xe0
+    ? exc_general_protection+0x333/0x510
+    ? asm_exc_general_protection+0x26/0x30
+    ? jfs_ioc_trim+0x34b/0x8f0
+    jfs_ioctl+0x3c8/0x4f0
+    ? __pfx_jfs_ioctl+0x10/0x10
+    ? __pfx_jfs_ioctl+0x10/0x10
+    __se_sys_ioctl+0x269/0x350
+    ? __pfx___se_sys_ioctl+0x10/0x10
+    ? do_syscall_64+0xfb/0x210
+    do_syscall_64+0xee/0x210
+    ? syscall_exit_to_user_mode+0x1e0/0x330
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+    RIP: 0033:0x7fe51f4903ad
+    Code: c3 e8 a7 2b 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48
+    89 f7 48 89 d6 48 89 ca 4d
+    RSP: 002b:00007fe5202250c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+    RAX: ffffffffffffffda RBX: 00007fe51f5cbf80 RCX: 00007fe51f4903ad
+    RDX: 0000000020000680 RSI: 00000000c0185879 RDI: 0000000000000005
+    RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+    R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe520225640
+    R13: 000000000000000e R14: 00007fe51f44fca0 R15: 00007fe52021d000
+    &lt;/TASK&gt;
+    Modules linked in:
+    ---[ end trace 0000000000000000 ]---
+    RIP: 0010:jfs_ioc_trim+0x34b/0x8f0
+    Code: e7 e8 59 a4 87 fe 4d 8b 24 24 4d 8d bc 24 38 04 00 00 48 8d 93
+    90 82 fe ff 4c 89 ff 31 f6
+    RSP: 0018:ffffc900055f7cd0 EFLAGS: 00010206
+    RAX: 0000000000000087 RBX: 00005866a9e67ff8 RCX: 000000000000000a
+    RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000001
+    RBP: dffffc0000000000 R08: ffff88807c180003 R09: 1ffff1100f830000
+    R10: dffffc0000000000 R11: ffffed100f830001 R12: 0000000000000000
+    R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000438
+    FS:  00007fe520225640(0000) GS:ffff8880b7e80000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 00005593c91b2c88 CR3: 000000014927c000 CR4: 00000000000006f0
+    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    Kernel panic - not syncing: Fatal exception
+    
+    [ Analysis ]
+    
+    We believe that we have found a concurrency bug in the `fs/jfs` module
+    that results in a null pointer dereference. There is a closely related
+    issue which has been fixed:
+    
+    https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d6c1b3599b2feb5c7291f5ac3a36e5fa7cedb234
+    
+    ... but, unfortunately, the accepted patch appears to still be
+    susceptible to a null pointer dereference under some interleavings.
+    
+    To trigger the bug, we think that `JFS_SBI(ipbmap-&gt;i_sb)-&gt;bmap` is set
+    to NULL in `dbFreeBits` and then dereferenced in `jfs_ioc_trim`. This
+    bug manifests quite rarely under normal circumstances, but is
+    triggereable from a syz-program.
+    
+    Reported-and-tested-by: Dylan J. Wolff&lt;wolffd@comp.nus.edu.sg&gt;
+    Reported-and-tested-by: Jiacheng Xu &lt;stitch@zju.edu.cn&gt;
+    Signed-off-by: Dylan J. Wolff&lt;wolffd@comp.nus.edu.sg&gt;
+    Signed-off-by: Jiacheng Xu &lt;stitch@zju.edu.cn&gt;
+    Signed-off-by: Dave Kleikamp &lt;dave.kleikamp@oracle.com&gt;
+
+diff --git a/fs/jfs/jfs_discard.c b/fs/jfs/jfs_discard.c
+index 5f4b305030ad..4b660296caf3 100644
+--- a/fs/jfs/jfs_discard.c
++++ b/fs/jfs/jfs_discard.c
+@@ -86,7 +86,8 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+ 	down_read(&amp;sb-&gt;s_umount);
+ 	bmp = JFS_SBI(ip-&gt;i_sb)-&gt;bmap;
+ 
+-	if (minlen &gt; bmp-&gt;db_agsize ||
++	if (bmp == NULL ||
++	    minlen &gt; bmp-&gt;db_agsize ||
+ 	    start &gt;= bmp-&gt;db_mapsize ||
+ 	    range-&gt;len &lt; sb-&gt;s_blocksize) {
+ 		up_read(&amp;sb-&gt;s_umount);</pre><hr><pre>commit 0e43662e61f2569500ab83b8188c065603530785
+Author: Shen Jiamin &lt;shen_jiamin@comp.nus.edu.sg&gt;
+Date:   Thu Dec 15 12:47:03 2022 +0800
+
+    tools/resolve_btfids: Use pkg-config to locate libelf
+    
+    When libelf was not installed in the standard location, it cannot be
+    located by the current building config.
+    
+    Use pkg-config to help locate libelf in such cases.
+    
+    Signed-off-by: Shen Jiamin &lt;shen_jiamin@comp.nus.edu.sg&gt;
+    Signed-off-by: Daniel Borkmann &lt;daniel@iogearbox.net&gt;
+    Acked-by: Jiri Olsa &lt;jolsa@kernel.org&gt;
+    Link: https://lore.kernel.org/bpf/20221215044703.400139-1-shen_jiamin@comp.nus.edu.sg
+
+diff --git a/tools/bpf/resolve_btfids/Makefile b/tools/bpf/resolve_btfids/Makefile
+index 19a3112e271a..f7375a119f54 100644
+--- a/tools/bpf/resolve_btfids/Makefile
++++ b/tools/bpf/resolve_btfids/Makefile
+@@ -56,13 +56,17 @@ $(BPFOBJ): $(wildcard $(LIBBPF_SRC)/*.[ch] $(LIBBPF_SRC)/Makefile) | $(LIBBPF_OU
+ 		    DESTDIR=$(LIBBPF_DESTDIR) prefix= EXTRA_CFLAGS="$(CFLAGS)" \
+ 		    $(abspath $@) install_headers
+ 
++LIBELF_FLAGS := $(shell $(HOSTPKG_CONFIG) libelf --cflags 2&gt;/dev/null)
++LIBELF_LIBS  := $(shell $(HOSTPKG_CONFIG) libelf --libs 2&gt;/dev/null || echo -lelf)
++
+ CFLAGS += -g \
+           -I$(srctree)/tools/include \
+           -I$(srctree)/tools/include/uapi \
+           -I$(LIBBPF_INCLUDE) \
+-          -I$(SUBCMD_SRC)
++          -I$(SUBCMD_SRC) \
++          $(LIBELF_FLAGS)
+ 
+-LIBS = -lelf -lz
++LIBS = $(LIBELF_LIBS) -lz
+ 
+ export srctree OUTPUT CFLAGS Q
+ include $(srctree)/tools/build/Makefile.include</pre><hr><pre>commit 341968c617ca7726b444fdb23e5b2efb0881c5db
+Author: Hu Jialun &lt;hujialun@comp.nus.edu.sg&gt;
+Date:   Sun Jul 4 00:48:34 2021 +0800
+
+    docs/zh_CN: Remove the Microsoft rhetoric
+    
+    Update Chinese translation on par with original English coding-style.rst
+    Related commit b7592e5b82db19b72a34b471f3296ad3f651c8b9
+    
+    Signed-off-by: Hu Jialun &lt;hujialun@comp.nus.edu.sg&gt;
+    Reviewed-by: Hu Haowen &lt;src.res@email.cn&gt;
+    Link: https://lore.kernel.org/r/20210703164834.460447-1-hujialun@comp.nus.edu.sg
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+
+diff --git a/Documentation/translations/zh_CN/process/coding-style.rst b/Documentation/translations/zh_CN/process/coding-style.rst
+index b8c484a84d10..638d714bec83 100644
+--- a/Documentation/translations/zh_CN/process/coding-style.rst
++++ b/Documentation/translations/zh_CN/process/coding-style.rst
+@@ -268,8 +268,7 @@ C 程序员不使用类似 ThisVariableIsATemporaryCounter 这样华丽的名字
+ ``count_active_users()`` 或者类似的名字，你不应该叫它 ``cntuser()`` 。
+ 
+ 在函数名中包含函数类型 (所谓的匈牙利命名法) 是脑子出了问题——编译器知道那些类
+-型而且能够检查那些类型，这样做只能把程序员弄糊涂了。难怪微软总是制造出有问题
+-的程序。
++型而且能够检查那些类型，这样做只能把程序员弄糊涂了。
+ 
+ 本地变量名应该简短，而且能够表达相关的含义。如果你有一些随机的整数型的循环计
+ 数器，它应该被称为 ``i`` 。叫它 ``loop_counter`` 并无益处，如果它没有被误解的</pre><hr><pre>commit b46966ee8f7c75fcff9e7390d29b1f62650b0784
+Author: Ng Kian Yong &lt;ngky@comp.nus.edu.sg&gt;
+Date:   Sat Apr 3 17:09:34 2010 +0800
+
+    Staging: vt6655: fix brace coding style issue in ioctl.c
+    
+    This is a patch to the ioctl.c file that fixes up a brace warning found
+    by the checkpatch.pl tool
+    
+    Signed-off-by: Ng Kian Yong &lt;ngky@comp.nus.edu.sg&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/staging/vt6655/ioctl.c b/drivers/staging/vt6655/ioctl.c
+index d9a5fd21ab31..38577ca841ea 100644
+--- a/drivers/staging/vt6655/ioctl.c
++++ b/drivers/staging/vt6655/ioctl.c
+@@ -83,7 +83,7 @@ int private_ioctl(PSDevice pDevice, struct ifreq *rq) {
+ 
+     pReq-&gt;wResult = 0;
+ 
+-    switch(pReq-&gt;wCmdCode) {
++    switch (pReq-&gt;wCmdCode) {
+ 
+     case WLAN_CMD_BSS_SCAN:
+ </pre>
+    <div class="pagination">
+        <span>[1]</span>
+    <div>
+</body>

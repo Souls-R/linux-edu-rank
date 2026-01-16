@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_36.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><span>[37]</span><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_38.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit d9f39d1e44c43fba26becc4145fabf9d767ff1cd
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Nov 25 20:02:37 2014 -0500
+
+    jbd2: remove unnecessary NULL check before iput()
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index e4dc74713a43..56dde1e85c24 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1714,8 +1714,7 @@ int jbd2_journal_destroy(journal_t *journal)
+ 
+ 	if (journal-&gt;j_proc_entry)
+ 		jbd2_stats_proc_exit(journal);
+-	if (journal-&gt;j_inode)
+-		iput(journal-&gt;j_inode);
++	iput(journal-&gt;j_inode);
+ 	if (journal-&gt;j_revoke)
+ 		jbd2_journal_destroy_revoke(journal);
+ 	if (journal-&gt;j_chksum_driver)</pre><hr><pre>commit d48458d4a768cece43f80a081a26cf912877da9c
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Oct 30 10:53:17 2014 -0400
+
+    jbd2: use a better hash function for the revoke table
+    
+    The old hash function didn't work well for 64-bit block numbers, and
+    used undefined (negative) shift right behavior.  Use the generic
+    64-bit hash function instead.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reported-by: Andrey Ryabinin &lt;a.ryabinin@samsung.com&gt;
+
+diff --git a/fs/jbd2/revoke.c b/fs/jbd2/revoke.c
+index d5e95a175c92..c6cbaef2bda1 100644
+--- a/fs/jbd2/revoke.c
++++ b/fs/jbd2/revoke.c
+@@ -92,6 +92,7 @@
+ #include &lt;linux/init.h&gt;
+ #include &lt;linux/bio.h&gt;
+ #include &lt;linux/log2.h&gt;
++#include &lt;linux/hash.h&gt;
+ #endif
+ 
+ static struct kmem_cache *jbd2_revoke_record_cache;
+@@ -130,16 +131,9 @@ static void flush_descriptor(journal_t *, struct buffer_head *, int, int);
+ 
+ /* Utility functions to maintain the revoke table */
+ 
+-/* Borrowed from buffer.c: this is a tried and tested block hash function */
+ static inline int hash(journal_t *journal, unsigned long long block)
+ {
+-	struct jbd2_revoke_table_s *table = journal-&gt;j_revoke;
+-	int hash_shift = table-&gt;hash_shift;
+-	int hash = (int)block ^ (int)((block &gt;&gt; 31) &gt;&gt; 1);
+-
+-	return ((hash &lt;&lt; (hash_shift - 6)) ^
+-		(hash &gt;&gt; 13) ^
+-		(hash &lt;&lt; (hash_shift - 12))) &amp; (table-&gt;hash_size - 1);
++	return hash_64(block, journal-&gt;j_revoke-&gt;hash_shift);
+ }
+ 
+ static int insert_revoke_hash(journal_t *journal, unsigned long long blocknr,</pre><hr><pre>commit f4bb2981024fc91b23b4d09a8817c415396dbabb
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Oct 5 22:56:00 2014 -0400
+
+    ext4: add ext4_iget_normal() which is to be used for dir tree lookups
+    
+    If there is a corrupted file system which has directory entries that
+    point at reserved, metadata inodes, prohibit them from being used by
+    treating them the same way we treat Boot Loader inodes --- that is,
+    mark them to be bad inodes.  This prohibits them from being opened,
+    deleted, or modified via chmod, chown, utimes, etc.
+    
+    In particular, this prevents a corrupted file system which has a
+    directory entry which points at the journal inode from being deleted
+    and its blocks released, after which point Much Hilarity Ensues.
+    
+    Reported-by: Sami Liedes &lt;sami.liedes@iki.fi&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 1eb5b7b912a8..012e89bd9644 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -2109,6 +2109,7 @@ int do_journal_get_write_access(handle_t *handle,
+ #define CONVERT_INLINE_DATA	 2
+ 
+ extern struct inode *ext4_iget(struct super_block *, unsigned long);
++extern struct inode *ext4_iget_normal(struct super_block *, unsigned long);
+ extern int  ext4_write_inode(struct inode *, struct writeback_control *);
+ extern int  ext4_setattr(struct dentry *, struct iattr *);
+ extern int  ext4_getattr(struct vfsmount *mnt, struct dentry *dentry,
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 59983b28a93c..e204d8aabe7d 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4104,6 +4104,13 @@ struct inode *ext4_iget(struct super_block *sb, unsigned long ino)
+ 	return ERR_PTR(ret);
+ }
+ 
++struct inode *ext4_iget_normal(struct super_block *sb, unsigned long ino)
++{
++	if (ino &lt; EXT4_FIRST_INO(sb) &amp;&amp; ino != EXT4_ROOT_INO)
++		return ERR_PTR(-EIO);
++	return ext4_iget(sb, ino);
++}
++
+ static int ext4_inode_blocks_set(handle_t *handle,
+ 				struct ext4_inode *raw_inode,
+ 				struct ext4_inode_info *ei)
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index a2a9d40522d2..7037ecf0fc23 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -1417,7 +1417,7 @@ static struct dentry *ext4_lookup(struct inode *dir, struct dentry *dentry, unsi
+ 					 dentry);
+ 			return ERR_PTR(-EIO);
+ 		}
+-		inode = ext4_iget(dir-&gt;i_sb, ino);
++		inode = ext4_iget_normal(dir-&gt;i_sb, ino);
+ 		if (inode == ERR_PTR(-ESTALE)) {
+ 			EXT4_ERROR_INODE(dir,
+ 					 "deleted inode referenced: %u",
+@@ -1450,7 +1450,7 @@ struct dentry *ext4_get_parent(struct dentry *child)
+ 		return ERR_PTR(-EIO);
+ 	}
+ 
+-	return d_obtain_alias(ext4_iget(child-&gt;d_inode-&gt;i_sb, ino));
++	return d_obtain_alias(ext4_iget_normal(child-&gt;d_inode-&gt;i_sb, ino));
+ }
+ 
+ /*
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 1070d6e521c6..a0811cc00c91 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1001,7 +1001,7 @@ static struct inode *ext4_nfs_get_inode(struct super_block *sb,
+ 	 * Currently we don't know the generation for parent directory, so
+ 	 * a generation of 0 means "accept any"
+ 	 */
+-	inode = ext4_iget(sb, ino);
++	inode = ext4_iget_normal(sb, ino);
+ 	if (IS_ERR(inode))
+ 		return ERR_CAST(inode);
+ 	if (generation &amp;&amp; inode-&gt;i_generation != generation) {</pre><hr><pre>commit e2bfb088fac03c0f621886a04cffc7faa2b49b1d
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Oct 5 22:47:07 2014 -0400
+
+    ext4: don't orphan or truncate the boot loader inode
+    
+    The boot loader inode (inode #5) should never be visible in the
+    directory hierarchy, but it's possible if the file system is corrupted
+    that there will be a directory entry that points at inode #5.  In
+    order to avoid accidentally trashing it, when such a directory inode
+    is opened, the inode will be marked as a bad inode, so that it's not
+    possible to modify (or read) the inode from userspace.
+    
+    Unfortunately, when we unlink this (invalid/illegal) directory entry,
+    we will put the bad inode on the ophan list, and then when try to
+    unlink the directory, we don't actually remove the bad inode from the
+    orphan list before freeing in-memory inode structure.  This means the
+    in-memory orphan list is corrupted, leading to a kernel oops.
+    
+    In addition, avoid truncating a bad inode in ext4_destroy_inode(),
+    since truncating the boot loader inode is not a smart thing to do.
+    
+    Reported-by: Sami Liedes &lt;sami.liedes@iki.fi&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 41c4f97c39d3..59983b28a93c 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -224,16 +224,15 @@ void ext4_evict_inode(struct inode *inode)
+ 		goto no_delete;
+ 	}
+ 
+-	if (!is_bad_inode(inode))
+-		dquot_initialize(inode);
++	if (is_bad_inode(inode))
++		goto no_delete;
++	dquot_initialize(inode);
+ 
+ 	if (ext4_should_order_data(inode))
+ 		ext4_begin_ordered_truncate(inode, 0);
+ 	truncate_inode_pages_final(&amp;inode-&gt;i_data);
+ 
+ 	WARN_ON(atomic_read(&amp;EXT4_I(inode)-&gt;i_ioend_count));
+-	if (is_bad_inode(inode))
+-		goto no_delete;
+ 
+ 	/*
+ 	 * Protect us against freezing - iput() caller didn't have to have any
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 51705f8c4116..a2a9d40522d2 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2544,7 +2544,7 @@ int ext4_orphan_add(handle_t *handle, struct inode *inode)
+ 	int err = 0, rc;
+ 	bool dirty = false;
+ 
+-	if (!sbi-&gt;s_journal)
++	if (!sbi-&gt;s_journal || is_bad_inode(inode))
+ 		return 0;
+ 
+ 	WARN_ON_ONCE(!(inode-&gt;i_state &amp; (I_NEW | I_FREEING)) &amp;&amp;</pre><hr><pre>commit f6e63f90809946d410c42045577cb159fedabf8c
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Sep 18 17:12:30 2014 -0400
+
+    ext4: fold ext4_nojournal_sops into ext4_sops
+    
+    There's no longer any need to have a separate set of super_operations
+    for nojournal mode.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 4db537b3a162..1070d6e521c6 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1123,27 +1123,6 @@ static const struct super_operations ext4_sops = {
+ 	.bdev_try_to_free_page = bdev_try_to_free_page,
+ };
+ 
+-static const struct super_operations ext4_nojournal_sops = {
+-	.alloc_inode	= ext4_alloc_inode,
+-	.destroy_inode	= ext4_destroy_inode,
+-	.write_inode	= ext4_write_inode,
+-	.dirty_inode	= ext4_dirty_inode,
+-	.drop_inode	= ext4_drop_inode,
+-	.evict_inode	= ext4_evict_inode,
+-	.sync_fs	= ext4_sync_fs,
+-	.freeze_fs	= ext4_freeze,
+-	.unfreeze_fs	= ext4_unfreeze,
+-	.put_super	= ext4_put_super,
+-	.statfs		= ext4_statfs,
+-	.remount_fs	= ext4_remount,
+-	.show_options	= ext4_show_options,
+-#ifdef CONFIG_QUOTA
+-	.quota_read	= ext4_quota_read,
+-	.quota_write	= ext4_quota_write,
+-#endif
+-	.bdev_try_to_free_page = bdev_try_to_free_page,
+-};
+-
+ static const struct export_operations ext4_export_ops = {
+ 	.fh_to_dentry = ext4_fh_to_dentry,
+ 	.fh_to_parent = ext4_fh_to_parent,
+@@ -3941,11 +3920,7 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 	/*
+ 	 * set up enough so that it can read an inode
+ 	 */
+-	if (!test_opt(sb, NOLOAD) &amp;&amp;
+-	    EXT4_HAS_COMPAT_FEATURE(sb, EXT4_FEATURE_COMPAT_HAS_JOURNAL))
+-		sb-&gt;s_op = &amp;ext4_sops;
+-	else
+-		sb-&gt;s_op = &amp;ext4_nojournal_sops;
++	sb-&gt;s_op = &amp;ext4_sops;
+ 	sb-&gt;s_export_op = &amp;ext4_export_ops;
+ 	sb-&gt;s_xattr = ext4_xattr_handlers;
+ #ifdef CONFIG_QUOTA</pre><hr><pre>commit bb0445765866e5b1607af81e2f48ca5a8efbeed8
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Sep 18 17:12:02 2014 -0400
+
+    ext4: support freezing ext2 (nojournal) file systems
+    
+    Through an oversight, when we added nojournal support to ext4, we
+    didn't add support to allow file system freezing.  This is relatively
+    easy to add, so let's do it.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reported-by: Dexuan Cui &lt;decui@microsoft.com&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 4770c98bdb61..4db537b3a162 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1131,6 +1131,8 @@ static const struct super_operations ext4_nojournal_sops = {
+ 	.drop_inode	= ext4_drop_inode,
+ 	.evict_inode	= ext4_evict_inode,
+ 	.sync_fs	= ext4_sync_fs,
++	.freeze_fs	= ext4_freeze,
++	.unfreeze_fs	= ext4_unfreeze,
+ 	.put_super	= ext4_put_super,
+ 	.statfs		= ext4_statfs,
+ 	.remount_fs	= ext4_remount,
+@@ -4758,23 +4760,26 @@ static int ext4_freeze(struct super_block *sb)
+ 
+ 	journal = EXT4_SB(sb)-&gt;s_journal;
+ 
+-	/* Now we set up the journal barrier. */
+-	jbd2_journal_lock_updates(journal);
++	if (journal) {
++		/* Now we set up the journal barrier. */
++		jbd2_journal_lock_updates(journal);
+ 
+-	/*
+-	 * Don't clear the needs_recovery flag if we failed to flush
+-	 * the journal.
+-	 */
+-	error = jbd2_journal_flush(journal);
+-	if (error &lt; 0)
+-		goto out;
++		/*
++		 * Don't clear the needs_recovery flag if we failed to
++		 * flush the journal.
++		 */
++		error = jbd2_journal_flush(journal);
++		if (error &lt; 0)
++			goto out;
++	}
+ 
+ 	/* Journal blocked and flushed, clear needs_recovery flag. */
+ 	EXT4_CLEAR_INCOMPAT_FEATURE(sb, EXT4_FEATURE_INCOMPAT_RECOVER);
+ 	error = ext4_commit_super(sb, 1);
+ out:
+-	/* we rely on upper layer to stop further updates */
+-	jbd2_journal_unlock_updates(EXT4_SB(sb)-&gt;s_journal);
++	if (journal)
++		/* we rely on upper layer to stop further updates */
++		jbd2_journal_unlock_updates(journal);
+ 	return error;
+ }
+ </pre><hr><pre>commit bda3253043c54a705c8352096194ab6216e2e5c1
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Sep 18 16:12:37 2014 -0400
+
+    ext4: fold ext4_sync_fs_nojournal() into ext4_sync_fs()
+    
+    This allows us to eliminate duplicate code, and eventually allow us to
+    also fold ext4_sops and ext4_nojournal_sops together.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 115e27d855ef..4770c98bdb61 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -70,7 +70,6 @@ static void ext4_mark_recovery_complete(struct super_block *sb,
+ static void ext4_clear_journal_err(struct super_block *sb,
+ 				   struct ext4_super_block *es);
+ static int ext4_sync_fs(struct super_block *sb, int wait);
+-static int ext4_sync_fs_nojournal(struct super_block *sb, int wait);
+ static int ext4_remount(struct super_block *sb, int *flags, char *data);
+ static int ext4_statfs(struct dentry *dentry, struct kstatfs *buf);
+ static int ext4_unfreeze(struct super_block *sb);
+@@ -1131,7 +1130,7 @@ static const struct super_operations ext4_nojournal_sops = {
+ 	.dirty_inode	= ext4_dirty_inode,
+ 	.drop_inode	= ext4_drop_inode,
+ 	.evict_inode	= ext4_evict_inode,
+-	.sync_fs	= ext4_sync_fs_nojournal,
++	.sync_fs	= ext4_sync_fs,
+ 	.put_super	= ext4_put_super,
+ 	.statfs		= ext4_statfs,
+ 	.remount_fs	= ext4_remount,
+@@ -4718,15 +4717,19 @@ static int ext4_sync_fs(struct super_block *sb, int wait)
+ 	 * being sent at the end of the function. But we can skip it if
+ 	 * transaction_commit will do it for us.
+ 	 */
+-	target = jbd2_get_latest_transaction(sbi-&gt;s_journal);
+-	if (wait &amp;&amp; sbi-&gt;s_journal-&gt;j_flags &amp; JBD2_BARRIER &amp;&amp;
+-	    !jbd2_trans_will_send_data_barrier(sbi-&gt;s_journal, target))
++	if (sbi-&gt;s_journal) {
++		target = jbd2_get_latest_transaction(sbi-&gt;s_journal);
++		if (wait &amp;&amp; sbi-&gt;s_journal-&gt;j_flags &amp; JBD2_BARRIER &amp;&amp;
++		    !jbd2_trans_will_send_data_barrier(sbi-&gt;s_journal, target))
++			needs_barrier = true;
++
++		if (jbd2_journal_start_commit(sbi-&gt;s_journal, &amp;target)) {
++			if (wait)
++				ret = jbd2_log_wait_commit(sbi-&gt;s_journal,
++							   target);
++		}
++	} else if (wait &amp;&amp; test_opt(sb, BARRIER))
+ 		needs_barrier = true;
+-
+-	if (jbd2_journal_start_commit(sbi-&gt;s_journal, &amp;target)) {
+-		if (wait)
+-			ret = jbd2_log_wait_commit(sbi-&gt;s_journal, target);
+-	}
+ 	if (needs_barrier) {
+ 		int err;
+ 		err = blkdev_issue_flush(sb-&gt;s_bdev, GFP_KERNEL, NULL);
+@@ -4737,19 +4740,6 @@ static int ext4_sync_fs(struct super_block *sb, int wait)
+ 	return ret;
+ }
+ 
+-static int ext4_sync_fs_nojournal(struct super_block *sb, int wait)
+-{
+-	int ret = 0;
+-
+-	trace_ext4_sync_fs(sb, wait);
+-	flush_workqueue(EXT4_SB(sb)-&gt;rsv_conversion_wq);
+-	dquot_writeback_dquots(sb, -1);
+-	if (wait &amp;&amp; test_opt(sb, BARRIER))
+-		ret = blkdev_issue_flush(sb-&gt;s_bdev, GFP_KERNEL, NULL);
+-
+-	return ret;
+-}
+-
+ /*
+  * LVM calls this function before a (read-only) snapshot is created.  This
+  * gives us a chance to flush the journal completely and mark the fs clean.</pre><hr><pre>commit d26e2c4d72c2f2a38246f618480864fe3224929c
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Sep 4 18:09:29 2014 -0400
+
+    ext4: renumber EXT4_EX_* flags to avoid flag aliasing problems
+    
+    Suggested-by: Andreas Dilger &lt;adilger@dilger.ca&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 4855800fcc5d..f70c3fc94296 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -569,7 +569,6 @@ enum {
+ #define EXT4_GET_BLOCKS_NO_PUT_HOLE		0x0200
+ 	/* Convert written extents to unwritten */
+ #define EXT4_GET_BLOCKS_CONVERT_UNWRITTEN	0x0400
+-/* DO NOT ASSIGN ADDITIONAL FLAG VALUES WITHOUT ADJUSTING THE FLAGS BELOW */
+ 
+ /*
+  * The bit position of these flags must not overlap with any of the
+@@ -580,8 +579,8 @@ enum {
+  * caching the extents when reading from the extent tree while a
+  * truncate or punch hole operation is in progress.
+  */
+-#define EXT4_EX_NOCACHE				0x0800
+-#define EXT4_EX_FORCE_CACHE			0x1000
++#define EXT4_EX_NOCACHE				0x40000000
++#define EXT4_EX_FORCE_CACHE			0x20000000
+ 
+ /*
+  * Flags used by ext4_free_blocks</pre><hr><pre>commit dc6e8d669cf5cb3ff84707c372c0a2a8a5e80845
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Sep 4 18:09:22 2014 -0400
+
+    jbd2: don't call get_bh() before calling __jbd2_journal_remove_checkpoint()
+    
+    The __jbd2_journal_remove_checkpoint() doesn't require an elevated
+    b_count; indeed, until the jh structure gets released by the call to
+    jbd2_journal_put_journal_head(), the bh's b_count is elevated by
+    virtue of the existence of the jh structure.
+    
+    Suggested-by: Jan Kara &lt;jack@suse.cz&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 18c7a8d3da13..90d6091d7e18 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -96,15 +96,8 @@ static int __try_to_free_cp_buf(struct journal_head *jh)
+ 
+ 	if (jh-&gt;b_transaction == NULL &amp;&amp; !buffer_locked(bh) &amp;&amp;
+ 	    !buffer_dirty(bh) &amp;&amp; !buffer_write_io_error(bh)) {
+-		/*
+-		 * Get our reference so that bh cannot be freed before
+-		 * we unlock it
+-		 */
+-		get_bh(bh);
+ 		JBUFFER_TRACE(jh, "remove from checkpoint list");
+ 		ret = __jbd2_journal_remove_checkpoint(jh) + 1;
+-		BUFFER_TRACE(bh, "release");
+-		__brelse(bh);
+ 	}
+ 	return ret;
+ }
+@@ -216,7 +209,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 	struct buffer_head	*bh;
+ 	transaction_t		*transaction;
+ 	tid_t			this_tid;
+-	int			result, batch_count = 0, done = 0;
++	int			result, batch_count = 0;
+ 
+ 	jbd_debug(1, "Start checkpoint\n");
+ 
+@@ -291,11 +284,9 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 		if (!buffer_dirty(bh)) {
+ 			if (unlikely(buffer_write_io_error(bh)) &amp;&amp; !result)
+ 				result = -EIO;
+-			get_bh(bh);
+ 			BUFFER_TRACE(bh, "remove from checkpoint");
+ 			__jbd2_journal_remove_checkpoint(jh);
+ 			spin_unlock(&amp;journal-&gt;j_list_lock);
+-			__brelse(bh);
+ 			goto retry;
+ 		}
+ 		/*
+@@ -338,12 +329,12 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 	    transaction-&gt;t_tid != this_tid)
+ 		goto out;
+ 
+-	while (!done &amp;&amp; transaction-&gt;t_checkpoint_io_list) {
++	while (transaction-&gt;t_checkpoint_io_list) {
+ 		jh = transaction-&gt;t_checkpoint_io_list;
+ 		bh = jh2bh(jh);
+-		get_bh(bh);
+ 		if (buffer_locked(bh)) {
+ 			spin_unlock(&amp;journal-&gt;j_list_lock);
++			get_bh(bh);
+ 			wait_on_buffer(bh);
+ 			/* the journal_head may have gone by now */
+ 			BUFFER_TRACE(bh, "brelse");
+@@ -359,8 +350,8 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 		 * know that it has been written out and so we can
+ 		 * drop it from the list
+ 		 */
+-		done = __jbd2_journal_remove_checkpoint(jh);
+-		__brelse(bh);
++		if (__jbd2_journal_remove_checkpoint(jh))
++			break;
+ 	}
+ out:
+ 	spin_unlock(&amp;journal-&gt;j_list_lock);</pre><hr><pre>commit 754cfed6bbcfdea6afb14f2686f7f8d71e94d4e2
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Sep 4 18:08:22 2014 -0400
+
+    ext4: drop the EXT4_STATE_DELALLOC_RESERVED flag
+    
+    Having done a full regression test, we can now drop the
+    DELALLOC_RESERVED state flag.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 00fd822ac6e4..4855800fcc5d 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1400,7 +1400,6 @@ enum {
+ 	EXT4_STATE_EXT_MIGRATE,		/* Inode is migrating */
+ 	EXT4_STATE_DIO_UNWRITTEN,	/* need convert on dio done*/
+ 	EXT4_STATE_NEWENTRY,		/* File just added to dir */
+-	EXT4_STATE_DELALLOC_RESERVED,	/* blks already reserved for delalloc */
+ 	EXT4_STATE_DIOREAD_LOCK,	/* Disable support for dio read
+ 					   nolocking */
+ 	EXT4_STATE_MAY_INLINE_DATA,	/* may have in-inode data */
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 4a16b0cc02de..d5dd7d46844e 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -595,14 +595,6 @@ int ext4_map_blocks(handle_t *handle, struct inode *inode,
+ 	 */
+ 	down_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
+ 
+-	/*
+-	 * if the caller is from delayed allocation writeout path
+-	 * we have already reserved fs blocks for allocation
+-	 * let the underlying get_block() function know to
+-	 * avoid double accounting
+-	 */
+-	if (flags &amp; EXT4_GET_BLOCKS_DELALLOC_RESERVE)
+-		ext4_set_inode_state(inode, EXT4_STATE_DELALLOC_RESERVED);
+ 	/*
+ 	 * We need to check for EXT4 here because migrate
+ 	 * could have changed the inode type in between
+@@ -631,8 +623,6 @@ int ext4_map_blocks(handle_t *handle, struct inode *inode,
+ 			(flags &amp; EXT4_GET_BLOCKS_DELALLOC_RESERVE))
+ 			ext4_da_update_reserve_space(inode, retval, 1);
+ 	}
+-	if (flags &amp; EXT4_GET_BLOCKS_DELALLOC_RESERVE)
+-		ext4_clear_inode_state(inode, EXT4_STATE_DELALLOC_RESERVED);
+ 
+ 	if (retval &gt; 0) {
+ 		unsigned int status;
+@@ -2004,12 +1994,10 @@ static int mpage_map_one_extent(handle_t *handle, struct mpage_da_data *mpd)
+ 	 * in data loss.  So use reserved blocks to allocate metadata if
+ 	 * possible.
+ 	 *
+-	 * We pass in the magic EXT4_GET_BLOCKS_DELALLOC_RESERVE if the blocks
+-	 * in question are delalloc blocks.  This affects functions in many
+-	 * different parts of the allocation call path.  This flag exists
+-	 * primarily because we don't want to change *many* call functions, so
+-	 * ext4_map_blocks() will set the EXT4_STATE_DELALLOC_RESERVED flag
+-	 * once the inode's allocation semaphore is taken.
++	 * We pass in the magic EXT4_GET_BLOCKS_DELALLOC_RESERVE if
++	 * the blocks in question are delalloc blocks.  This indicates
++	 * that the blocks and quotas has already been checked when
++	 * the data was copied into the page cache.
+ 	 */
+ 	get_blocks_flags = EXT4_GET_BLOCKS_CREATE |
+ 			   EXT4_GET_BLOCKS_METADATA_NOFAIL;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 15dffdac5907..65cca2881d71 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4410,16 +4410,6 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
+ 	if (IS_NOQUOTA(ar-&gt;inode))
+ 		ar-&gt;flags |= EXT4_MB_USE_ROOT_BLOCKS;
+ 
+-	/*
+-	 * For delayed allocation, we could skip the ENOSPC and
+-	 * EDQUOT check, as blocks and quotas have been already
+-	 * reserved when data being copied into pagecache.
+-	 */
+-	if (ext4_test_inode_state(ar-&gt;inode, EXT4_STATE_DELALLOC_RESERVED)) {
+-		WARN_ON((ar-&gt;flags &amp; EXT4_MB_DELALLOC_RESERVED) == 0);
+-		ar-&gt;flags |= EXT4_MB_DELALLOC_RESERVED;
+-	}
+-
+ 	if ((ar-&gt;flags &amp; EXT4_MB_DELALLOC_RESERVED) == 0) {
+ 		/* Without delayed allocation we need to verify
+ 		 * there is enough free blocks to do block allocation</pre>
+    <div class="pagination">
+        <a href='1_36.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><span>[37]</span><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_38.html'>Next&gt;&gt;</a>
+    <div>
+</body>

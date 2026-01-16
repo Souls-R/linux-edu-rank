@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Columbia University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Columbia University</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='22_2.html'>2</a><a href='22_3.html'>3</a><a href='22_4.html'>4</a><a href='22_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 0c01ea92f545ca7fcafdda6a8e29b65ef3a5ec74
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Fri Dec 12 04:08:08 2025 -0500
+
+    mm: Remove tlb_flush_reason::NR_TLB_FLUSH_REASONS from &lt;linux/mm_types.h&gt;
+    
+    This has been unused since it was added 11 years ago in:
+    
+      d17d8f9dedb9 ("x86/mm: Add tracepoints for TLB flushes")
+    
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Signed-off-by: Ingo Molnar &lt;mingo@kernel.org&gt;
+    Reviewed-by: Rik van Riel &lt;riel@surriel.com&gt;
+    Acked-by: David Hildenbrand &lt;david@redhat.com&gt;
+    Link: https://patch.msgid.link/20251212-tlb-trace-fix-v2-2-d322e0ad9b69@columbia.edu
+
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 9f6de068295d..42af2292951d 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1631,7 +1631,6 @@ enum tlb_flush_reason {
+ 	TLB_LOCAL_MM_SHOOTDOWN,
+ 	TLB_REMOTE_SEND_IPI,
+ 	TLB_REMOTE_WRONG_CPU,
+-	NR_TLB_FLUSH_REASONS,
+ };
+ 
+ /**</pre><hr><pre>commit 8b62e64e6d30fa047b3aefb1a36e1f80c8acb3d2
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Fri Dec 12 04:08:07 2025 -0500
+
+    x86/mm/tlb/trace: Export the TLB_REMOTE_WRONG_CPU enum in &lt;trace/events/tlb.h&gt;
+    
+    When the TLB_REMOTE_WRONG_CPU enum was introduced for the tlb_flush
+    tracepoint, the enum was not exported to user-space. Add it to the
+    appropriate macro definition to enable parsing by userspace tools, as
+    per:
+    
+      Link: https://lore.kernel.org/all/20150403013802.220157513@goodmis.org
+    
+    [ mingo: Capitalize IPI, etc. ]
+    
+    Fixes: 2815a56e4b72 ("x86/mm/tlb: Add tracepoint for TLB flush IPI to stale CPU")
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Signed-off-by: Ingo Molnar &lt;mingo@kernel.org&gt;
+    Reviewed-by: Steven Rostedt (Google) &lt;rostedt@goodmis.org&gt;
+    Reviewed-by: David Hildenbrand &lt;david@redhat.com&gt;
+    Reviewed-by: Rik van Riel &lt;riel@surriel.com&gt;
+    Link: https://patch.msgid.link/20251212-tlb-trace-fix-v2-1-d322e0ad9b69@columbia.edu
+
+diff --git a/include/trace/events/tlb.h b/include/trace/events/tlb.h
+index b4d8e7dc38f8..fb8369511685 100644
+--- a/include/trace/events/tlb.h
++++ b/include/trace/events/tlb.h
+@@ -12,8 +12,9 @@
+ 	EM(  TLB_FLUSH_ON_TASK_SWITCH,	"flush on task switch" )	\
+ 	EM(  TLB_REMOTE_SHOOTDOWN,	"remote shootdown" )		\
+ 	EM(  TLB_LOCAL_SHOOTDOWN,	"local shootdown" )		\
+-	EM(  TLB_LOCAL_MM_SHOOTDOWN,	"local mm shootdown" )		\
+-	EMe( TLB_REMOTE_SEND_IPI,	"remote ipi send" )
++	EM(  TLB_LOCAL_MM_SHOOTDOWN,	"local MM shootdown" )		\
++	EM(  TLB_REMOTE_SEND_IPI,	"remote IPI send" )		\
++	EMe( TLB_REMOTE_WRONG_CPU,	"remote wrong CPU" )
+ 
+ /*
+  * First define the enums in TLB_FLUSH_REASON to be exported to userspace</pre><hr><pre>commit fd7e5de4b2eddd34e3567cd419812d8869ef4f13
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Thu Aug 14 02:51:57 2025 -0400
+
+    lib/crypto: ensure generated *.S files are removed on make clean
+    
+    make clean does not check the kernel config when removing files. As
+    such, additions to clean-files under CONFIG_ARM or CONFIG_ARM64 are not
+    evaluated. For example, when building on arm64, this means that
+    lib/crypto/arm64/sha{256,512}-core.S are left over after make clean.
+    
+    Set clean-files unconditionally to ensure that make clean removes these
+    files.
+    
+    Fixes: e96cb9507f2d ("lib/crypto: sha256: Consolidate into single module")
+    Fixes: 24c91b62ac50 ("lib/crypto: arm/sha512: Migrate optimized SHA-512 code to library")
+    Fixes: 60e3f1e9b7a5 ("lib/crypto: arm64/sha512: Migrate optimized SHA-512 code to library")
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Link: https://lore.kernel.org/r/20250814-crypto_clean-v2-1-659a2dc86302@columbia.edu
+    Signed-off-by: Eric Biggers &lt;ebiggers@kernel.org&gt;
+
+diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
+index e4151be2ebd4..539d5d59a50e 100644
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -100,7 +100,6 @@ ifeq ($(CONFIG_ARM),y)
+ libsha256-y += arm/sha256-ce.o arm/sha256-core.o
+ $(obj)/arm/sha256-core.S: $(src)/arm/sha256-armv4.pl
+ 	$(call cmd,perlasm)
+-clean-files += arm/sha256-core.S
+ AFLAGS_arm/sha256-core.o += $(aflags-thumb2-y)
+ endif
+ 
+@@ -108,7 +107,6 @@ ifeq ($(CONFIG_ARM64),y)
+ libsha256-y += arm64/sha256-core.o
+ $(obj)/arm64/sha256-core.S: $(src)/arm64/sha2-armv8.pl
+ 	$(call cmd,perlasm_with_args)
+-clean-files += arm64/sha256-core.S
+ libsha256-$(CONFIG_KERNEL_MODE_NEON) += arm64/sha256-ce.o
+ endif
+ 
+@@ -132,7 +130,6 @@ ifeq ($(CONFIG_ARM),y)
+ libsha512-y += arm/sha512-core.o
+ $(obj)/arm/sha512-core.S: $(src)/arm/sha512-armv4.pl
+ 	$(call cmd,perlasm)
+-clean-files += arm/sha512-core.S
+ AFLAGS_arm/sha512-core.o += $(aflags-thumb2-y)
+ endif
+ 
+@@ -140,7 +137,6 @@ ifeq ($(CONFIG_ARM64),y)
+ libsha512-y += arm64/sha512-core.o
+ $(obj)/arm64/sha512-core.S: $(src)/arm64/sha2-armv8.pl
+ 	$(call cmd,perlasm_with_args)
+-clean-files += arm64/sha512-core.S
+ libsha512-$(CONFIG_KERNEL_MODE_NEON) += arm64/sha512-ce-core.o
+ endif
+ 
+@@ -167,3 +163,7 @@ obj-$(CONFIG_PPC) += powerpc/
+ obj-$(CONFIG_RISCV) += riscv/
+ obj-$(CONFIG_S390) += s390/
+ obj-$(CONFIG_X86) += x86/
++
++# clean-files must be defined unconditionally
++clean-files += arm/sha256-core.S arm/sha512-core.S
++clean-files += arm64/sha256-core.S arm64/sha512-core.S</pre><hr><pre>commit 5e00e31867d16e235bb693b900c85e86dc2c3464
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Thu Jun 19 21:24:26 2025 -0400
+
+    userfaultfd: remove UFFD_CLOEXEC, UFFD_NONBLOCK, and UFFD_FLAGS_SET
+    
+    UFFD_CLOEXEC, UFFD_NONBLOCK, and UFFD_FLAGS_SET have been unused since
+    they were added in commit 932b18e0aec6 ("userfaultfd:
+    linux/userfaultfd_k.h").  Remove them and the associated BUILD_BUG_ON()
+    checks.
+    
+    Link: https://lkml.kernel.org/r/20250619-uffd-fixes-v3-4-a7274d3bd5e4@columbia.edu
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Acked-by: David Hildenbrand &lt;david@redhat.com&gt;
+    Acked-by: Peter Xu &lt;peterx@redhat.com&gt;
+    Cc: Al Viro &lt;viro@zeniv.linux.org.uk&gt;
+    Cc: Andrea Arcangeli &lt;aarcange@redhat.com&gt;
+    Cc: Christian Brauner &lt;brauner@kernel.org&gt;
+    Cc: Jan Kara &lt;jack@suse.cz&gt;
+    Cc: Jason A. Donenfeld &lt;Jason@zx2c4.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index 771e81ea4ef6..a2928b0aec6f 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -2114,8 +2114,6 @@ static int new_userfaultfd(int flags)
+ 
+ 	/* Check the UFFD_* constants for consistency.  */
+ 	BUILD_BUG_ON(UFFD_USER_MODE_ONLY &amp; UFFD_SHARED_FCNTL_FLAGS);
+-	BUILD_BUG_ON(UFFD_CLOEXEC != O_CLOEXEC);
+-	BUILD_BUG_ON(UFFD_NONBLOCK != O_NONBLOCK);
+ 
+ 	if (flags &amp; ~(UFFD_SHARED_FCNTL_FLAGS | UFFD_USER_MODE_ONLY))
+ 		return -EINVAL;
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index f3b3d2c9dd5e..ccad58602846 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -30,11 +30,7 @@
+  * from userfaultfd, in order to leave a free define-space for
+  * shared O_* flags.
+  */
+-#define UFFD_CLOEXEC O_CLOEXEC
+-#define UFFD_NONBLOCK O_NONBLOCK
+-
+ #define UFFD_SHARED_FCNTL_FLAGS (O_CLOEXEC | O_NONBLOCK)
+-#define UFFD_FLAGS_SET (EFD_SHARED_FCNTL_FLAGS)
+ 
+ /*
+  * Start with fault_pending_wqh and fault_wqh so they're more likely</pre><hr><pre>commit 31defc3b01d907e3e899de9e7002a6a63998f07a
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Thu Jun 19 21:24:25 2025 -0400
+
+    userfaultfd: remove (VM_)BUG_ON()s
+    
+    BUG_ON() is deprecated [1].  Convert all the BUG_ON()s and VM_BUG_ON()s to
+    use VM_WARN_ON_ONCE().
+    
+    There are a few additional cases that are converted or modified:
+    
+    - Convert the printk(KERN_WARNING ...) in handle_userfault() to use
+      pr_warn().
+    
+    - Convert the WARN_ON_ONCE()s in move_pages() to use VM_WARN_ON_ONCE(),
+      as the relevant conditions are already checked in validate_range() in
+      move_pages()'s caller.
+    
+    - Convert the VM_WARN_ON()'s in move_pages() to VM_WARN_ON_ONCE(). These
+      cases should never happen and are similar to those in mfill_atomic()
+      and mfill_atomic_hugetlb(), which were previously BUG_ON()s.
+      move_pages() was added later than those functions and makes use of
+      VM_WARN_ON() as a replacement for the deprecated BUG_ON(), but.
+      VM_WARN_ON_ONCE() is likely a better direct replacement.
+    
+    - Convert the WARN_ON() for !VM_MAYWRITE in userfaultfd_unregister() and
+      userfaultfd_register_range() to VM_WARN_ON_ONCE(). This condition is
+      enforced in userfaultfd_register() so it should never happen, and can
+      be converted to a debug check.
+    
+    [1] https://www.kernel.org/doc/html/v6.15/process/coding-style.html#use-warn-rather-than-bug
+    
+    Link: https://lkml.kernel.org/r/20250619-uffd-fixes-v3-3-a7274d3bd5e4@columbia.edu
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Cc: Al Viro &lt;viro@zeniv.linux.org.uk&gt;
+    Cc: Andrea Arcangeli &lt;aarcange@redhat.com&gt;
+    Cc: Christian Brauner &lt;brauner@kernel.org&gt;
+    Cc: David Hildenbrand &lt;david@redhat.com&gt;
+    Cc: Jan Kara &lt;jack@suse.cz&gt;
+    Cc: Jason A. Donenfeld &lt;Jason@zx2c4.com&gt;
+    Cc: Peter Xu &lt;peterx@redhat.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index 8e7fb2a7a6aa..771e81ea4ef6 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -165,14 +165,14 @@ static void userfaultfd_ctx_get(struct userfaultfd_ctx *ctx)
+ static void userfaultfd_ctx_put(struct userfaultfd_ctx *ctx)
+ {
+ 	if (refcount_dec_and_test(&amp;ctx-&gt;refcount)) {
+-		VM_BUG_ON(spin_is_locked(&amp;ctx-&gt;fault_pending_wqh.lock));
+-		VM_BUG_ON(waitqueue_active(&amp;ctx-&gt;fault_pending_wqh));
+-		VM_BUG_ON(spin_is_locked(&amp;ctx-&gt;fault_wqh.lock));
+-		VM_BUG_ON(waitqueue_active(&amp;ctx-&gt;fault_wqh));
+-		VM_BUG_ON(spin_is_locked(&amp;ctx-&gt;event_wqh.lock));
+-		VM_BUG_ON(waitqueue_active(&amp;ctx-&gt;event_wqh));
+-		VM_BUG_ON(spin_is_locked(&amp;ctx-&gt;fd_wqh.lock));
+-		VM_BUG_ON(waitqueue_active(&amp;ctx-&gt;fd_wqh));
++		VM_WARN_ON_ONCE(spin_is_locked(&amp;ctx-&gt;fault_pending_wqh.lock));
++		VM_WARN_ON_ONCE(waitqueue_active(&amp;ctx-&gt;fault_pending_wqh));
++		VM_WARN_ON_ONCE(spin_is_locked(&amp;ctx-&gt;fault_wqh.lock));
++		VM_WARN_ON_ONCE(waitqueue_active(&amp;ctx-&gt;fault_wqh));
++		VM_WARN_ON_ONCE(spin_is_locked(&amp;ctx-&gt;event_wqh.lock));
++		VM_WARN_ON_ONCE(waitqueue_active(&amp;ctx-&gt;event_wqh));
++		VM_WARN_ON_ONCE(spin_is_locked(&amp;ctx-&gt;fd_wqh.lock));
++		VM_WARN_ON_ONCE(waitqueue_active(&amp;ctx-&gt;fd_wqh));
+ 		mmdrop(ctx-&gt;mm);
+ 		kmem_cache_free(userfaultfd_ctx_cachep, ctx);
+ 	}
+@@ -383,12 +383,12 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
+ 	if (!ctx)
+ 		goto out;
+ 
+-	BUG_ON(ctx-&gt;mm != mm);
++	VM_WARN_ON_ONCE(ctx-&gt;mm != mm);
+ 
+ 	/* Any unrecognized flag is a bug. */
+-	VM_BUG_ON(reason &amp; ~__VM_UFFD_FLAGS);
++	VM_WARN_ON_ONCE(reason &amp; ~__VM_UFFD_FLAGS);
+ 	/* 0 or &gt; 1 flags set is a bug; we expect exactly 1. */
+-	VM_BUG_ON(!reason || (reason &amp; (reason - 1)));
++	VM_WARN_ON_ONCE(!reason || (reason &amp; (reason - 1)));
+ 
+ 	if (ctx-&gt;features &amp; UFFD_FEATURE_SIGBUS)
+ 		goto out;
+@@ -411,12 +411,11 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
+ 		 * to be sure not to return SIGBUS erroneously on
+ 		 * nowait invocations.
+ 		 */
+-		BUG_ON(vmf-&gt;flags &amp; FAULT_FLAG_RETRY_NOWAIT);
++		VM_WARN_ON_ONCE(vmf-&gt;flags &amp; FAULT_FLAG_RETRY_NOWAIT);
+ #ifdef CONFIG_DEBUG_VM
+ 		if (printk_ratelimit()) {
+-			printk(KERN_WARNING
+-			       "FAULT_FLAG_ALLOW_RETRY missing %x\n",
+-			       vmf-&gt;flags);
++			pr_warn("FAULT_FLAG_ALLOW_RETRY missing %x\n",
++				vmf-&gt;flags);
+ 			dump_stack();
+ 		}
+ #endif
+@@ -602,7 +601,7 @@ static void userfaultfd_event_wait_completion(struct userfaultfd_ctx *ctx,
+ 	 */
+ out:
+ 	atomic_dec(&amp;ctx-&gt;mmap_changing);
+-	VM_BUG_ON(atomic_read(&amp;ctx-&gt;mmap_changing) &lt; 0);
++	VM_WARN_ON_ONCE(atomic_read(&amp;ctx-&gt;mmap_changing) &lt; 0);
+ 	userfaultfd_ctx_put(ctx);
+ }
+ 
+@@ -710,7 +709,7 @@ void dup_userfaultfd_fail(struct list_head *fcs)
+ 		struct userfaultfd_ctx *ctx = fctx-&gt;new;
+ 
+ 		atomic_dec(&amp;octx-&gt;mmap_changing);
+-		VM_BUG_ON(atomic_read(&amp;octx-&gt;mmap_changing) &lt; 0);
++		VM_WARN_ON_ONCE(atomic_read(&amp;octx-&gt;mmap_changing) &lt; 0);
+ 		userfaultfd_ctx_put(octx);
+ 		userfaultfd_ctx_put(ctx);
+ 
+@@ -1317,8 +1316,8 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 	do {
+ 		cond_resched();
+ 
+-		BUG_ON(!!cur-&gt;vm_userfaultfd_ctx.ctx ^
+-		       !!(cur-&gt;vm_flags &amp; __VM_UFFD_FLAGS));
++		VM_WARN_ON_ONCE(!!cur-&gt;vm_userfaultfd_ctx.ctx ^
++				!!(cur-&gt;vm_flags &amp; __VM_UFFD_FLAGS));
+ 
+ 		/* check not compatible vmas */
+ 		ret = -EINVAL;
+@@ -1372,7 +1371,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 
+ 		found = true;
+ 	} for_each_vma_range(vmi, cur, end);
+-	BUG_ON(!found);
++	VM_WARN_ON_ONCE(!found);
+ 
+ 	ret = userfaultfd_register_range(ctx, vma, vm_flags, start, end,
+ 					 wp_async);
+@@ -1464,8 +1463,8 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 	do {
+ 		cond_resched();
+ 
+-		BUG_ON(!!cur-&gt;vm_userfaultfd_ctx.ctx ^
+-		       !!(cur-&gt;vm_flags &amp; __VM_UFFD_FLAGS));
++		VM_WARN_ON_ONCE(!!cur-&gt;vm_userfaultfd_ctx.ctx ^
++				!!(cur-&gt;vm_flags &amp; __VM_UFFD_FLAGS));
+ 
+ 		/*
+ 		 * Prevent unregistering through a different userfaultfd than
+@@ -1487,7 +1486,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 
+ 		found = true;
+ 	} for_each_vma_range(vmi, cur, end);
+-	BUG_ON(!found);
++	VM_WARN_ON_ONCE(!found);
+ 
+ 	vma_iter_set(&amp;vmi, start);
+ 	prev = vma_prev(&amp;vmi);
+@@ -1504,7 +1503,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 
+ 		VM_WARN_ON_ONCE(vma-&gt;vm_userfaultfd_ctx.ctx != ctx);
+ 		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vma-&gt;vm_flags, wp_async));
+-		WARN_ON(!(vma-&gt;vm_flags &amp; VM_MAYWRITE));
++		VM_WARN_ON_ONCE(!(vma-&gt;vm_flags &amp; VM_MAYWRITE));
+ 
+ 		if (vma-&gt;vm_start &gt; start)
+ 			start = vma-&gt;vm_start;
+@@ -1569,7 +1568,7 @@ static int userfaultfd_wake(struct userfaultfd_ctx *ctx,
+ 	 * len == 0 means wake all and we don't want to wake all here,
+ 	 * so check it again to be sure.
+ 	 */
+-	VM_BUG_ON(!range.len);
++	VM_WARN_ON_ONCE(!range.len);
+ 
+ 	wake_userfault(ctx, &amp;range);
+ 	ret = 0;
+@@ -1626,7 +1625,7 @@ static int userfaultfd_copy(struct userfaultfd_ctx *ctx,
+ 		return -EFAULT;
+ 	if (ret &lt; 0)
+ 		goto out;
+-	BUG_ON(!ret);
++	VM_WARN_ON_ONCE(!ret);
+ 	/* len == 0 would wake all */
+ 	range.len = ret;
+ 	if (!(uffdio_copy.mode &amp; UFFDIO_COPY_MODE_DONTWAKE)) {
+@@ -1681,7 +1680,7 @@ static int userfaultfd_zeropage(struct userfaultfd_ctx *ctx,
+ 	if (ret &lt; 0)
+ 		goto out;
+ 	/* len == 0 would wake all */
+-	BUG_ON(!ret);
++	VM_WARN_ON_ONCE(!ret);
+ 	range.len = ret;
+ 	if (!(uffdio_zeropage.mode &amp; UFFDIO_ZEROPAGE_MODE_DONTWAKE)) {
+ 		range.start = uffdio_zeropage.range.start;
+@@ -1793,7 +1792,7 @@ static int userfaultfd_continue(struct userfaultfd_ctx *ctx, unsigned long arg)
+ 		goto out;
+ 
+ 	/* len == 0 would wake all */
+-	BUG_ON(!ret);
++	VM_WARN_ON_ONCE(!ret);
+ 	range.len = ret;
+ 	if (!(uffdio_continue.mode &amp; UFFDIO_CONTINUE_MODE_DONTWAKE)) {
+ 		range.start = uffdio_continue.range.start;
+@@ -1850,7 +1849,7 @@ static inline int userfaultfd_poison(struct userfaultfd_ctx *ctx, unsigned long
+ 		goto out;
+ 
+ 	/* len == 0 would wake all */
+-	BUG_ON(!ret);
++	VM_WARN_ON_ONCE(!ret);
+ 	range.len = ret;
+ 	if (!(uffdio_poison.mode &amp; UFFDIO_POISON_MODE_DONTWAKE)) {
+ 		range.start = uffdio_poison.range.start;
+@@ -2111,7 +2110,7 @@ static int new_userfaultfd(int flags)
+ 	struct file *file;
+ 	int fd;
+ 
+-	BUG_ON(!current-&gt;mm);
++	VM_WARN_ON_ONCE(!current-&gt;mm);
+ 
+ 	/* Check the UFFD_* constants for consistency.  */
+ 	BUILD_BUG_ON(UFFD_USER_MODE_ONLY &amp; UFFD_SHARED_FCNTL_FLAGS);
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 8253978ee0fb..9ff970980496 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -561,7 +561,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 	}
+ 
+ 	while (src_addr &lt; src_start + len) {
+-		BUG_ON(dst_addr &gt;= dst_start + len);
++		VM_WARN_ON_ONCE(dst_addr &gt;= dst_start + len);
+ 
+ 		/*
+ 		 * Serialize via vma_lock and hugetlb_fault_mutex.
+@@ -602,7 +602,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 		if (unlikely(err == -ENOENT)) {
+ 			up_read(&amp;ctx-&gt;map_changing_lock);
+ 			uffd_mfill_unlock(dst_vma);
+-			BUG_ON(!folio);
++			VM_WARN_ON_ONCE(!folio);
+ 
+ 			err = copy_folio_from_user(folio,
+ 						   (const void __user *)src_addr, true);
+@@ -614,7 +614,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 			dst_vma = NULL;
+ 			goto retry;
+ 		} else
+-			BUG_ON(folio);
++			VM_WARN_ON_ONCE(folio);
+ 
+ 		if (!err) {
+ 			dst_addr += vma_hpagesize;
+@@ -635,9 +635,9 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ out:
+ 	if (folio)
+ 		folio_put(folio);
+-	BUG_ON(copied &lt; 0);
+-	BUG_ON(err &gt; 0);
+-	BUG_ON(!copied &amp;&amp; !err);
++	VM_WARN_ON_ONCE(copied &lt; 0);
++	VM_WARN_ON_ONCE(err &gt; 0);
++	VM_WARN_ON_ONCE(!copied &amp;&amp; !err);
+ 	return copied ? copied : err;
+ }
+ #else /* !CONFIG_HUGETLB_PAGE */
+@@ -711,12 +711,12 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 	/*
+ 	 * Sanitize the command parameters:
+ 	 */
+-	BUG_ON(dst_start &amp; ~PAGE_MASK);
+-	BUG_ON(len &amp; ~PAGE_MASK);
++	VM_WARN_ON_ONCE(dst_start &amp; ~PAGE_MASK);
++	VM_WARN_ON_ONCE(len &amp; ~PAGE_MASK);
+ 
+ 	/* Does the address range wrap, or is the span zero-sized? */
+-	BUG_ON(src_start + len &lt;= src_start);
+-	BUG_ON(dst_start + len &lt;= dst_start);
++	VM_WARN_ON_ONCE(src_start + len &lt;= src_start);
++	VM_WARN_ON_ONCE(dst_start + len &lt;= dst_start);
+ 
+ 	src_addr = src_start;
+ 	dst_addr = dst_start;
+@@ -775,7 +775,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 	while (src_addr &lt; src_start + len) {
+ 		pmd_t dst_pmdval;
+ 
+-		BUG_ON(dst_addr &gt;= dst_start + len);
++		VM_WARN_ON_ONCE(dst_addr &gt;= dst_start + len);
+ 
+ 		dst_pmd = mm_alloc_pmd(dst_mm, dst_addr);
+ 		if (unlikely(!dst_pmd)) {
+@@ -818,7 +818,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 
+ 			up_read(&amp;ctx-&gt;map_changing_lock);
+ 			uffd_mfill_unlock(dst_vma);
+-			BUG_ON(!folio);
++			VM_WARN_ON_ONCE(!folio);
+ 
+ 			kaddr = kmap_local_folio(folio, 0);
+ 			err = copy_from_user(kaddr,
+@@ -832,7 +832,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 			flush_dcache_folio(folio);
+ 			goto retry;
+ 		} else
+-			BUG_ON(folio);
++			VM_WARN_ON_ONCE(folio);
+ 
+ 		if (!err) {
+ 			dst_addr += PAGE_SIZE;
+@@ -852,9 +852,9 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ out:
+ 	if (folio)
+ 		folio_put(folio);
+-	BUG_ON(copied &lt; 0);
+-	BUG_ON(err &gt; 0);
+-	BUG_ON(!copied &amp;&amp; !err);
++	VM_WARN_ON_ONCE(copied &lt; 0);
++	VM_WARN_ON_ONCE(err &gt; 0);
++	VM_WARN_ON_ONCE(!copied &amp;&amp; !err);
+ 	return copied ? copied : err;
+ }
+ 
+@@ -940,11 +940,11 @@ int mwriteprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
+ 	/*
+ 	 * Sanitize the command parameters:
+ 	 */
+-	BUG_ON(start &amp; ~PAGE_MASK);
+-	BUG_ON(len &amp; ~PAGE_MASK);
++	VM_WARN_ON_ONCE(start &amp; ~PAGE_MASK);
++	VM_WARN_ON_ONCE(len &amp; ~PAGE_MASK);
+ 
+ 	/* Does the address range wrap, or is the span zero-sized? */
+-	BUG_ON(start + len &lt;= start);
++	VM_WARN_ON_ONCE(start + len &lt;= start);
+ 
+ 	mmap_read_lock(dst_mm);
+ 
+@@ -1738,15 +1738,13 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 	ssize_t moved = 0;
+ 
+ 	/* Sanitize the command parameters. */
+-	if (WARN_ON_ONCE(src_start &amp; ~PAGE_MASK) ||
+-	    WARN_ON_ONCE(dst_start &amp; ~PAGE_MASK) ||
+-	    WARN_ON_ONCE(len &amp; ~PAGE_MASK))
+-		goto out;
++	VM_WARN_ON_ONCE(src_start &amp; ~PAGE_MASK);
++	VM_WARN_ON_ONCE(dst_start &amp; ~PAGE_MASK);
++	VM_WARN_ON_ONCE(len &amp; ~PAGE_MASK);
+ 
+ 	/* Does the address range wrap, or is the span zero-sized? */
+-	if (WARN_ON_ONCE(src_start + len &lt;= src_start) ||
+-	    WARN_ON_ONCE(dst_start + len &lt;= dst_start))
+-		goto out;
++	VM_WARN_ON_ONCE(src_start + len &lt; src_start);
++	VM_WARN_ON_ONCE(dst_start + len &lt; dst_start);
+ 
+ 	err = uffd_move_lock(mm, dst_start, src_start, &amp;dst_vma, &amp;src_vma);
+ 	if (err)
+@@ -1896,9 +1894,9 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 	up_read(&amp;ctx-&gt;map_changing_lock);
+ 	uffd_move_unlock(dst_vma, src_vma);
+ out:
+-	VM_WARN_ON(moved &lt; 0);
+-	VM_WARN_ON(err &gt; 0);
+-	VM_WARN_ON(!moved &amp;&amp; !err);
++	VM_WARN_ON_ONCE(moved &lt; 0);
++	VM_WARN_ON_ONCE(err &gt; 0);
++	VM_WARN_ON_ONCE(!moved &amp;&amp; !err);
+ 	return moved ? moved : err;
+ }
+ 
+@@ -1985,10 +1983,10 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+ 	for_each_vma_range(vmi, vma, end) {
+ 		cond_resched();
+ 
+-		BUG_ON(!vma_can_userfault(vma, vm_flags, wp_async));
+-		BUG_ON(vma-&gt;vm_userfaultfd_ctx.ctx &amp;&amp;
+-		       vma-&gt;vm_userfaultfd_ctx.ctx != ctx);
+-		WARN_ON(!(vma-&gt;vm_flags &amp; VM_MAYWRITE));
++		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
++		VM_WARN_ON_ONCE(vma-&gt;vm_userfaultfd_ctx.ctx &amp;&amp;
++				vma-&gt;vm_userfaultfd_ctx.ctx != ctx);
++		VM_WARN_ON_ONCE(!(vma-&gt;vm_flags &amp; VM_MAYWRITE));
+ 
+ 		/*
+ 		 * Nothing to do: this vma is already registered into this
+@@ -2064,8 +2062,8 @@ void userfaultfd_release_all(struct mm_struct *mm,
+ 	prev = NULL;
+ 	for_each_vma(vmi, vma) {
+ 		cond_resched();
+-		BUG_ON(!!vma-&gt;vm_userfaultfd_ctx.ctx ^
+-		       !!(vma-&gt;vm_flags &amp; __VM_UFFD_FLAGS));
++		VM_WARN_ON_ONCE(!!vma-&gt;vm_userfaultfd_ctx.ctx ^
++				!!(vma-&gt;vm_flags &amp; __VM_UFFD_FLAGS));
+ 		if (vma-&gt;vm_userfaultfd_ctx.ctx != ctx) {
+ 			prev = vma;
+ 			continue;</pre><hr><pre>commit 23ec90eb122faaf0468f450c5d5857a794956c75
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Thu Jun 19 21:24:24 2025 -0400
+
+    userfaultfd: prevent unregistering VMAs through a different userfaultfd
+    
+    Currently, a VMA registered with a uffd can be unregistered through a
+    different uffd associated with the same mm_struct.
+    
+    The existing behavior is slightly broken and may incorrectly reject
+    unregistering some VMAs due to the following check:
+    
+            if (!vma_can_userfault(cur, cur-&gt;vm_flags, wp_async))
+                    goto out_unlock;
+    
+    where wp_async is derived from ctx, not from cur.  For example, a
+    file-backed VMA registered with wp_async enabled and UFFD_WP mode cannot
+    be unregistered through a uffd that does not have wp_async enabled.
+    
+    Rather than fix this and maintain this odd behavior, make unregistration
+    stricter by requiring VMAs to be unregistered through the same uffd they
+    were registered with.  Additionally, reorder the BUG() checks to avoid the
+    aforementioned wp_async issue in them.  Convert the existing check to
+    VM_WARN_ON_ONCE() as BUG_ON() is deprecated.
+    
+    This change slightly modifies the ABI.  It should not be backported to
+    -stable.  It is expected that no one depends on this behavior, and no such
+    cases are known.
+    
+    While at it, correct the comment for the no userfaultfd case.  This seems
+    to be a copy-paste artifact from the analogous userfaultfd_register()
+    check.
+    
+    Link: https://lkml.kernel.org/r/20250619-uffd-fixes-v3-2-a7274d3bd5e4@columbia.edu
+    Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Acked-by: David Hildenbrand &lt;david@redhat.com&gt;
+    Cc: Al Viro &lt;viro@zeniv.linux.org.uk&gt;
+    Cc: Andrea Arcangeli &lt;aarcange@redhat.com&gt;
+    Cc: Christian Brauner &lt;brauner@kernel.org&gt;
+    Cc: Jan Kara &lt;jack@suse.cz&gt;
+    Cc: Jason A. Donenfeld &lt;Jason@zx2c4.com&gt;
+    Cc: Peter Xu &lt;peterx@redhat.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index 22f4bf956ba1..8e7fb2a7a6aa 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1467,6 +1467,14 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 		BUG_ON(!!cur-&gt;vm_userfaultfd_ctx.ctx ^
+ 		       !!(cur-&gt;vm_flags &amp; __VM_UFFD_FLAGS));
+ 
++		/*
++		 * Prevent unregistering through a different userfaultfd than
++		 * the one used for registration.
++		 */
++		if (cur-&gt;vm_userfaultfd_ctx.ctx &amp;&amp;
++		    cur-&gt;vm_userfaultfd_ctx.ctx != ctx)
++			goto out_unlock;
++
+ 		/*
+ 		 * Check not compatible vmas, not strictly required
+ 		 * here as not compatible vmas cannot have an
+@@ -1490,15 +1498,12 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 	for_each_vma_range(vmi, vma, end) {
+ 		cond_resched();
+ 
+-		BUG_ON(!vma_can_userfault(vma, vma-&gt;vm_flags, wp_async));
+-
+-		/*
+-		 * Nothing to do: this vma is already registered into this
+-		 * userfaultfd and with the right tracking mode too.
+-		 */
++		/* VMA not registered with userfaultfd. */
+ 		if (!vma-&gt;vm_userfaultfd_ctx.ctx)
+ 			goto skip;
+ 
++		VM_WARN_ON_ONCE(vma-&gt;vm_userfaultfd_ctx.ctx != ctx);
++		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vma-&gt;vm_flags, wp_async));
+ 		WARN_ON(!(vma-&gt;vm_flags &amp; VM_MAYWRITE));
+ 
+ 		if (vma-&gt;vm_start &gt; start)</pre><hr><pre>commit 7208cc6497c2615ed5a334b52c92ae98bda91198
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Thu Jun 19 21:24:23 2025 -0400
+
+    userfaultfd: correctly prevent registering VM_DROPPABLE regions
+    
+    Patch series "mm: userfaultfd: assorted fixes and cleanups", v3.
+    
+    Two fixes and two cleanups for userfaultfd.
+    
+    Note that the third patch yields a small change in the ABI, but we seem to
+    have concluded that it is acceptable in this case.
+    
+    
+    This patch (of 4):
+    
+    vma_can_userfault() masks off non-userfaultfd VM flags from vm_flags.  The
+    vm_flags &amp; VM_DROPPABLE test will then always be false, incorrectly
+    allowing VM_DROPPABLE regions to be registered with userfaultfd.
+    
+    Additionally, vm_flags is not guaranteed to correspond to the actual VMA's
+    flags.  Fix this test by checking the VMA's flags directly.
+    
+    Link: https://lkml.kernel.org/r/20250619-uffd-fixes-v3-0-a7274d3bd5e4@columbia.edu
+    Link: https://lore.kernel.org/linux-mm/5a875a3a-2243-4eab-856f-bc53ccfec3ea@redhat.com/
+    Link: https://lkml.kernel.org/r/20250619-uffd-fixes-v3-1-a7274d3bd5e4@columbia.edu
+    Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Acked-by: David Hildenbrand &lt;david@redhat.com&gt;
+    Acked-by: Peter Xu &lt;peterx@redhat.com&gt;
+    Acked-by: Jason A. Donenfeld &lt;Jason@zx2c4.com&gt;
+    Cc: Al Viro &lt;viro@zeniv.linux.org.uk&gt;
+    Cc: Andrea Arcangeli &lt;aarcange@redhat.com&gt;
+    Cc: Christian Brauner &lt;brauner@kernel.org&gt;
+    Cc: Jan Kara &lt;jack@suse.cz&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index 75342022d144..f3b3d2c9dd5e 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -218,7 +218,7 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
+ {
+ 	vm_flags &amp;= __VM_UFFD_FLAGS;
+ 
+-	if (vm_flags &amp; VM_DROPPABLE)
++	if (vma-&gt;vm_flags &amp; VM_DROPPABLE)
+ 		return false;
+ 
+ 	if ((vm_flags &amp; VM_UFFD_MINOR) &amp;&amp;</pre><hr><pre>commit 1b11a28308923a67fc76b8f7be06e1b2d80d07ca
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Tue Jun 3 18:50:17 2025 -0400
+
+    MAINTAINERS: add tlb trace events to MMU GATHER AND TLB INVALIDATION
+    
+    The MMU GATHER AND TLB INVALIDATION entry lists other TLB-related files.
+    Add the tlb.h tracepoint file there as well.
+    
+    Link: https://lore.kernel.org/linux-mm/ce048e11-f79d-44a6-bacc-46e1ebc34b24@redhat.com/
+    Link: https://lkml.kernel.org/r/20250603-tlb-maintainers-v1-1-726d193c6693@columbia.edu
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Suggested-by: David Hildenbrand &lt;david@redhat.com&gt;
+    Acked-by: David Hildenbrand &lt;david@redhat.com&gt;
+    Cc: "Aneesh Kumar K.V" &lt;aneesh.kumar@kernel.org&gt;
+    Cc: Nicholas Piggin &lt;npiggin@gmail.com&gt;
+    Cc: Peter Zijlstra &lt;peterz@infradead.org&gt;
+    Cc: Will Deacon &lt;will@kernel.org&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4b4317dd0788..6b0b5f55ab72 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16654,6 +16654,7 @@ L:	linux-mm@kvack.org
+ S:	Maintained
+ F:	arch/*/include/asm/tlb.h
+ F:	include/asm-generic/tlb.h
++F:	include/trace/events/tlb.h
+ F:	mm/mmu_gather.c
+ 
+ MN88472 MEDIA DRIVER</pre><hr><pre>commit 3783e1721b650588938d28e4a084a1c9748361c8
+Author: Kele Huang &lt;kele.huang@columbia.edu&gt;
+Date:   Sat Dec 24 01:02:33 2022 -0500
+
+    mm: fix comment of page table counter
+    
+    Commit af5b0f6a09e42 ("mm: consolidate page table accounting")
+    consolidates page table accounting to a single counter in struct mm_struct
+    {} as mm-&gt;pgtables_bytes.  So the meanning of this counter should be the
+    size of all page tables now.
+    
+    Link: https://lkml.kernel.org/r/20221224060233.417827-1-kele.huang@columbia.edu
+    Signed-off-by: Kele Huang &lt;kele.huang@columbia.edu&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Colin Cross &lt;ccross@google.com&gt;
+    Cc: David Hildenbrand &lt;david@redhat.com&gt;
+    Cc: Hugh Dickins &lt;hughd@google.com&gt;
+    Cc: Liam Howlett &lt;liam.howlett@oracle.com&gt;
+    Cc: Matthew Wilcox (Oracle) &lt;willy@infradead.org&gt;
+    Cc: Pasha Tatashin &lt;pasha.tatashin@soleen.com&gt;
+    Cc: Peter Xu &lt;peterx@redhat.com&gt;
+    Cc: Vlastimil Babka &lt;vbabka@suse.cz&gt;
+    Cc: Yu Zhao &lt;yuzhao@google.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 1118e381fcdc..10b6eb311ede 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -647,7 +647,7 @@ struct mm_struct {
+ 		atomic_t mm_count;
+ 
+ #ifdef CONFIG_MMU
+-		atomic_long_t pgtables_bytes;	/* PTE page table pages */
++		atomic_long_t pgtables_bytes;	/* size of all page tables */
+ #endif
+ 		int map_count;			/* number of VMAs */
+ </pre><hr><pre>commit c51acdb78f92719127995c0fe41108df0552edc3
+Author: Tal Zussman &lt;tz2294@columbia.edu&gt;
+Date:   Fri Dec 31 02:57:50 2021 -0500
+
+    fs: Remove FIXME comment in generic_write_checks()
+    
+    This patch removes an unnecessary comment that had to do with block special
+    files from `generic_write_checks()`.
+    
+    The comment, originally added in Linux v2.4.14.9, was to clarify that we only
+    set `pos` to the file size when the file was opened with `O_APPEND` if the file
+    wasn't a block special file. Prior to Linux v2.4, block special files had a
+    different `write()` function which was unified into a generic `write()` function
+    in Linux v2.4. This generic `write()` function called `generic_write_checks()`.
+    For more details, see this earlier conversation:
+    https://lore.kernel.org/linux-fsdevel/Yc4Czk5A+p5p2Y4W@mit.edu/
+    
+    Currently, block special devices have their own `write_iter()` function and no
+    longer share the same `generic_write_checks()`, therefore rendering the comment
+    irrelevant.
+    
+    Signed-off-by: Tal Zussman &lt;tz2294@columbia.edu&gt;
+    Co-authored-by: Xijiao Li &lt;xl2950@columbia.edu&gt;
+    Co-authored-by: Hans Montero &lt;hjm2133@columbia.edu&gt;
+    Suggested-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Signed-off-by: Al Viro &lt;viro@zeniv.linux.org.uk&gt;
+
+diff --git a/fs/read_write.c b/fs/read_write.c
+index 0074afa7ecb3..0173dc7183c9 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -1637,7 +1637,6 @@ ssize_t generic_write_checks(struct kiocb *iocb, struct iov_iter *from)
+ 	if (!iov_iter_count(from))
+ 		return 0;
+ 
+-	/* FIXME: this is for backwards compatibility with 2.4 */
+ 	if (iocb-&gt;ki_flags &amp; IOCB_APPEND)
+ 		iocb-&gt;ki_pos = i_size_read(inode);
+ </pre>
+    <div class="pagination">
+        <span>[1]</span><a href='22_2.html'>2</a><a href='22_3.html'>3</a><a href='22_4.html'>4</a><a href='22_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

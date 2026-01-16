@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of Illinois Urbana-Champaign</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of Illinois Urbana-Champaign</h1>
+    <div class="pagination">
+        <a href='23.html'>&lt;&lt;Prev</a><a href='23.html'>1</a><span>[2]</span><a href='23_3.html'>3</a><a href='23_4.html'>4</a><a href='23_3.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 81a5603a0f50fd7cf17ff21d106052215eaf2028
+Author: Arnav Rawat &lt;arnavr3@illinois.edu&gt;
+Date:   Fri Nov 11 14:32:09 2022 +0000
+
+    platform/x86: ideapad-laptop: Fix interrupt storm on fn-lock toggle on some Yoga laptops
+    
+    Commit 3ae86d2d4704 ("platform/x86: ideapad-laptop: Fix Legion 5 Fn lock
+    LED") uses the WMI event-id for the fn-lock event on some Legion 5 laptops
+    to manually toggle the fn-lock LED because the EC does not do it itself.
+    However, the same WMI ID is also sent on some Yoga laptops. Here, setting
+    the fn-lock state is not valid behavior, and causes the EC to spam
+    interrupts until the laptop is rebooted.
+    
+    Add a set_fn_lock_led_list[] DMI-id list and only enable the workaround to
+    manually set the LED on models on this list.
+    
+    Link: https://bugzilla.kernel.org/show_bug.cgi?id=212671
+    Cc: Meng Dong &lt;whenov@gmail.com&gt;
+    Signed-off-by: Arnav Rawat &lt;arnavr3@illinois.edu&gt;
+    Link: https://lore.kernel.org/r/12093851.O9o76ZdvQC@fedora
+    [hdegoede@redhat.com: Check DMI-id list only once and store the result]
+    Signed-off-by: Hans de Goede &lt;hdegoede@redhat.com&gt;
+
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index 33b3dfdd1b08..6c460cdc05bb 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -136,6 +136,7 @@ struct ideapad_private {
+ 		bool dytc                 : 1;
+ 		bool fan_mode             : 1;
+ 		bool fn_lock              : 1;
++		bool set_fn_lock_led      : 1;
+ 		bool hw_rfkill_switch     : 1;
+ 		bool kbd_bl               : 1;
+ 		bool touchpad_ctrl_via_ec : 1;
+@@ -1501,6 +1502,9 @@ static void ideapad_wmi_notify(u32 value, void *context)
+ 		ideapad_input_report(priv, value);
+ 		break;
+ 	case 208:
++		if (!priv-&gt;features.set_fn_lock_led)
++			break;
++
+ 		if (!eval_hals(priv-&gt;adev-&gt;handle, &amp;result)) {
+ 			bool state = test_bit(HALS_FNLOCK_STATE_BIT, &amp;result);
+ 
+@@ -1514,6 +1518,18 @@ static void ideapad_wmi_notify(u32 value, void *context)
+ }
+ #endif
+ 
++/* On some models we need to call exec_sals(SALS_FNLOCK_ON/OFF) to set the LED */
++static const struct dmi_system_id set_fn_lock_led_list[] = {
++	{
++		/* https://bugzilla.kernel.org/show_bug.cgi?id=212671 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "Lenovo Legion R7000P2020H"),
++		}
++	},
++	{}
++};
++
+ /*
+  * Some ideapads have a hardware rfkill switch, but most do not have one.
+  * Reading VPCCMD_R_RF always results in 0 on models without a hardware rfkill,
+@@ -1556,6 +1572,7 @@ static void ideapad_check_features(struct ideapad_private *priv)
+ 	acpi_handle handle = priv-&gt;adev-&gt;handle;
+ 	unsigned long val;
+ 
++	priv-&gt;features.set_fn_lock_led = dmi_check_system(set_fn_lock_led_list);
+ 	priv-&gt;features.hw_rfkill_switch = dmi_check_system(hw_rfkill_list);
+ 
+ 	/* Most ideapads with ELAN0634 touchpad don't use EC touchpad switch */</pre><hr><pre>commit 0d8315dddd2899f519fe1ca3d4d5cdaf44ea421e
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Wed Nov 11 07:33:54 2020 -0600
+
+    seccomp/cache: Report cache data through /proc/pid/seccomp_cache
+    
+    Currently the kernel does not provide an infrastructure to translate
+    architecture numbers to a human-readable name. Translating syscall
+    numbers to syscall names is possible through FTRACE_SYSCALL
+    infrastructure but it does not provide support for compat syscalls.
+    
+    This will create a file for each PID as /proc/pid/seccomp_cache.
+    The file will be empty when no seccomp filters are loaded, or be
+    in the format of:
+    &lt;arch name&gt; &lt;decimal syscall number&gt; &lt;ALLOW | FILTER&gt;
+    where ALLOW means the cache is guaranteed to allow the syscall,
+    and filter means the cache will pass the syscall to the BPF filter.
+    
+    For the docker default profile on x86_64 it looks like:
+    x86_64 0 ALLOW
+    x86_64 1 ALLOW
+    x86_64 2 ALLOW
+    x86_64 3 ALLOW
+    [...]
+    x86_64 132 ALLOW
+    x86_64 133 ALLOW
+    x86_64 134 FILTER
+    x86_64 135 FILTER
+    x86_64 136 FILTER
+    x86_64 137 ALLOW
+    x86_64 138 ALLOW
+    x86_64 139 FILTER
+    x86_64 140 ALLOW
+    x86_64 141 ALLOW
+    [...]
+    
+    This file is guarded by CONFIG_SECCOMP_CACHE_DEBUG with a default
+    of N because I think certain users of seccomp might not want the
+    application to know which syscalls are definitely usable. For
+    the same reason, it is also guarded by CAP_SYS_ADMIN.
+    
+    Suggested-by: Jann Horn &lt;jannh@google.com&gt;
+    Link: https://lore.kernel.org/lkml/CAG48ez3Ofqp4crXGksLmZY6=fGrF_tWyUCg7PBkAetvbbOPeOA@mail.gmail.com/
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/94e663fa53136f5a11f432c661794d1ee7060779.1605101222.git.yifeifz2@illinois.edu
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 56b6ccc0e32d..35c9463b7d10 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -486,6 +486,9 @@ config HAVE_ARCH_SECCOMP_FILTER
+ 	  - secure_computing return value is checked and a return value of -1
+ 	    results in the system call being skipped immediately.
+ 	  - seccomp syscall wired up
++	  - if !HAVE_SPARSE_SYSCALL_NR, have SECCOMP_ARCH_NATIVE,
++	    SECCOMP_ARCH_NATIVE_NR, SECCOMP_ARCH_NATIVE_NAME defined. If
++	    COMPAT is supported, have the SECCOMP_ARCH_COMPAT* defines too.
+ 
+ config SECCOMP
+ 	prompt "Enable seccomp to safely execute untrusted bytecode"
+@@ -514,6 +517,20 @@ config SECCOMP_FILTER
+ 
+ 	  See Documentation/userspace-api/seccomp_filter.rst for details.
+ 
++config SECCOMP_CACHE_DEBUG
++	bool "Show seccomp filter cache status in /proc/pid/seccomp_cache"
++	depends on SECCOMP_FILTER &amp;&amp; !HAVE_SPARSE_SYSCALL_NR
++	depends on PROC_FS
++	help
++	  This enables the /proc/pid/seccomp_cache interface to monitor
++	  seccomp cache data. The file format is subject to change. Reading
++	  the file requires CAP_SYS_ADMIN.
++
++	  This option is for debugging only. Enabling presents the risk that
++	  an adversary may be able to infer the seccomp filter logic.
++
++	  If unsure, say N.
++
+ config HAVE_ARCH_STACKLEAK
+ 	bool
+ 	help
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index b362523a9829..8a7d682ba881 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -3263,6 +3263,9 @@ static const struct pid_entry tgid_base_stuff[] = {
+ #ifdef CONFIG_PROC_PID_ARCH_STATUS
+ 	ONE("arch_status", S_IRUGO, proc_pid_arch_status),
+ #endif
++#ifdef CONFIG_SECCOMP_CACHE_DEBUG
++	ONE("seccomp_cache", S_IRUSR, proc_pid_seccomp_cache),
++#endif
+ };
+ 
+ static int proc_tgid_base_readdir(struct file *file, struct dir_context *ctx)
+@@ -3592,6 +3595,9 @@ static const struct pid_entry tid_base_stuff[] = {
+ #ifdef CONFIG_PROC_PID_ARCH_STATUS
+ 	ONE("arch_status", S_IRUGO, proc_pid_arch_status),
+ #endif
++#ifdef CONFIG_SECCOMP_CACHE_DEBUG
++	ONE("seccomp_cache", S_IRUSR, proc_pid_seccomp_cache),
++#endif
+ };
+ 
+ static int proc_tid_base_readdir(struct file *file, struct dir_context *ctx)
+diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
+index 02aef2844c38..76963ec4641a 100644
+--- a/include/linux/seccomp.h
++++ b/include/linux/seccomp.h
+@@ -121,4 +121,11 @@ static inline long seccomp_get_metadata(struct task_struct *task,
+ 	return -EINVAL;
+ }
+ #endif /* CONFIG_SECCOMP_FILTER &amp;&amp; CONFIG_CHECKPOINT_RESTORE */
++
++#ifdef CONFIG_SECCOMP_CACHE_DEBUG
++struct seq_file;
++
++int proc_pid_seccomp_cache(struct seq_file *m, struct pid_namespace *ns,
++			   struct pid *pid, struct task_struct *task);
++#endif
+ #endif /* _LINUX_SECCOMP_H */
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index d8cf468dbe1e..76f524e320b1 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -553,6 +553,9 @@ void seccomp_filter_release(struct task_struct *tsk)
+ {
+ 	struct seccomp_filter *orig = tsk-&gt;seccomp.filter;
+ 
++	/* We are effectively holding the siglock by not having any sighand. */
++	WARN_ON(tsk-&gt;sighand != NULL);
++
+ 	/* Detach task from its filter tree. */
+ 	tsk-&gt;seccomp.filter = NULL;
+ 	__seccomp_filter_release(orig);
+@@ -2335,3 +2338,59 @@ static int __init seccomp_sysctl_init(void)
+ device_initcall(seccomp_sysctl_init)
+ 
+ #endif /* CONFIG_SYSCTL */
++
++#ifdef CONFIG_SECCOMP_CACHE_DEBUG
++/* Currently CONFIG_SECCOMP_CACHE_DEBUG implies SECCOMP_ARCH_NATIVE */
++static void proc_pid_seccomp_cache_arch(struct seq_file *m, const char *name,
++					const void *bitmap, size_t bitmap_size)
++{
++	int nr;
++
++	for (nr = 0; nr &lt; bitmap_size; nr++) {
++		bool cached = test_bit(nr, bitmap);
++		char *status = cached ? "ALLOW" : "FILTER";
++
++		seq_printf(m, "%s %d %s\n", name, nr, status);
++	}
++}
++
++int proc_pid_seccomp_cache(struct seq_file *m, struct pid_namespace *ns,
++			   struct pid *pid, struct task_struct *task)
++{
++	struct seccomp_filter *f;
++	unsigned long flags;
++
++	/*
++	 * We don't want some sandboxed process to know what their seccomp
++	 * filters consist of.
++	 */
++	if (!file_ns_capable(m-&gt;file, &amp;init_user_ns, CAP_SYS_ADMIN))
++		return -EACCES;
++
++	if (!lock_task_sighand(task, &amp;flags))
++		return -ESRCH;
++
++	f = READ_ONCE(task-&gt;seccomp.filter);
++	if (!f) {
++		unlock_task_sighand(task, &amp;flags);
++		return 0;
++	}
++
++	/* prevent filter from being freed while we are printing it */
++	__get_seccomp_filter(f);
++	unlock_task_sighand(task, &amp;flags);
++
++	proc_pid_seccomp_cache_arch(m, SECCOMP_ARCH_NATIVE_NAME,
++				    f-&gt;cache.allow_native,
++				    SECCOMP_ARCH_NATIVE_NR);
++
++#ifdef SECCOMP_ARCH_COMPAT
++	proc_pid_seccomp_cache_arch(m, SECCOMP_ARCH_COMPAT_NAME,
++				    f-&gt;cache.allow_compat,
++				    SECCOMP_ARCH_COMPAT_NR);
++#endif /* SECCOMP_ARCH_COMPAT */
++
++	__put_seccomp_filter(f);
++	return 0;
++}
++#endif /* CONFIG_SECCOMP_CACHE_DEBUG */</pre><hr><pre>commit 445247b02342a05b7d528bba6d85d2d418875b69
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Wed Nov 11 07:33:53 2020 -0600
+
+    xtensa: Enable seccomp architecture tracking
+    
+    To enable seccomp constant action bitmaps, we need to have a static
+    mapping to the audit architecture and system call table size. Add these
+    for xtensa.
+    
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/79669648ba167d668ea6ffb4884250abcd5ed254.1605101222.git.yifeifz2@illinois.edu
+
+diff --git a/arch/xtensa/include/asm/Kbuild b/arch/xtensa/include/asm/Kbuild
+index c59c42a1221a..9718e9593564 100644
+--- a/arch/xtensa/include/asm/Kbuild
++++ b/arch/xtensa/include/asm/Kbuild
+@@ -7,5 +7,4 @@ generic-y += mcs_spinlock.h
+ generic-y += param.h
+ generic-y += qrwlock.h
+ generic-y += qspinlock.h
+-generic-y += seccomp.h
+ generic-y += user.h
+diff --git a/arch/xtensa/include/asm/seccomp.h b/arch/xtensa/include/asm/seccomp.h
+new file mode 100644
+index 000000000000..f1cb6b0a9e1f
+--- /dev/null
++++ b/arch/xtensa/include/asm/seccomp.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_SECCOMP_H
++#define _ASM_SECCOMP_H
++
++#include &lt;asm-generic/seccomp.h&gt;
++
++#define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_XTENSA
++#define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++#define SECCOMP_ARCH_NATIVE_NAME	"xtensa"
++
++#endif /* _ASM_SECCOMP_H */</pre><hr><pre>commit 4c18bc054bffe415bec9e0edaa9ff1a84c1a6973
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Wed Nov 11 07:33:52 2020 -0600
+
+    sh: Enable seccomp architecture tracking
+    
+    To enable seccomp constant action bitmaps, we need to have a static
+    mapping to the audit architecture and system call table size. Add these
+    for sh.
+    
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/61ae084cd4783b9b50860d9dedb4a348cf1b7b6f.1605101222.git.yifeifz2@illinois.edu
+
+diff --git a/arch/sh/include/asm/seccomp.h b/arch/sh/include/asm/seccomp.h
+index 54111e4d32b8..d4578395fd66 100644
+--- a/arch/sh/include/asm/seccomp.h
++++ b/arch/sh/include/asm/seccomp.h
+@@ -8,4 +8,14 @@
+ #define __NR_seccomp_exit __NR_exit
+ #define __NR_seccomp_sigreturn __NR_rt_sigreturn
+ 
++#ifdef CONFIG_CPU_LITTLE_ENDIAN
++#define __SECCOMP_ARCH_LE		__AUDIT_ARCH_LE
++#else
++#define __SECCOMP_ARCH_LE		0
++#endif
++
++#define SECCOMP_ARCH_NATIVE		(AUDIT_ARCH_SH | __SECCOMP_ARCH_LE)
++#define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++#define SECCOMP_ARCH_NATIVE_NAME	"sh"
++
+ #endif /* __ASM_SECCOMP_H */</pre><hr><pre>commit c09058eda2654c37fd7ac28c2004c3aae8b988e9
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Wed Nov 11 07:33:51 2020 -0600
+
+    s390: Enable seccomp architecture tracking
+    
+    To enable seccomp constant action bitmaps, we need to have a static
+    mapping to the audit architecture and system call table size. Add these
+    for s390.
+    
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Acked-by: Heiko Carstens &lt;hca@linux.ibm.com&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/a381b10aa2c5b1e583642f3cd46ced842d9d4ce5.1605101222.git.yifeifz2@illinois.edu
+
+diff --git a/arch/s390/include/asm/seccomp.h b/arch/s390/include/asm/seccomp.h
+index 795bbe0d7ca6..71d46f0ba97b 100644
+--- a/arch/s390/include/asm/seccomp.h
++++ b/arch/s390/include/asm/seccomp.h
+@@ -16,4 +16,13 @@
+ 
+ #include &lt;asm-generic/seccomp.h&gt;
+ 
++#define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_S390X
++#define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++#define SECCOMP_ARCH_NATIVE_NAME	"s390x"
++#ifdef CONFIG_COMPAT
++# define SECCOMP_ARCH_COMPAT		AUDIT_ARCH_S390
++# define SECCOMP_ARCH_COMPAT_NR		NR_syscalls
++# define SECCOMP_ARCH_COMPAT_NAME	"s390"
++#endif
++
+ #endif	/* _ASM_S390_SECCOMP_H */</pre><hr><pre>commit 673a11a7e4152b101bad6851c4e4c34c7c6d6dde
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Wed Nov 11 07:33:50 2020 -0600
+
+    riscv: Enable seccomp architecture tracking
+    
+    To enable seccomp constant action bitmaps, we need to have a static
+    mapping to the audit architecture and system call table size. Add these
+    for riscv.
+    
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/58ef925d00505cbb77478fa6bd2b48ab2d902460.1605101222.git.yifeifz2@illinois.edu
+
+diff --git a/arch/riscv/include/asm/seccomp.h b/arch/riscv/include/asm/seccomp.h
+index bf7744ee3b3d..c7ee6a3507be 100644
+--- a/arch/riscv/include/asm/seccomp.h
++++ b/arch/riscv/include/asm/seccomp.h
+@@ -7,4 +7,14 @@
+ 
+ #include &lt;asm-generic/seccomp.h&gt;
+ 
++#ifdef CONFIG_64BIT
++# define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_RISCV64
++# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++# define SECCOMP_ARCH_NATIVE_NAME	"riscv64"
++#else /* !CONFIG_64BIT */
++# define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_RISCV32
++# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++# define SECCOMP_ARCH_NATIVE_NAME	"riscv32"
++#endif
++
+ #endif /* _ASM_SECCOMP_H */</pre><hr><pre>commit e7bcb4622ddf4473da6c03fa8423919a568c57dc
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Wed Nov 11 07:33:49 2020 -0600
+
+    powerpc: Enable seccomp architecture tracking
+    
+    To enable seccomp constant action bitmaps, we need to have a static
+    mapping to the audit architecture and system call table size. Add these
+    for powerpc.
+    
+    __LITTLE_ENDIAN__ is used here instead of CONFIG_CPU_LITTLE_ENDIAN
+    to keep it consistent with asm/syscall.h.
+    
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/0b64925362671cdaa26d01bfe50b3ba5e164adfd.1605101222.git.yifeifz2@illinois.edu
+
+diff --git a/arch/powerpc/include/asm/seccomp.h b/arch/powerpc/include/asm/seccomp.h
+index 51209f6071c5..ac2033f134f0 100644
+--- a/arch/powerpc/include/asm/seccomp.h
++++ b/arch/powerpc/include/asm/seccomp.h
+@@ -8,4 +8,27 @@
+ 
+ #include &lt;asm-generic/seccomp.h&gt;
+ 
++#ifdef __LITTLE_ENDIAN__
++#define __SECCOMP_ARCH_LE		__AUDIT_ARCH_LE
++#define __SECCOMP_ARCH_LE_NAME		"le"
++#else
++#define __SECCOMP_ARCH_LE		0
++#define __SECCOMP_ARCH_LE_NAME
++#endif
++
++#ifdef CONFIG_PPC64
++# define SECCOMP_ARCH_NATIVE		(AUDIT_ARCH_PPC64 | __SECCOMP_ARCH_LE)
++# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++# define SECCOMP_ARCH_NATIVE_NAME	"ppc64" __SECCOMP_ARCH_LE_NAME
++# ifdef CONFIG_COMPAT
++#  define SECCOMP_ARCH_COMPAT		(AUDIT_ARCH_PPC | __SECCOMP_ARCH_LE)
++#  define SECCOMP_ARCH_COMPAT_NR	NR_syscalls
++#  define SECCOMP_ARCH_COMPAT_NAME	"ppc" __SECCOMP_ARCH_LE_NAME
++# endif
++#else /* !CONFIG_PPC64 */
++# define SECCOMP_ARCH_NATIVE		(AUDIT_ARCH_PPC | __SECCOMP_ARCH_LE)
++# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++# define SECCOMP_ARCH_NATIVE_NAME	"ppc" __SECCOMP_ARCH_LE_NAME
++#endif
++
+ #endif	/* _ASM_POWERPC_SECCOMP_H */</pre><hr><pre>commit 6aa7923c8737d1f8fd2a06154155d68dec646464
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Wed Nov 11 07:33:48 2020 -0600
+
+    parisc: Enable seccomp architecture tracking
+    
+    To enable seccomp constant action bitmaps, we need to have a static
+    mapping to the audit architecture and system call table size. Add these
+    for parisc.
+    
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Acked-by: Helge Deller &lt;deller@gmx.de&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/9bb86c546eda753adf5270425e7353202dbce87c.1605101222.git.yifeifz2@illinois.edu
+
+diff --git a/arch/parisc/include/asm/Kbuild b/arch/parisc/include/asm/Kbuild
+index e3ee5c0bfe80..f16c4db80116 100644
+--- a/arch/parisc/include/asm/Kbuild
++++ b/arch/parisc/include/asm/Kbuild
+@@ -5,5 +5,4 @@ generated-y += syscall_table_c32.h
+ generic-y += kvm_para.h
+ generic-y += local64.h
+ generic-y += mcs_spinlock.h
+-generic-y += seccomp.h
+ generic-y += user.h
+diff --git a/arch/parisc/include/asm/seccomp.h b/arch/parisc/include/asm/seccomp.h
+new file mode 100644
+index 000000000000..b058b2220322
+--- /dev/null
++++ b/arch/parisc/include/asm/seccomp.h
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_SECCOMP_H
++#define _ASM_SECCOMP_H
++
++#include &lt;asm-generic/seccomp.h&gt;
++
++#ifdef CONFIG_64BIT
++# define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_PARISC64
++# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++# define SECCOMP_ARCH_NATIVE_NAME	"parisc64"
++# ifdef CONFIG_COMPAT
++#  define SECCOMP_ARCH_COMPAT		AUDIT_ARCH_PARISC
++#  define SECCOMP_ARCH_COMPAT_NR	NR_syscalls
++#  define SECCOMP_ARCH_COMPAT_NAME	"parisc"
++# endif
++#else /* !CONFIG_64BIT */
++# define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_PARISC
++# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++# define SECCOMP_ARCH_NATIVE_NAME	"parisc"
++#endif
++
++#endif /* _ASM_SECCOMP_H */</pre><hr><pre>commit 6e9ae6f98809e0d123ff4d769ba2e6f652119138
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Wed Nov 11 07:33:47 2020 -0600
+
+    csky: Enable seccomp architecture tracking
+    
+    To enable seccomp constant action bitmaps, we need to have a static
+    mapping to the audit architecture and system call table size. Add these
+    for csky.
+    
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/f9219026d4803b22f3e57e3768b4e42e004ef236.1605101222.git.yifeifz2@illinois.edu
+
+diff --git a/arch/csky/include/asm/Kbuild b/arch/csky/include/asm/Kbuild
+index 64876e59e2ef..93372255984d 100644
+--- a/arch/csky/include/asm/Kbuild
++++ b/arch/csky/include/asm/Kbuild
+@@ -4,6 +4,5 @@ generic-y += gpio.h
+ generic-y += kvm_para.h
+ generic-y += local64.h
+ generic-y += qrwlock.h
+-generic-y += seccomp.h
+ generic-y += user.h
+ generic-y += vmlinux.lds.h
+diff --git a/arch/csky/include/asm/seccomp.h b/arch/csky/include/asm/seccomp.h
+new file mode 100644
+index 000000000000..d33e758126fb
+--- /dev/null
++++ b/arch/csky/include/asm/seccomp.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_SECCOMP_H
++#define _ASM_SECCOMP_H
++
++#include &lt;asm-generic/seccomp.h&gt;
++
++#define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_CSKY
++#define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
++#define SECCOMP_ARCH_NATIVE_NAME	"csky"
++
++#endif /* _ASM_SECCOMP_H */</pre><hr><pre>commit 8e01b51a31a1e08e2c3e8fcc0ef6790441be2f61
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Sun Oct 11 10:47:43 2020 -0500
+
+    seccomp/cache: Add "emulator" to check if filter is constant allow
+    
+    SECCOMP_CACHE will only operate on syscalls that do not access
+    any syscall arguments or instruction pointer. To facilitate
+    this we need a static analyser to know whether a filter will
+    return allow regardless of syscall arguments for a given
+    architecture number / syscall number pair. This is implemented
+    here with a pseudo-emulator, and stored in a per-filter bitmap.
+    
+    In order to build this bitmap at filter attach time, each filter is
+    emulated for every syscall (under each possible architecture), and
+    checked for any accesses of struct seccomp_data that are not the "arch"
+    nor "nr" (syscall) members. If only "arch" and "nr" are examined, and
+    the program returns allow, then we can be sure that the filter must
+    return allow independent from syscall arguments.
+    
+    Nearly all seccomp filters are built from these cBPF instructions:
+    
+    BPF_LD  | BPF_W    | BPF_ABS
+    BPF_JMP | BPF_JEQ  | BPF_K
+    BPF_JMP | BPF_JGE  | BPF_K
+    BPF_JMP | BPF_JGT  | BPF_K
+    BPF_JMP | BPF_JSET | BPF_K
+    BPF_JMP | BPF_JA
+    BPF_RET | BPF_K
+    BPF_ALU | BPF_AND  | BPF_K
+    
+    Each of these instructions are emulated. Any weirdness or loading
+    from a syscall argument will cause the emulator to bail.
+    
+    The emulation is also halted if it reaches a return. In that case,
+    if it returns an SECCOMP_RET_ALLOW, the syscall is marked as good.
+    
+    Emulator structure and comments are from Kees [1] and Jann [2].
+    
+    Emulation is done at attach time. If a filter depends on more
+    filters, and if the dependee does not guarantee to allow the
+    syscall, then we skip the emulation of this syscall.
+    
+    [1] https://lore.kernel.org/lkml/20200923232923.3142503-5-keescook@chromium.org/
+    [2] https://lore.kernel.org/lkml/CAG48ez1p=dR_2ikKq=xVxkoGg0fYpTBpkhJSv1w-6BG=76PAvw@mail.gmail.com/
+    
+    Suggested-by: Jann Horn &lt;jannh@google.com&gt;
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Reviewed-by: Jann Horn &lt;jannh@google.com&gt;
+    Co-developed-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/71c7be2db5ee08905f41c3be5c1ad6e2601ce88f.1602431034.git.yifeifz2@illinois.edu
+
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index fe35f4f38949..d8cf468dbe1e 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -169,6 +169,10 @@ static inline bool seccomp_cache_check_allow(const struct seccomp_filter *sfilte
+ {
+ 	return false;
+ }
++
++static inline void seccomp_cache_prepare(struct seccomp_filter *sfilter)
++{
++}
+ #endif /* SECCOMP_ARCH_NATIVE */
+ 
+ /**
+@@ -187,6 +191,7 @@ static inline bool seccomp_cache_check_allow(const struct seccomp_filter *sfilte
+  *	   this filter after reaching 0. The @users count is always smaller
+  *	   or equal to @refs. Hence, reaching 0 for @users does not mean
+  *	   the filter can be freed.
++ * @cache: cache of arch/syscall mappings to actions
+  * @log: true if all actions except for SECCOMP_RET_ALLOW should be logged
+  * @prev: points to a previously installed, or inherited, filter
+  * @prog: the BPF program to evaluate
+@@ -208,6 +213,7 @@ struct seccomp_filter {
+ 	refcount_t refs;
+ 	refcount_t users;
+ 	bool log;
++	struct action_cache cache;
+ 	struct seccomp_filter *prev;
+ 	struct bpf_prog *prog;
+ 	struct notification *notif;
+@@ -621,7 +627,12 @@ static struct seccomp_filter *seccomp_prepare_filter(struct sock_fprog *fprog)
+ {
+ 	struct seccomp_filter *sfilter;
+ 	int ret;
+-	const bool save_orig = IS_ENABLED(CONFIG_CHECKPOINT_RESTORE);
++	const bool save_orig =
++#if defined(CONFIG_CHECKPOINT_RESTORE) || defined(SECCOMP_ARCH_NATIVE)
++		true;
++#else
++		false;
++#endif
+ 
+ 	if (fprog-&gt;len == 0 || fprog-&gt;len &gt; BPF_MAXINSNS)
+ 		return ERR_PTR(-EINVAL);
+@@ -687,6 +698,148 @@ seccomp_prepare_user_filter(const char __user *user_filter)
+ 	return filter;
+ }
+ 
++#ifdef SECCOMP_ARCH_NATIVE
++/**
++ * seccomp_is_const_allow - check if filter is constant allow with given data
++ * @fprog: The BPF programs
++ * @sd: The seccomp data to check against, only syscall number and arch
++ *      number are considered constant.
++ */
++static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
++				   struct seccomp_data *sd)
++{
++	unsigned int reg_value = 0;
++	unsigned int pc;
++	bool op_res;
++
++	if (WARN_ON_ONCE(!fprog))
++		return false;
++
++	for (pc = 0; pc &lt; fprog-&gt;len; pc++) {
++		struct sock_filter *insn = &amp;fprog-&gt;filter[pc];
++		u16 code = insn-&gt;code;
++		u32 k = insn-&gt;k;
++
++		switch (code) {
++		case BPF_LD | BPF_W | BPF_ABS:
++			switch (k) {
++			case offsetof(struct seccomp_data, nr):
++				reg_value = sd-&gt;nr;
++				break;
++			case offsetof(struct seccomp_data, arch):
++				reg_value = sd-&gt;arch;
++				break;
++			default:
++				/* can't optimize (non-constant value load) */
++				return false;
++			}
++			break;
++		case BPF_RET | BPF_K:
++			/* reached return with constant values only, check allow */
++			return k == SECCOMP_RET_ALLOW;
++		case BPF_JMP | BPF_JA:
++			pc += insn-&gt;k;
++			break;
++		case BPF_JMP | BPF_JEQ | BPF_K:
++		case BPF_JMP | BPF_JGE | BPF_K:
++		case BPF_JMP | BPF_JGT | BPF_K:
++		case BPF_JMP | BPF_JSET | BPF_K:
++			switch (BPF_OP(code)) {
++			case BPF_JEQ:
++				op_res = reg_value == k;
++				break;
++			case BPF_JGE:
++				op_res = reg_value &gt;= k;
++				break;
++			case BPF_JGT:
++				op_res = reg_value &gt; k;
++				break;
++			case BPF_JSET:
++				op_res = !!(reg_value &amp; k);
++				break;
++			default:
++				/* can't optimize (unknown jump) */
++				return false;
++			}
++
++			pc += op_res ? insn-&gt;jt : insn-&gt;jf;
++			break;
++		case BPF_ALU | BPF_AND | BPF_K:
++			reg_value &amp;= k;
++			break;
++		default:
++			/* can't optimize (unknown insn) */
++			return false;
++		}
++	}
++
++	/* ran off the end of the filter?! */
++	WARN_ON(1);
++	return false;
++}
++
++static void seccomp_cache_prepare_bitmap(struct seccomp_filter *sfilter,
++					 void *bitmap, const void *bitmap_prev,
++					 size_t bitmap_size, int arch)
++{
++	struct sock_fprog_kern *fprog = sfilter-&gt;prog-&gt;orig_prog;
++	struct seccomp_data sd;
++	int nr;
++
++	if (bitmap_prev) {
++		/* The new filter must be as restrictive as the last. */
++		bitmap_copy(bitmap, bitmap_prev, bitmap_size);
++	} else {
++		/* Before any filters, all syscalls are always allowed. */
++		bitmap_fill(bitmap, bitmap_size);
++	}
++
++	for (nr = 0; nr &lt; bitmap_size; nr++) {
++		/* No bitmap change: not a cacheable action. */
++		if (!test_bit(nr, bitmap))
++			continue;
++
++		sd.nr = nr;
++		sd.arch = arch;
++
++		/* No bitmap change: continue to always allow. */
++		if (seccomp_is_const_allow(fprog, &amp;sd))
++			continue;
++
++		/*
++		 * Not a cacheable action: always run filters.
++		 * atomic clear_bit() not needed, filter not visible yet.
++		 */
++		__clear_bit(nr, bitmap);
++	}
++}
++
++/**
++ * seccomp_cache_prepare - emulate the filter to find cachable syscalls
++ * @sfilter: The seccomp filter
++ *
++ * Returns 0 if successful or -errno if error occurred.
++ */
++static void seccomp_cache_prepare(struct seccomp_filter *sfilter)
++{
++	struct action_cache *cache = &amp;sfilter-&gt;cache;
++	const struct action_cache *cache_prev =
++		sfilter-&gt;prev ? &amp;sfilter-&gt;prev-&gt;cache : NULL;
++
++	seccomp_cache_prepare_bitmap(sfilter, cache-&gt;allow_native,
++				     cache_prev ? cache_prev-&gt;allow_native : NULL,
++				     SECCOMP_ARCH_NATIVE_NR,
++				     SECCOMP_ARCH_NATIVE);
++
++#ifdef SECCOMP_ARCH_COMPAT
++	seccomp_cache_prepare_bitmap(sfilter, cache-&gt;allow_compat,
++				     cache_prev ? cache_prev-&gt;allow_compat : NULL,
++				     SECCOMP_ARCH_COMPAT_NR,
++				     SECCOMP_ARCH_COMPAT);
++#endif /* SECCOMP_ARCH_COMPAT */
++}
++#endif /* SECCOMP_ARCH_NATIVE */
++
+ /**
+  * seccomp_attach_filter: validate and attach filter
+  * @flags:  flags to change filter behavior
+@@ -736,6 +889,7 @@ static long seccomp_attach_filter(unsigned int flags,
+ 	 * task reference.
+ 	 */
+ 	filter-&gt;prev = current-&gt;seccomp.filter;
++	seccomp_cache_prepare(filter);
+ 	current-&gt;seccomp.filter = filter;
+ 	atomic_inc(&amp;current-&gt;seccomp.filter_count);
+ </pre>
+    <div class="pagination">
+        <a href='23.html'>&lt;&lt;Prev</a><a href='23.html'>1</a><span>[2]</span><a href='23_3.html'>3</a><a href='23_4.html'>4</a><a href='23_3.html'>Next&gt;&gt;</a>
+    <div>
+</body>

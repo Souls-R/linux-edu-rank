@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Wuhan University of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Wuhan University of Technology</h1>
+    <div class="pagination">
+        <span>[1]</span>
+    </div>
+    <hr>
+    <pre>commit d94a32ac688f953dc9a9f12b5b4139ecad841bbb
+Author: Ze Huang &lt;huangze@whut.edu.cn&gt;
+Date:   Tue Jun 24 00:11:14 2025 +0800
+
+    pinctrl: canaan: k230: Fix order of DT parse and pinctrl register
+    
+    Move DT parse before pinctrl register. This ensures that device tree
+    parsing is done before calling devm_pinctrl_register() to prevent using
+    uninitialized pin resources.
+    
+    Fixes: 545887eab6f6 ("pinctrl: canaan: Add support for k230 SoC")
+    Reported-by: Yao Zi &lt;ziyao@disroot.org&gt;
+    Signed-off-by: Ze Huang &lt;huangze@whut.edu.cn&gt;
+    Link: https://lore.kernel.org/20250624-k230-return-check-v1-2-6b4fc5ba0c41@whut.edu.cn
+    Signed-off-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+
+diff --git a/drivers/pinctrl/pinctrl-k230.c b/drivers/pinctrl/pinctrl-k230.c
+index 4976308e6237..d716f23d837f 100644
+--- a/drivers/pinctrl/pinctrl-k230.c
++++ b/drivers/pinctrl/pinctrl-k230.c
+@@ -590,6 +590,7 @@ static int k230_pinctrl_probe(struct platform_device *pdev)
+ 	struct device *dev = &amp;pdev-&gt;dev;
+ 	struct k230_pinctrl *info;
+ 	struct pinctrl_desc *pctl;
++	int ret;
+ 
+ 	info = devm_kzalloc(dev, sizeof(*info), GFP_KERNEL);
+ 	if (!info)
+@@ -615,13 +616,15 @@ static int k230_pinctrl_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, PTR_ERR(info-&gt;regmap_base),
+ 				     "failed to init regmap\n");
+ 
++	ret = k230_pinctrl_parse_dt(pdev, info);
++	if (ret)
++		return ret;
++
+ 	info-&gt;pctl_dev = devm_pinctrl_register(dev, pctl, info);
+ 	if (IS_ERR(info-&gt;pctl_dev))
+ 		return dev_err_probe(dev, PTR_ERR(info-&gt;pctl_dev),
+ 				     "devm_pinctrl_register failed\n");
+ 
+-	k230_pinctrl_parse_dt(pdev, info);
+-
+ 	return 0;
+ }
+ </pre><hr><pre>commit 65bd0be486390fc12a84eafaad78758c5e5a55e6
+Author: Ze Huang &lt;huangze@whut.edu.cn&gt;
+Date:   Tue Jun 24 00:11:13 2025 +0800
+
+    pinctrl: canaan: k230: add NULL check in DT parse
+    
+    Add a NULL check for the return value of of_get_property() when
+    retrieving the "pinmux" property in the group parser. This avoids
+    a potential NULL pointer dereference if the property is missing
+    from the device tree node.
+    
+    Also fix a typo ("sintenel") in the device ID match table comment,
+    correcting it to "sentinel".
+    
+    Fixes: 545887eab6f6 ("pinctrl: canaan: Add support for k230 SoC")
+    Reported-by: Yao Zi &lt;ziyao@disroot.org&gt;
+    Signed-off-by: Ze Huang &lt;huangze@whut.edu.cn&gt;
+    Link: https://lore.kernel.org/20250624-k230-return-check-v1-1-6b4fc5ba0c41@whut.edu.cn
+    Signed-off-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+
+diff --git a/drivers/pinctrl/pinctrl-k230.c b/drivers/pinctrl/pinctrl-k230.c
+index a9b4627b46b0..4976308e6237 100644
+--- a/drivers/pinctrl/pinctrl-k230.c
++++ b/drivers/pinctrl/pinctrl-k230.c
+@@ -477,6 +477,10 @@ static int k230_pinctrl_parse_groups(struct device_node *np,
+ 	grp-&gt;name = np-&gt;name;
+ 
+ 	list = of_get_property(np, "pinmux", &amp;size);
++	if (!list) {
++		dev_err(dev, "failed to get pinmux property\n");
++		return -EINVAL;
++	}
+ 	size /= sizeof(*list);
+ 
+ 	grp-&gt;num_pins = size;
+@@ -623,7 +627,7 @@ static int k230_pinctrl_probe(struct platform_device *pdev)
+ 
+ static const struct of_device_id k230_dt_ids[] = {
+ 	{ .compatible = "canaan,k230-pinctrl", },
+-	{ /* sintenel */ }
++	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, k230_dt_ids);
+ </pre><hr><pre>commit 3e6244429ba38f8dee3336b8b805948276b281ab
+Author: Ze Huang &lt;huangze@whut.edu.cn&gt;
+Date:   Mon Apr 28 17:24:36 2025 +0800
+
+    riscv: dts: sophgo: fix DMA data-width configuration for CV18xx
+    
+    The "snps,data-width" property[1] defines the AXI data width of the DMA
+    controller as:
+    
+        width = 8 × (2^n) bits
+    
+    (0 = 8 bits, 1 = 16 bits, 2 = 32 bits, ..., 6 = 512 bits)
+    where "n" is the value of "snps,data-width".
+    
+    For the CV18xx DMA controller, the correct AXI data width is 32 bits,
+    corresponding to "snps,data-width = 2".
+    
+    Test results on Milkv Duo S can be found here [2].
+    
+    Link: https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bindings/dma/snps%2Cdw-axi-dmac.yaml#L74 [1]
+    Link: https://gist.github.com/Sutter099/4fa99bb2d89e5af975983124704b3861 [2]
+    
+    Fixes: 514951a81a5e ("riscv: dts: sophgo: cv18xx: add DMA controller")
+    Co-developed-by: Yu Yuan &lt;yu.yuan@sjtu.edu.cn&gt;
+    Signed-off-by: Yu Yuan &lt;yu.yuan@sjtu.edu.cn&gt;
+    Signed-off-by: Ze Huang &lt;huangze@whut.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250428-duo-dma-config-v1-1-eb6ad836ca42@whut.edu.cn
+    Signed-off-by: Inochi Amaoto &lt;inochiama@gmail.com&gt;
+    Signed-off-by: Chen Wang &lt;unicorn_wang@outlook.com&gt;
+    Signed-off-by: Chen Wang &lt;wangchen20@iscas.ac.cn&gt;
+
+diff --git a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
+index c18822ec849f..58cd546392e0 100644
+--- a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
++++ b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
+@@ -341,7 +341,7 @@ dmac: dma-controller@4330000 {
+ 					   1024 1024 1024 1024&gt;;
+ 			snps,priority = &lt;0 1 2 3 4 5 6 7&gt;;
+ 			snps,dma-masters = &lt;2&gt;;
+-			snps,data-width = &lt;4&gt;;
++			snps,data-width = &lt;2&gt;;
+ 			status = "disabled";
+ 		};
+ </pre>
+    <div class="pagination">
+        <span>[1]</span>
+    <div>
+</body>

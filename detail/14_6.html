@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Jimei University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Jimei University</h1>
+    <div class="pagination">
+        <a href='14_5.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><span>[6]</span><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_9.html'>9</a><a href='14_7.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 2bf5d445df2ec89689d15ea259a916260c936959
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Mon Jul 1 22:30:27 2024 +0800
+
+    arm64: dts: rockchip: disable display subsystem for Lunzn Fastrhino R6xS
+    
+    The R66S and R68S boards do not have HDMI output, so disable
+    the display subsystem.
+    
+    Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240701143028.1203997-3-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+index e08c9eab6f17..25c49bdbadbc 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+@@ -115,6 +115,10 @@ &amp;cpu3 {
+ 	cpu-supply = &lt;&amp;vdd_cpu&gt;;
+ };
+ 
++&amp;display_subsystem {
++	status = "disabled";
++};
++
+ &amp;gpu {
+ 	mali-supply = &lt;&amp;vdd_gpu&gt;;
+ 	status = "okay";</pre><hr><pre>commit cd77139a307fbabe75e6b5cb8a3753e3c700f394
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sun Jun 30 23:00:05 2024 +0800
+
+    arm64: dts: rockchip: remove unused usb2 nodes for Lunzn Fastrhino R6xS
+    
+    Fix the following error when booting:
+    [   15.851853] platform fd800000.usb: deferred probe pending
+    [   15.852384] platform fd840000.usb: deferred probe pending
+    [   15.852881] platform fd880000.usb: deferred probe pending
+    
+    This is due to usb2phy1 is not enabled. There is no USB 2.0
+    port on the board, just remove it.
+    
+    Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240630150010.55729-5-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+index 82577eba31eb..e08c9eab6f17 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+@@ -421,28 +421,12 @@ &amp;uart2 {
+ 	status = "okay";
+ };
+ 
+-&amp;usb_host0_ehci {
+-	status = "okay";
+-};
+-
+-&amp;usb_host0_ohci {
+-	status = "okay";
+-};
+-
+ &amp;usb_host0_xhci {
+ 	dr_mode = "host";
+ 	extcon = &lt;&amp;usb2phy0&gt;;
+ 	status = "okay";
+ };
+ 
+-&amp;usb_host1_ehci {
+-	status = "okay";
+-};
+-
+-&amp;usb_host1_ohci {
+-	status = "okay";
+-};
+-
+ &amp;usb_host1_xhci {
+ 	status = "okay";
+ };</pre><hr><pre>commit cfeac8e5d05815521f5c5568680735a92ee91fe4
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sun Jun 30 23:00:04 2024 +0800
+
+    arm64: dts: rockchip: fix pmu_io supply for Lunzn Fastrhino R6xS
+    
+    Fixes pmu_io_domains supply according to the schematic. Among them,
+    the vccio3 is responsible for the io voltage of sdcard. There is no
+    sdcard slot on the R68S, and it's connected to vcc_3v3, so describe
+    the supply of vccio3 separately.
+    
+    Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
+    Fixes: b9f8ca655d80 ("arm64: dts: rockchip: Add Lunzn Fastrhino R68S")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240630150010.55729-4-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
+index 58ab7e9971db..b5e67990dd0f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
+@@ -11,6 +11,10 @@ aliases {
+ 	};
+ };
+ 
++&amp;pmu_io_domains {
++	vccio3-supply = &lt;&amp;vccio_sd&gt;;
++};
++
+ &amp;sdmmc0 {
+ 	bus-width = &lt;4&gt;;
+ 	cap-mmc-highspeed;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+index 8f587978fa3b..82577eba31eb 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+@@ -397,8 +397,8 @@ vcc5v0_usb_otg_en: vcc5v0-usb-otg-en {
+ &amp;pmu_io_domains {
+ 	pmuio1-supply = &lt;&amp;vcc3v3_pmu&gt;;
+ 	pmuio2-supply = &lt;&amp;vcc3v3_pmu&gt;;
+-	vccio1-supply = &lt;&amp;vccio_acodec&gt;;
+-	vccio3-supply = &lt;&amp;vccio_sd&gt;;
++	vccio1-supply = &lt;&amp;vcc_3v3&gt;;
++	vccio2-supply = &lt;&amp;vcc_1v8&gt;;
+ 	vccio4-supply = &lt;&amp;vcc_1v8&gt;;
+ 	vccio5-supply = &lt;&amp;vcc_3v3&gt;;
+ 	vccio6-supply = &lt;&amp;vcc_1v8&gt;;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
+index e1fe5e442689..a3339186e89c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
+@@ -102,6 +102,10 @@ eth_phy1_reset_pin: eth-phy1-reset-pin {
+ 	};
+ };
+ 
++&amp;pmu_io_domains {
++	vccio3-supply = &lt;&amp;vcc_3v3&gt;;
++};
++
+ &amp;sdhci {
+ 	bus-width = &lt;8&gt;;
+ 	max-frequency = &lt;200000000&gt;;</pre><hr><pre>commit 9e823ba92118510c0d1c050b67bb000f9b9a73d7
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Mon Jul 1 22:30:26 2024 +0800
+
+    arm64: dts: rockchip: fix usb regulator for Lunzn Fastrhino R6xS
+    
+    Remove the non-existent usb_host regulator and fix the supply according
+    to the schematic. Also remove the unnecessary always-on and boot-on for
+    the usb_otg regulator.
+    
+    Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240701143028.1203997-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+index 93987c8740f7..8f587978fa3b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+@@ -78,15 +78,6 @@ vcc5v0_sys: vcc5v0-sys-regulator {
+ 		vin-supply = &lt;&amp;vcc12v_dcin&gt;;
+ 	};
+ 
+-	vcc5v0_usb_host: vcc5v0-usb-host-regulator {
+-		compatible = "regulator-fixed";
+-		regulator-name = "vcc5v0_usb_host";
+-		regulator-always-on;
+-		regulator-boot-on;
+-		regulator-min-microvolt = &lt;5000000&gt;;
+-		regulator-max-microvolt = &lt;5000000&gt;;
+-	};
+-
+ 	vcc5v0_usb_otg: vcc5v0-usb-otg-regulator {
+ 		compatible = "regulator-fixed";
+ 		enable-active-high;
+@@ -94,8 +85,9 @@ vcc5v0_usb_otg: vcc5v0-usb-otg-regulator {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = &lt;&amp;vcc5v0_usb_otg_en&gt;;
+ 		regulator-name = "vcc5v0_usb_otg";
+-		regulator-always-on;
+-		regulator-boot-on;
++		regulator-min-microvolt = &lt;5000000&gt;;
++		regulator-max-microvolt = &lt;5000000&gt;;
++		vin-supply = &lt;&amp;vcc5v0_sys&gt;;
+ 	};
+ };
+ 
+@@ -460,7 +452,7 @@ &amp;usb2phy0 {
+ };
+ 
+ &amp;usb2phy0_host {
+-	phy-supply = &lt;&amp;vcc5v0_usb_host&gt;;
++	phy-supply = &lt;&amp;vcc5v0_sys&gt;;
+ 	status = "okay";
+ };
+ </pre><hr><pre>commit 2dad31528de9ea8b05245ce6ac4f76ebf8dae947
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sun Jun 30 23:00:02 2024 +0800
+
+    arm64: dts: rockchip: fix regulator name for Lunzn Fastrhino R6xS
+    
+    Make the regulator name the same as those marked by schematics.
+    
+    Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240630150010.55729-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+index 89e84e3a9262..93987c8740f7 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+@@ -39,9 +39,9 @@ status_led: led-status {
+ 		};
+ 	};
+ 
+-	dc_12v: dc-12v-regulator {
++	vcc12v_dcin: vcc12v-dcin-regulator {
+ 		compatible = "regulator-fixed";
+-		regulator-name = "dc_12v";
++		regulator-name = "vcc12v_dcin";
+ 		regulator-always-on;
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = &lt;12000000&gt;;
+@@ -65,7 +65,7 @@ vcc3v3_sys: vcc3v3-sys-regulator {
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = &lt;3300000&gt;;
+ 		regulator-max-microvolt = &lt;3300000&gt;;
+-		vin-supply = &lt;&amp;dc_12v&gt;;
++		vin-supply = &lt;&amp;vcc12v_dcin&gt;;
+ 	};
+ 
+ 	vcc5v0_sys: vcc5v0-sys-regulator {
+@@ -75,7 +75,7 @@ vcc5v0_sys: vcc5v0-sys-regulator {
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = &lt;5000000&gt;;
+ 		regulator-max-microvolt = &lt;5000000&gt;;
+-		vin-supply = &lt;&amp;dc_12v&gt;;
++		vin-supply = &lt;&amp;vcc12v_dcin&gt;;
+ 	};
+ 
+ 	vcc5v0_usb_host: vcc5v0-usb-host-regulator {</pre><hr><pre>commit 5db216f6e1f85394e79dca74ceceb83b2f8566b5
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Jun 20 23:01:22 2024 +0800
+
+    arm64: dts: qcom: ipq6018: add sdhci node
+    
+    Add node to support mmc controller inside of IPQ6018.
+    This controller supports both eMMC and SD cards.
+    
+    Tested with:
+      eMMC (HS200)
+      SD Card (SDR50/SDR104)
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240620150122.1406631-3-amadeus@jmu.edu.cn
+    Signed-off-by: Bjorn Andersson &lt;andersson@kernel.org&gt;
+
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+index 9694140881c6..b3b98f050cfd 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -457,6 +457,25 @@ dwc_1: usb@7000000 {
+ 			};
+ 		};
+ 
++		sdhc: mmc@7804000 {
++			compatible = "qcom,ipq6018-sdhci", "qcom,sdhci-msm-v5";
++			reg = &lt;0x0 0x07804000 0x0 0x1000&gt;,
++			      &lt;0x0 0x07805000 0x0 0x1000&gt;;
++			reg-names = "hc", "cqhci";
++
++			interrupts = &lt;GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH&gt;;
++			interrupt-names = "hc_irq", "pwr_irq";
++
++			clocks = &lt;&amp;gcc GCC_SDCC1_AHB_CLK&gt;,
++				 &lt;&amp;gcc GCC_SDCC1_APPS_CLK&gt;,
++				 &lt;&amp;xo&gt;;
++			clock-names = "iface", "core", "xo";
++			resets = &lt;&amp;gcc GCC_SDCC1_BCR&gt;;
++			max-frequency = &lt;192000000&gt;;
++			status = "disabled";
++		};
++
+ 		blsp_dma: dma-controller@7884000 {
+ 			compatible = "qcom,bam-v1.7.0";
+ 			reg = &lt;0x0 0x07884000 0x0 0x2b000&gt;;</pre><hr><pre>commit f2743ae3ff84579981ac513f512b9df945d109c0
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Thu Jun 20 23:01:21 2024 +0800
+
+    clk: qcom: gcc-ipq6018: update sdcc max clock frequency
+    
+    The mmc controller of the IPQ6018 does not support HS400 mode.
+    So adjust the maximum clock frequency of sdcc to 200 MHz (HS200).
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240620150122.1406631-2-amadeus@jmu.edu.cn
+    Signed-off-by: Bjorn Andersson &lt;andersson@kernel.org&gt;
+
+diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
+index 9e5885101366..2e411d874662 100644
+--- a/drivers/clk/qcom/gcc-ipq6018.c
++++ b/drivers/clk/qcom/gcc-ipq6018.c
+@@ -1617,7 +1617,7 @@ static const struct freq_tbl ftbl_sdcc_apps_clk_src[] = {
+ 	F(96000000, P_GPLL2, 12, 0, 0),
+ 	F(177777778, P_GPLL0, 4.5, 0, 0),
+ 	F(192000000, P_GPLL2, 6, 0, 0),
+-	F(384000000, P_GPLL2, 3, 0, 0),
++	F(200000000, P_GPLL0, 4, 0, 0),
+ 	{ }
+ };
+ </pre><hr><pre>commit 6c7676a2d3cde81f02e2cb7ac40ca5a99c107dec
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue Apr 9 20:00:03 2024 +0800
+
+    arm64: dts: rockchip: enable onboard spi flash for rock-3a
+    
+    There is a mx25u12835f spi flash on this board, enable it.
+    
+    [    2.525805] spi-nor spi4.0: mx25u12835f (16384 Kbytes)
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240409120003.309358-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts b/arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts
+index ccc4119ca43a..ebdedea15ad1 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts
+@@ -757,6 +757,20 @@ &amp;sdmmc2 {
+ 	status = "okay";
+ };
+ 
++&amp;sfc {
++	#address-cells = &lt;1&gt;;
++	#size-cells = &lt;0&gt;;
++	status = "okay";
++
++	flash@0 {
++		compatible = "jedec,spi-nor";
++		reg = &lt;0x0&gt;;
++		spi-max-frequency = &lt;104000000&gt;;
++		spi-rx-bus-width = &lt;4&gt;;
++		spi-tx-bus-width = &lt;1&gt;;
++	};
++};
++
+ &amp;tsadc {
+ 	rockchip,hw-tshut-mode = &lt;1&gt;;
+ 	rockchip,hw-tshut-polarity = &lt;0&gt;;</pre><hr><pre>commit ee219017ddb50be14c60d3cbe3e51ac0b2008d40
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sun Apr 28 20:36:18 2024 +0800
+
+    arm64: dts: rockchip: Add Radxa ROCK 3C
+    
+    The Radxa ROCK 3C is a development board with the
+    Rockchip RK3566 SoC. It has the following features:
+    
+    - 1/2/4GB LPDDR4
+    - 1x HDMI Type A
+    - 1x PCIE 2.0 slot
+    - 1x FAN connector
+    - 3.5mm jack with mic
+    - 1GbE RTL8211F Ethernet
+    - 1x USB 3.0, 3x USB 2.0
+    - 40-pin expansion header
+    - MicroSD card/eMMC socket
+    - 16MB SPI NOR (gd25lq128d)
+    - AP6256 or AIC8800 WiFi/BT
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240428123618.72170-3-amadeus@jmu.edu.cn
+    [dropped rk809-sound and not specified pmic sound properties]
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
+index 0624c72840b8..f42fa62b4064 100644
+--- a/arch/arm64/boot/dts/rockchip/Makefile
++++ b/arch/arm64/boot/dts/rockchip/Makefile
+@@ -91,6 +91,7 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-quartz64-a.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-quartz64-b.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-radxa-cm3-io.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-roc-pc.dtb
++dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-rock-3c.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-soquartz-blade.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-soquartz-cm4.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-soquartz-model-a.dtb
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
+new file mode 100644
+index 000000000000..b242409d378c
+--- /dev/null
++++ b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
+@@ -0,0 +1,726 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++/dts-v1/;
++#include &lt;dt-bindings/gpio/gpio.h&gt;
++#include &lt;dt-bindings/leds/common.h&gt;
++#include &lt;dt-bindings/pinctrl/rockchip.h&gt;
++#include &lt;dt-bindings/soc/rockchip,vop2.h&gt;
++#include "rk3566.dtsi"
++
++/ {
++	model = "Radxa ROCK 3C";
++	compatible = "radxa,rock-3c", "rockchip,rk3566";
++
++	aliases {
++		ethernet0 = &amp;gmac1;
++		mmc0 = &amp;sdhci;
++		mmc1 = &amp;sdmmc0;
++		mmc2 = &amp;sdmmc1;
++	};
++
++	chosen: chosen {
++		stdout-path = "serial2:1500000n8";
++	};
++
++	gmac1_clkin: external-gmac1-clock {
++		compatible = "fixed-clock";
++		clock-frequency = &lt;125000000&gt;;
++		clock-output-names = "gmac1_clkin";
++		#clock-cells = &lt;0&gt;;
++	};
++
++	hdmi-con {
++		compatible = "hdmi-connector";
++		type = "a";
++
++		port {
++			hdmi_con_in: endpoint {
++				remote-endpoint = &lt;&amp;hdmi_out_con&gt;;
++			};
++		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		led-0 {
++			gpios = &lt;&amp;gpio0 RK_PA0 GPIO_ACTIVE_HIGH&gt;;
++			function = LED_FUNCTION_HEARTBEAT;
++			color = &lt;LED_COLOR_ID_BLUE&gt;;
++			linux,default-trigger = "heartbeat";
++			pinctrl-names = "default";
++			pinctrl-0 = &lt;&amp;user_led2&gt;;
++		};
++	};
++
++	sdio_pwrseq: sdio-pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		clocks = &lt;&amp;rk809 1&gt;;
++		clock-names = "ext_clock";
++		pinctrl-names = "default";
++		pinctrl-0 = &lt;&amp;wifi_reg_on_h&gt;;
++		post-power-on-delay-ms = &lt;100&gt;;
++		power-off-delay-us = &lt;5000000&gt;;
++		reset-gpios = &lt;&amp;gpio0 RK_PC0 GPIO_ACTIVE_LOW&gt;;
++	};
++
++	vcc5v_dcin: vcc5v-dcin-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v_dcin";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = &lt;5000000&gt;;
++		regulator-max-microvolt = &lt;5000000&gt;;
++	};
++
++	vcc3v3_pcie: vcc3v3-pcie-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpios = &lt;&amp;gpio0 RK_PA6 GPIO_ACTIVE_HIGH&gt;;
++		pinctrl-names = "default";
++		pinctrl-0 = &lt;&amp;pcie_pwr_en&gt;;
++		regulator-name = "vcc3v3_pcie";
++		regulator-min-microvolt = &lt;3300000&gt;;
++		regulator-max-microvolt = &lt;3300000&gt;;
++		vin-supply = &lt;&amp;vcc3v3_sys&gt;;
++	};
++
++	vcc3v3_sys: vcc3v3-sys-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc3v3_sys";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = &lt;3300000&gt;;
++		regulator-max-microvolt = &lt;3300000&gt;;
++		vin-supply = &lt;&amp;vcc5v0_sys&gt;;
++	};
++
++	vcc5v0_sys: vcc5v0-sys-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v0_sys";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = &lt;5000000&gt;;
++		regulator-max-microvolt = &lt;5000000&gt;;
++		vin-supply = &lt;&amp;vcc5v_dcin&gt;;
++	};
++
++	vcc5v0_usb30_host: vcc5v0-usb30-host-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = &lt;&amp;gpio0 RK_PC5 GPIO_ACTIVE_HIGH&gt;;
++		pinctrl-names = "default";
++		pinctrl-0 = &lt;&amp;vcc5v0_usb30_host_en&gt;;
++		regulator-name = "vcc5v0_usb30_host";
++		regulator-min-microvolt = &lt;5000000&gt;;
++		regulator-max-microvolt = &lt;5000000&gt;;
++		vin-supply = &lt;&amp;vcc5v0_sys&gt;;
++	};
++
++	vcc5v0_usb_otg: vcc5v0-usb-otg-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = &lt;&amp;gpio0 RK_PC6 GPIO_ACTIVE_HIGH&gt;;
++		pinctrl-names = "default";
++		pinctrl-0 = &lt;&amp;vcc5v0_usb_otg_en&gt;;
++		regulator-name = "vcc5v0_usb_otg";
++		regulator-min-microvolt = &lt;5000000&gt;;
++		regulator-max-microvolt = &lt;5000000&gt;;
++		vin-supply = &lt;&amp;vcc5v0_sys&gt;;
++	};
++
++	vcc_cam: vcc-cam-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = &lt;&amp;gpio0 RK_PC4 GPIO_ACTIVE_HIGH&gt;;
++		pinctrl-names = "default";
++		pinctrl-0 = &lt;&amp;vcc_cam_en&gt;;
++		regulator-name = "vcc_cam";
++		regulator-min-microvolt = &lt;3300000&gt;;
++		regulator-max-microvolt = &lt;3300000&gt;;
++		vin-supply = &lt;&amp;vcc3v3_sys&gt;;
++
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++
++	vcc_mipi: vcc-mipi-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = &lt;&amp;gpio0 RK_PC7 GPIO_ACTIVE_HIGH&gt;;
++		pinctrl-names = "default";
++		pinctrl-0 = &lt;&amp;vcc_mipi_en&gt;;
++		regulator-name = "vcc_mipi";
++		regulator-min-microvolt = &lt;3300000&gt;;
++		regulator-max-microvolt = &lt;3300000&gt;;
++		vin-supply = &lt;&amp;vcc3v3_sys&gt;;
++
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++};
++
++&amp;combphy1 {
++	status = "okay";
++};
++
++&amp;combphy2 {
++	status = "okay";
++};
++
++&amp;cpu0 {
++	cpu-supply = &lt;&amp;vdd_cpu&gt;;
++};
++
++&amp;cpu1 {
++	cpu-supply = &lt;&amp;vdd_cpu&gt;;
++};
++
++&amp;cpu2 {
++	cpu-supply = &lt;&amp;vdd_cpu&gt;;
++};
++
++&amp;cpu3 {
++	cpu-supply = &lt;&amp;vdd_cpu&gt;;
++};
++
++&amp;gmac1 {
++	assigned-clocks = &lt;&amp;cru SCLK_GMAC1_RX_TX&gt;, &lt;&amp;cru SCLK_GMAC1&gt;;
++	assigned-clock-parents = &lt;&amp;cru SCLK_GMAC1_RGMII_SPEED&gt;, &lt;&amp;gmac1_clkin&gt;;
++	clock_in_out = "input";
++	phy-handle = &lt;&amp;rgmii_phy1&gt;;
++	phy-mode = "rgmii-id";
++	phy-supply = &lt;&amp;vcc_3v3&gt;;
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;gmac1m1_miim
++		     &amp;gmac1m1_tx_bus2
++		     &amp;gmac1m1_rx_bus2
++		     &amp;gmac1m1_rgmii_clk
++		     &amp;gmac1m1_rgmii_bus
++		     &amp;gmac1m1_clkinout&gt;;
++	status = "okay";
++};
++
++&amp;gpu {
++	mali-supply = &lt;&amp;vdd_gpu&gt;;
++	status = "okay";
++};
++
++&amp;hdmi {
++	avdd-0v9-supply = &lt;&amp;vdda0v9_image&gt;;
++	avdd-1v8-supply = &lt;&amp;vcca1v8_image&gt;;
++	status = "okay";
++};
++
++&amp;hdmi_in {
++	hdmi_in_vp0: endpoint {
++		remote-endpoint = &lt;&amp;vp0_out_hdmi&gt;;
++	};
++};
++
++&amp;hdmi_out {
++	hdmi_out_con: endpoint {
++		remote-endpoint = &lt;&amp;hdmi_con_in&gt;;
++	};
++};
++
++&amp;hdmi_sound {
++	status = "okay";
++};
++
++&amp;i2c0 {
++	status = "okay";
++
++	vdd_cpu: regulator@1c {
++		compatible = "tcs,tcs4525";
++		reg = &lt;0x1c&gt;;
++		fcs,suspend-voltage-selector = &lt;1&gt;;
++		regulator-name = "vdd_cpu";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = &lt;800000&gt;;
++		regulator-max-microvolt = &lt;1150000&gt;;
++		regulator-ramp-delay = &lt;2300&gt;;
++		vin-supply = &lt;&amp;vcc5v0_sys&gt;;
++
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++
++	rk809: pmic@20 {
++		compatible = "rockchip,rk809";
++		reg = &lt;0x20&gt;;
++		interrupt-parent = &lt;&amp;gpio0&gt;;
++		interrupts = &lt;RK_PA3 IRQ_TYPE_LEVEL_LOW&gt;;
++		clock-output-names = "rk808-clkout1", "rk808-clkout2";
++		pinctrl-names = "default";
++		pinctrl-0 = &lt;&amp;pmic_int_l&gt;, &lt;&amp;i2s1m0_mclk&gt;;
++		system-power-controller;
++		vcc1-supply = &lt;&amp;vcc3v3_sys&gt;;
++		vcc2-supply = &lt;&amp;vcc3v3_sys&gt;;
++		vcc3-supply = &lt;&amp;vcc3v3_sys&gt;;
++		vcc4-supply = &lt;&amp;vcc3v3_sys&gt;;
++		vcc5-supply = &lt;&amp;vcc3v3_sys&gt;;
++		vcc6-supply = &lt;&amp;vcc3v3_sys&gt;;
++		vcc7-supply = &lt;&amp;vcc3v3_sys&gt;;
++		vcc8-supply = &lt;&amp;vcc3v3_sys&gt;;
++		vcc9-supply = &lt;&amp;vcc3v3_sys&gt;;
++		wakeup-source;
++		#clock-cells = &lt;1&gt;;
++
++		regulators {
++			vdd_logic: DCDC_REG1 {
++				regulator-name = "vdd_logic";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-initial-mode = &lt;0x2&gt;;
++				regulator-min-microvolt = &lt;500000&gt;;
++				regulator-max-microvolt = &lt;1350000&gt;;
++				regulator-ramp-delay = &lt;6001&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++					regulator-suspend-microvolt = &lt;900000&gt;;
++				};
++			};
++
++			vdd_gpu: DCDC_REG2 {
++				regulator-name = "vdd_gpu";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-initial-mode = &lt;0x2&gt;;
++				regulator-min-microvolt = &lt;500000&gt;;
++				regulator-max-microvolt = &lt;1350000&gt;;
++				regulator-ramp-delay = &lt;6001&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++					regulator-suspend-microvolt = &lt;900000&gt;;
++				};
++			};
++
++			vcc_ddr: DCDC_REG3 {
++				regulator-name = "vcc_ddr";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-initial-mode = &lt;0x2&gt;;
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++				};
++			};
++
++			vdd_npu: DCDC_REG4 {
++				regulator-name = "vdd_npu";
++				regulator-initial-mode = &lt;0x2&gt;;
++				regulator-min-microvolt = &lt;500000&gt;;
++				regulator-max-microvolt = &lt;1350000&gt;;
++				regulator-ramp-delay = &lt;6001&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc_1v8: DCDC_REG5 {
++				regulator-name = "vcc_1v8";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = &lt;1800000&gt;;
++				regulator-max-microvolt = &lt;1800000&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdda0v9_image: LDO_REG1 {
++				regulator-name = "vdda0v9_image";
++				regulator-min-microvolt = &lt;900000&gt;;
++				regulator-max-microvolt = &lt;900000&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdda_0v9: LDO_REG2 {
++				regulator-name = "vdda_0v9";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = &lt;900000&gt;;
++				regulator-max-microvolt = &lt;900000&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdda0v9_pmu: LDO_REG3 {
++				regulator-name = "vdda0v9_pmu";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = &lt;900000&gt;;
++				regulator-max-microvolt = &lt;900000&gt;;
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = &lt;900000&gt;;
++				};
++			};
++
++			vccio_acodec: LDO_REG4 {
++				regulator-name = "vccio_acodec";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = &lt;3300000&gt;;
++				regulator-max-microvolt = &lt;3300000&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vccio_sd: LDO_REG5 {
++				regulator-name = "vccio_sd";
++				regulator-min-microvolt = &lt;1800000&gt;;
++				regulator-max-microvolt = &lt;3300000&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc3v3_pmu: LDO_REG6 {
++				regulator-name = "vcc3v3_pmu";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = &lt;3300000&gt;;
++				regulator-max-microvolt = &lt;3300000&gt;;
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = &lt;3300000&gt;;
++				};
++			};
++
++			vcca_1v8: LDO_REG7 {
++				regulator-name = "vcca_1v8";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = &lt;1800000&gt;;
++				regulator-max-microvolt = &lt;1800000&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcca1v8_pmu: LDO_REG8 {
++				regulator-name = "vcca1v8_pmu";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = &lt;1800000&gt;;
++				regulator-max-microvolt = &lt;1800000&gt;;
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = &lt;1800000&gt;;
++				};
++			};
++
++			vcca1v8_image: LDO_REG9 {
++				regulator-name = "vcca1v8_image";
++				regulator-min-microvolt = &lt;1800000&gt;;
++				regulator-max-microvolt = &lt;1800000&gt;;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc_3v3: SWITCH_REG1 {
++				regulator-name = "vcc_3v3";
++				regulator-always-on;
++				regulator-boot-on;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc3v3_sd: SWITCH_REG2 {
++				regulator-name = "vcc3v3_sd";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++		};
++	};
++
++	eeprom: eeprom@50 {
++		compatible = "belling,bl24c16a", "atmel,24c16";
++		reg = &lt;0x50&gt;;
++		pagesize = &lt;16&gt;;
++	};
++};
++
++&amp;i2s0_8ch {
++	status = "okay";
++};
++
++&amp;i2s1_8ch {
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;i2s1m0_sclktx &amp;i2s1m0_lrcktx &amp;i2s1m0_sdi0 &amp;i2s1m0_sdo0&gt;;
++	rockchip,trcm-sync-tx-only;
++	status = "okay";
++};
++
++&amp;mdio1 {
++	rgmii_phy1: ethernet-phy@1 {
++		compatible = "ethernet-phy-ieee802.3-c22";
++		reg = &lt;0x1&gt;;
++		reset-assert-us = &lt;20000&gt;;
++		reset-deassert-us = &lt;100000&gt;;
++		reset-gpios = &lt;&amp;gpio3 RK_PC0 GPIO_ACTIVE_LOW&gt;;
++	};
++};
++
++&amp;pcie2x1 {
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;pcie_reset_h&gt;;
++	reset-gpios = &lt;&amp;gpio1 RK_PB2 GPIO_ACTIVE_HIGH&gt;;
++	vpcie3v3-supply = &lt;&amp;vcc3v3_pcie&gt;;
++	status = "okay";
++};
++
++&amp;pinctrl {
++	bluetooth {
++		bt_reg_on_h: bt-reg-on-h {
++			rockchip,pins = &lt;0 RK_PC1 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++
++		bt_wake_host_h: bt-wake-host-h {
++			rockchip,pins = &lt;0 RK_PB3 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++
++		bt_host_wake_h: bt-host-wake-h {
++			rockchip,pins = &lt;0 RK_PB4 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++	};
++
++	cam {
++		vcc_cam_en: vcc_cam_en {
++			rockchip,pins = &lt;0 RK_PC4 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++	};
++
++	display {
++		vcc_mipi_en: vcc_mipi_en {
++			rockchip,pins = &lt;0 RK_PC7 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++	};
++
++	leds {
++		user_led2: user-led2 {
++			rockchip,pins = &lt;0 RK_PA0 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++	};
++
++	pcie {
++		pcie_pwr_en: pcie-pwr-en {
++			rockchip,pins = &lt;0 RK_PA6 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++
++		pcie_reset_h: pcie-reset-h {
++			rockchip,pins = &lt;1 RK_PB2 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++	};
++
++	pmic {
++		pmic_int_l: pmic-int-l {
++			rockchip,pins = &lt;0 RK_PA3 RK_FUNC_GPIO &amp;pcfg_pull_up&gt;;
++		};
++	};
++
++	usb {
++		vcc5v0_usb30_host_en: vcc5v0-usb30-host-en {
++			rockchip,pins = &lt;0 RK_PC5 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++
++		vcc5v0_usb_otg_en: vcc5v0-usb-otg-en {
++			rockchip,pins = &lt;0 RK_PC6 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++	};
++
++	wifi {
++		wifi_host_wake_h: wifi-host-wake-h {
++			rockchip,pins = &lt;0 RK_PB7 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++
++		wifi_reg_on_h: wifi-reg-on-h {
++			rockchip,pins = &lt;0 RK_PC0 RK_FUNC_GPIO &amp;pcfg_pull_none&gt;;
++		};
++	};
++};
++
++&amp;pmu_io_domains {
++	pmuio1-supply = &lt;&amp;vcc3v3_pmu&gt;;
++	pmuio2-supply = &lt;&amp;vcca1v8_pmu&gt;;
++	vccio1-supply = &lt;&amp;vccio_acodec&gt;;
++	vccio2-supply = &lt;&amp;vcc_1v8&gt;;
++	vccio3-supply = &lt;&amp;vccio_sd&gt;;
++	vccio4-supply = &lt;&amp;vcca1v8_pmu&gt;;
++	vccio5-supply = &lt;&amp;vcc_3v3&gt;;
++	vccio6-supply = &lt;&amp;vcc_3v3&gt;;
++	vccio7-supply = &lt;&amp;vcc_3v3&gt;;
++	status = "okay";
++};
++
++&amp;saradc {
++	vref-supply = &lt;&amp;vcca_1v8&gt;;
++	status = "okay";
++};
++
++&amp;sdhci {
++	bus-width = &lt;8&gt;;
++	max-frequency = &lt;200000000&gt;;
++	mmc-hs200-1_8v;
++	non-removable;
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;emmc_bus8 &amp;emmc_clk &amp;emmc_cmd &amp;emmc_datastrobe&gt;;
++	vmmc-supply = &lt;&amp;vcc_3v3&gt;;
++	vqmmc-supply = &lt;&amp;vcc_1v8&gt;;
++	status = "okay";
++};
++
++&amp;sdmmc0 {
++	bus-width = &lt;4&gt;;
++	cap-sd-highspeed;
++	disable-wp;
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;sdmmc0_bus4 &amp;sdmmc0_clk &amp;sdmmc0_cmd &amp;sdmmc0_det&gt;;
++	sd-uhs-sdr50;
++	vmmc-supply = &lt;&amp;vcc3v3_sys&gt;;
++	vqmmc-supply = &lt;&amp;vccio_sd&gt;;
++	status = "okay";
++};
++
++&amp;sdmmc1 {
++	bus-width = &lt;4&gt;;
++	cap-sd-highspeed;
++	cap-sdio-irq;
++	keep-power-in-suspend;
++	mmc-pwrseq = &lt;&amp;sdio_pwrseq&gt;;
++	non-removable;
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;sdmmc1_bus4 &amp;sdmmc1_clk &amp;sdmmc1_cmd&gt;;
++	sd-uhs-sdr104;
++	vmmc-supply = &lt;&amp;vcc3v3_sys&gt;;
++	vqmmc-supply = &lt;&amp;vcca1v8_pmu&gt;;
++	status = "okay";
++};
++
++&amp;sfc {
++	#address-cells = &lt;1&gt;;
++	#size-cells = &lt;0&gt;;
++	status = "okay";
++
++	flash@0 {
++		compatible = "jedec,spi-nor";
++		reg = &lt;0x0&gt;;
++		spi-max-frequency = &lt;120000000&gt;;
++		spi-rx-bus-width = &lt;4&gt;;
++		spi-tx-bus-width = &lt;1&gt;;
++	};
++};
++
++&amp;tsadc {
++	rockchip,hw-tshut-mode = &lt;1&gt;;
++	rockchip,hw-tshut-polarity = &lt;0&gt;;
++	status = "okay";
++};
++
++&amp;uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;uart1m0_ctsn &amp;uart1m0_rtsn &amp;uart1m0_xfer&gt;;
++	status = "okay";
++};
++
++&amp;uart2 {
++	status = "okay";
++};
++
++&amp;usb_host0_ehci {
++	status = "okay";
++};
++
++&amp;usb_host0_ohci {
++	status = "okay";
++};
++
++&amp;usb_host0_xhci {
++	dr_mode = "host";
++	status = "okay";
++};
++
++&amp;usb_host1_ehci {
++	status = "okay";
++};
++
++&amp;usb_host1_ohci {
++	status = "okay";
++};
++
++&amp;usb_host1_xhci {
++	status = "okay";
++};
++
++&amp;usb2phy0 {
++	status = "okay";
++};
++
++&amp;usb2phy0_host {
++	phy-supply = &lt;&amp;vcc5v0_usb30_host&gt;;
++	status = "okay";
++};
++
++&amp;usb2phy0_otg {
++	phy-supply = &lt;&amp;vcc5v0_usb_otg&gt;;
++	status = "okay";
++};
++
++&amp;usb2phy1 {
++	status = "okay";
++};
++
++&amp;usb2phy1_host {
++	phy-supply = &lt;&amp;vcc5v0_usb30_host&gt;;
++	status = "okay";
++};
++
++&amp;usb2phy1_otg {
++	phy-supply = &lt;&amp;vcc5v0_usb30_host&gt;;
++	status = "okay";
++};
++
++&amp;vop {
++	assigned-clocks = &lt;&amp;cru DCLK_VOP0&gt;, &lt;&amp;cru DCLK_VOP1&gt;;
++	assigned-clock-parents = &lt;&amp;pmucru PLL_HPLL&gt;, &lt;&amp;cru PLL_VPLL&gt;;
++	status = "okay";
++};
++
++&amp;vop_mmu {
++	status = "okay";
++};
++
++&amp;vp0 {
++	vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
++		reg = &lt;ROCKCHIP_VOP2_EP_HDMI0&gt;;
++		remote-endpoint = &lt;&amp;hdmi_in_vp0&gt;;
++	};
++};</pre><hr><pre>commit c0c153e341d2a82241bf0a0b78117ceeb29be3eb
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sun Apr 28 20:36:17 2024 +0800
+
+    dt-bindings: arm: rockchip: add Radxa ROCK 3C
+    
+    The Radxa ROCK 3C is a similar board to the
+    Radxa ROCK 3A with the Rockchip RK3566 SoC.
+    Add devicetree binding documentation for it.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Acked-by: Krzysztof Kozlowski &lt;krzk@kernel.org&gt;
+    Link: https://lore.kernel.org/r/20240428123618.72170-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/Documentation/devicetree/bindings/arm/rockchip.yaml b/Documentation/devicetree/bindings/arm/rockchip.yaml
+index 1bbbaf81134b..e04c213a0dee 100644
+--- a/Documentation/devicetree/bindings/arm/rockchip.yaml
++++ b/Documentation/devicetree/bindings/arm/rockchip.yaml
+@@ -799,6 +799,11 @@ properties:
+           - const: radxa,rock3a
+           - const: rockchip,rk3568
+ 
++      - description: Radxa ROCK 3C
++        items:
++          - const: radxa,rock-3c
++          - const: rockchip,rk3566
++
+       - description: Radxa ROCK 5A
+         items:
+           - const: radxa,rock-5a</pre>
+    <div class="pagination">
+        <a href='14_5.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><a href='14_3.html'>3</a><a href='14_4.html'>4</a><a href='14_5.html'>5</a><span>[6]</span><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_9.html'>9</a><a href='14_7.html'>Next&gt;&gt;</a>
+    <div>
+</body>

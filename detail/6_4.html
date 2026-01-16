@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Zhejiang University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Zhejiang University</h1>
+    <div class="pagination">
+        <a href='6_3.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><a href='6_2.html'>2</a><a href='6_3.html'>3</a><span>[4]</span><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_37.html'>37</a><a href='6_38.html'>38</a><a href='6_5.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 573601521277119f2e2ba5f28ae6e87fc594f4d4
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Sun Mar 24 22:04:44 2024 +0800
+
+    watchdog: cpu5wdt.c: Fix use-after-free bug caused by cpu5wdt_trigger
+    
+    When the cpu5wdt module is removing, the origin code uses del_timer() to
+    de-activate the timer. If the timer handler is running, del_timer() could
+    not stop it and will return directly. If the port region is released by
+    release_region() and then the timer handler cpu5wdt_trigger() calls outb()
+    to write into the region that is released, the use-after-free bug will
+    happen.
+    
+    Change del_timer() to timer_shutdown_sync() in order that the timer handler
+    could be finished before the port region is released.
+    
+    Fixes: e09d9c3e9f85 ("watchdog: cpu5wdt.c: add missing del_timer call")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Guenter Roeck &lt;linux@roeck-us.net&gt;
+    Link: https://lore.kernel.org/r/20240324140444.119584-1-duoming@zju.edu.cn
+    Signed-off-by: Guenter Roeck &lt;linux@roeck-us.net&gt;
+    Signed-off-by: Wim Van Sebroeck &lt;wim@linux-watchdog.org&gt;
+
+diff --git a/drivers/watchdog/cpu5wdt.c b/drivers/watchdog/cpu5wdt.c
+index 688b112e712b..9f279c0e13a6 100644
+--- a/drivers/watchdog/cpu5wdt.c
++++ b/drivers/watchdog/cpu5wdt.c
+@@ -252,7 +252,7 @@ static void cpu5wdt_exit(void)
+ 	if (cpu5wdt_device.queue) {
+ 		cpu5wdt_device.queue = 0;
+ 		wait_for_completion(&amp;cpu5wdt_device.stop);
+-		del_timer(&amp;cpu5wdt_device.timer);
++		timer_shutdown_sync(&amp;cpu5wdt_device.timer);
+ 	}
+ 
+ 	misc_deregister(&amp;cpu5wdt_misc);</pre><hr><pre>commit adf0398cee86643b8eacde95f17d073d022f782c
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Thu May 2 20:57:36 2024 +0800
+
+    Bluetooth: l2cap: fix null-ptr-deref in l2cap_chan_timeout
+    
+    There is a race condition between l2cap_chan_timeout() and
+    l2cap_chan_del(). When we use l2cap_chan_del() to delete the
+    channel, the chan-&gt;conn will be set to null. But the conn could
+    be dereferenced again in the mutex_lock() of l2cap_chan_timeout().
+    As a result the null pointer dereference bug will happen. The
+    KASAN report triggered by POC is shown below:
+    
+    [  472.074580] ==================================================================
+    [  472.075284] BUG: KASAN: null-ptr-deref in mutex_lock+0x68/0xc0
+    [  472.075308] Write of size 8 at addr 0000000000000158 by task kworker/0:0/7
+    [  472.075308]
+    [  472.075308] CPU: 0 PID: 7 Comm: kworker/0:0 Not tainted 6.9.0-rc5-00356-g78c0094a146b #36
+    [  472.075308] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu4
+    [  472.075308] Workqueue: events l2cap_chan_timeout
+    [  472.075308] Call Trace:
+    [  472.075308]  &lt;TASK&gt;
+    [  472.075308]  dump_stack_lvl+0x137/0x1a0
+    [  472.075308]  print_report+0x101/0x250
+    [  472.075308]  ? __virt_addr_valid+0x77/0x160
+    [  472.075308]  ? mutex_lock+0x68/0xc0
+    [  472.075308]  kasan_report+0x139/0x170
+    [  472.075308]  ? mutex_lock+0x68/0xc0
+    [  472.075308]  kasan_check_range+0x2c3/0x2e0
+    [  472.075308]  mutex_lock+0x68/0xc0
+    [  472.075308]  l2cap_chan_timeout+0x181/0x300
+    [  472.075308]  process_one_work+0x5d2/0xe00
+    [  472.075308]  worker_thread+0xe1d/0x1660
+    [  472.075308]  ? pr_cont_work+0x5e0/0x5e0
+    [  472.075308]  kthread+0x2b7/0x350
+    [  472.075308]  ? pr_cont_work+0x5e0/0x5e0
+    [  472.075308]  ? kthread_blkcg+0xd0/0xd0
+    [  472.075308]  ret_from_fork+0x4d/0x80
+    [  472.075308]  ? kthread_blkcg+0xd0/0xd0
+    [  472.075308]  ret_from_fork_asm+0x11/0x20
+    [  472.075308]  &lt;/TASK&gt;
+    [  472.075308] ==================================================================
+    [  472.094860] Disabling lock debugging due to kernel taint
+    [  472.096136] BUG: kernel NULL pointer dereference, address: 0000000000000158
+    [  472.096136] #PF: supervisor write access in kernel mode
+    [  472.096136] #PF: error_code(0x0002) - not-present page
+    [  472.096136] PGD 0 P4D 0
+    [  472.096136] Oops: 0002 [#1] PREEMPT SMP KASAN NOPTI
+    [  472.096136] CPU: 0 PID: 7 Comm: kworker/0:0 Tainted: G    B              6.9.0-rc5-00356-g78c0094a146b #36
+    [  472.096136] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu4
+    [  472.096136] Workqueue: events l2cap_chan_timeout
+    [  472.096136] RIP: 0010:mutex_lock+0x88/0xc0
+    [  472.096136] Code: be 08 00 00 00 e8 f8 23 1f fd 4c 89 f7 be 08 00 00 00 e8 eb 23 1f fd 42 80 3c 23 00 74 08 48 88
+    [  472.096136] RSP: 0018:ffff88800744fc78 EFLAGS: 00000246
+    [  472.096136] RAX: 0000000000000000 RBX: 1ffff11000e89f8f RCX: ffffffff8457c865
+    [  472.096136] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffff88800744fc78
+    [  472.096136] RBP: 0000000000000158 R08: ffff88800744fc7f R09: 1ffff11000e89f8f
+    [  472.096136] R10: dffffc0000000000 R11: ffffed1000e89f90 R12: dffffc0000000000
+    [  472.096136] R13: 0000000000000158 R14: ffff88800744fc78 R15: ffff888007405a00
+    [  472.096136] FS:  0000000000000000(0000) GS:ffff88806d200000(0000) knlGS:0000000000000000
+    [  472.096136] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [  472.096136] CR2: 0000000000000158 CR3: 000000000da32000 CR4: 00000000000006f0
+    [  472.096136] Call Trace:
+    [  472.096136]  &lt;TASK&gt;
+    [  472.096136]  ? __die_body+0x8d/0xe0
+    [  472.096136]  ? page_fault_oops+0x6b8/0x9a0
+    [  472.096136]  ? kernelmode_fixup_or_oops+0x20c/0x2a0
+    [  472.096136]  ? do_user_addr_fault+0x1027/0x1340
+    [  472.096136]  ? _printk+0x7a/0xa0
+    [  472.096136]  ? mutex_lock+0x68/0xc0
+    [  472.096136]  ? add_taint+0x42/0xd0
+    [  472.096136]  ? exc_page_fault+0x6a/0x1b0
+    [  472.096136]  ? asm_exc_page_fault+0x26/0x30
+    [  472.096136]  ? mutex_lock+0x75/0xc0
+    [  472.096136]  ? mutex_lock+0x88/0xc0
+    [  472.096136]  ? mutex_lock+0x75/0xc0
+    [  472.096136]  l2cap_chan_timeout+0x181/0x300
+    [  472.096136]  process_one_work+0x5d2/0xe00
+    [  472.096136]  worker_thread+0xe1d/0x1660
+    [  472.096136]  ? pr_cont_work+0x5e0/0x5e0
+    [  472.096136]  kthread+0x2b7/0x350
+    [  472.096136]  ? pr_cont_work+0x5e0/0x5e0
+    [  472.096136]  ? kthread_blkcg+0xd0/0xd0
+    [  472.096136]  ret_from_fork+0x4d/0x80
+    [  472.096136]  ? kthread_blkcg+0xd0/0xd0
+    [  472.096136]  ret_from_fork_asm+0x11/0x20
+    [  472.096136]  &lt;/TASK&gt;
+    [  472.096136] Modules linked in:
+    [  472.096136] CR2: 0000000000000158
+    [  472.096136] ---[ end trace 0000000000000000 ]---
+    [  472.096136] RIP: 0010:mutex_lock+0x88/0xc0
+    [  472.096136] Code: be 08 00 00 00 e8 f8 23 1f fd 4c 89 f7 be 08 00 00 00 e8 eb 23 1f fd 42 80 3c 23 00 74 08 48 88
+    [  472.096136] RSP: 0018:ffff88800744fc78 EFLAGS: 00000246
+    [  472.096136] RAX: 0000000000000000 RBX: 1ffff11000e89f8f RCX: ffffffff8457c865
+    [  472.096136] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffff88800744fc78
+    [  472.096136] RBP: 0000000000000158 R08: ffff88800744fc7f R09: 1ffff11000e89f8f
+    [  472.132932] R10: dffffc0000000000 R11: ffffed1000e89f90 R12: dffffc0000000000
+    [  472.132932] R13: 0000000000000158 R14: ffff88800744fc78 R15: ffff888007405a00
+    [  472.132932] FS:  0000000000000000(0000) GS:ffff88806d200000(0000) knlGS:0000000000000000
+    [  472.132932] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [  472.132932] CR2: 0000000000000158 CR3: 000000000da32000 CR4: 00000000000006f0
+    [  472.132932] Kernel panic - not syncing: Fatal exception
+    [  472.132932] Kernel Offset: disabled
+    [  472.132932] ---[ end Kernel panic - not syncing: Fatal exception ]---
+    
+    Add a check to judge whether the conn is null in l2cap_chan_timeout()
+    in order to mitigate the bug.
+    
+    Fixes: 3df91ea20e74 ("Bluetooth: Revert to mutexes from RCU list")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Luiz Augusto von Dentz &lt;luiz.von.dentz@intel.com&gt;
+
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 868a370a16aa..9223b1a698e3 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -415,6 +415,9 @@ static void l2cap_chan_timeout(struct work_struct *work)
+ 
+ 	BT_DBG("chan %p state %s", chan, state_to_string(chan-&gt;state));
+ 
++	if (!conn)
++		return;
++
+ 	mutex_lock(&amp;conn-&gt;chan_lock);
+ 	/* __set_chan_timer() calls l2cap_chan_hold(chan) while scheduling
+ 	 * this work. No need to call l2cap_chan_hold(chan) here again.</pre><hr><pre>commit 483bc08181827fc475643272ffb69c533007e546
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Thu Apr 25 22:23:45 2024 +0800
+
+    Bluetooth: Fix use-after-free bugs caused by sco_sock_timeout
+    
+    When the sco connection is established and then, the sco socket
+    is releasing, timeout_work will be scheduled to judge whether
+    the sco disconnection is timeout. The sock will be deallocated
+    later, but it is dereferenced again in sco_sock_timeout. As a
+    result, the use-after-free bugs will happen. The root cause is
+    shown below:
+    
+        Cleanup Thread               |      Worker Thread
+    sco_sock_release                 |
+      sco_sock_close                 |
+        __sco_sock_close             |
+          sco_sock_set_timer         |
+            schedule_delayed_work    |
+      sco_sock_kill                  |    (wait a time)
+        sock_put(sk) //FREE          |  sco_sock_timeout
+                                     |    sock_hold(sk) //USE
+    
+    The KASAN report triggered by POC is shown below:
+    
+    [   95.890016] ==================================================================
+    [   95.890496] BUG: KASAN: slab-use-after-free in sco_sock_timeout+0x5e/0x1c0
+    [   95.890755] Write of size 4 at addr ffff88800c388080 by task kworker/0:0/7
+    ...
+    [   95.890755] Workqueue: events sco_sock_timeout
+    [   95.890755] Call Trace:
+    [   95.890755]  &lt;TASK&gt;
+    [   95.890755]  dump_stack_lvl+0x45/0x110
+    [   95.890755]  print_address_description+0x78/0x390
+    [   95.890755]  print_report+0x11b/0x250
+    [   95.890755]  ? __virt_addr_valid+0xbe/0xf0
+    [   95.890755]  ? sco_sock_timeout+0x5e/0x1c0
+    [   95.890755]  kasan_report+0x139/0x170
+    [   95.890755]  ? update_load_avg+0xe5/0x9f0
+    [   95.890755]  ? sco_sock_timeout+0x5e/0x1c0
+    [   95.890755]  kasan_check_range+0x2c3/0x2e0
+    [   95.890755]  sco_sock_timeout+0x5e/0x1c0
+    [   95.890755]  process_one_work+0x561/0xc50
+    [   95.890755]  worker_thread+0xab2/0x13c0
+    [   95.890755]  ? pr_cont_work+0x490/0x490
+    [   95.890755]  kthread+0x279/0x300
+    [   95.890755]  ? pr_cont_work+0x490/0x490
+    [   95.890755]  ? kthread_blkcg+0xa0/0xa0
+    [   95.890755]  ret_from_fork+0x34/0x60
+    [   95.890755]  ? kthread_blkcg+0xa0/0xa0
+    [   95.890755]  ret_from_fork_asm+0x11/0x20
+    [   95.890755]  &lt;/TASK&gt;
+    [   95.890755]
+    [   95.890755] Allocated by task 506:
+    [   95.890755]  kasan_save_track+0x3f/0x70
+    [   95.890755]  __kasan_kmalloc+0x86/0x90
+    [   95.890755]  __kmalloc+0x17f/0x360
+    [   95.890755]  sk_prot_alloc+0xe1/0x1a0
+    [   95.890755]  sk_alloc+0x31/0x4e0
+    [   95.890755]  bt_sock_alloc+0x2b/0x2a0
+    [   95.890755]  sco_sock_create+0xad/0x320
+    [   95.890755]  bt_sock_create+0x145/0x320
+    [   95.890755]  __sock_create+0x2e1/0x650
+    [   95.890755]  __sys_socket+0xd0/0x280
+    [   95.890755]  __x64_sys_socket+0x75/0x80
+    [   95.890755]  do_syscall_64+0xc4/0x1b0
+    [   95.890755]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
+    [   95.890755]
+    [   95.890755] Freed by task 506:
+    [   95.890755]  kasan_save_track+0x3f/0x70
+    [   95.890755]  kasan_save_free_info+0x40/0x50
+    [   95.890755]  poison_slab_object+0x118/0x180
+    [   95.890755]  __kasan_slab_free+0x12/0x30
+    [   95.890755]  kfree+0xb2/0x240
+    [   95.890755]  __sk_destruct+0x317/0x410
+    [   95.890755]  sco_sock_release+0x232/0x280
+    [   95.890755]  sock_close+0xb2/0x210
+    [   95.890755]  __fput+0x37f/0x770
+    [   95.890755]  task_work_run+0x1ae/0x210
+    [   95.890755]  get_signal+0xe17/0xf70
+    [   95.890755]  arch_do_signal_or_restart+0x3f/0x520
+    [   95.890755]  syscall_exit_to_user_mode+0x55/0x120
+    [   95.890755]  do_syscall_64+0xd1/0x1b0
+    [   95.890755]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
+    [   95.890755]
+    [   95.890755] The buggy address belongs to the object at ffff88800c388000
+    [   95.890755]  which belongs to the cache kmalloc-1k of size 1024
+    [   95.890755] The buggy address is located 128 bytes inside of
+    [   95.890755]  freed 1024-byte region [ffff88800c388000, ffff88800c388400)
+    [   95.890755]
+    [   95.890755] The buggy address belongs to the physical page:
+    [   95.890755] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88800c38a800 pfn:0xc388
+    [   95.890755] head: order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+    [   95.890755] anon flags: 0x100000000000840(slab|head|node=0|zone=1)
+    [   95.890755] page_type: 0xffffffff()
+    [   95.890755] raw: 0100000000000840 ffff888006842dc0 0000000000000000 0000000000000001
+    [   95.890755] raw: ffff88800c38a800 000000000010000a 00000001ffffffff 0000000000000000
+    [   95.890755] head: 0100000000000840 ffff888006842dc0 0000000000000000 0000000000000001
+    [   95.890755] head: ffff88800c38a800 000000000010000a 00000001ffffffff 0000000000000000
+    [   95.890755] head: 0100000000000003 ffffea000030e201 ffffea000030e248 00000000ffffffff
+    [   95.890755] head: 0000000800000000 0000000000000000 00000000ffffffff 0000000000000000
+    [   95.890755] page dumped because: kasan: bad access detected
+    [   95.890755]
+    [   95.890755] Memory state around the buggy address:
+    [   95.890755]  ffff88800c387f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+    [   95.890755]  ffff88800c388000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+    [   95.890755] &gt;ffff88800c388080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+    [   95.890755]                    ^
+    [   95.890755]  ffff88800c388100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+    [   95.890755]  ffff88800c388180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+    [   95.890755] ==================================================================
+    
+    Fix this problem by adding a check protected by sco_conn_lock to judget
+    whether the conn-&gt;hcon is null. Because the conn-&gt;hcon will be set to null,
+    when the sock is releasing.
+    
+    Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Luiz Augusto von Dentz &lt;luiz.von.dentz@intel.com&gt;
+
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index 5d03c5440b06..e0ad30862ee4 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -83,6 +83,10 @@ static void sco_sock_timeout(struct work_struct *work)
+ 	struct sock *sk;
+ 
+ 	sco_conn_lock(conn);
++	if (!conn-&gt;hcon) {
++		sco_conn_unlock(conn);
++		return;
++	}
+ 	sk = conn-&gt;sk;
+ 	if (sk)
+ 		sock_hold(sk);</pre><hr><pre>commit e6f7d27df5d208b50cae817a91d128fb434bb12c
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Sun Mar 3 18:57:29 2024 +0800
+
+    PCI: of_property: Return error for int_map allocation failure
+    
+    Return -ENOMEM from of_pci_prop_intr_map() if kcalloc() fails to prevent a
+    NULL pointer dereference in this case.
+    
+    Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+    Link: https://lore.kernel.org/r/20240303105729.78624-1-duoming@zju.edu.cn
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    [bhelgaas: commit log]
+    Signed-off-by: Bjorn Helgaas &lt;bhelgaas@google.com&gt;
+
+diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
+index c2c7334152bc..03539e505372 100644
+--- a/drivers/pci/of_property.c
++++ b/drivers/pci/of_property.c
+@@ -238,6 +238,8 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
+ 		return 0;
+ 
+ 	int_map = kcalloc(map_sz, sizeof(u32), GFP_KERNEL);
++	if (!int_map)
++		return -ENOMEM;
+ 	mapp = int_map;
+ 
+ 	list_for_each_entry(child, &amp;pdev-&gt;subordinate-&gt;devices, bus_list) {</pre><hr><pre>commit c2af060d1c18beaec56351cf9c9bcbbc5af341a3
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Mar 12 08:59:05 2024 +0800
+
+    lib/test_hmm.c: handle src_pfns and dst_pfns allocation failure
+    
+    The kcalloc() in dmirror_device_evict_chunk() will return null if the
+    physical memory has run out.  As a result, if src_pfns or dst_pfns is
+    dereferenced, the null pointer dereference bug will happen.
+    
+    Moreover, the device is going away.  If the kcalloc() fails, the pages
+    mapping a chunk could not be evicted.  So add a __GFP_NOFAIL flag in
+    kcalloc().
+    
+    Finally, as there is no need to have physically contiguous memory, Switch
+    kcalloc() to kvcalloc() in order to avoid failing allocations.
+    
+    Link: https://lkml.kernel.org/r/20240312005905.9939-1-duoming@zju.edu.cn
+    Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Cc: Jérôme Glisse &lt;jglisse@redhat.com&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 717dcb830127..b823ba7cb6a1 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1226,8 +1226,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+ 	unsigned long *src_pfns;
+ 	unsigned long *dst_pfns;
+ 
+-	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
+-	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
+ 
+ 	migrate_device_range(src_pfns, start_pfn, npages);
+ 	for (i = 0; i &lt; npages; i++) {
+@@ -1250,8 +1250,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+ 	}
+ 	migrate_device_pages(src_pfns, dst_pfns, npages);
+ 	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ }
+ 
+ /* Removes free pages from the free list so they can't be re-allocated */</pre><hr><pre>commit 467324bcfe1a31ec65d0cf4aa59421d6b7a7d52b
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Apr 19 10:04:56 2024 +0800
+
+    ax25: Fix netdev refcount issue
+    
+    The dev_tracker is added to ax25_cb in ax25_bind(). When the
+    ax25 device is detaching, the dev_tracker of ax25_cb should be
+    deallocated in ax25_kill_by_device() instead of the dev_tracker
+    of ax25_dev. The log reported by ref_tracker is shown below:
+    
+    [   80.884935] ref_tracker: reference already released.
+    [   80.885150] ref_tracker: allocated in:
+    [   80.885349]  ax25_dev_device_up+0x105/0x540
+    [   80.885730]  ax25_device_event+0xa4/0x420
+    [   80.885730]  notifier_call_chain+0xc9/0x1e0
+    [   80.885730]  __dev_notify_flags+0x138/0x280
+    [   80.885730]  dev_change_flags+0xd7/0x180
+    [   80.885730]  dev_ifsioc+0x6a9/0xa30
+    [   80.885730]  dev_ioctl+0x4d8/0xd90
+    [   80.885730]  sock_do_ioctl+0x1c2/0x2d0
+    [   80.885730]  sock_ioctl+0x38b/0x4f0
+    [   80.885730]  __se_sys_ioctl+0xad/0xf0
+    [   80.885730]  do_syscall_64+0xc4/0x1b0
+    [   80.885730]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
+    [   80.885730] ref_tracker: freed in:
+    [   80.885730]  ax25_device_event+0x272/0x420
+    [   80.885730]  notifier_call_chain+0xc9/0x1e0
+    [   80.885730]  dev_close_many+0x272/0x370
+    [   80.885730]  unregister_netdevice_many_notify+0x3b5/0x1180
+    [   80.885730]  unregister_netdev+0xcf/0x120
+    [   80.885730]  sixpack_close+0x11f/0x1b0
+    [   80.885730]  tty_ldisc_kill+0xcb/0x190
+    [   80.885730]  tty_ldisc_hangup+0x338/0x3d0
+    [   80.885730]  __tty_hangup+0x504/0x740
+    [   80.885730]  tty_release+0x46e/0xd80
+    [   80.885730]  __fput+0x37f/0x770
+    [   80.885730]  __x64_sys_close+0x7b/0xb0
+    [   80.885730]  do_syscall_64+0xc4/0x1b0
+    [   80.885730]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
+    [   80.893739] ------------[ cut here ]------------
+    [   80.894030] WARNING: CPU: 2 PID: 140 at lib/ref_tracker.c:255 ref_tracker_free+0x47b/0x6b0
+    [   80.894297] Modules linked in:
+    [   80.894929] CPU: 2 PID: 140 Comm: ax25_conn_rel_6 Not tainted 6.9.0-rc4-g8cd26fd90c1a #11
+    [   80.895190] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qem4
+    [   80.895514] RIP: 0010:ref_tracker_free+0x47b/0x6b0
+    [   80.895808] Code: 83 c5 18 4c 89 eb 48 c1 eb 03 8a 04 13 84 c0 0f 85 df 01 00 00 41 83 7d 00 00 75 4b 4c 89 ff 9
+    [   80.896171] RSP: 0018:ffff888009edf8c0 EFLAGS: 00000286
+    [   80.896339] RAX: 1ffff1100141ac00 RBX: 1ffff1100149463b RCX: dffffc0000000000
+    [   80.896502] RDX: 0000000000000001 RSI: 0000000000000246 RDI: ffff88800a0d6518
+    [   80.896925] RBP: ffff888009edf9b0 R08: ffff88806d3288d3 R09: 1ffff1100da6511a
+    [   80.897212] R10: dffffc0000000000 R11: ffffed100da6511b R12: ffff88800a4a31d4
+    [   80.897859] R13: ffff88800a4a31d8 R14: dffffc0000000000 R15: ffff88800a0d6518
+    [   80.898279] FS:  00007fd88b7fe700(0000) GS:ffff88806d300000(0000) knlGS:0000000000000000
+    [   80.899436] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [   80.900181] CR2: 00007fd88c001d48 CR3: 000000000993e000 CR4: 00000000000006f0
+    ...
+    [   80.935774] ref_tracker: sp%d@000000000bb9df3d has 1/1 users at
+    [   80.935774]      ax25_bind+0x424/0x4e0
+    [   80.935774]      __sys_bind+0x1d9/0x270
+    [   80.935774]      __x64_sys_bind+0x75/0x80
+    [   80.935774]      do_syscall_64+0xc4/0x1b0
+    [   80.935774]      entry_SYSCALL_64_after_hwframe+0x67/0x6f
+    
+    Change ax25_dev-&gt;dev_tracker to the dev_tracker of ax25_cb
+    in order to mitigate the bug.
+    
+    Fixes: feef318c855a ("ax25: fix UAF bugs of net_device caused by rebinding operation")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240419020456.29826-1-duoming@zju.edu.cn
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
+index 558e158c98d0..9169efb2f43a 100644
+--- a/net/ax25/af_ax25.c
++++ b/net/ax25/af_ax25.c
+@@ -103,7 +103,7 @@ static void ax25_kill_by_device(struct net_device *dev)
+ 			s-&gt;ax25_dev = NULL;
+ 			if (sk-&gt;sk_socket) {
+ 				netdev_put(ax25_dev-&gt;dev,
+-					   &amp;ax25_dev-&gt;dev_tracker);
++					   &amp;s-&gt;dev_tracker);
+ 				ax25_dev_put(ax25_dev);
+ 			}
+ 			ax25_cb_del(s);</pre><hr><pre>commit 31a5990ed253a66712d7ddc29c92d297a991fdf2
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Mar 6 17:12:59 2024 +0800
+
+    um: Fix return value in ubd_init()
+    
+    When kmalloc_array() fails to allocate memory, the ubd_init()
+    should return -ENOMEM instead of -1. So, fix it.
+    
+    Fixes: f88f0bdfc32f ("um: UBD Improvements")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Johannes Berg &lt;johannes@sipsolutions.net&gt;
+    Signed-off-by: Richard Weinberger &lt;richard@nod.at&gt;
+
+diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
+index 63fc062add70..ef805eaa9e01 100644
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -1092,7 +1092,7 @@ static int __init ubd_init(void)
+ 
+ 	if (irq_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
+ 				      sizeof(struct io_thread_req *),
+@@ -1103,7 +1103,7 @@ static int __init ubd_init(void)
+ 
+ 	if (io_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	platform_driver_register(&amp;ubd_driver);
+ 	mutex_lock(&amp;ubd_lock);</pre><hr><pre>commit a799de0e598583c18c03ce438648783b92c653de
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Wed Apr 10 11:48:46 2024 +0800
+
+    net: nfc: remove inappropriate attrs check
+    
+    Revert "NFC: fix attrs checks in netlink interface"
+    This reverts commit 18917d51472fe3b126a3a8f756c6b18085eb8130.
+    
+    Our checks found weird attrs present check in function
+    nfc_genl_dep_link_down() and nfc_genl_llc_get_params(), which are
+    introduced by commit 18917d51472f ("NFC: fix attrs checks in netlink
+    interface").
+    
+    According to its message, it should add checks for functions
+    nfc_genl_deactivate_target() and nfc_genl_fw_download(). However, it
+    didn't do that. In fact, the expected checks are added by
+    (1) commit 385097a36757 ("nfc: Ensure presence of required attributes in
+    the deactivate_target handler") and
+    (2) commit 280e3ebdafb8 ("nfc: Ensure presence of NFC_ATTR_FIRMWARE_NAME
+    attribute in nfc_genl_fw_download()"). Perhaps something went wrong.
+    
+    Anyway, the attr NFC_ATTR_TARGET_INDEX is never accessed in callback
+    nfc_genl_dep_link_down() and same for NFC_ATTR_FIRMWARE_NAME and
+    nfc_genl_llc_get_params(). Thus, remove those checks.
+    
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240410034846.167421-1-linma@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/nfc/netlink.c b/net/nfc/netlink.c
+index aa1dbf654c3e..dd2ce73a24fb 100644
+--- a/net/nfc/netlink.c
++++ b/net/nfc/netlink.c
+@@ -969,8 +969,7 @@ static int nfc_genl_dep_link_down(struct sk_buff *skb, struct genl_info *info)
+ 	int rc;
+ 	u32 idx;
+ 
+-	if (!info-&gt;attrs[NFC_ATTR_DEVICE_INDEX] ||
+-	    !info-&gt;attrs[NFC_ATTR_TARGET_INDEX])
++	if (!info-&gt;attrs[NFC_ATTR_DEVICE_INDEX])
+ 		return -EINVAL;
+ 
+ 	idx = nla_get_u32(info-&gt;attrs[NFC_ATTR_DEVICE_INDEX]);
+@@ -1018,8 +1017,7 @@ static int nfc_genl_llc_get_params(struct sk_buff *skb, struct genl_info *info)
+ 	struct sk_buff *msg = NULL;
+ 	u32 idx;
+ 
+-	if (!info-&gt;attrs[NFC_ATTR_DEVICE_INDEX] ||
+-	    !info-&gt;attrs[NFC_ATTR_FIRMWARE_NAME])
++	if (!info-&gt;attrs[NFC_ATTR_DEVICE_INDEX])
+ 		return -EINVAL;
+ 
+ 	idx = nla_get_u32(info-&gt;attrs[NFC_ATTR_DEVICE_INDEX]);</pre><hr><pre>commit 3b621e9e9e148c0928ab109ac3d4b81487469acb
+Author: Zhipeng Lu &lt;alexious@zju.edu.cn&gt;
+Date:   Thu Jan 18 16:13:00 2024 +0100
+
+    media: atomisp: ssh_css: Fix a null-pointer dereference in load_video_binaries
+    
+    The allocation failure of mycs-&gt;yuv_scaler_binary in load_video_binaries()
+    is followed with a dereference of mycs-&gt;yuv_scaler_binary after the
+    following call chain:
+    
+    sh_css_pipe_load_binaries()
+      |-&gt; load_video_binaries(mycs-&gt;yuv_scaler_binary == NULL)
+      |
+      |-&gt; sh_css_pipe_unload_binaries()
+            |-&gt; unload_video_binaries()
+    
+    In unload_video_binaries(), it calls to ia_css_binary_unload with argument
+    &amp;pipe-&gt;pipe_settings.video.yuv_scaler_binary[i], which refers to the
+    same memory slot as mycs-&gt;yuv_scaler_binary. Thus, a null-pointer
+    dereference is triggered.
+    
+    Link: https://lore.kernel.org/r/20240118151303.3828292-1-alexious@zju.edu.cn
+    
+    Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
+    Signed-off-by: Zhipeng Lu &lt;alexious@zju.edu.cn&gt;
+    Reviewed-by: Andy Shevchenko &lt;andy.shevchenko@gmail.com&gt;
+    Signed-off-by: Hans de Goede &lt;hdegoede@redhat.com&gt;
+    Signed-off-by: Mauro Carvalho Chehab &lt;mchehab@kernel.org&gt;
+
+diff --git a/drivers/staging/media/atomisp/pci/sh_css.c b/drivers/staging/media/atomisp/pci/sh_css.c
+index 938a4ea89c59..8c30191b21a7 100644
+--- a/drivers/staging/media/atomisp/pci/sh_css.c
++++ b/drivers/staging/media/atomisp/pci/sh_css.c
+@@ -4690,6 +4690,7 @@ static int load_video_binaries(struct ia_css_pipe *pipe)
+ 						  sizeof(struct ia_css_binary),
+ 						  GFP_KERNEL);
+ 		if (!mycs-&gt;yuv_scaler_binary) {
++			mycs-&gt;num_yuv_scaler = 0;
+ 			err = -ENOMEM;
+ 			return err;
+ 		}</pre><hr><pre>commit fd819ad3ecf6f3c232a06b27423ce9ed8c20da89
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Mar 29 09:50:23 2024 +0800
+
+    ax25: fix use-after-free bugs caused by ax25_ds_del_timer
+    
+    When the ax25 device is detaching, the ax25_dev_device_down()
+    calls ax25_ds_del_timer() to cleanup the slave_timer. When
+    the timer handler is running, the ax25_ds_del_timer() that
+    calls del_timer() in it will return directly. As a result,
+    the use-after-free bugs could happen, one of the scenarios
+    is shown below:
+    
+          (Thread 1)          |      (Thread 2)
+                              | ax25_ds_timeout()
+    ax25_dev_device_down()    |
+      ax25_ds_del_timer()     |
+        del_timer()           |
+      ax25_dev_put() //FREE   |
+                              |  ax25_dev-&gt; //USE
+    
+    In order to mitigate bugs, when the device is detaching, use
+    timer_shutdown_sync() to stop the timer.
+    
+    Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Simon Horman &lt;horms@kernel.org&gt;
+    Link: https://lore.kernel.org/r/20240329015023.9223-1-duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index c5462486dbca..282ec581c072 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -105,7 +105,7 @@ void ax25_dev_device_down(struct net_device *dev)
+ 	spin_lock_bh(&amp;ax25_dev_lock);
+ 
+ #ifdef CONFIG_AX25_DAMA_SLAVE
+-	ax25_ds_del_timer(ax25_dev);
++	timer_shutdown_sync(&amp;ax25_dev-&gt;dama.slave_timer);
+ #endif
+ 
+ 	/*</pre>
+    <div class="pagination">
+        <a href='6_3.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><a href='6_2.html'>2</a><a href='6_3.html'>3</a><span>[4]</span><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_37.html'>37</a><a href='6_38.html'>38</a><a href='6_5.html'>Next&gt;&gt;</a>
+    <div>
+</body>

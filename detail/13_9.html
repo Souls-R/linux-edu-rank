@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of Science and Technology of China</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of Science and Technology of China</h1>
+    <div class="pagination">
+        <a href='13_8.html'>&lt;&lt;Prev</a><a href='13.html'>1</a><a href='13_2.html'>2</a><a href='13_3.html'>3</a><a href='13_4.html'>4</a><a href='13_5.html'>5</a><a href='13_6.html'>6</a><a href='13_7.html'>7</a><a href='13_8.html'>8</a><span>[9]</span>
+    </div>
+    <hr>
+    <pre>commit fb8d14e172a29ba5ac69a73b61196be86fdfc3e1
+Author: Wu Fengguang &lt;wfg@mail.ustc.edu.cn&gt;
+Date:   Wed Mar 22 00:08:28 2006 -0800
+
+    [PATCH] mm: shrink_inactive_lis() nr_scan accounting fix
+    
+    In shrink_inactive_list(), nr_scan is not accounted when nr_taken is 0.
+    But 0 pages taken does not mean 0 pages scanned.
+    
+    Move the goto statement below the accounting code to fix it.
+    
+    Signed-off-by: Wu Fengguang &lt;wfg@mail.ustc.edu.cn&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@osdl.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@osdl.org&gt;
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 85e95f445022..486184d2b50c 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1132,9 +1132,6 @@ static unsigned long shrink_inactive_list(unsigned long max_scan,
+ 		zone-&gt;pages_scanned += nr_scan;
+ 		spin_unlock_irq(&amp;zone-&gt;lru_lock);
+ 
+-		if (nr_taken == 0)
+-			goto done;
+-
+ 		nr_scanned += nr_scan;
+ 		nr_freed = shrink_page_list(&amp;page_list, sc);
+ 		nr_reclaimed += nr_freed;
+@@ -1146,6 +1143,9 @@ static unsigned long shrink_inactive_list(unsigned long max_scan,
+ 			__mod_page_state_zone(zone, pgscan_direct, nr_scan);
+ 		__mod_page_state_zone(zone, pgsteal, nr_freed);
+ 
++		if (nr_taken == 0)
++			goto done;
++
+ 		spin_lock(&amp;zone-&gt;lru_lock);
+ 		/*
+ 		 * Put back any unfreeable pages.
+@@ -1166,8 +1166,9 @@ static unsigned long shrink_inactive_list(unsigned long max_scan,
+ 			}
+ 		}
+   	} while (nr_scanned &lt; max_scan);
+-	spin_unlock_irq(&amp;zone-&gt;lru_lock);
++	spin_unlock(&amp;zone-&gt;lru_lock);
+ done:
++	local_irq_enable();
+ 	pagevec_release(&amp;pvec);
+ 	return nr_reclaimed;
+ }</pre><hr><pre>commit c9b02d970c385a253edb36c87643b0df706b50b4
+Author: Wu Fengguang &lt;wfg@mail.ustc.edu.cn&gt;
+Date:   Wed Mar 22 00:08:23 2006 -0800
+
+    [PATCH] mm: isolate_lru_pages() scan count fix
+    
+    In isolate_lru_pages(), *scanned reports one more scan because the scan
+    counter is increased one more time on exit of the while-loop.
+    
+    Change the while-loop to for-loop to fix it.
+    
+    Signed-off-by: Nick Piggin &lt;npiggin@suse.de&gt;
+    Signed-off-by: Wu Fengguang &lt;wfg@mail.ustc.edu.cn&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@osdl.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@osdl.org&gt;
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index c712b946e4ff..85e95f445022 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1074,9 +1074,9 @@ static unsigned long isolate_lru_pages(unsigned long nr_to_scan,
+ {
+ 	unsigned long nr_taken = 0;
+ 	struct page *page;
+-	unsigned long scan = 0;
++	unsigned long scan;
+ 
+-	while (scan++ &lt; nr_to_scan &amp;&amp; !list_empty(src)) {
++	for (scan = 0; scan &lt; nr_to_scan &amp;&amp; !list_empty(src); scan++) {
+ 		struct list_head *target;
+ 		page = lru_to_page(src);
+ 		prefetchw_prev_lru_page(page, src, flags);</pre>
+    <div class="pagination">
+        <a href='13_8.html'>&lt;&lt;Prev</a><a href='13.html'>1</a><a href='13_2.html'>2</a><a href='13_3.html'>3</a><a href='13_4.html'>4</a><a href='13_5.html'>5</a><a href='13_6.html'>6</a><a href='13_7.html'>7</a><a href='13_8.html'>8</a><span>[9]</span>
+    <div>
+</body>

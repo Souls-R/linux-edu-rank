@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of Illinois Urbana-Champaign</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of Illinois Urbana-Champaign</h1>
+    <div class="pagination">
+        <a href='23_2.html'>&lt;&lt;Prev</a><a href='23.html'>1</a><a href='23_2.html'>2</a><span>[3]</span><a href='23_4.html'>4</a><a href='23_4.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit f9d480b6ffbeb336bf7f6ce44825c00f61b3abae
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Sun Oct 11 10:47:42 2020 -0500
+
+    seccomp/cache: Lookup syscall allowlist bitmap for fast path
+    
+    The overhead of running Seccomp filters has been part of some past
+    discussions [1][2][3]. Oftentimes, the filters have a large number
+    of instructions that check syscall numbers one by one and jump based
+    on that. Some users chain BPF filters which further enlarge the
+    overhead. A recent work [6] comprehensively measures the Seccomp
+    overhead and shows that the overhead is non-negligible and has a
+    non-trivial impact on application performance.
+    
+    We observed some common filters, such as docker's [4] or
+    systemd's [5], will make most decisions based only on the syscall
+    numbers, and as past discussions considered, a bitmap where each bit
+    represents a syscall makes most sense for these filters.
+    
+    The fast (common) path for seccomp should be that the filter permits
+    the syscall to pass through, and failing seccomp is expected to be
+    an exceptional case; it is not expected for userspace to call a
+    denylisted syscall over and over.
+    
+    When it can be concluded that an allow must occur for the given
+    architecture and syscall pair (this determination is introduced in
+    the next commit), seccomp will immediately allow the syscall,
+    bypassing further BPF execution.
+    
+    Each architecture number has its own bitmap. The architecture
+    number in seccomp_data is checked against the defined architecture
+    number constant before proceeding to test the bit against the
+    bitmap with the syscall number as the index of the bit in the
+    bitmap, and if the bit is set, seccomp returns allow. The bitmaps
+    are all clear in this patch and will be initialized in the next
+    commit.
+    
+    When only one architecture exists, the check against architecture
+    number is skipped, suggested by Kees Cook [7].
+    
+    [1] https://lore.kernel.org/linux-security-module/c22a6c3cefc2412cad00ae14c1371711@huawei.com/T/
+    [2] https://lore.kernel.org/lkml/202005181120.971232B7B@keescook/T/
+    [3] https://github.com/seccomp/libseccomp/issues/116
+    [4] https://github.com/moby/moby/blob/ae0ef82b90356ac613f329a8ef5ee42ca923417d/profiles/seccomp/default.json
+    [5] https://github.com/systemd/systemd/blob/6743a1caf4037f03dc51a1277855018e4ab61957/src/shared/seccomp-util.c#L270
+    [6] Draco: Architectural and Operating System Support for System Call Security
+        https://tianyin.github.io/pub/draco.pdf, MICRO-53, Oct. 2020
+    [7] https://lore.kernel.org/bpf/202010091614.8BB0EB64@keescook/
+    
+    Co-developed-by: Dimitrios Skarlatos &lt;dskarlat@cs.cmu.edu&gt;
+    Signed-off-by: Dimitrios Skarlatos &lt;dskarlat@cs.cmu.edu&gt;
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    Reviewed-by: Jann Horn &lt;jannh@google.com&gt;
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/10f91a367ec4fcdea7fc3f086de3f5f13a4a7436.1602431034.git.yifeifz2@illinois.edu
+
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 8ad7a293255a..fe35f4f38949 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -143,6 +143,34 @@ struct notification {
+ 	struct list_head notifications;
+ };
+ 
++#ifdef SECCOMP_ARCH_NATIVE
++/**
++ * struct action_cache - per-filter cache of seccomp actions per
++ * arch/syscall pair
++ *
++ * @allow_native: A bitmap where each bit represents whether the
++ *		  filter will always allow the syscall, for the
++ *		  native architecture.
++ * @allow_compat: A bitmap where each bit represents whether the
++ *		  filter will always allow the syscall, for the
++ *		  compat architecture.
++ */
++struct action_cache {
++	DECLARE_BITMAP(allow_native, SECCOMP_ARCH_NATIVE_NR);
++#ifdef SECCOMP_ARCH_COMPAT
++	DECLARE_BITMAP(allow_compat, SECCOMP_ARCH_COMPAT_NR);
++#endif
++};
++#else
++struct action_cache { };
++
++static inline bool seccomp_cache_check_allow(const struct seccomp_filter *sfilter,
++					     const struct seccomp_data *sd)
++{
++	return false;
++}
++#endif /* SECCOMP_ARCH_NATIVE */
++
+ /**
+  * struct seccomp_filter - container for seccomp BPF programs
+  *
+@@ -298,6 +326,52 @@ static int seccomp_check_filter(struct sock_filter *filter, unsigned int flen)
+ 	return 0;
+ }
+ 
++#ifdef SECCOMP_ARCH_NATIVE
++static inline bool seccomp_cache_check_allow_bitmap(const void *bitmap,
++						    size_t bitmap_size,
++						    int syscall_nr)
++{
++	if (unlikely(syscall_nr &lt; 0 || syscall_nr &gt;= bitmap_size))
++		return false;
++	syscall_nr = array_index_nospec(syscall_nr, bitmap_size);
++
++	return test_bit(syscall_nr, bitmap);
++}
++
++/**
++ * seccomp_cache_check_allow - lookup seccomp cache
++ * @sfilter: The seccomp filter
++ * @sd: The seccomp data to lookup the cache with
++ *
++ * Returns true if the seccomp_data is cached and allowed.
++ */
++static inline bool seccomp_cache_check_allow(const struct seccomp_filter *sfilter,
++					     const struct seccomp_data *sd)
++{
++	int syscall_nr = sd-&gt;nr;
++	const struct action_cache *cache = &amp;sfilter-&gt;cache;
++
++#ifndef SECCOMP_ARCH_COMPAT
++	/* A native-only architecture doesn't need to check sd-&gt;arch. */
++	return seccomp_cache_check_allow_bitmap(cache-&gt;allow_native,
++						SECCOMP_ARCH_NATIVE_NR,
++						syscall_nr);
++#else
++	if (likely(sd-&gt;arch == SECCOMP_ARCH_NATIVE))
++		return seccomp_cache_check_allow_bitmap(cache-&gt;allow_native,
++							SECCOMP_ARCH_NATIVE_NR,
++							syscall_nr);
++	if (likely(sd-&gt;arch == SECCOMP_ARCH_COMPAT))
++		return seccomp_cache_check_allow_bitmap(cache-&gt;allow_compat,
++							SECCOMP_ARCH_COMPAT_NR,
++							syscall_nr);
++#endif /* SECCOMP_ARCH_COMPAT */
++
++	WARN_ON_ONCE(true);
++	return false;
++}
++#endif /* SECCOMP_ARCH_NATIVE */
++
+ /**
+  * seccomp_run_filters - evaluates all seccomp filters against @sd
+  * @sd: optional seccomp data to be passed to filters
+@@ -320,6 +394,9 @@ static u32 seccomp_run_filters(const struct seccomp_data *sd,
+ 	if (WARN_ON(f == NULL))
+ 		return SECCOMP_RET_KILL_PROCESS;
+ 
++	if (seccomp_cache_check_allow(f, sd))
++		return SECCOMP_RET_ALLOW;
++
+ 	/*
+ 	 * All filters in the list are evaluated and the lowest BPF return
+ 	 * value always takes priority (ignoring the DATA).</pre><hr><pre>commit 282a181b1a0d66de1f0894d82f395fcd478f51d1
+Author: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+Date:   Thu Sep 24 07:44:16 2020 -0500
+
+    seccomp: Move config option SECCOMP to arch/Kconfig
+    
+    In order to make adding configurable features into seccomp easier,
+    it's better to have the options at one single location, considering
+    especially that the bulk of seccomp code is arch-independent. An quick
+    look also show that many SECCOMP descriptions are outdated; they talk
+    about /proc rather than prctl.
+    
+    As a result of moving the config option and keeping it default on,
+    architectures arm, arm64, csky, riscv, sh, and xtensa did not have SECCOMP
+    on by default prior to this and SECCOMP will be default in this change.
+    
+    Architectures microblaze, mips, powerpc, s390, sh, and sparc have an
+    outdated depend on PROC_FS and this dependency is removed in this change.
+    
+    Suggested-by: Jann Horn &lt;jannh@google.com&gt;
+    Link: https://lore.kernel.org/lkml/CAG48ez1YWz9cnp08UZgeieYRhHdqh-ch7aNwc4JRBnGyrmgfMg@mail.gmail.com/
+    Signed-off-by: YiFei Zhu &lt;yifeifz2@illinois.edu&gt;
+    [kees: added HAVE_ARCH_SECCOMP help text, tweaked wording]
+    Signed-off-by: Kees Cook &lt;keescook@chromium.org&gt;
+    Link: https://lore.kernel.org/r/9ede6ef35c847e58d61e476c6a39540520066613.1600951211.git.yifeifz2@illinois.edu
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index af14a567b493..21a3675a7a3a 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -444,10 +444,23 @@ config ARCH_WANT_OLD_COMPAT_IPC
+ 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION
+ 	bool
+ 
++config HAVE_ARCH_SECCOMP
++	bool
++	help
++	  An arch should select this symbol to support seccomp mode 1 (the fixed
++	  syscall policy), and must provide an overrides for __NR_seccomp_sigreturn,
++	  and compat syscalls if the asm-generic/seccomp.h defaults need adjustment:
++	  - __NR_seccomp_read_32
++	  - __NR_seccomp_write_32
++	  - __NR_seccomp_exit_32
++	  - __NR_seccomp_sigreturn_32
++
+ config HAVE_ARCH_SECCOMP_FILTER
+ 	bool
++	select HAVE_ARCH_SECCOMP
+ 	help
+ 	  An arch should select this symbol if it provides all of these things:
++	  - all the requirements for HAVE_ARCH_SECCOMP
+ 	  - syscall_get_arch()
+ 	  - syscall_get_arguments()
+ 	  - syscall_rollback()
+@@ -458,6 +471,23 @@ config HAVE_ARCH_SECCOMP_FILTER
+ 	    results in the system call being skipped immediately.
+ 	  - seccomp syscall wired up
+ 
++config SECCOMP
++	prompt "Enable seccomp to safely execute untrusted bytecode"
++	def_bool y
++	depends on HAVE_ARCH_SECCOMP
++	help
++	  This kernel feature is useful for number crunching applications
++	  that may need to handle untrusted bytecode during their
++	  execution. By using pipes or other transports made available
++	  to the process as file descriptors supporting the read/write
++	  syscalls, it's possible to isolate those applications in their
++	  own address space using seccomp. Once seccomp is enabled via
++	  prctl(PR_SET_SECCOMP) or the seccomp() syscall, it cannot be
++	  disabled and the task is only allowed to execute a few safe
++	  syscalls defined by each seccomp mode.
++
++	  If unsure, say Y.
++
+ config SECCOMP_FILTER
+ 	def_bool y
+ 	depends on HAVE_ARCH_SECCOMP_FILTER &amp;&amp; SECCOMP &amp;&amp; NET
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e00d94b16658..e26c19a16284 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -67,6 +67,7 @@ config ARM
+ 	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL &amp;&amp; !CPU_ENDIAN_BE32 &amp;&amp; MMU
+ 	select HAVE_ARCH_KGDB if !CPU_ENDIAN_BE32 &amp;&amp; MMU
+ 	select HAVE_ARCH_MMAP_RND_BITS if MMU
++	select HAVE_ARCH_SECCOMP
+ 	select HAVE_ARCH_SECCOMP_FILTER if AEABI &amp;&amp; !OABI_COMPAT
+ 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
+ 	select HAVE_ARCH_TRACEHOOK
+@@ -1617,20 +1618,6 @@ config UACCESS_WITH_MEMCPY
+ 	  However, if the CPU data cache is using a write-allocate mode,
+ 	  this option is unlikely to provide any performance gain.
+ 
+-config SECCOMP
+-	bool
+-	prompt "Enable seccomp to safely compute untrusted bytecode"
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl(PR_SET_SECCOMP), it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+ config PARAVIRT
+ 	bool "Enable paravirtualization code"
+ 	help
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 6d232837cbee..98c4e34cbec1 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1033,19 +1033,6 @@ config ARCH_ENABLE_SPLIT_PMD_PTLOCK
+ config CC_HAVE_SHADOW_CALL_STACK
+ 	def_bool $(cc-option, -fsanitize=shadow-call-stack -ffixed-x18)
+ 
+-config SECCOMP
+-	bool "Enable seccomp to safely compute untrusted bytecode"
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl(PR_SET_SECCOMP), it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+ config PARAVIRT
+ 	bool "Enable paravirtualization code"
+ 	help
+diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+index 3d5afb5f5685..7f424c85772c 100644
+--- a/arch/csky/Kconfig
++++ b/arch/csky/Kconfig
+@@ -309,16 +309,3 @@ endmenu
+ source "arch/csky/Kconfig.platforms"
+ 
+ source "kernel/Kconfig.hz"
+-
+-config SECCOMP
+-	bool "Enable seccomp to safely compute untrusted bytecode"
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl(PR_SET_SECCOMP), it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
+index d262ac0c8714..37bd6a5f38fb 100644
+--- a/arch/microblaze/Kconfig
++++ b/arch/microblaze/Kconfig
+@@ -26,6 +26,7 @@ config MICROBLAZE
+ 	select GENERIC_SCHED_CLOCK
+ 	select HAVE_ARCH_HASH
+ 	select HAVE_ARCH_KGDB
++	select HAVE_ARCH_SECCOMP
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+@@ -120,23 +121,6 @@ config CMDLINE_FORCE
+ 	  Set this to have arguments from the default kernel command string
+ 	  override those passed by the boot loader.
+ 
+-config SECCOMP
+-	bool "Enable seccomp to safely compute untrusted bytecode"
+-	depends on PROC_FS
+-	default y
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via /proc/&lt;pid&gt;/seccomp, it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+-	  If unsure, say Y. Only embedded should say N here.
+-
+ endmenu
+ 
+ menu "Kernel features"
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c95fa3a2484c..5f88a8fc11fc 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -3004,23 +3004,6 @@ config PHYSICAL_START
+ 	  specified in the "crashkernel=YM@XM" command line boot parameter
+ 	  passed to the panic-ed kernel).
+ 
+-config SECCOMP
+-	bool "Enable seccomp to safely compute untrusted bytecode"
+-	depends on PROC_FS
+-	default y
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via /proc/&lt;pid&gt;/seccomp, it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+-	  If unsure, say Y. Only embedded should say N here.
+-
+ config MIPS_O32_FP64_SUPPORT
+ 	bool "Support for O32 binaries using 64-bit FP" if !CPU_MIPSR6
+ 	depends on 32BIT || MIPS32_O32
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 3b0f53dd70bc..cd4afe1e7a6c 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -378,19 +378,3 @@ endmenu
+ 
+ 
+ source "drivers/parisc/Kconfig"
+-
+-config SECCOMP
+-	def_bool y
+-	prompt "Enable seccomp to safely compute untrusted bytecode"
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl(PR_SET_SECCOMP), it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+-	  If unsure, say Y. Only embedded should say N here.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 1f48bbfb3ce9..136fe860caef 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -934,23 +934,6 @@ config ARCH_WANTS_FREEZER_CONTROL
+ 
+ source "kernel/power/Kconfig"
+ 
+-config SECCOMP
+-	bool "Enable seccomp to safely compute untrusted bytecode"
+-	depends on PROC_FS
+-	default y
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via /proc/&lt;pid&gt;/seccomp, it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+-	  If unsure, say Y. Only embedded should say N here.
+-
+ config PPC_MEM_KEYS
+ 	prompt "PowerPC Memory Protection Keys"
+ 	def_bool y
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index df18372861d8..c456b558fab9 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -333,19 +333,6 @@ menu "Kernel features"
+ 
+ source "kernel/Kconfig.hz"
+ 
+-config SECCOMP
+-	bool "Enable seccomp to safely compute untrusted bytecode"
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl(PR_SET_SECCOMP), it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+ config RISCV_SBI_V01
+ 	bool "SBI v0.1 support"
+ 	default y
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 3d86e12e8e3c..7f7b40ec699e 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -791,23 +791,6 @@ config CRASH_DUMP
+ 
+ endmenu
+ 
+-config SECCOMP
+-	def_bool y
+-	prompt "Enable seccomp to safely compute untrusted bytecode"
+-	depends on PROC_FS
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via /proc/&lt;pid&gt;/seccomp, it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+-	  If unsure, say Y.
+-
+ config CCW
+ 	def_bool y
+ 
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index d20927128fce..18278152c91c 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -600,22 +600,6 @@ config PHYSICAL_START
+ 	  where the fail safe kernel needs to run at a different address
+ 	  than the panic-ed kernel.
+ 
+-config SECCOMP
+-	bool "Enable seccomp to safely compute untrusted bytecode"
+-	depends on PROC_FS
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl, it cannot be disabled and the task is only
+-	  allowed to execute a few safe syscalls defined by each seccomp
+-	  mode.
+-
+-	  If unsure, say N.
+-
+ config SMP
+ 	bool "Symmetric multi-processing support"
+ 	depends on SYS_SUPPORTS_SMP
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index efeff2c896a5..d62ce83cf009 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -23,6 +23,7 @@ config SPARC
+ 	select HAVE_OPROFILE
+ 	select HAVE_ARCH_KGDB if !SMP || SPARC64
+ 	select HAVE_ARCH_TRACEHOOK
++	select HAVE_ARCH_SECCOMP if SPARC64
+ 	select HAVE_EXIT_THREAD
+ 	select HAVE_PCI
+ 	select SYSCTL_EXCEPTION_TRACE
+@@ -226,23 +227,6 @@ config EARLYFB
+ 	help
+ 	  Say Y here to enable a faster early framebuffer boot console.
+ 
+-config SECCOMP
+-	bool "Enable seccomp to safely compute untrusted bytecode"
+-	depends on SPARC64 &amp;&amp; PROC_FS
+-	default y
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via /proc/&lt;pid&gt;/seccomp, it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+-	  If unsure, say Y. Only embedded should say N here.
+-
+ config HOTPLUG_CPU
+ 	bool "Support for hot-pluggable CPUs"
+ 	depends on SPARC64 &amp;&amp; SMP
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index eb51fec75948..d49f471b02e3 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -173,22 +173,6 @@ config PGTABLE_LEVELS
+ 	default 3 if 3_LEVEL_PGTABLES
+ 	default 2
+ 
+-config SECCOMP
+-	def_bool y
+-	prompt "Enable seccomp to safely compute untrusted bytecode"
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl(PR_SET_SECCOMP), it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+-	  If unsure, say Y.
+-
+ config UML_TIME_TRAVEL_SUPPORT
+ 	bool
+ 	prompt "Support time-travel mode (e.g. for test execution)"
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 7101ac64bb20..1ab22869a765 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1968,22 +1968,6 @@ config EFI_MIXED
+ 
+ 	   If unsure, say N.
+ 
+-config SECCOMP
+-	def_bool y
+-	prompt "Enable seccomp to safely compute untrusted bytecode"
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl(PR_SET_SECCOMP), it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+-	  If unsure, say Y. Only embedded should say N here.
+-
+ source "kernel/Kconfig.hz"
+ 
+ config KEXEC
+diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
+index e997e0119c02..d8a29dc5a284 100644
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -217,20 +217,6 @@ config HOTPLUG_CPU
+ 
+ 	  Say N if you want to disable CPU hotplug.
+ 
+-config SECCOMP
+-	bool
+-	prompt "Enable seccomp to safely compute untrusted bytecode"
+-	help
+-	  This kernel feature is useful for number crunching applications
+-	  that may need to compute untrusted bytecode during their
+-	  execution. By using pipes or other transports made available to
+-	  the process as file descriptors supporting the read/write
+-	  syscalls, it's possible to isolate those applications in
+-	  their own address space using seccomp. Once seccomp is
+-	  enabled via prctl(PR_SET_SECCOMP), it cannot be disabled
+-	  and the task is only allowed to execute a few safe syscalls
+-	  defined by each seccomp mode.
+-
+ config FAST_SYSCALL_XTENSA
+ 	bool "Enable fast atomic syscalls"
+ 	default n</pre><hr><pre>commit 219db95bbe796277c739cca17fe134f6c2ce6676
+Author: Ayush Ranjan &lt;ayushr2@illinois.edu&gt;
+Date:   Thu Aug 22 23:18:33 2019 -0400
+
+    ext4: documentation fixes
+    
+    This commit aims to fix the following issues in ext4 documentation:
+    - Flexible block group docs said that the aim was to group block
+      metadata together instead of block group metadata.
+    - The documentation consistly uses "location" instead of "block number".
+      It is easy to confuse location to be an absolute offset on disk. Added
+      a line to clarify all location values are in terms of block numbers.
+    - Dirent2 docs said that the rec_len field is shortened instead of the
+      name_len field.
+    - Typo in bg_checksum description.
+    - Inode size is 160 bytes now, and hence i_extra_isize is now 32.
+    - Cluster size formula was incorrect, it did not include the +10 to
+      s_log_cluster_size value.
+    - Typo: there were two s_wtime_hi in the superblock struct.
+    - Superblock struct was outdated, added the new fields which were part
+      of s_reserved earlier.
+    - Multiple mount protection seems to be implemented in fs/ext4/mmp.c.
+    
+    Signed-off-by: Ayush Ranjan &lt;ayushr2@illinois.edu&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reviewed-by: Andreas Dilger &lt;adilger@dilger.ca&gt;
+
+diff --git a/Documentation/filesystems/ext4/blockgroup.rst b/Documentation/filesystems/ext4/blockgroup.rst
+index baf888e4c06a..3da156633339 100644
+--- a/Documentation/filesystems/ext4/blockgroup.rst
++++ b/Documentation/filesystems/ext4/blockgroup.rst
+@@ -71,11 +71,11 @@ if the flex\_bg size is 4, then group 0 will contain (in order) the
+ superblock, group descriptors, data block bitmaps for groups 0-3, inode
+ bitmaps for groups 0-3, inode tables for groups 0-3, and the remaining
+ space in group 0 is for file data. The effect of this is to group the
+-block metadata close together for faster loading, and to enable large
+-files to be continuous on disk. Backup copies of the superblock and
+-group descriptors are always at the beginning of block groups, even if
+-flex\_bg is enabled. The number of block groups that make up a flex\_bg
+-is given by 2 ^ ``sb.s_log_groups_per_flex``.
++block group metadata close together for faster loading, and to enable
++large files to be continuous on disk. Backup copies of the superblock
++and group descriptors are always at the beginning of block groups, even
++if flex\_bg is enabled. The number of block groups that make up a
++flex\_bg is given by 2 ^ ``sb.s_log_groups_per_flex``.
+ 
+ Meta Block Groups
+ -----------------
+diff --git a/Documentation/filesystems/ext4/blocks.rst b/Documentation/filesystems/ext4/blocks.rst
+index 73d4dc0f7bda..bd722ecd92d6 100644
+--- a/Documentation/filesystems/ext4/blocks.rst
++++ b/Documentation/filesystems/ext4/blocks.rst
+@@ -10,7 +10,9 @@ block groups. Block size is specified at mkfs time and typically is
+ 4KiB. You may experience mounting problems if block size is greater than
+ page size (i.e. 64KiB blocks on a i386 which only has 4KiB memory
+ pages). By default a filesystem can contain 2^32 blocks; if the '64bit'
+-feature is enabled, then a filesystem can have 2^64 blocks.
++feature is enabled, then a filesystem can have 2^64 blocks. The location
++of structures is stored in terms of the block number the structure lives
++in and not the absolute offset on disk.
+ 
+ For 32-bit filesystems, limits are as follows:
+ 
+diff --git a/Documentation/filesystems/ext4/directory.rst b/Documentation/filesystems/ext4/directory.rst
+index 614034e24669..073940cc64ed 100644
+--- a/Documentation/filesystems/ext4/directory.rst
++++ b/Documentation/filesystems/ext4/directory.rst
+@@ -59,7 +59,7 @@ is at most 263 bytes long, though on disk you'll need to reference
+      - File name.
+ 
+ Since file names cannot be longer than 255 bytes, the new directory
+-entry format shortens the rec\_len field and uses the space for a file
++entry format shortens the name\_len field and uses the space for a file
+ type flag, probably to avoid having to load every inode during directory
+ tree traversal. This format is ``ext4_dir_entry_2``, which is at most
+ 263 bytes long, though on disk you'll need to reference
+diff --git a/Documentation/filesystems/ext4/group_descr.rst b/Documentation/filesystems/ext4/group_descr.rst
+index 0f783ed88592..7ba6114e7f5c 100644
+--- a/Documentation/filesystems/ext4/group_descr.rst
++++ b/Documentation/filesystems/ext4/group_descr.rst
+@@ -99,9 +99,12 @@ The block group descriptor is laid out in ``struct ext4_group_desc``.
+    * - 0x1E
+      - \_\_le16
+      - bg\_checksum
+-     - Group descriptor checksum; crc16(sb\_uuid+group+desc) if the
+-       RO\_COMPAT\_GDT\_CSUM feature is set, or crc32c(sb\_uuid+group\_desc) &amp;
+-       0xFFFF if the RO\_COMPAT\_METADATA\_CSUM feature is set.
++     - Group descriptor checksum; crc16(sb\_uuid+group\_num+bg\_desc) if the
++       RO\_COMPAT\_GDT\_CSUM feature is set, or
++       crc32c(sb\_uuid+group\_num+bg\_desc) &amp; 0xFFFF if the
++       RO\_COMPAT\_METADATA\_CSUM feature is set.  The bg\_checksum
++       field in bg\_desc is skipped when calculating crc16 checksum,
++       and set to zero if crc32c checksum is used.
+    * -
+      -
+      -
+diff --git a/Documentation/filesystems/ext4/inodes.rst b/Documentation/filesystems/ext4/inodes.rst
+index 6bd35e506b6f..34f62928cebc 100644
+--- a/Documentation/filesystems/ext4/inodes.rst
++++ b/Documentation/filesystems/ext4/inodes.rst
+@@ -470,8 +470,8 @@ inode, which allows struct ext4\_inode to grow for a new kernel without
+ having to upgrade all of the on-disk inodes. Access to fields beyond
+ EXT2\_GOOD\_OLD\_INODE\_SIZE should be verified to be within
+ ``i_extra_isize``. By default, ext4 inode records are 256 bytes, and (as
+-of October 2013) the inode structure is 156 bytes
+-(``i_extra_isize = 28``). The extra space between the end of the inode
++of August 2019) the inode structure is 160 bytes
++(``i_extra_isize = 32``). The extra space between the end of the inode
+ structure and the end of the inode record can be used to store extended
+ attributes. Each inode record can be as large as the filesystem block
+ size, though this is not terribly efficient.
+diff --git a/Documentation/filesystems/ext4/super.rst b/Documentation/filesystems/ext4/super.rst
+index 04ff079a2acf..48b6c78fc38e 100644
+--- a/Documentation/filesystems/ext4/super.rst
++++ b/Documentation/filesystems/ext4/super.rst
+@@ -58,7 +58,7 @@ The ext4 superblock is laid out as follows in
+    * - 0x1C
+      - \_\_le32
+      - s\_log\_cluster\_size
+-     - Cluster size is (2 ^ s\_log\_cluster\_size) blocks if bigalloc is
++     - Cluster size is 2 ^ (10 + s\_log\_cluster\_size) blocks if bigalloc is
+        enabled. Otherwise s\_log\_cluster\_size must equal s\_log\_block\_size.
+    * - 0x20
+      - \_\_le32
+@@ -447,7 +447,7 @@ The ext4 superblock is laid out as follows in
+      - Upper 8 bits of the s_wtime field.
+    * - 0x275
+      - \_\_u8
+-     - s\_wtime_hi
++     - s\_mtime_hi
+      - Upper 8 bits of the s_mtime field.
+    * - 0x276
+      - \_\_u8
+@@ -466,12 +466,20 @@ The ext4 superblock is laid out as follows in
+      - s\_last_error_time_hi
+      - Upper 8 bits of the s_last_error_time_hi field.
+    * - 0x27A
+-     - \_\_u8[2]
+-     - s\_pad
++     - \_\_u8
++     - s\_pad[2]
+      - Zero padding.
+    * - 0x27C
++     - \_\_le16
++     - s\_encoding
++     - Filename charset encoding.
++   * - 0x27E
++     - \_\_le16
++     - s\_encoding_flags
++     - Filename charset encoding flags.
++   * - 0x280
+      - \_\_le32
+-     - s\_reserved[96]
++     - s\_reserved[95]
+      - Padding to the end of the block.
+    * - 0x3FC
+      - \_\_le32
+@@ -617,7 +625,7 @@ following:
+    * - 0x80
+      - Enable a filesystem size of 2^64 blocks (INCOMPAT\_64BIT).
+    * - 0x100
+-     - Multiple mount protection. Not implemented (INCOMPAT\_MMP).
++     - Multiple mount protection (INCOMPAT\_MMP).
+    * - 0x200
+      - Flexible block groups. See the earlier discussion of this feature
+        (INCOMPAT\_FLEX\_BG).</pre><hr><pre>commit 642d89252201c4155fc3946bf9cdea409e5d263e
+Author: Matt Johnson &lt;johnso87@illinois.edu&gt;
+Date:   Fri Apr 27 01:42:30 2012 -0500
+
+    ahci: Detect Marvell 88SE9172 SATA controller
+    
+    The Marvell 88SE9172 SATA controller (PCI ID 1b4b 917a) already worked
+    once it was detected, but was missing an ahci_pci_tbl entry.
+    
+    Boot tested on a Gigabyte Z68X-UD3H-B3 motherboard.
+    
+    Signed-off-by: Matt Johnson &lt;johnso87@illinois.edu&gt;
+    Signed-off-by: Jeff Garzik &lt;jgarzik@redhat.com&gt;
+
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 79a1e9dd56d9..ebaf67e4b2bc 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -394,6 +394,8 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	  .driver_data = board_ahci_yes_fbs },			/* 88se9128 */
+ 	{ PCI_DEVICE(0x1b4b, 0x9125),
+ 	  .driver_data = board_ahci_yes_fbs },			/* 88se9125 */
++	{ PCI_DEVICE(0x1b4b, 0x917a),
++	  .driver_data = board_ahci_yes_fbs },			/* 88se9172 */
+ 	{ PCI_DEVICE(0x1b4b, 0x91a3),
+ 	  .driver_data = board_ahci_yes_fbs },
+ </pre><hr><pre>commit 4cde7e0dca98e0e93dceb174d83f766d0d637c23
+Author: Heechul Yun &lt;heechul@illinois.edu&gt;
+Date:   Tue Jul 19 13:26:54 2011 +0100
+
+    ARM: 6998/2: kernel: use proper memory barriers for bitops
+    
+    Improve scalability by avoiding costly and unnecessary L2 cache sync
+    in handling bitops.
+    
+    Signed-off-by: Heechul Yun &lt;hyun@nvidia.com&gt;
+    Acked-by: Catalin Marinas &lt;catalin.marinas@arm.com&gt;
+    Signed-off-by: Russell King &lt;rmk+kernel@arm.linux.org.uk&gt;
+
+diff --git a/arch/arm/include/asm/bitops.h b/arch/arm/include/asm/bitops.h
+index b4892a06442c..f4280593dfa3 100644
+--- a/arch/arm/include/asm/bitops.h
++++ b/arch/arm/include/asm/bitops.h
+@@ -26,8 +26,8 @@
+ #include &lt;linux/compiler.h&gt;
+ #include &lt;asm/system.h&gt;
+ 
+-#define smp_mb__before_clear_bit()	mb()
+-#define smp_mb__after_clear_bit()	mb()
++#define smp_mb__before_clear_bit()	smp_mb()
++#define smp_mb__after_clear_bit()	smp_mb()
+ 
+ /*
+  * These functions are the basis of our bit ops.</pre><hr><pre>commit c7e89b16eb90e7bdf0d71bd5ba265ce8d424f30b
+Author: Heechul Yun &lt;heechul@illinois.edu&gt;
+Date:   Fri Jul 8 13:32:34 2011 +0100
+
+    ARM: 6995/2: mm: remove unnecessary cache flush on v6 copypage
+    
+    Originally introduced to maintain coherency between icache and dcache
+    in v6 nonaliasing mode. This is now handled by __sync_icache_dcache since
+    c0177800, therefore unnecessary in this function.
+    
+    Signed-off-by: Heechul Yun &lt;heechul@illinois.edu&gt;
+    Acked-by: Catalin Marinas &lt;catalin.marinas@arm.com&gt;
+    Signed-off-by: Russell King &lt;rmk+kernel@arm.linux.org.uk&gt;
+
+diff --git a/arch/arm/mm/copypage-v6.c b/arch/arm/mm/copypage-v6.c
+index bdba6c65c901..63cca0097130 100644
+--- a/arch/arm/mm/copypage-v6.c
++++ b/arch/arm/mm/copypage-v6.c
+@@ -41,7 +41,6 @@ static void v6_copy_user_highpage_nonaliasing(struct page *to,
+ 	kfrom = kmap_atomic(from, KM_USER0);
+ 	kto = kmap_atomic(to, KM_USER1);
+ 	copy_page(kto, kfrom);
+-	__cpuc_flush_dcache_area(kto, PAGE_SIZE);
+ 	kunmap_atomic(kto, KM_USER1);
+ 	kunmap_atomic(kfrom, KM_USER0);
+ }</pre><hr><pre>commit b6ac161364eccce1bea4a23a9de395883e90d7ab
+Author: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+Date:   Tue Jul 21 22:02:27 2009 -0500
+
+    Staging: ARRAY_SIZE changes
+    
+    These changes were a direct result of using a semantic patch
+    More information can be found at http://www.emn.fr/x-info/coccinelle/
+    
+    Signed-off-by: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@suse.de&gt;
+
+diff --git a/drivers/staging/comedi/drivers/amplc_pci230.c b/drivers/staging/comedi/drivers/amplc_pci230.c
+index c4d8c4cae4a5..091a1a5822a8 100644
+--- a/drivers/staging/comedi/drivers/amplc_pci230.c
++++ b/drivers/staging/comedi/drivers/amplc_pci230.c
+@@ -513,7 +513,7 @@ MODULE_DEVICE_TABLE(pci, pci230_pci_table);
+ /*
+  * Useful for shorthand access to the particular board structure
+  */
+-#define n_pci230_boards (sizeof(pci230_boards)/sizeof(pci230_boards[0]))
++#define n_pci230_boards ARRAY_SIZE(pci230_boards)
+ #define thisboard ((const struct pci230_board *)dev-&gt;board_ptr)
+ 
+ /* this structure is for data unique to this hardware driver.  If
+diff --git a/drivers/staging/comedi/drivers/cb_das16_cs.c b/drivers/staging/comedi/drivers/cb_das16_cs.c
+index 2f7aa3b5ef8e..12d12b43a6f1 100644
+--- a/drivers/staging/comedi/drivers/cb_das16_cs.c
++++ b/drivers/staging/comedi/drivers/cb_das16_cs.c
+@@ -78,7 +78,7 @@ static const struct das16cs_board das16cs_boards[] = {
+ 	 },
+ };
+ 
+-#define n_boards (sizeof(das16cs_boards)/sizeof(das16cs_boards[0]))
++#define n_boards ARRAY_SIZE(das16cs_boards)
+ #define thisboard ((const struct das16cs_board *)dev-&gt;board_ptr)
+ 
+ struct das16cs_private {
+diff --git a/drivers/staging/comedi/drivers/das08_cs.c b/drivers/staging/comedi/drivers/das08_cs.c
+index 74fcc1086c51..9cab21eaaa18 100644
+--- a/drivers/staging/comedi/drivers/das08_cs.c
++++ b/drivers/staging/comedi/drivers/das08_cs.c
+@@ -65,8 +65,7 @@ static struct comedi_driver driver_das08_cs = {
+ 	.attach = das08_cs_attach,
+ 	.detach = das08_common_detach,
+ 	.board_name = &amp;das08_cs_boards[0].name,
+-	.num_names = sizeof(das08_cs_boards) /
+-	    sizeof(struct das08_board_struct),
++	.num_names = ARRAY_SIZE(das08_cs_boards),
+ 	.offset = sizeof(struct das08_board_struct),
+ };
+ 
+diff --git a/drivers/staging/comedi/drivers/ni_6527.c b/drivers/staging/comedi/drivers/ni_6527.c
+index 7a49dfce67be..b37ef37c2d2d 100644
+--- a/drivers/staging/comedi/drivers/ni_6527.c
++++ b/drivers/staging/comedi/drivers/ni_6527.c
+@@ -103,7 +103,7 @@ static const struct ni6527_board ni6527_boards[] = {
+ 	 },
+ };
+ 
+-#define n_ni6527_boards (sizeof(ni6527_boards)/sizeof(ni6527_boards[0]))
++#define n_ni6527_boards ARRAY_SIZE(ni6527_boards)
+ #define this_board ((const struct ni6527_board *)dev-&gt;board_ptr)
+ 
+ static DEFINE_PCI_DEVICE_TABLE(ni6527_pci_table) = {
+diff --git a/drivers/staging/comedi/drivers/ni_65xx.c b/drivers/staging/comedi/drivers/ni_65xx.c
+index 8079c41b7338..6b118c15b49e 100644
+--- a/drivers/staging/comedi/drivers/ni_65xx.c
++++ b/drivers/staging/comedi/drivers/ni_65xx.c
+@@ -246,7 +246,7 @@ static const struct ni_65xx_board ni_65xx_boards[] = {
+ 	 },
+ };
+ 
+-#define n_ni_65xx_boards (sizeof(ni_65xx_boards)/sizeof(ni_65xx_boards[0]))
++#define n_ni_65xx_boards ARRAY_SIZE(ni_65xx_boards)
+ static inline const struct ni_65xx_board *board(struct comedi_device *dev)
+ {
+ 	return dev-&gt;board_ptr;
+diff --git a/drivers/staging/comedi/drivers/ni_660x.c b/drivers/staging/comedi/drivers/ni_660x.c
+index 772c9372e435..404d3c516ed1 100644
+--- a/drivers/staging/comedi/drivers/ni_660x.c
++++ b/drivers/staging/comedi/drivers/ni_660x.c
+@@ -454,7 +454,7 @@ static inline const struct ni_660x_board *board(struct comedi_device *dev)
+ 	return dev-&gt;board_ptr;
+ }
+ 
+-#define n_ni_660x_boards (sizeof(ni_660x_boards)/sizeof(ni_660x_boards[0]))
++#define n_ni_660x_boards ARRAY_SIZE(ni_660x_boards)
+ 
+ static int ni_660x_attach(struct comedi_device *dev,
+ 			  struct comedi_devconfig *it);
+diff --git a/drivers/staging/comedi/drivers/ni_670x.c b/drivers/staging/comedi/drivers/ni_670x.c
+index 89ce5b873ffe..9b43547e80a1 100644
+--- a/drivers/staging/comedi/drivers/ni_670x.c
++++ b/drivers/staging/comedi/drivers/ni_670x.c
+@@ -111,7 +111,7 @@ struct ni_670x_private {
+ };
+ 
+ #define devpriv ((struct ni_670x_private *)dev-&gt;private)
+-#define n_ni_670x_boards (sizeof(ni_670x_boards)/sizeof(ni_670x_boards[0]))
++#define n_ni_670x_boards ARRAY_SIZE(ni_670x_boards)
+ 
+ static int ni_670x_attach(struct comedi_device *dev,
+ 			  struct comedi_devconfig *it);
+diff --git a/drivers/staging/comedi/drivers/ni_atmio16d.c b/drivers/staging/comedi/drivers/ni_atmio16d.c
+index cde30b77a15f..901833d9b772 100644
+--- a/drivers/staging/comedi/drivers/ni_atmio16d.c
++++ b/drivers/staging/comedi/drivers/ni_atmio16d.c
+@@ -121,7 +121,7 @@ static const struct atmio16_board_t atmio16_boards[] = {
+ 	 },
+ };
+ 
+-#define n_atmio16_boards sizeof(atmio16_boards)/sizeof(atmio16_boards[0])
++#define n_atmio16_boards ARRAY_SIZE(atmio16_boards)
+ 
+ #define boardtype ((const struct atmio16_board_t *)dev-&gt;board_ptr)
+ 
+diff --git a/drivers/staging/comedi/drivers/ni_pcidio.c b/drivers/staging/comedi/drivers/ni_pcidio.c
+index 15148d1642d4..52b2eca9e73d 100644
+--- a/drivers/staging/comedi/drivers/ni_pcidio.c
++++ b/drivers/staging/comedi/drivers/ni_pcidio.c
+@@ -374,7 +374,7 @@ static const struct nidio_board nidio_boards[] = {
+ 	 },
+ };
+ 
+-#define n_nidio_boards (sizeof(nidio_boards)/sizeof(nidio_boards[0]))
++#define n_nidio_boards ARRAY_SIZE(nidio_boards)
+ #define this_board ((const struct nidio_board *)dev-&gt;board_ptr)
+ 
+ static DEFINE_PCI_DEVICE_TABLE(ni_pcidio_pci_table) = {
+diff --git a/drivers/staging/comedi/drivers/ni_pcimio.c b/drivers/staging/comedi/drivers/ni_pcimio.c
+index 0dc639212ade..19d87553d906 100644
+--- a/drivers/staging/comedi/drivers/ni_pcimio.c
++++ b/drivers/staging/comedi/drivers/ni_pcimio.c
+@@ -1208,7 +1208,7 @@ static const struct ni_board_struct ni_boards[] = {
+ 	 },
+ };
+ 
+-#define n_pcimio_boards ((sizeof(ni_boards)/sizeof(ni_boards[0])))
++#define n_pcimio_boards ARRAY_SIZE(ni_boards)
+ 
+ static int pcimio_attach(struct comedi_device *dev,
+ 			 struct comedi_devconfig *it);
+diff --git a/drivers/staging/comedi/drivers/pcmad.c b/drivers/staging/comedi/drivers/pcmad.c
+index 7368bf3011c9..acac67090810 100644
+--- a/drivers/staging/comedi/drivers/pcmad.c
++++ b/drivers/staging/comedi/drivers/pcmad.c
+@@ -69,7 +69,7 @@ static const struct pcmad_board_struct pcmad_boards[] = {
+ };
+ 
+ #define this_board ((const struct pcmad_board_struct *)(dev-&gt;board_ptr))
+-#define n_pcmad_boards (sizeof(pcmad_boards)/sizeof(pcmad_boards[0]))
++#define n_pcmad_boards ARRAY_SIZE(pcmad_boards)
+ 
+ struct pcmad_priv_struct {
+ 	int differential;
+diff --git a/drivers/staging/comedi/drivers/poc.c b/drivers/staging/comedi/drivers/poc.c
+index 729a0d8766e8..d23e588d0632 100644
+--- a/drivers/staging/comedi/drivers/poc.c
++++ b/drivers/staging/comedi/drivers/poc.c
+@@ -102,7 +102,7 @@ static const struct boarddef_struct boards[] = {
+ 	 },
+ };
+ 
+-#define n_boards (sizeof(boards)/sizeof(boards[0]))
++#define n_boards ARRAY_SIZE(boards)
+ #define this_board ((const struct boarddef_struct *)dev-&gt;board_ptr)
+ 
+ static struct comedi_driver driver_poc = {
+diff --git a/drivers/staging/epl/EplDllk.c b/drivers/staging/epl/EplDllk.c
+index 25d2c34325db..0572c3d0aefd 100644
+--- a/drivers/staging/epl/EplDllk.c
++++ b/drivers/staging/epl/EplDllk.c
+@@ -328,7 +328,7 @@ tEplKernel EplDllkAddInstance(tEplDllkInitParam * pInitParam_p)
+ 	// initialize and link pointers in instance structure to frame tables
+ 	EplDllkInstance_g.m_pTxBuffer = aEplDllkTxBuffer_l;
+ 	EplDllkInstance_g.m_uiMaxTxFrames =
+-	    sizeof(aEplDllkTxBuffer_l) / sizeof(tEdrvTxBuffer);
++	    ARRAY_SIZE(aEplDllkTxBuffer_l);
+ 
+ 	// initialize state
+ 	EplDllkInstance_g.m_DllState = kEplDllGsInit;
+diff --git a/drivers/staging/epl/proc_fs.c b/drivers/staging/epl/proc_fs.c
+index 9ccf079e67e1..e48949d9ddf5 100644
+--- a/drivers/staging/epl/proc_fs.c
++++ b/drivers/staging/epl/proc_fs.c
+@@ -196,7 +196,7 @@ void TgtDbgSignalTracePoint(u8 bTracePointNumber_p)
+ {
+ 
+ 	if (bTracePointNumber_p &gt;=
+-	    (sizeof(aatmDbgTracePoint_l) / sizeof(aatmDbgTracePoint_l[0]))) {
++	    ARRAY_SIZE(aatmDbgTracePoint_l)) {
+ 		goto Exit;
+ 	}
+ 
+@@ -330,7 +330,7 @@ static int EplLinProcRead(char *pcBuffer_p,
+ 		nSize += snprintf(pcBuffer_p + nSize, nBufferSize_p - nSize,
+ 				  "DbgTracePoints:\n");
+ 		for (nNum = 0;
+-		     nNum &lt; (sizeof(aatmDbgTracePoint_l) / sizeof(atomic_t));
++		     nNum &lt; ARRAY_SIZE(aatmDbgTracePoint_l);
+ 		     nNum++) {
+ 			nSize +=
+ 			    snprintf(pcBuffer_p + nSize, nBufferSize_p - nSize,
+diff --git a/drivers/staging/line6/driver.c b/drivers/staging/line6/driver.c
+index 85a20d0002c0..f188ecee502f 100644
+--- a/drivers/staging/line6/driver.c
++++ b/drivers/staging/line6/driver.c
+@@ -682,7 +682,7 @@ static int line6_probe(struct usb_interface *interface, const struct usb_device_
+ 		return -ENODEV;
+ 
+ 	/* check vendor and product id */
+-	for (devtype = sizeof(line6_id_table) / sizeof(line6_id_table[0]) - 1; devtype--;)
++	for (devtype = ARRAY_SIZE(line6_id_table) - 1; devtype--;)
+ 		if ((le16_to_cpu(usbdev-&gt;descriptor.idVendor) == line6_id_table[devtype].idVendor) &amp;&amp;
+ 			 (le16_to_cpu(usbdev-&gt;descriptor.idProduct) == line6_id_table[devtype].idProduct))
+ 			break;
+diff --git a/drivers/staging/meilhaus/me0600_device.h b/drivers/staging/meilhaus/me0600_device.h
+index d93a8aee581b..75bd3b7351d2 100644
+--- a/drivers/staging/meilhaus/me0600_device.h
++++ b/drivers/staging/meilhaus/me0600_device.h
+@@ -54,7 +54,7 @@ static me0600_version_t me0600_versions[] = {
+ 	{0},
+ };
+ 
+-#define ME0600_DEVICE_VERSIONS (sizeof(me0600_versions) / sizeof(me0600_version_t) - 1)	/**&lt; Returns the number of entries in #me0600_versions. */
++#define ME0600_DEVICE_VERSIONS (ARRAY_SIZE(me0600_versions) - 1)	/**&lt; Returns the number of entries in #me0600_versions. */
+ 
+ /**
+  * @brief Returns the index of the device entry in #me0600_versions.
+diff --git a/drivers/staging/meilhaus/me0900_device.h b/drivers/staging/meilhaus/me0900_device.h
+index bd17f2521511..53c05e83675d 100644
+--- a/drivers/staging/meilhaus/me0900_device.h
++++ b/drivers/staging/meilhaus/me0900_device.h
+@@ -53,7 +53,7 @@ static me0900_version_t me0900_versions[] = {
+ 	{0},
+ };
+ 
+-#define ME0900_DEVICE_VERSIONS (sizeof(me0900_versions) / sizeof(me0900_version_t) - 1)	/**&lt; Returns the number of entries in #me0900_versions. */
++#define ME0900_DEVICE_VERSIONS (ARRAY_SIZE(me0900_versions) - 1)	/**&lt; Returns the number of entries in #me0900_versions. */
+ 
+ /**
+  * @brief Returns the index of the device entry in #me0900_versions.
+diff --git a/drivers/staging/meilhaus/me1400_device.h b/drivers/staging/meilhaus/me1400_device.h
+index 6215b250047d..d20112d8da60 100644
+--- a/drivers/staging/meilhaus/me1400_device.h
++++ b/drivers/staging/meilhaus/me1400_device.h
+@@ -60,7 +60,7 @@ static me1400_version_t me1400_versions[] = {
+ 	{0}
+ };
+ 
+-#define ME1400_DEVICE_VERSIONS (sizeof(me1400_versions) / sizeof(me1400_version_t) - 1)	/**&lt; Returns the number of entries in #me1400_versions. */
++#define ME1400_DEVICE_VERSIONS (ARRAY_SIZE(me1400_versions) - 1)	/**&lt; Returns the number of entries in #me1400_versions. */
+ 
+ /**
+  * @brief Returns the index of the device entry in #me1400_versions.
+diff --git a/drivers/staging/meilhaus/me1600_device.h b/drivers/staging/meilhaus/me1600_device.h
+index f7b231f73ac8..c73aca11ae88 100644
+--- a/drivers/staging/meilhaus/me1600_device.h
++++ b/drivers/staging/meilhaus/me1600_device.h
+@@ -58,7 +58,7 @@ static me1600_version_t me1600_versions[] = {
+ };
+ 
+ /**&lt; Returns the number of entries in #me1600_versions. */
+-#define ME1600_DEVICE_VERSIONS (sizeof(me1600_versions) / sizeof(me1600_version_t) - 1)
++#define ME1600_DEVICE_VERSIONS (ARRAY_SIZE(me1600_versions) - 1)
+ 
+ /**
+  * @brief Returns the index of the device entry in #me1600_versions.
+diff --git a/drivers/staging/meilhaus/me4600_device.h b/drivers/staging/meilhaus/me4600_device.h
+index fa812d4cc6dc..c755c574cda2 100644
+--- a/drivers/staging/meilhaus/me4600_device.h
++++ b/drivers/staging/meilhaus/me4600_device.h
+@@ -80,7 +80,7 @@ static me4600_version_t me4600_versions[] = {
+ 	{0},
+ };
+ 
+-#define ME4600_DEVICE_VERSIONS (sizeof(me4600_versions) / sizeof(me4600_version_t) - 1)	/**&lt; Returns the number of entries in #me4600_versions. */
++#define ME4600_DEVICE_VERSIONS (ARRAY_SIZE(me4600_versions) - 1)	/**&lt; Returns the number of entries in #me4600_versions. */
+ 
+ /**
+  * @brief Returns the index of the device entry in #me4600_versions.
+diff --git a/drivers/staging/meilhaus/me6000_device.h b/drivers/staging/meilhaus/me6000_device.h
+index 18cc7d1e14f1..eed401152101 100644
+--- a/drivers/staging/meilhaus/me6000_device.h
++++ b/drivers/staging/meilhaus/me6000_device.h
+@@ -103,7 +103,7 @@ static me6000_version_t me6000_versions[] = {
+ 	{0},
+ };
+ 
+-#define ME6000_DEVICE_VERSIONS (sizeof(me6000_versions) / sizeof(me6000_version_t) - 1)	/**&lt; Returns the number of entries in #me6000_versions. */
++#define ME6000_DEVICE_VERSIONS (ARRAY_SIZE(me6000_versions) - 1)	/**&lt; Returns the number of entries in #me6000_versions. */
+ 
+ /**
+  * @brief Returns the index of the device entry in #me6000_versions.
+diff --git a/drivers/staging/meilhaus/me8100_device.h b/drivers/staging/meilhaus/me8100_device.h
+index 44c42efb04e2..238dc0622801 100644
+--- a/drivers/staging/meilhaus/me8100_device.h
++++ b/drivers/staging/meilhaus/me8100_device.h
+@@ -53,7 +53,7 @@ static me8100_version_t me8100_versions[] = {
+ 	{0},
+ };
+ 
+-#define ME8100_DEVICE_VERSIONS (sizeof(me8100_versions) / sizeof(me8100_version_t) - 1)	/**&lt; Returns the number of entries in #me8100_versions. */
++#define ME8100_DEVICE_VERSIONS (ARRAY_SIZE(me8100_versions) - 1)	/**&lt; Returns the number of entries in #me8100_versions. */
+ 
+ /**
+  * @brief Returns the index of the device entry in #me8100_versions.
+diff --git a/drivers/staging/meilhaus/me8200_device.h b/drivers/staging/meilhaus/me8200_device.h
+index cbd2a01ddb41..66f50842dac0 100644
+--- a/drivers/staging/meilhaus/me8200_device.h
++++ b/drivers/staging/meilhaus/me8200_device.h
+@@ -53,7 +53,7 @@ static me8200_version_t me8200_versions[] = {
+ 	{0},
+ };
+ 
+-#define ME8200_DEVICE_VERSIONS (sizeof(me8200_versions) / sizeof(me8200_version_t) - 1)	/**&lt; Returns the number of entries in #me8200_versions. */
++#define ME8200_DEVICE_VERSIONS (ARRAY_SIZE(me8200_versions) - 1)	/**&lt; Returns the number of entries in #me8200_versions. */
+ 
+ /**
+  * @brief Returns the index of the device entry in #me8200_versions.
+diff --git a/drivers/staging/meilhaus/metempl_device.h b/drivers/staging/meilhaus/metempl_device.h
+index 3c3702cc72eb..c0626e7b73a7 100644
+--- a/drivers/staging/meilhaus/metempl_device.h
++++ b/drivers/staging/meilhaus/metempl_device.h
+@@ -50,7 +50,7 @@ static metempl_version_t metempl_versions[] = {
+ 	{0},
+ };
+ 
+-#define METEMPL_DEVICE_VERSIONS (sizeof(metempl_versions) / sizeof(metempl_version_t) - 1) /**&lt; Returns the number of entries in #metempl_versions. */
++#define METEMPL_DEVICE_VERSIONS (ARRAY_SIZE(metempl_versions) - 1) /**&lt; Returns the number of entries in #metempl_versions. */
+ 
+ /**
+  * @brief Returns the index of the device entry in #metempl_versions.
+diff --git a/drivers/staging/rtl8187se/r8180_wx.c b/drivers/staging/rtl8187se/r8180_wx.c
+index 081c022f0bc2..766892e31f52 100644
+--- a/drivers/staging/rtl8187se/r8180_wx.c
++++ b/drivers/staging/rtl8187se/r8180_wx.c
+@@ -27,7 +27,7 @@
+ u32 rtl8180_rates[] = {1000000,2000000,5500000,11000000,
+ 	6000000,9000000,12000000,18000000,24000000,36000000,48000000,54000000};
+ 
+-#define RATE_COUNT (sizeof(rtl8180_rates)/sizeof(rtl8180_rates[0]))
++#define RATE_COUNT ARRAY_SIZE(rtl8180_rates)
+ 
+ static CHANNEL_LIST DefaultChannelPlan[] = {
+ //	{{1,2,3,4,5,6,7,8,9,10,11,12,13,14},14},			//Default channel plan
+@@ -1578,9 +1578,9 @@ static struct iw_statistics *r8180_get_wireless_stats(struct net_device *dev)
+ 
+ struct iw_handler_def  r8180_wx_handlers_def={
+ 	.standard = r8180_wx_handlers,
+-	.num_standard = sizeof(r8180_wx_handlers) / sizeof(iw_handler),
++	.num_standard = ARRAY_SIZE(r8180_wx_handlers),
+ 	.private = r8180_private_handler,
+-	.num_private = sizeof(r8180_private_handler) / sizeof(iw_handler),
++	.num_private = ARRAY_SIZE(r8180_private_handler),
+  	.num_private_args = sizeof(r8180_private_args) / sizeof(struct iw_priv_args),
+ 	.get_wireless_stats = r8180_get_wireless_stats,
+ 	.private_args = (struct iw_priv_args *)r8180_private_args,
+diff --git a/drivers/staging/rtl8192su/ieee80211/ieee80211_wx.c b/drivers/staging/rtl8192su/ieee80211/ieee80211_wx.c
+index 3afd8b34f68c..145a3120c6bb 100644
+--- a/drivers/staging/rtl8192su/ieee80211/ieee80211_wx.c
++++ b/drivers/staging/rtl8192su/ieee80211/ieee80211_wx.c
+@@ -87,7 +87,7 @@ static inline char *rtl819x_translate_scan(struct ieee80211_device *ieee,
+         }
+ 	/* Add the protocol name */
+ 	iwe.cmd = SIOCGIWNAME;
+-	for(i=0; i&lt;(sizeof(ieee80211_modes)/sizeof(ieee80211_modes[0])); i++) {
++	for(i=0; i&lt;ARRAY_SIZE(ieee80211_modes); i++) {
+ 		if(network-&gt;mode&amp;(1&lt;&lt;i)) {
+ 			sprintf(pname,ieee80211_modes[i].mode_string,ieee80211_modes[i].mode_size);
+ 			pname +=ieee80211_modes[i].mode_size;
+diff --git a/drivers/staging/rtl8192su/r8192U_wx.c b/drivers/staging/rtl8192su/r8192U_wx.c
+index ad56faec596e..2208c9b1e726 100644
+--- a/drivers/staging/rtl8192su/r8192U_wx.c
++++ b/drivers/staging/rtl8192su/r8192U_wx.c
+@@ -1221,9 +1221,9 @@ struct iw_statistics *r8192_get_wireless_stats(struct net_device *dev)
+ 
+ struct iw_handler_def  r8192_wx_handlers_def={
+ 	.standard = r8192_wx_handlers,
+-	.num_standard = sizeof(r8192_wx_handlers) / sizeof(iw_handler),
++	.num_standard = ARRAY_SIZE(r8192_wx_handlers),
+ 	.private = r8192_private_handler,
+-	.num_private = sizeof(r8192_private_handler) / sizeof(iw_handler),
++	.num_private = ARRAY_SIZE(r8192_private_handler),
+  	.num_private_args = sizeof(r8192_private_args) / sizeof(struct iw_priv_args),
+ 	.get_wireless_stats = r8192_get_wireless_stats,
+ 	.private_args = (struct iw_priv_args *)r8192_private_args,
+diff --git a/drivers/staging/slicoss/slicoss.c b/drivers/staging/slicoss/slicoss.c
+index b01a2822a8ee..e67a130f9e46 100644
+--- a/drivers/staging/slicoss/slicoss.c
++++ b/drivers/staging/slicoss/slicoss.c
+@@ -1306,7 +1306,7 @@ static void slic_mcast_init_crc32(void)
+ 
+ 	static int p[] = { 0, 1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26 };
+ 
+-	for (i = 0; i &lt; sizeof(p) / sizeof(int); i++)
++	for (i = 0; i &lt; ARRAY_SIZE(p); i++)
+ 		e |= 1L &lt;&lt; (31 - p[i]);
+ 
+ 	for (i = 1; i &lt; 256; i++) {
+diff --git a/drivers/staging/sxg/sxg.c b/drivers/staging/sxg/sxg.c
+index 3a0dac962e4d..395e876c7dc9 100644
+--- a/drivers/staging/sxg/sxg.c
++++ b/drivers/staging/sxg/sxg.c
+@@ -3500,7 +3500,7 @@ static void sxg_mcast_init_crc32(void)
+ 
+ 	static int p[] = { 0, 1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26 };
+ 
+-	for (i = 0; i &lt; sizeof(p) / sizeof(int); i++) {
++	for (i = 0; i &lt; ARRAY_SIZE(p); i++) {
+ 		e |= 1L &lt;&lt; (31 - p[i]);
+ 	}
+ </pre><hr><pre>commit 62f589c5e391dc2081db42e801382304c652e43a
+Author: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+Date:   Wed Jul 22 05:02:33 2009 +0200
+
+    ARRAY_SIZE changes
+    
+    These changes were a direct result of using a semantic patch
+    More information can be found at http://www.emn.fr/x-info/coccinelle/
+    
+    Signed-off-by: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+    Signed-off-by: Jesper Nilsson &lt;jesper.nilsson@axis.com&gt;
+
+diff --git a/arch/cris/arch-v32/mach-a3/io.c b/arch/cris/arch-v32/mach-a3/io.c
+index c22f67ecd9f3..090ceb99ef0b 100644
+--- a/arch/cris/arch-v32/mach-a3/io.c
++++ b/arch/cris/arch-v32/mach-a3/io.c
+@@ -36,7 +36,7 @@ struct crisv32_ioport crisv32_ioports[] = {
+ 	},
+ };
+ 
+-#define NBR_OF_PORTS sizeof(crisv32_ioports)/sizeof(struct crisv32_ioport)
++#define NBR_OF_PORTS ARRAY_SIZE(crisv32_ioports)
+ 
+ struct crisv32_iopin crisv32_led_net0_green;
+ struct crisv32_iopin crisv32_led_net0_red;
+diff --git a/arch/cris/arch-v32/mach-fs/io.c b/arch/cris/arch-v32/mach-fs/io.c
+index cb6327b1f8f8..a6958661fa8e 100644
+--- a/arch/cris/arch-v32/mach-fs/io.c
++++ b/arch/cris/arch-v32/mach-fs/io.c
+@@ -52,7 +52,7 @@ struct crisv32_ioport crisv32_ioports[] = {
+ 	}
+ };
+ 
+-#define NBR_OF_PORTS sizeof(crisv32_ioports)/sizeof(struct crisv32_ioport)
++#define NBR_OF_PORTS ARRAY_SIZE(crisv32_ioports)
+ 
+ struct crisv32_iopin crisv32_led_net0_green;
+ struct crisv32_iopin crisv32_led_net0_red;</pre><hr><pre>commit a888ad451a96881a7e40f40f717d05f1f3b26ad4
+Author: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+Date:   Tue Jul 21 17:02:31 2009 +0000
+
+    powerpc: ARRAY_SIZE changes in pasemi and powermac code
+    
+    These changes were a direct result of using a semantic patch
+    More information can be found at http://www.emn.fr/x-info/coccinelle/
+    
+    Signed-off-by: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+    Signed-off-by: Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;
+
+diff --git a/arch/powerpc/platforms/pasemi/idle.c b/arch/powerpc/platforms/pasemi/idle.c
+index 43911d8b0206..75b296bc51af 100644
+--- a/arch/powerpc/platforms/pasemi/idle.c
++++ b/arch/powerpc/platforms/pasemi/idle.c
+@@ -90,7 +90,7 @@ machine_late_initcall(pasemi, pasemi_idle_init);
+ static int __init idle_param(char *p)
+ {
+ 	int i;
+-	for (i = 0; i &lt; sizeof(modes)/sizeof(struct sleep_mode); i++) {
++	for (i = 0; i &lt; ARRAY_SIZE(modes); i++) {
+ 		if (!strcmp(modes[i].name, p)) {
+ 			current_mode = i;
+ 			break;
+diff --git a/arch/powerpc/platforms/powermac/feature.c b/arch/powerpc/platforms/powermac/feature.c
+index e6c0040ee797..095de3227d83 100644
+--- a/arch/powerpc/platforms/powermac/feature.c
++++ b/arch/powerpc/platforms/powermac/feature.c
+@@ -2419,13 +2419,13 @@ static int __init probe_motherboard(void)
+ 	dt = of_find_node_by_name(NULL, "device-tree");
+ 	if (dt != NULL)
+ 		model = of_get_property(dt, "model", NULL);
+-	for(i=0; model &amp;&amp; i&lt;(sizeof(pmac_mb_defs)/sizeof(struct pmac_mb_def)); i++) {
++	for(i=0; model &amp;&amp; i&lt;ARRAY_SIZE(pmac_mb_defs); i++) {
+ 	    if (strcmp(model, pmac_mb_defs[i].model_string) == 0) {
+ 		pmac_mb = pmac_mb_defs[i];
+ 		goto found;
+ 	    }
+ 	}
+-	for(i=0; i&lt;(sizeof(pmac_mb_defs)/sizeof(struct pmac_mb_def)); i++) {
++	for(i=0; i&lt;ARRAY_SIZE(pmac_mb_defs); i++) {
+ 	    if (machine_is_compatible(pmac_mb_defs[i].model_string)) {
+ 		pmac_mb = pmac_mb_defs[i];
+ 		goto found;</pre><hr><pre>commit 2020002a878403a6858868d85a43623f74859dba
+Author: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+Date:   Thu Aug 6 15:07:28 2009 -0700
+
+    drivers/w1/masters/omap_hdq.c: fix missing mutex unlock
+    
+    This was found using a semantic patch, more info can be found at:
+    http://www.emn.fr/x-info/coccinelle/
+    
+    Signed-off-by: Stoyan Gaydarov &lt;sgayda2@uiuc.edu&gt;
+    Acked-by: Evgeniy Polyakov &lt;johnpol@2ka.mipt.ru&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/drivers/w1/masters/omap_hdq.c b/drivers/w1/masters/omap_hdq.c
+index a7e3b706b9d3..0d92969404c3 100644
+--- a/drivers/w1/masters/omap_hdq.c
++++ b/drivers/w1/masters/omap_hdq.c
+@@ -687,6 +687,7 @@ static int omap_hdq_remove(struct platform_device *pdev)
+ 
+ 	if (hdq_data-&gt;hdq_usecount) {
+ 		dev_dbg(&amp;pdev-&gt;dev, "removed when use count is not zero\n");
++		mutex_unlock(&amp;hdq_data-&gt;hdq_mutex);
+ 		return -EBUSY;
+ 	}
+ </pre>
+    <div class="pagination">
+        <a href='23_2.html'>&lt;&lt;Prev</a><a href='23.html'>1</a><a href='23_2.html'>2</a><span>[3]</span><a href='23_4.html'>4</a><a href='23_4.html'>Next&gt;&gt;</a>
+    <div>
+</body>

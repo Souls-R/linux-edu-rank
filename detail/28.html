@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Southeast University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Southeast University</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='28_2.html'>2</a><a href='28_3.html'>3</a><a href='28_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 5a74af51c3a6f4cd22c128b0c1c019f68fa90011
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Thu Dec 25 08:45:26 2025 +0000
+
+    pnfs/blocklayout: Fix memory leak in bl_parse_scsi()
+    
+    In bl_parse_scsi(), if the block device length is zero, the function
+    returns immediately without releasing the file reference obtained via
+    bl_open_path(), leading to a memory leak.
+    
+    Fix this by jumping to the out_blkdev_put label to ensure the file
+    reference is properly released.
+    
+    Fixes: d76c769c8db4c ("pnfs/blocklayout: Don't add zero-length pnfs_block_dev")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: Trond Myklebust &lt;trond.myklebust@hammerspace.com&gt;
+
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index ab76120705e2..134d7f760a33 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -417,8 +417,10 @@ bl_parse_scsi(struct nfs_server *server, struct pnfs_block_dev *d,
+ 	d-&gt;map = bl_map_simple;
+ 	d-&gt;pr_key = v-&gt;scsi.pr_key;
+ 
+-	if (d-&gt;len == 0)
+-		return -ENODEV;
++	if (d-&gt;len == 0) {
++		error = -ENODEV;
++		goto out_blkdev_put;
++	}
+ 
+ 	ops = bdev-&gt;bd_disk-&gt;fops-&gt;pr_ops;
+ 	if (!ops) {</pre><hr><pre>commit 0c728083654f0066f5e10a1d2b0bd0907af19a58
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Thu Dec 25 07:41:03 2025 +0000
+
+    pnfs/flexfiles: Fix memory leak in nfs4_ff_alloc_deviceid_node()
+    
+    In nfs4_ff_alloc_deviceid_node(), if the allocation for ds_versions fails,
+    the function jumps to the out_scratch label without freeing the already
+    allocated dsaddrs list, leading to a memory leak.
+    
+    Fix this by jumping to the out_err_drain_dsaddrs label, which properly
+    frees the dsaddrs list before cleaning up other resources.
+    
+    Fixes: d67ae825a59d6 ("pnfs/flexfiles: Add the FlexFile Layout Driver")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: Trond Myklebust &lt;trond.myklebust@hammerspace.com&gt;
+
+diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+index c55ea8fa3bfa..c2d8a13a9dbd 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
++++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+@@ -103,7 +103,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 			      sizeof(struct nfs4_ff_ds_version),
+ 			      gfp_flags);
+ 	if (!ds_versions)
+-		goto out_scratch;
++		goto out_err_drain_dsaddrs;
+ 
+ 	for (i = 0; i &lt; version_count; i++) {
+ 		/* 20 = version(4) + minor_version(4) + rsize(4) + wsize(4) +</pre><hr><pre>commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Tue Dec 30 07:18:53 2025 +0000
+
+    net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
+    
+    Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+    allocated memory for pp_qlt in ipc_mux_init() but did not free it in
+    ipc_mux_deinit(). This results in a memory leak when the driver is
+    unloaded.
+    
+    Free the allocated memory in ipc_mux_deinit() to fix the leak.
+    
+    Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+    Co-developed-by: Jianhao Xu &lt;jianhao.xu@seu.edu.cn&gt;
+    Signed-off-by: Jianhao Xu &lt;jianhao.xu@seu.edu.cn&gt;
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: Loic Poulain &lt;loic.poulain@oss.qualcomm.com&gt;
+    Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+index fc928b298a98..b846889fcb09 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 	struct sk_buff_head *free_list;
+ 	union mux_msg mux_msg;
+ 	struct sk_buff *skb;
++	int i;
+ 
+ 	if (!ipc_mux-&gt;initialized)
+ 		return;
+@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 		ipc_mux-&gt;channel-&gt;dl_pipe.is_open = false;
+ 	}
+ 
++	if (ipc_mux-&gt;protocol != MUX_LITE) {
++		for (i = 0; i &lt; IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
++			kfree(ipc_mux-&gt;ul_adb.pp_qlt[i]);
++	}
++
+ 	kfree(ipc_mux);
+ }</pre><hr><pre>commit 235a1eb8d2dcc49a6cf0a5ee1aa85544a5d0054b
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed Dec 31 11:49:15 2025 +0000
+
+    of: unittest: Fix memory leak in unittest_data_add()
+    
+    In unittest_data_add(), if of_resolve_phandles() fails, the allocated
+    unittest_data is not freed, leading to a memory leak.
+    
+    Fix this by using scope-based cleanup helper __free(kfree) for automatic
+    resource cleanup. This ensures unittest_data is automatically freed when
+    it goes out of scope in error paths.
+    
+    For the success path, use retain_and_null_ptr() to transfer ownership
+    of the memory to the device tree and prevent double freeing.
+    
+    Fixes: 2eb46da2a760 ("of/selftest: Use the resolver to fixup phandles")
+    Suggested-by: Rob Herring &lt;robh@kernel.org&gt;
+    Co-developed-by: Jianhao Xu &lt;jianhao.xu@seu.edu.cn&gt;
+    Signed-off-by: Jianhao Xu &lt;jianhao.xu@seu.edu.cn&gt;
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251231114915.234638-1-zilin@seu.edu.cn
+    Signed-off-by: Rob Herring (Arm) &lt;robh@kernel.org&gt;
+
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 388e9ec2cccf..3b773aaf9d05 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -1985,7 +1985,6 @@ static void attach_node_and_children(struct device_node *np)
+  */
+ static int __init unittest_data_add(void)
+ {
+-	void *unittest_data;
+ 	void *unittest_data_align;
+ 	struct device_node *unittest_data_node = NULL, *np;
+ 	/*
+@@ -2004,7 +2003,7 @@ static int __init unittest_data_add(void)
+ 	}
+ 
+ 	/* creating copy */
+-	unittest_data = kmalloc(size + FDT_ALIGN_SIZE, GFP_KERNEL);
++	void *unittest_data __free(kfree) = kmalloc(size + FDT_ALIGN_SIZE, GFP_KERNEL);
+ 	if (!unittest_data)
+ 		return -ENOMEM;
+ 
+@@ -2014,12 +2013,10 @@ static int __init unittest_data_add(void)
+ 	ret = of_fdt_unflatten_tree(unittest_data_align, NULL, &amp;unittest_data_node);
+ 	if (!ret) {
+ 		pr_warn("%s: unflatten testcases tree failed\n", __func__);
+-		kfree(unittest_data);
+ 		return -ENODATA;
+ 	}
+ 	if (!unittest_data_node) {
+ 		pr_warn("%s: testcases tree is empty\n", __func__);
+-		kfree(unittest_data);
+ 		return -ENODATA;
+ 	}
+ 
+@@ -2038,7 +2035,6 @@ static int __init unittest_data_add(void)
+ 	/* attach the sub-tree to live tree */
+ 	if (!of_root) {
+ 		pr_warn("%s: no live tree to attach sub-tree\n", __func__);
+-		kfree(unittest_data);
+ 		rc = -ENODEV;
+ 		goto unlock;
+ 	}
+@@ -2059,6 +2055,8 @@ static int __init unittest_data_add(void)
+ 	EXPECT_END(KERN_INFO,
+ 		   "Duplicate name in testcase-data, renamed to \"duplicate-name#1\"");
+ 
++	retain_and_null_ptr(unittest_data);
++
+ unlock:
+ 	of_overlay_mutex_unlock();
+ </pre><hr><pre>commit d077e8119ddbb4fca67540f1a52453631a47f221
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed Dec 24 12:48:26 2025 +0000
+
+    netfilter: nf_tables: fix memory leak in nf_tables_newrule()
+    
+    In nf_tables_newrule(), if nft_use_inc() fails, the function jumps to
+    the err_release_rule label without freeing the allocated flow, leading
+    to a memory leak.
+    
+    Fix this by adding a new label err_destroy_flow and jumping to it when
+    nft_use_inc() fails. This ensures that the flow is properly released
+    in this error case.
+    
+    Fixes: 1689f25924ada ("netfilter: nf_tables: report use refcount overflow")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: Florian Westphal &lt;fw@strlen.de&gt;
+
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 618af6e90773..729a92781a1a 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4439,7 +4439,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ 	if (!nft_use_inc(&amp;chain-&gt;use)) {
+ 		err = -EMFILE;
+-		goto err_release_rule;
++		goto err_destroy_flow;
+ 	}
+ 
+ 	if (info-&gt;nlh-&gt;nlmsg_flags &amp; NLM_F_REPLACE) {
+@@ -4489,6 +4489,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ err_destroy_flow_rule:
+ 	nft_use_dec_restore(&amp;chain-&gt;use);
++err_destroy_flow:
+ 	if (flow)
+ 		nft_flow_rule_destroy(flow);
+ err_release_rule:</pre><hr><pre>commit 0c56693b06a68476ba113db6347e7897475f9e4c
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed Dec 24 14:20:16 2025 +0000
+
+    ksmbd: Fix memory leak in get_file_all_info()
+    
+    In get_file_all_info(), if vfs_getattr() fails, the function returns
+    immediately without freeing the allocated filename, leading to a memory
+    leak.
+    
+    Fix this by freeing the filename before returning in this error case.
+    
+    Fixes: 5614c8c487f6a ("ksmbd: replace generic_fillattr with vfs_getattr")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Acked-by: Namjae Jeon &lt;linkinjeon@kernel.org&gt;
+    Signed-off-by: Steve French &lt;stfrench@microsoft.com&gt;
+
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 469b70757dba..a607e072a370 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4923,8 +4923,10 @@ static int get_file_all_info(struct ksmbd_work *work,
+ 
+ 	ret = vfs_getattr(&amp;fp-&gt;filp-&gt;f_path, &amp;stat, STATX_BASIC_STATS,
+ 			  AT_STATX_SYNC_AS_STAT);
+-	if (ret)
++	if (ret) {
++		kfree(filename);
+ 		return ret;
++	}
+ 
+ 	ksmbd_debug(SMB, "filename = %s\n", filename);
+ 	delete_pending = ksmbd_inode_pending_delete(fp);</pre><hr><pre>commit 665077d78dc7941ce6a330c02023a2b469cc8cc7
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Thu Dec 25 14:31:50 2025 +0000
+
+    vfio/pds: Fix memory leak in pds_vfio_dirty_enable()
+    
+    pds_vfio_dirty_enable() allocates memory for region_info. If
+    interval_tree_iter_first() returns NULL, the function returns -EINVAL
+    immediately without freeing the allocated memory, causing a memory leak.
+    
+    Fix this by jumping to the out_free_region_info label to ensure
+    region_info is freed.
+    
+    Fixes: 2e7c6feb4ef52 ("vfio/pds: Add multi-region support")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20251225143150.1117366-1-zilin@seu.edu.cn
+    Signed-off-by: Alex Williamson &lt;alex@shazbot.org&gt;
+
+diff --git a/drivers/vfio/pci/pds/dirty.c b/drivers/vfio/pci/pds/dirty.c
+index 481992142f79..4915a7c1c491 100644
+--- a/drivers/vfio/pci/pds/dirty.c
++++ b/drivers/vfio/pci/pds/dirty.c
+@@ -292,8 +292,11 @@ static int pds_vfio_dirty_enable(struct pds_vfio_pci_device *pds_vfio,
+ 	len = num_ranges * sizeof(*region_info);
+ 
+ 	node = interval_tree_iter_first(ranges, 0, ULONG_MAX);
+-	if (!node)
+-		return -EINVAL;
++	if (!node) {
++		err = -EINVAL;
++		goto out_free_region_info;
++	}
++
+ 	for (int i = 0; i &lt; num_ranges; i++) {
+ 		struct pds_lm_dirty_region_info *ri = &amp;region_info[i];
+ 		u64 region_size = node-&gt;last - node-&gt;start + 1;</pre><hr><pre>commit cb6d5aa9c0f10074f1ad056c3e2278ad2cc7ec8d
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed Dec 24 15:21:42 2025 +0000
+
+    cifs: Fix memory and information leak in smb3_reconfigure()
+    
+    In smb3_reconfigure(), if smb3_sync_session_ctx_passwords() fails, the
+    function returns immediately without freeing and erasing the newly
+    allocated new_password and new_password2. This causes both a memory leak
+    and a potential information leak.
+    
+    Fix this by calling kfree_sensitive() on both password buffers before
+    returning in this error case.
+    
+    Fixes: 0f0e357902957 ("cifs: during remount, make sure passwords are in sync")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: ChenXiaoSong &lt;chenxiaosong@kylinos.cn&gt;
+    Signed-off-by: Steve French &lt;stfrench@microsoft.com&gt;
+
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index c2de97e4ad59..d4291d3a9a48 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1139,6 +1139,8 @@ static int smb3_reconfigure(struct fs_context *fc)
+ 	rc = smb3_sync_session_ctx_passwords(cifs_sb, ses);
+ 	if (rc) {
+ 		mutex_unlock(&amp;ses-&gt;session_mutex);
++		kfree_sensitive(new_password);
++		kfree_sensitive(new_password2);
+ 		return rc;
+ 	}
+ </pre><hr><pre>commit 53d1548612670aa8b5d89745116cc33d9d172863
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Thu Nov 13 06:24:15 2025 +0000
+
+    mt76: mt7615: Fix memory leak in mt7615_mcu_wtbl_sta_add()
+    
+    In mt7615_mcu_wtbl_sta_add(), an skb sskb is allocated. If the
+    subsequent call to mt76_connac_mcu_alloc_wtbl_req() fails, the function
+    returns an error without freeing sskb, leading to a memory leak.
+    
+    Fix this by calling dev_kfree_skb() on sskb in the error handling path
+    to ensure it is properly released.
+    
+    Fixes: 99c457d902cf9 ("mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Acked-by: Lorenzo Bianconi &lt;lorenzo@kernel.org&gt;
+    Link: https://patch.msgid.link/20251113062415.103611-1-zilin@seu.edu.cn
+    Signed-off-by: Felix Fietkau &lt;nbd@nbd.name&gt;
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 52bbedda672b..fc0054f8bd60 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -874,8 +874,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&amp;dev-&gt;mt76, &amp;msta-&gt;wcid,
+ 						  WTBL_RESET_AND_SET, NULL,
+ 						  &amp;wskb);
+-	if (IS_ERR(wtbl_hdr))
++	if (IS_ERR(wtbl_hdr)) {
++		dev_kfree_skb(sskb);
+ 		return PTR_ERR(wtbl_hdr);
++	}
+ 
+ 	if (enable) {
+ 		mt76_connac_mcu_wtbl_generic_tlv(&amp;dev-&gt;mt76, wskb, vif, sta,</pre><hr><pre>commit 78b1a242fe612a755f2158fd206ee6bb577d18ca
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Thu Nov 13 15:12:46 2025 +0000
+
+    scsi: qla2xxx: Fix improper freeing of purex item
+    
+    In qla2xxx_process_purls_iocb(), an item is allocated via
+    qla27xx_copy_multiple_pkt(), which internally calls
+    qla24xx_alloc_purex_item().
+    
+    The qla24xx_alloc_purex_item() function may return a pre-allocated item
+    from a per-adapter pool for small allocations, instead of dynamically
+    allocating memory with kzalloc().
+    
+    An error handling path in qla2xxx_process_purls_iocb() incorrectly uses
+    kfree() to release the item. If the item was from the pre-allocated
+    pool, calling kfree() on it is a bug that can lead to memory corruption.
+    
+    Fix this by using the correct deallocation function,
+    qla24xx_free_purex_item(), which properly handles both dynamically
+    allocated and pre-allocated items.
+    
+    Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: Himanshu Madhani &lt;hmadhani2024@gmail.com&gt;
+    Link: https://patch.msgid.link/20251113151246.762510-1-zilin@seu.edu.cn
+    Signed-off-by: Martin K. Petersen &lt;martin.petersen@oracle.com&gt;
+
+diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
+index 316594aa40cc..42eb65a62f1f 100644
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -1292,7 +1292,7 @@ void qla2xxx_process_purls_iocb(void **pkt, struct rsp_que **rsp)
+ 		a.reason = FCNVME_RJT_RC_LOGIC;
+ 		a.explanation = FCNVME_RJT_EXP_NONE;
+ 		xmt_reject = true;
+-		kfree(item);
++		qla24xx_free_purex_item(item);
+ 		goto out;
+ 	}
+ </pre>
+    <div class="pagination">
+        <span>[1]</span><a href='28_2.html'>2</a><a href='28_3.html'>3</a><a href='28_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

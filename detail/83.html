@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by The University of Texas at Austin</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by The University of Texas at Austin</h1>
+    <div class="pagination">
+        <span>[1]</span>
+    </div>
+    <hr>
+    <pre>commit fdf47b3a379b180403bd29b59e4159deff748e0b
+Author: Logan Bristol &lt;logan.bristol@utexas.edu&gt;
+Date:   Fri Aug 9 08:57:53 2024 -0500
+
+    arm64: dts: ti: k3-am64*: Disable ethernet by default at SoC level
+    
+    External interfaces should be disabled at the SoC DTSI level, since
+    the node is incomplete. Disable Ethernet switch and ports in SoC DTSI
+    and enable them in the board DTS. If the board DTS includes a SoM DTSI
+    that completes the node description, enable the Ethernet switch and
+    ports in SoM DTSI.
+    
+    Reflect this change in SoM DTSIs by removing ethernet port disable.
+    
+    Signed-off-by: Logan Bristol &lt;logan.bristol@utexas.edu&gt;
+    Acked-by: Matthias Schiffer &lt;matthias.schiffer@ew.tq-group.com&gt;
+    Acked-by: Josua Mayer &lt;josua@solid-run.com&gt;
+    Link: https://lore.kernel.org/r/20240809135753.1186-1-logan.bristol@utexas.edu
+    Signed-off-by: Nishanth Menon &lt;nm@ti.com&gt;
+
+diff --git a/arch/arm64/boot/dts/ti/k3-am64-main.dtsi b/arch/arm64/boot/dts/ti/k3-am64-main.dtsi
+index f8370dd03350..69c5af58b727 100644
+--- a/arch/arm64/boot/dts/ti/k3-am64-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am64-main.dtsi
+@@ -677,6 +677,7 @@ cpsw3g: ethernet@8000000 {
+ 		assigned-clock-parents = &lt;&amp;k3_clks 13 9&gt;;
+ 		clock-names = "fck";
+ 		power-domains = &lt;&amp;k3_pds 13 TI_SCI_PD_EXCLUSIVE&gt;;
++		status = "disabled";
+ 
+ 		dmas = &lt;&amp;main_pktdma 0xC500 15&gt;,
+ 		       &lt;&amp;main_pktdma 0xC501 15&gt;,
+@@ -701,6 +702,7 @@ cpsw_port1: port@1 {
+ 				phys = &lt;&amp;phy_gmii_sel 1&gt;;
+ 				mac-address = [00 00 00 00 00 00];
+ 				ti,syscon-efuse = &lt;&amp;main_conf 0x200&gt;;
++				status = "disabled";
+ 			};
+ 
+ 			cpsw_port2: port@2 {
+@@ -709,6 +711,7 @@ cpsw_port2: port@2 {
+ 				label = "port2";
+ 				phys = &lt;&amp;phy_gmii_sel 2&gt;;
+ 				mac-address = [00 00 00 00 00 00];
++				status = "disabled";
+ 			};
+ 		};
+ 
+diff --git a/arch/arm64/boot/dts/ti/k3-am64-phycore-som.dtsi b/arch/arm64/boot/dts/ti/k3-am64-phycore-som.dtsi
+index ea7c58fb67e2..6bece2fb4e95 100644
+--- a/arch/arm64/boot/dts/ti/k3-am64-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am64-phycore-som.dtsi
+@@ -185,6 +185,7 @@ AM64X_IOPAD(0x0278, PIN_INPUT, 7)	/* (C19) EXTINTn.GPIO1_70 */
+ &amp;cpsw3g {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = &lt;&amp;cpsw_rgmii1_pins_default&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw3g_mdio {
+@@ -208,10 +209,7 @@ cpsw3g_phy1: ethernet-phy@1 {
+ &amp;cpsw_port1 {
+ 	phy-mode = "rgmii-rxid";
+ 	phy-handle = &lt;&amp;cpsw3g_phy1&gt;;
+-};
+-
+-&amp;cpsw_port2 {
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &amp;mailbox0_cluster2 {
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-evm.dts b/arch/arm64/boot/dts/ti/k3-am642-evm.dts
+index 42015a55e0d3..97ca16f00cd2 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-evm.dts
+@@ -616,17 +616,20 @@ &amp;cpsw3g {
+ 	bootph-all;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = &lt;&amp;rgmii1_pins_default&gt;, &lt;&amp;rgmii2_pins_default&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw_port1 {
+ 	bootph-all;
+ 	phy-mode = "rgmii-rxid";
+ 	phy-handle = &lt;&amp;cpsw3g_phy0&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw_port2 {
+ 	phy-mode = "rgmii-rxid";
+ 	phy-handle = &lt;&amp;cpsw3g_phy3&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw3g_mdio {
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-sk.dts b/arch/arm64/boot/dts/ti/k3-am642-sk.dts
+index 44ecbcf1c844..86369525259c 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-sk.dts
+@@ -527,16 +527,19 @@ &amp;usb0 {
+ &amp;cpsw3g {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = &lt;&amp;rgmii1_pins_default&gt;, &lt;&amp;rgmii2_pins_default&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw_port1 {
+ 	phy-mode = "rgmii-rxid";
+ 	phy-handle = &lt;&amp;cpsw3g_phy0&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw_port2 {
+ 	phy-mode = "rgmii-rxid";
+ 	phy-handle = &lt;&amp;cpsw3g_phy1&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw3g_mdio {
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi b/arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi
+index c19d0b8bbf0f..a5cec9a07510 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi
+@@ -177,6 +177,7 @@ vdd_mmc0: regulator-vdd-mmc0 {
+ &amp;cpsw3g {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = &lt;&amp;rgmii1_default_pins&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw3g_mdio {
+@@ -210,10 +211,7 @@ ethernet_phy0: ethernet-phy@0 {
+ &amp;cpsw_port1 {
+ 	phy-mode = "rgmii-id";
+ 	phy-handle = &lt;&amp;ethernet_phy0&gt;;
+-};
+-
+-&amp;cpsw_port2 {
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &amp;icssg1_mdio {
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-tqma64xxl-mbax4xxl.dts b/arch/arm64/boot/dts/ti/k3-am642-tqma64xxl-mbax4xxl.dts
+index c2a62cb763a5..e06a3b178b34 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-tqma64xxl-mbax4xxl.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-tqma64xxl-mbax4xxl.dts
+@@ -181,15 +181,13 @@ reg_sd: regulator-sd {
+ &amp;cpsw3g {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = &lt;&amp;cpsw_pins&gt;;
++	status = "okay";
+ };
+ 
+ &amp;cpsw_port1 {
+ 	phy-mode = "rgmii-rxid";
+ 	phy-handle = &lt;&amp;cpsw3g_phy0&gt;;
+-};
+-
+-&amp;cpsw_port2 {
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &amp;cpsw3g_mdio {</pre><hr><pre>commit eceb8902be2910be296f00ad6662941d79c09f8e
+Author: Mihir Mehta &lt;mihir@cs.utexas.edu&gt;
+Date:   Tue Oct 30 15:06:46 2018 -0700
+
+    fat: expand a slightly out-of-date comment
+    
+    The file namei.c seems to have been renamed to namei_msdos.c, so I decided
+    to update the comment with the correct name, and expand it a bit to tell
+    the reader what to look for.
+    
+    Link: http://lkml.kernel.org/r/20180928194947.23932-1-mihir@cs.utexas.edu
+    Signed-off-by: Mihir Mehta &lt;mihir@cs.utexas.edu&gt;
+    Acked-by: OGAWA Hirofumi &lt;hirofumi@mail.parknet.co.jp&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/fat/dir.c b/fs/fat/dir.c
+index 7f5f3699fc6c..ce5f958f6b23 100644
+--- a/fs/fat/dir.c
++++ b/fs/fat/dir.c
+@@ -369,7 +369,9 @@ static int fat_parse_short(struct super_block *sb,
+ 	}
+ 
+ 	memcpy(work, de-&gt;name, sizeof(work));
+-	/* see namei.c, msdos_format_name */
++	/* For an explanation of the special treatment of 0x05 in
++	 * filenames, see msdos_format_name in namei_msdos.c
++	 */
+ 	if (work[0] == 0x05)
+ 		work[0] = 0xE5;
+ </pre><hr><pre>commit cc68628096b813010f30f69fcf7d1832d18fa767
+Author: Ashay Rane &lt;ashay.rane@tacc.utexas.edu&gt;
+Date:   Thu Apr 5 21:01:01 2012 -0500
+
+    perf report: Correct display of samples and events in header
+    
+    This patch prints the number of samples and the count of performance
+    events separately.
+    
+    This allows comparing performance of different applications with each
+    other.
+    
+    Previously, the sample count was displayed against an 'Events:' heading.
+    With this patch, the header now reads (for example):
+    
+    Samples: 5K of event 'instructions'
+    Event count (approx.): 2993026545
+    
+    The patch covers both the stdio and the browser interface.
+    
+    Signed-off-by: Ashay Rane &lt;ashay.rane@tacc.utexas.edu&gt;
+    [ committer note: Fixed wrt e7f01d1 ]
+    Link: http://lkml.kernel.org/n/tip-h4nfjm8msedlk8gxkzivfh5y@git.kernel.org
+    Signed-off-by: Arnaldo Carvalho de Melo &lt;acme@redhat.com&gt;
+
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 2e317438980b..cec2b8cee80c 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -296,12 +296,15 @@ static size_t hists__fprintf_nr_sample_events(struct hists *self,
+ {
+ 	size_t ret;
+ 	char unit;
+-	unsigned long nr_events = self-&gt;stats.nr_events[PERF_RECORD_SAMPLE];
++	unsigned long nr_samples = self-&gt;stats.nr_events[PERF_RECORD_SAMPLE];
++	u64 nr_events = self-&gt;stats.total_period;
+ 
+-	nr_events = convert_unit(nr_events, &amp;unit);
+-	ret = fprintf(fp, "# Events: %lu%c", nr_events, unit);
++	nr_samples = convert_unit(nr_samples, &amp;unit);
++	ret = fprintf(fp, "# Samples: %lu%c", nr_samples, unit);
+ 	if (evname != NULL)
+-		ret += fprintf(fp, " %s", evname);
++		ret += fprintf(fp, " of event '%s'", evname);
++
++	ret += fprintf(fp, "\n# Event count (approx.): %lu", nr_events);
+ 	return ret + fprintf(fp, "\n#\n");
+ }
+ 
+diff --git a/tools/perf/util/ui/browsers/hists.c b/tools/perf/util/ui/browsers/hists.c
+index 2f83e5dc9967..1b820ed2a049 100644
+--- a/tools/perf/util/ui/browsers/hists.c
++++ b/tools/perf/util/ui/browsers/hists.c
+@@ -840,10 +840,14 @@ static int hists__browser_title(struct hists *self, char *bf, size_t size,
+ 	int printed;
+ 	const struct dso *dso = self-&gt;dso_filter;
+ 	const struct thread *thread = self-&gt;thread_filter;
+-	unsigned long nr_events = self-&gt;stats.nr_events[PERF_RECORD_SAMPLE];
++	unsigned long nr_samples = self-&gt;stats.nr_events[PERF_RECORD_SAMPLE];
++	u64 nr_events = self-&gt;stats.total_period;
++
++	nr_samples = convert_unit(nr_samples, &amp;unit);
++	printed = scnprintf(bf, size,
++			   "Samples: %lu%c of event '%s', Event count (approx.): %lu",
++			   nr_samples, unit, ev_name, nr_events);
+ 
+-	nr_events = convert_unit(nr_events, &amp;unit);
+-	printed = scnprintf(bf, size, "Events: %lu%c %s", nr_events, unit, ev_name);
+ 
+ 	if (self-&gt;uid_filter_str)
+ 		printed += snprintf(bf + printed, size - printed,</pre>
+    <div class="pagination">
+        <span>[1]</span>
+    <div>
+</body>

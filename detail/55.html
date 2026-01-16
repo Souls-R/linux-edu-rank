@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by National Taiwan University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by National Taiwan University</h1>
+    <div class="pagination">
+        <span>[1]</span>
+    </div>
+    <hr>
+    <pre>commit 51d165e92a701012a11e726217a5c51e367563e4
+Author: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+Date:   Mon Sep 8 14:48:06 2025 +0800
+
+    KVM: arm64: Remove stage 2 read fault check
+    
+    In the non-NV case, read permission is always granted when mapping
+    stage-2, so checking for it doesn't bring much. On the other hand,
+    shadow stage-2 for NV guests could potentially have non-readable
+    mappings when we align the permissions with those that L1 set for L2, we
+    shouldn't be checking for read faults in this case either.
+    
+    So just remove this check.
+    
+    Suggested-by: Oliver Upton &lt;oliver.upton@linux.dev&gt;
+    Suggested-by: Marc Zyngier &lt;maz@kernel.org&gt;
+    Signed-off-by: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+    Link: https://lore.kernel.org/r/20250908064806.4093081-1-r09922117@csie.ntu.edu.tw
+    Signed-off-by: Oliver Upton &lt;oliver.upton@linux.dev&gt;
+
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 0f4271458a07..e78ffcb4bfe9 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1545,11 +1545,6 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+ 	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
+ 	VM_BUG_ON(write_fault &amp;&amp; exec_fault);
+ 
+-	if (fault_is_perm &amp;&amp; !write_fault &amp;&amp; !exec_fault) {
+-		kvm_err("Unexpected L2 read permission error\n");
+-		return -EFAULT;
+-	}
+-
+ 	if (!is_protected_kvm_enabled())
+ 		memcache = &amp;vcpu-&gt;arch.mmu_page_cache;
+ 	else</pre><hr><pre>commit 8673e5b22e1e114213d3ca74f415034aed45e528
+Author: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+Date:   Sat Aug 9 21:53:56 2025 +0800
+
+    KVM: arm64: ptdump: Don't test PTE_VALID alongside other attributes
+    
+    The attribute masks and test values in the ptdump code are meant for
+    individual attributes, however for stage-2 ptdump we included PTE_VALID
+    while testing for R, W, X, and AF. This led to some confusion and the
+    flipped output for the executable attribute.
+    
+    Remove PTE_VALID from all attribute masks and values so that each test
+    matches only the relevant bits.
+    
+    Additionally, the executable attribute printing is updated to align with
+    stage-1 ptdump, printing "NX" for non-executable regions and "x " for
+    executable ones.
+    
+    Suggested-by: Anshuman Khandual &lt;anshuman.khandual@arm.com&gt;
+    Suggested-by: Mark Rutland &lt;mark.rutland@arm.com&gt;
+    Suggested-by: Sebastian Ene &lt;sebastianene@google.com&gt;
+    Signed-off-by: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+    Acked-by: Will Deacon &lt;will@kernel.org&gt;
+    Reviewed-by: Anshuman Khandual &lt;anshuman.khandual@arm.com&gt;
+    Signed-off-by: Marc Zyngier &lt;maz@kernel.org&gt;
+
+diff --git a/arch/arm64/kvm/ptdump.c b/arch/arm64/kvm/ptdump.c
+index 098416d7e5c2..dc5acfb00af9 100644
+--- a/arch/arm64/kvm/ptdump.c
++++ b/arch/arm64/kvm/ptdump.c
+@@ -32,23 +32,23 @@ static const struct ptdump_prot_bits stage2_pte_bits[] = {
+ 		.set	= " ",
+ 		.clear	= "F",
+ 	}, {
+-		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | PTE_VALID,
+-		.val	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | PTE_VALID,
++		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R,
++		.val	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R,
+ 		.set	= "R",
+ 		.clear	= " ",
+ 	}, {
+-		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W | PTE_VALID,
+-		.val	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W | PTE_VALID,
++		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
++		.val	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
+ 		.set	= "W",
+ 		.clear	= " ",
+ 	}, {
+-		.mask	= KVM_PTE_LEAF_ATTR_HI_S2_XN | PTE_VALID,
+-		.val	= PTE_VALID,
+-		.set	= " ",
+-		.clear	= "X",
++		.mask	= KVM_PTE_LEAF_ATTR_HI_S2_XN,
++		.val	= KVM_PTE_LEAF_ATTR_HI_S2_XN,
++		.set	= "NX",
++		.clear	= "x ",
+ 	}, {
+-		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_AF | PTE_VALID,
+-		.val	= KVM_PTE_LEAF_ATTR_LO_S2_AF | PTE_VALID,
++		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_AF,
++		.val	= KVM_PTE_LEAF_ATTR_LO_S2_AF,
+ 		.set	= "AF",
+ 		.clear	= "  ",
+ 	}, {</pre><hr><pre>commit af040a9a296044fd4b748786c2516f172a7617f1
+Author: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+Date:   Wed Jun 25 16:47:09 2025 +0800
+
+    KVM: arm64: nv: Fix MI line level calculation in vgic_v3_nested_update_mi()
+    
+    The state of the vcpu's MI line should be asserted when its
+    ICH_HCR_EL2.En is set and ICH_MISR_EL2 is non-zero. Using bitwise AND
+    (&amp;=) directly for this calculation will not give us the correct result
+    when the LSB of the vcpu's ICH_MISR_EL2 isn't set. Correct this by
+    directly computing the line level with a logical AND operation.
+    
+    Signed-off-by: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+    Link: https://lore.kernel.org/r/20250625084709.3968844-1-r09922117@csie.ntu.edu.tw
+    [maz: drop the level check from the original code]
+    Signed-off-by: Marc Zyngier &lt;maz@kernel.org&gt;
+
+diff --git a/arch/arm64/kvm/vgic/vgic-v3-nested.c b/arch/arm64/kvm/vgic/vgic-v3-nested.c
+index a50fb7e6841f..679aafe77de2 100644
+--- a/arch/arm64/kvm/vgic/vgic-v3-nested.c
++++ b/arch/arm64/kvm/vgic/vgic-v3-nested.c
+@@ -401,9 +401,7 @@ void vgic_v3_nested_update_mi(struct kvm_vcpu *vcpu)
+ {
+ 	bool level;
+ 
+-	level  = __vcpu_sys_reg(vcpu, ICH_HCR_EL2) &amp; ICH_HCR_EL2_En;
+-	if (level)
+-		level &amp;= vgic_v3_get_misr(vcpu);
++	level = (__vcpu_sys_reg(vcpu, ICH_HCR_EL2) &amp; ICH_HCR_EL2_En) &amp;&amp; vgic_v3_get_misr(vcpu);
+ 	kvm_vgic_inject_irq(vcpu-&gt;kvm, vcpu,
+ 			    vcpu-&gt;kvm-&gt;arch.vgic.mi_intid, level, vcpu);
+ }</pre><hr><pre>commit 92c749e4aa90cd684d87cb5bde6a9d51e83fe6e3
+Author: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+Date:   Mon May 12 21:32:23 2025 +0800
+
+    KVM: arm64: nv: Remove clearing of ICH_LR&lt;n&gt;.EOI if ICH_LR&lt;n&gt;.HW == 1
+    
+    In the case of ICH_LR&lt;n&gt;.HW == 1, bit 41 of LR is just a part of pINTID
+    without EOI meaning, and bit 41 will be zeroed by the subsequent clearing
+    of ICH_LR_PHYS_ID_MASK anyway.
+    No functional changes intended.
+    
+    Signed-off-by: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+    Link: https://lore.kernel.org/r/20250512133223.866999-1-r09922117@csie.ntu.edu.tw
+    Signed-off-by: Marc Zyngier &lt;maz@kernel.org&gt;
+
+diff --git a/arch/arm64/kvm/vgic/vgic-v3-nested.c b/arch/arm64/kvm/vgic/vgic-v3-nested.c
+index bfa5bde1f106..4f6954c30674 100644
+--- a/arch/arm64/kvm/vgic/vgic-v3-nested.c
++++ b/arch/arm64/kvm/vgic/vgic-v3-nested.c
+@@ -240,9 +240,6 @@ static void vgic_v3_create_shadow_lr(struct kvm_vcpu *vcpu,
+ 			goto next;
+ 		}
+ 
+-		/* It is illegal to have the EOI bit set with HW */
+-		lr &amp;= ~ICH_LR_EOI;
+-
+ 		/* Translate the virtual mapping to the real one */
+ 		lr &amp;= ~ICH_LR_PHYS_ID_MASK;
+ 		lr |= FIELD_PREP(ICH_LR_PHYS_ID_MASK, (u64)irq-&gt;hwintid);</pre><hr><pre>commit 43b233b1582de501e441deb7c4ed1f944e60b1f9
+Author: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+Date:   Thu Sep 29 12:28:39 2022 +0800
+
+    KVM: arm64: Fix comment typo in nvhe/switch.c
+    
+    Fix the comment of __hyp_vgic_restore_state() from saying VEH to VHE,
+    also change the underscore to a dash to match the comment
+    above __hyp_vgic_save_state().
+    
+    Signed-off-by: Wei-Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+    Signed-off-by: Marc Zyngier &lt;maz@kernel.org&gt;
+    Link: https://lore.kernel.org/r/20220929042839.24277-1-r09922117@csie.ntu.edu.tw
+
+diff --git a/arch/arm64/kvm/hyp/nvhe/switch.c b/arch/arm64/kvm/hyp/nvhe/switch.c
+index 9f6385702061..8e9d49a964be 100644
+--- a/arch/arm64/kvm/hyp/nvhe/switch.c
++++ b/arch/arm64/kvm/hyp/nvhe/switch.c
+@@ -143,7 +143,7 @@ static void __hyp_vgic_save_state(struct kvm_vcpu *vcpu)
+ 	}
+ }
+ 
+-/* Restore VGICv3 state on non_VEH systems */
++/* Restore VGICv3 state on non-VHE systems */
+ static void __hyp_vgic_restore_state(struct kvm_vcpu *vcpu)
+ {
+ 	if (static_branch_unlikely(&amp;kvm_vgic_global_state.gicv3_cpuif)) {</pre><hr><pre>commit d7a4c55b1376962a32708def0930ec5a72ba1578
+Author: Wei Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+Date:   Thu Oct 15 14:22:42 2020 +0800
+
+    Documentation: x86: fix a missing word in x86_64/mm.rst.
+    
+    This patch adds a missing word in x86/x86_64/mm.rst, without which
+    the note reads awkwardly.
+    
+    Signed-off-by: Wei Lin Chang &lt;r09922117@csie.ntu.edu.tw&gt;
+    Link: https://lore.kernel.org/r/20201015062242.26296-1-r09922117@csie.ntu.edu.tw
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+
+diff --git a/Documentation/x86/x86_64/mm.rst b/Documentation/x86/x86_64/mm.rst
+index e5053404a1ae..ede1875719fb 100644
+--- a/Documentation/x86/x86_64/mm.rst
++++ b/Documentation/x86/x86_64/mm.rst
+@@ -19,7 +19,7 @@ Complete virtual memory map with 4-level page tables
+    Note that as we get closer to the top of the address space, the notation changes
+    from TB to GB and then MB/KB.
+ 
+- - "16M TB" might look weird at first sight, but it's an easier to visualize size
++ - "16M TB" might look weird at first sight, but it's an easier way to visualize size
+    notation than "16 EB", which few will recognize at first sight as 16 exabytes.
+    It also shows it nicely how incredibly large 64-bit address space is.
+ </pre>
+    <div class="pagination">
+        <span>[1]</span>
+    <div>
+</body>

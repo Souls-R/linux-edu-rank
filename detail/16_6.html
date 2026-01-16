@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Fudan University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Fudan University</h1>
+    <div class="pagination">
+        <a href='16_5.html'>&lt;&lt;Prev</a><a href='16.html'>1</a><a href='16_2.html'>2</a><a href='16_3.html'>3</a><a href='16_4.html'>4</a><a href='16_5.html'>5</a><span>[6]</span><a href='16_7.html'>7</a><a href='16_8.html'>8</a><a href='16_7.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit a697ae6ea56e23397341b027098c1b11d9ab13da
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Sat Apr 25 20:48:35 2020 +0800
+
+    ASoC: davinci-mcasp: Fix dma_chan refcnt leak when getting dma type
+    
+    davinci_mcasp_get_dma_type() invokes dma_request_chan(), which returns a
+    reference of the specified dma_chan object to "chan" with increased
+    refcnt.
+    
+    When davinci_mcasp_get_dma_type() returns, local variable "chan" becomes
+    invalid, so the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one exception handling path of
+    davinci_mcasp_get_dma_type(). When chan device is NULL, the function
+    forgets to decrease the refcnt increased by dma_request_chan(), causing
+    a refcnt leak.
+    
+    Fix this issue by calling dma_release_channel() when chan device is
+    NULL.
+    
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Acked-by: Peter Ujfalusi &lt;peter.ujfalusi@ti.com&gt;
+    Link: https://lore.kernel.org/r/1587818916-38730-1-git-send-email-xiyuyang19@fudan.edu.cn
+    Signed-off-by: Mark Brown &lt;broonie@kernel.org&gt;
+
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index 734ffe925c4d..7a7db743dc5b 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -1896,8 +1896,10 @@ static int davinci_mcasp_get_dma_type(struct davinci_mcasp *mcasp)
+ 				PTR_ERR(chan));
+ 		return PTR_ERR(chan);
+ 	}
+-	if (WARN_ON(!chan-&gt;device || !chan-&gt;device-&gt;dev))
++	if (WARN_ON(!chan-&gt;device || !chan-&gt;device-&gt;dev)) {
++		dma_release_channel(chan);
+ 		return -EINVAL;
++	}
+ 
+ 	if (chan-&gt;device-&gt;dev-&gt;of_node)
+ 		ret = of_property_read_string(chan-&gt;device-&gt;dev-&gt;of_node,</pre><hr><pre>commit 18f02ad19e2c2a1d9e1d55a4e1c0cbf51419151c
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Sun Apr 26 11:35:15 2020 +0800
+
+    bpf: Fix sk_psock refcnt leak when receiving message
+    
+    tcp_bpf_recvmsg() invokes sk_psock_get(), which returns a reference of
+    the specified sk_psock object to "psock" with increased refcnt.
+    
+    When tcp_bpf_recvmsg() returns, local variable "psock" becomes invalid,
+    so the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in several exception handling paths
+    of tcp_bpf_recvmsg(). When those error scenarios occur such as "flags"
+    includes MSG_ERRQUEUE, the function forgets to decrease the refcnt
+    increased by sk_psock_get(), causing a refcnt leak.
+    
+    Fix this issue by calling sk_psock_put() or pulling up the error queue
+    read handling when those error scenarios occur.
+    
+    Fixes: e7a5f1f1cd000 ("bpf/sockmap: Read psock ingress_msg before sk_receive_queue")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Daniel Borkmann &lt;daniel@iogearbox.net&gt;
+    Reviewed-by: Jakub Sitnicki &lt;jakub@cloudflare.com&gt;
+    Link: https://lore.kernel.org/bpf/1587872115-42805-1-git-send-email-xiyuyang19@fudan.edu.cn
+
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 5a05327f97c1..ff96466ea6da 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -262,14 +262,17 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	struct sk_psock *psock;
+ 	int copied, ret;
+ 
++	if (unlikely(flags &amp; MSG_ERRQUEUE))
++		return inet_recv_error(sk, msg, len, addr_len);
++
+ 	psock = sk_psock_get(sk);
+ 	if (unlikely(!psock))
+ 		return tcp_recvmsg(sk, msg, len, nonblock, flags, addr_len);
+-	if (unlikely(flags &amp; MSG_ERRQUEUE))
+-		return inet_recv_error(sk, msg, len, addr_len);
+ 	if (!skb_queue_empty(&amp;sk-&gt;sk_receive_queue) &amp;&amp;
+-	    sk_psock_queue_empty(psock))
++	    sk_psock_queue_empty(psock)) {
++		sk_psock_put(sk, psock);
+ 		return tcp_recvmsg(sk, msg, len, nonblock, flags, addr_len);
++	}
+ 	lock_sock(sk);
+ msg_bytes_ready:
+ 	copied = __tcp_bpf_recvmsg(sk, psock, msg, len, flags);</pre><hr><pre>commit 62b4011fa7bef9fa00a6aeec26e69685dc1cc21e
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Sat Apr 25 21:10:23 2020 +0800
+
+    net/tls: Fix sk_psock refcnt leak when in tls_data_ready()
+    
+    tls_data_ready() invokes sk_psock_get(), which returns a reference of
+    the specified sk_psock object to "psock" with increased refcnt.
+    
+    When tls_data_ready() returns, local variable "psock" becomes invalid,
+    so the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one exception handling path of
+    tls_data_ready(). When "psock-&gt;ingress_msg" is empty but "psock" is not
+    NULL, the function forgets to decrease the refcnt increased by
+    sk_psock_get(), causing a refcnt leak.
+    
+    Fix this issue by calling sk_psock_put() on all paths when "psock" is
+    not NULL.
+    
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 704313dd082f..e23f94a5549b 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2083,8 +2083,9 @@ static void tls_data_ready(struct sock *sk)
+ 	strp_data_ready(&amp;ctx-&gt;strp);
+ 
+ 	psock = sk_psock_get(sk);
+-	if (psock &amp;&amp; !list_empty(&amp;psock-&gt;ingress_msg)) {
+-		ctx-&gt;saved_data_ready(sk);
++	if (psock) {
++		if (!list_empty(&amp;psock-&gt;ingress_msg))
++			ctx-&gt;saved_data_ready(sk);
+ 		sk_psock_put(sk, psock);
+ 	}
+ }</pre><hr><pre>commit 4becb7ee5b3d2829ed7b9261a245a77d5b7de902
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Sat Apr 25 21:06:25 2020 +0800
+
+    net/x25: Fix x25_neigh refcnt leak when x25 disconnect
+    
+    x25_connect() invokes x25_get_neigh(), which returns a reference of the
+    specified x25_neigh object to "x25-&gt;neighbour" with increased refcnt.
+    
+    When x25 connect success and returns, the reference still be hold by
+    "x25-&gt;neighbour", so the refcount should be decreased in
+    x25_disconnect() to keep refcount balanced.
+    
+    The reference counting issue happens in x25_disconnect(), which forgets
+    to decrease the refcnt increased by x25_get_neigh() in x25_connect(),
+    causing a refcnt leak.
+    
+    Fix this issue by calling x25_neigh_put() before x25_disconnect()
+    returns.
+    
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/net/x25/x25_subr.c b/net/x25/x25_subr.c
+index 8aa415a38814..8b1b06cabcbf 100644
+--- a/net/x25/x25_subr.c
++++ b/net/x25/x25_subr.c
+@@ -357,6 +357,10 @@ void x25_disconnect(struct sock *sk, int reason, unsigned char cause,
+ 		sk-&gt;sk_state_change(sk);
+ 		sock_set_flag(sk, SOCK_DEAD);
+ 	}
++	read_lock_bh(&amp;x25_list_lock);
++	x25_neigh_put(x25-&gt;neighbour);
++	x25-&gt;neighbour = NULL;
++	read_unlock_bh(&amp;x25_list_lock);
+ }
+ 
+ /*</pre><hr><pre>commit 095f5614bfe16e5b3e191b34ea41b10d6fdd4ced
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Sat Apr 25 20:54:37 2020 +0800
+
+    net/tls: Fix sk_psock refcnt leak in bpf_exec_tx_verdict()
+    
+    bpf_exec_tx_verdict() invokes sk_psock_get(), which returns a reference
+    of the specified sk_psock object to "psock" with increased refcnt.
+    
+    When bpf_exec_tx_verdict() returns, local variable "psock" becomes
+    invalid, so the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one exception handling path of
+    bpf_exec_tx_verdict(). When "policy" equals to NULL but "psock" is not
+    NULL, the function forgets to decrease the refcnt increased by
+    sk_psock_get(), causing a refcnt leak.
+    
+    Fix this issue by calling sk_psock_put() on this error path before
+    bpf_exec_tx_verdict() returns.
+    
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index c98e602a1a2d..704313dd082f 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -800,6 +800,8 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 			*copied -= sk_msg_free(sk, msg);
+ 			tls_free_open_rec(sk);
+ 		}
++		if (psock)
++			sk_psock_put(sk, psock);
+ 		return err;
+ 	}
+ more_data:</pre><hr><pre>commit 5d5e100a20348c336e56df604b353b978f8adbb9
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Mon Apr 20 13:41:54 2020 +0800
+
+    drm/i915/selftests: Fix i915_address_space refcnt leak
+    
+    igt_ppgtt_pin_update() invokes i915_gem_context_get_vm_rcu(), which
+    returns a reference of the i915_address_space object to "vm" with
+    increased refcount.
+    
+    When igt_ppgtt_pin_update() returns, "vm" becomes invalid, so the
+    refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in two exception handling paths of
+    igt_ppgtt_pin_update(). When i915_gem_object_create_internal() returns
+    IS_ERR, the refcnt increased by i915_gem_context_get_vm_rcu() is not
+    decreased, causing a refcnt leak.
+    
+    Fix this issue by jumping to "out_vm" label when
+    i915_gem_object_create_internal() returns IS_ERR.
+    
+    Fixes: a4e7ccdac38e ("drm/i915: Move context management under GEM")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Reviewed-by: Chris Wilson &lt;chris@chris-wilson.co.uk&gt;
+    Signed-off-by: Chris Wilson &lt;chris@chris-wilson.co.uk&gt;
+    Link: https://patchwork.freedesktop.org/patch/msgid/1587361342-83494-1-git-send-email-xiyuyang19@fudan.edu.cn
+    (cherry picked from commit e07c7606a00c4361bad72ff4e72ed0dfbefa23b0)
+    Signed-off-by: Rodrigo Vivi &lt;rodrigo.vivi@intel.com&gt;
+
+diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+index 2d0fd50c5312..d4f94ca9ae0d 100644
+--- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
++++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+@@ -1477,8 +1477,10 @@ static int igt_ppgtt_pin_update(void *arg)
+ 		unsigned int page_size = BIT(first);
+ 
+ 		obj = i915_gem_object_create_internal(dev_priv, page_size);
+-		if (IS_ERR(obj))
+-			return PTR_ERR(obj);
++		if (IS_ERR(obj)) {
++			err = PTR_ERR(obj);
++			goto out_vm;
++		}
+ 
+ 		vma = i915_vma_instance(obj, vm, NULL);
+ 		if (IS_ERR(vma)) {
+@@ -1531,8 +1533,10 @@ static int igt_ppgtt_pin_update(void *arg)
+ 	}
+ 
+ 	obj = i915_gem_object_create_internal(dev_priv, PAGE_SIZE);
+-	if (IS_ERR(obj))
+-		return PTR_ERR(obj);
++	if (IS_ERR(obj)) {
++		err = PTR_ERR(obj);
++		goto out_vm;
++	}
+ 
+ 	vma = i915_vma_instance(obj, vm, NULL);
+ 	if (IS_ERR(vma)) {</pre><hr><pre>commit 8aebfffacfa379ba400da573a5bf9e49634e38cb
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Sat Apr 25 20:52:26 2020 +0800
+
+    configfs: fix config_item refcnt leak in configfs_rmdir()
+    
+    configfs_rmdir() invokes configfs_get_config_item(), which returns a
+    reference of the specified config_item object to "parent_item" with
+    increased refcnt.
+    
+    When configfs_rmdir() returns, local variable "parent_item" becomes
+    invalid, so the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one exception handling path of
+    configfs_rmdir(). When down_write_killable() fails, the function forgets
+    to decrease the refcnt increased by configfs_get_config_item(), causing
+    a refcnt leak.
+    
+    Fix this issue by calling config_item_put() when down_write_killable()
+    fails.
+    
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Christoph Hellwig &lt;hch@lst.de&gt;
+
+diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
+index cf7b7e1d5bd7..cb733652ecca 100644
+--- a/fs/configfs/dir.c
++++ b/fs/configfs/dir.c
+@@ -1519,6 +1519,7 @@ static int configfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 		spin_lock(&amp;configfs_dirent_lock);
+ 		configfs_detach_rollback(dentry);
+ 		spin_unlock(&amp;configfs_dirent_lock);
++		config_item_put(parent_item);
+ 		return -EINTR;
+ 	}
+ 	frag-&gt;frag_dead = true;</pre><hr><pre>commit 6e47666ef93dc9c4011407df8d2de1dd1ed39f25
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Sat Apr 25 21:04:40 2020 +0800
+
+    NFSv4: Remove unreachable error condition due to rpc_run_task()
+    
+    nfs4_proc_layoutget() invokes rpc_run_task(), which return the value to
+    "task". Since rpc_run_task() is impossible to return an ERR pointer,
+    there is no need to add the IS_ERR() condition on "task" here. So we
+    need to remove it.
+    
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Trond Myklebust &lt;trond.myklebust@hammerspace.com&gt;
+
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 512afb1c7867..1c710a7834c2 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -9191,8 +9191,7 @@ nfs4_proc_layoutget(struct nfs4_layoutget *lgp, long *timeout)
+ 	nfs4_init_sequence(&amp;lgp-&gt;args.seq_args, &amp;lgp-&gt;res.seq_res, 0, 0);
+ 
+ 	task = rpc_run_task(&amp;task_setup_data);
+-	if (IS_ERR(task))
+-		return ERR_CAST(task);
++
+ 	status = rpc_wait_for_completion_task(task);
+ 	if (status != 0)
+ 		goto out;</pre><hr><pre>commit f35d12971b4d814cdb2f659d76b42f0c545270b6
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Thu Apr 23 13:13:03 2020 +0800
+
+    net/x25: Fix x25_neigh refcnt leak when receiving frame
+    
+    x25_lapb_receive_frame() invokes x25_get_neigh(), which returns a
+    reference of the specified x25_neigh object to "nb" with increased
+    refcnt.
+    
+    When x25_lapb_receive_frame() returns, local variable "nb" becomes
+    invalid, so the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one path of
+    x25_lapb_receive_frame(). When pskb_may_pull() returns false, the
+    function forgets to decrease the refcnt increased by x25_get_neigh(),
+    causing a refcnt leak.
+    
+    Fix this issue by calling x25_neigh_put() when pskb_may_pull() returns
+    false.
+    
+    Fixes: cb101ed2c3c7 ("x25: Handle undersized/fragmented skbs")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/net/x25/x25_dev.c b/net/x25/x25_dev.c
+index 00e782335cb0..25bf72ee6cad 100644
+--- a/net/x25/x25_dev.c
++++ b/net/x25/x25_dev.c
+@@ -115,8 +115,10 @@ int x25_lapb_receive_frame(struct sk_buff *skb, struct net_device *dev,
+ 		goto drop;
+ 	}
+ 
+-	if (!pskb_may_pull(skb, 1))
++	if (!pskb_may_pull(skb, 1)) {
++		x25_neigh_put(nb);
+ 		return 0;
++	}
+ 
+ 	switch (skb-&gt;data[0]) {
+ </pre><hr><pre>commit 1402d17dfd9657be0da8458b2079d03c2d61c86a
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Mon Apr 20 13:39:39 2020 +0800
+
+    btrfs: fix transaction leak in btrfs_recover_relocation
+    
+    btrfs_recover_relocation() invokes btrfs_join_transaction(), which joins
+    a btrfs_trans_handle object into transactions and returns a reference of
+    it with increased refcount to "trans".
+    
+    When btrfs_recover_relocation() returns, "trans" becomes invalid, so the
+    refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one exception handling path of
+    btrfs_recover_relocation(). When read_fs_root() failed, the refcnt
+    increased by btrfs_join_transaction() is not decreased, causing a refcnt
+    leak.
+    
+    Fix this issue by calling btrfs_end_transaction() on this error path
+    when read_fs_root() failed.
+    
+    Fixes: 79787eaab461 ("btrfs: replace many BUG_ONs with proper error handling")
+    CC: stable@vger.kernel.org # 4.4+
+    Reviewed-by: Filipe Manana &lt;fdmanana@suse.com&gt;
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: David Sterba &lt;dsterba@suse.com&gt;
+
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index d35936c934ab..03bc7134e8cb 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -4559,6 +4559,7 @@ int btrfs_recover_relocation(struct btrfs_root *root)
+ 		if (IS_ERR(fs_root)) {
+ 			err = PTR_ERR(fs_root);
+ 			list_add_tail(&amp;reloc_root-&gt;root_list, &amp;reloc_roots);
++			btrfs_end_transaction(trans);
+ 			goto out_unset;
+ 		}
+ </pre>
+    <div class="pagination">
+        <a href='16_5.html'>&lt;&lt;Prev</a><a href='16.html'>1</a><a href='16_2.html'>2</a><a href='16_3.html'>3</a><a href='16_4.html'>4</a><a href='16_5.html'>5</a><span>[6]</span><a href='16_7.html'>7</a><a href='16_8.html'>8</a><a href='16_7.html'>Next&gt;&gt;</a>
+    <div>
+</body>

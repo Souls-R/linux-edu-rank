@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Zhejiang University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Zhejiang University</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='6_2.html'>2</a><a href='6_3.html'>3</a><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_37.html'>37</a><a href='6_38.html'>38</a><a href='6_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit bf40644ef8c8a288742fa45580897ed0e0289474
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Dec 17 11:00:17 2025 +0800
+
+    Input: alps - fix use-after-free bugs caused by dev3_register_work
+    
+    The dev3_register_work delayed work item is initialized within
+    alps_reconnect() and scheduled upon receipt of the first bare
+    PS/2 packet from an external PS/2 device connected to the ALPS
+    touchpad. During device detachment, the original implementation
+    calls flush_workqueue() in psmouse_disconnect() to ensure
+    completion of dev3_register_work. However, the flush_workqueue()
+    in psmouse_disconnect() only blocks and waits for work items that
+    were already queued to the workqueue prior to its invocation. Any
+    work items submitted after flush_workqueue() is called are not
+    included in the set of tasks that the flush operation awaits.
+    This means that after flush_workqueue() has finished executing,
+    the dev3_register_work could still be scheduled. Although the
+    psmouse state is set to PSMOUSE_CMD_MODE in psmouse_disconnect(),
+    the scheduling of dev3_register_work remains unaffected.
+    
+    The race condition can occur as follows:
+    
+    CPU 0 (cleanup path)     | CPU 1 (delayed work)
+    psmouse_disconnect()     |
+      psmouse_set_state()    |
+      flush_workqueue()      | alps_report_bare_ps2_packet()
+      alps_disconnect()      |   psmouse_queue_work()
+        kfree(priv); // FREE | alps_register_bare_ps2_mouse()
+                             |   priv = container_of(work...); // USE
+                             |   priv-&gt;dev3 // USE
+    
+    Add disable_delayed_work_sync() in alps_disconnect() to ensure
+    that dev3_register_work is properly canceled and prevented from
+    executing after the alps_data structure has been deallocated.
+    
+    This bug is identified by static analysis.
+    
+    Fixes: 04aae283ba6a ("Input: ALPS - do not mix trackstick and external PS/2 mouse data")
+    Cc: stable@kernel.org
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://patch.msgid.link/b57b0a9ccca51a3f06be141bfc02b9ffe69d1845.1765939397.git.duoming@zju.edu.cn
+    Signed-off-by: Dmitry Torokhov &lt;dmitry.torokhov@gmail.com&gt;
+
+diff --git a/drivers/input/mouse/alps.c b/drivers/input/mouse/alps.c
+index d0cb9fb94821..df8953a5196e 100644
+--- a/drivers/input/mouse/alps.c
++++ b/drivers/input/mouse/alps.c
+@@ -2975,6 +2975,7 @@ static void alps_disconnect(struct psmouse *psmouse)
+ 
+ 	psmouse_reset(psmouse);
+ 	timer_shutdown_sync(&amp;priv-&gt;timer);
++	disable_delayed_work_sync(&amp;priv-&gt;dev3_register_work);
+ 	if (priv-&gt;dev2)
+ 		input_unregister_device(priv-&gt;dev2);
+ 	if (!IS_ERR_OR_NULL(priv-&gt;dev3))</pre><hr><pre>commit 41ca62e3e21e48c2903b3b45e232cf4f2ff7434f
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Fri Dec 5 11:48:31 2025 +0800
+
+    usb: phy: fsl-usb: Fix use-after-free in delayed work during device removal
+    
+    The delayed work item otg_event is initialized in fsl_otg_conf() and
+    scheduled under two conditions:
+    1. When a host controller binds to the OTG controller.
+    2. When the USB ID pin state changes (cable insertion/removal).
+    
+    A race condition occurs when the device is removed via fsl_otg_remove():
+    the fsl_otg instance may be freed while the delayed work is still pending
+    or executing. This leads to use-after-free when the work function
+    fsl_otg_event() accesses the already freed memory.
+    
+    The problematic scenario:
+    
+    (detach thread)            | (delayed work)
+    fsl_otg_remove()           |
+      kfree(fsl_otg_dev) //FREE| fsl_otg_event()
+                               |   og = container_of(...) //USE
+                               |   og-&gt; //USE
+    
+    Fix this by calling disable_delayed_work_sync() in fsl_otg_remove()
+    before deallocating the fsl_otg structure. This ensures the delayed work
+    is properly canceled and completes execution prior to memory deallocation.
+    
+    This bug was identified through static analysis.
+    
+    Fixes: 0807c500a1a6 ("USB: add Freescale USB OTG Transceiver driver")
+    Cc: stable &lt;stable@kernel.org&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://patch.msgid.link/20251205034831.12846-1-duoming@zju.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/phy/phy-fsl-usb.c b/drivers/usb/phy/phy-fsl-usb.c
+index 40ac68e52cee..e266a47c4d48 100644
+--- a/drivers/usb/phy/phy-fsl-usb.c
++++ b/drivers/usb/phy/phy-fsl-usb.c
+@@ -988,6 +988,7 @@ static void fsl_otg_remove(struct platform_device *pdev)
+ {
+ 	struct fsl_usb2_platform_data *pdata = dev_get_platdata(&amp;pdev-&gt;dev);
+ 
++	disable_delayed_work_sync(&amp;fsl_otg_dev-&gt;otg_event);
+ 	usb_remove_phy(&amp;fsl_otg_dev-&gt;phy);
+ 	free_irq(fsl_otg_dev-&gt;irq, fsl_otg_dev);
+ </pre><hr><pre>commit ab58153ec64fa3fc9aea09ca09dc9322e0b54a7c
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Oct 28 18:01:49 2025 +0800
+
+    scsi: imm: Fix use-after-free bug caused by unfinished delayed work
+    
+    The delayed work item 'imm_tq' is initialized in imm_attach() and
+    scheduled via imm_queuecommand() for processing SCSI commands.  When the
+    IMM parallel port SCSI host adapter is detached through imm_detach(),
+    the imm_struct device instance is deallocated.
+    
+    However, the delayed work might still be pending or executing
+    when imm_detach() is called, leading to use-after-free bugs
+    when the work function imm_interrupt() accesses the already
+    freed imm_struct memory.
+    
+    The race condition can occur as follows:
+    
+    CPU 0(detach thread)   | CPU 1
+                           | imm_queuecommand()
+                           |   imm_queuecommand_lck()
+    imm_detach()           |     schedule_delayed_work()
+      kfree(dev) //FREE    | imm_interrupt()
+                           |   dev = container_of(...) //USE
+                               dev-&gt; //USE
+    
+    Add disable_delayed_work_sync() in imm_detach() to guarantee proper
+    cancellation of the delayed work item before imm_struct is deallocated.
+    
+    Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://patch.msgid.link/20251028100149.40721-1-duoming@zju.edu.cn
+    Signed-off-by: Martin K. Petersen &lt;martin.petersen@oracle.com&gt;
+
+diff --git a/drivers/scsi/imm.c b/drivers/scsi/imm.c
+index 5c602c057798..45b0e33293a5 100644
+--- a/drivers/scsi/imm.c
++++ b/drivers/scsi/imm.c
+@@ -1260,6 +1260,7 @@ static void imm_detach(struct parport *pb)
+ 	imm_struct *dev;
+ 	list_for_each_entry(dev, &amp;imm_hosts, list) {
+ 		if (dev-&gt;dev-&gt;port == pb) {
++			disable_delayed_work_sync(&amp;dev-&gt;imm_tq);
+ 			list_del_init(&amp;dev-&gt;list);
+ 			scsi_remove_host(dev-&gt;host);
+ 			scsi_host_put(dev-&gt;host);</pre><hr><pre>commit 2b7a0f47aaf2439d517ba0a6b29c66a535302154
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Nov 25 18:36:27 2025 +0800
+
+    usb: typec: ucsi: fix use-after-free caused by uec-&gt;work
+    
+    The delayed work uec-&gt;work is scheduled in gaokun_ucsi_probe()
+    but never properly canceled in gaokun_ucsi_remove(). This creates
+    use-after-free scenarios where the ucsi and gaokun_ucsi structure
+    are freed after ucsi_destroy() completes execution, while the
+    gaokun_ucsi_register_worker() might be either currently executing
+    or still pending in the work queue. The already-freed gaokun_ucsi
+    or ucsi structure may then be accessed.
+    
+    Furthermore, the race window is 3 seconds, which is sufficiently
+    long to make this bug easily reproducible. The following is the
+    trace captured by KASAN:
+    
+    ==================================================================
+    BUG: KASAN: slab-use-after-free in __run_timers+0x5ec/0x630
+    Write of size 8 at addr ffff00000ec28cc8 by task swapper/0/0
+    ...
+    Call trace:
+     show_stack+0x18/0x24 (C)
+     dump_stack_lvl+0x78/0x90
+     print_report+0x114/0x580
+     kasan_report+0xa4/0xf0
+     __asan_report_store8_noabort+0x20/0x2c
+     __run_timers+0x5ec/0x630
+     run_timer_softirq+0xe8/0x1cc
+     handle_softirqs+0x294/0x720
+     __do_softirq+0x14/0x20
+     ____do_softirq+0x10/0x1c
+     call_on_irq_stack+0x30/0x48
+     do_softirq_own_stack+0x1c/0x28
+     __irq_exit_rcu+0x27c/0x364
+     irq_exit_rcu+0x10/0x1c
+     el1_interrupt+0x40/0x60
+     el1h_64_irq_handler+0x18/0x24
+     el1h_64_irq+0x6c/0x70
+     arch_local_irq_enable+0x4/0x8 (P)
+     do_idle+0x334/0x458
+     cpu_startup_entry+0x60/0x70
+     rest_init+0x158/0x174
+     start_kernel+0x2f8/0x394
+     __primary_switched+0x8c/0x94
+    
+    Allocated by task 72 on cpu 0 at 27.510341s:
+     kasan_save_stack+0x2c/0x54
+     kasan_save_track+0x24/0x5c
+     kasan_save_alloc_info+0x40/0x54
+     __kasan_kmalloc+0xa0/0xb8
+     __kmalloc_node_track_caller_noprof+0x1c0/0x588
+     devm_kmalloc+0x7c/0x1c8
+     gaokun_ucsi_probe+0xa0/0x840  auxiliary_bus_probe+0x94/0xf8
+     really_probe+0x17c/0x5b8
+     __driver_probe_device+0x158/0x2c4
+     driver_probe_device+0x10c/0x264
+     __device_attach_driver+0x168/0x2d0
+     bus_for_each_drv+0x100/0x188
+     __device_attach+0x174/0x368
+     device_initial_probe+0x14/0x20
+     bus_probe_device+0x120/0x150
+     device_add+0xb3c/0x10fc
+     __auxiliary_device_add+0x88/0x130
+    ...
+    
+    Freed by task 73 on cpu 1 at 28.910627s:
+     kasan_save_stack+0x2c/0x54
+     kasan_save_track+0x24/0x5c
+     __kasan_save_free_info+0x4c/0x74
+     __kasan_slab_free+0x60/0x8c
+     kfree+0xd4/0x410
+     devres_release_all+0x140/0x1f0
+     device_unbind_cleanup+0x20/0x190
+     device_release_driver_internal+0x344/0x460
+     device_release_driver+0x18/0x24
+     bus_remove_device+0x198/0x274
+     device_del+0x310/0xa84
+    ...
+    
+    The buggy address belongs to the object at ffff00000ec28c00
+     which belongs to the cache kmalloc-512 of size 512
+    The buggy address is located 200 bytes inside of
+     freed 512-byte region
+    The buggy address belongs to the physical page:
+    page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ec28
+    head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+    flags: 0x3fffe0000000040(head|node=0|zone=0|lastcpupid=0x1ffff)
+    page_type: f5(slab)
+    raw: 03fffe0000000040 ffff000008801c80 dead000000000122 0000000000000000
+    raw: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
+    head: 03fffe0000000040 ffff000008801c80 dead000000000122 0000000000000000
+    head: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
+    head: 03fffe0000000002 fffffdffc03b0a01 00000000ffffffff 00000000ffffffff
+    head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
+    page dumped because: kasan: bad access detected
+    
+    Memory state around the buggy address:
+     ffff00000ec28b80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+     ffff00000ec28c00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+    &gt;ffff00000ec28c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                  ^
+     ffff00000ec28d00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     ffff00000ec28d80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+    ==================================================================
+    
+    Add disable_delayed_work_sync() in gaokun_ucsi_remove() to ensure
+    that uec-&gt;work is properly canceled and prevented from executing
+    after the ucsi and gaokun_ucsi structure have been deallocated.
+    
+    Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
+    Cc: stable &lt;stable@kernel.org&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Heikki Krogerus &lt;heikki.krogerus@linux.intel.com&gt;
+    Link: https://patch.msgid.link/cc31e12ef9ffbf86676585b02233165fd33f0d8e.1764065838.git.duoming@zju.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+index 8401ab414bd9..c5965656baba 100644
+--- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
++++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+@@ -503,6 +503,7 @@ static void gaokun_ucsi_remove(struct auxiliary_device *adev)
+ {
+ 	struct gaokun_ucsi *uec = auxiliary_get_drvdata(adev);
+ 
++	disable_delayed_work_sync(&amp;uec-&gt;work);
+ 	gaokun_ec_unregister_notify(uec-&gt;ec, &amp;uec-&gt;nb);
+ 	ucsi_unregister(uec-&gt;ucsi);
+ 	ucsi_destroy(uec-&gt;ucsi);</pre><hr><pre>commit 6b120ef99fbcba9e413783561f8cc160719db589
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Nov 25 18:36:26 2025 +0800
+
+    usb: typec: ucsi: fix probe failure in gaokun_ucsi_probe()
+    
+    The gaokun_ucsi_probe() uses ucsi_create() to allocate a UCSI instance.
+    The ucsi_create() validates whether ops-&gt;poll_cci is defined, and if not,
+    it directly returns -EINVAL. However, the gaokun_ucsi_ops structure does
+    not define the poll_cci, causing ucsi_create() always fail with -EINVAL.
+    This issue can be observed in the kernel log with the following error:
+    
+    ucsi_huawei_gaokun.ucsi huawei_gaokun_ec.ucsi.0: probe with driver
+    ucsi_huawei_gaokun.ucsi failed with error -22
+    
+    Fix the issue by adding the missing poll_cci callback to gaokun_ucsi_ops.
+    
+    Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
+    Cc: stable &lt;stable@kernel.org&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Heikki Krogerus &lt;heikki.krogerus@linux.intel.com&gt;
+    Reviewed-by: Pengyu Luo &lt;mitltlatltl@gmail.com&gt;
+    Link: https://patch.msgid.link/4d077d6439d728be68646bb8c8678436a3a0885e.1764065838.git.duoming@zju.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+index 7b5222081bbb..8401ab414bd9 100644
+--- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
++++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+@@ -196,6 +196,7 @@ static void gaokun_ucsi_connector_status(struct ucsi_connector *con)
+ const struct ucsi_operations gaokun_ucsi_ops = {
+ 	.read_version = gaokun_ucsi_read_version,
+ 	.read_cci = gaokun_ucsi_read_cci,
++	.poll_cci = gaokun_ucsi_read_cci,
+ 	.read_message_in = gaokun_ucsi_read_message_in,
+ 	.sync_control = ucsi_sync_control_common,
+ 	.async_control = gaokun_ucsi_async_control,</pre><hr><pre>commit 8f34f24355a607b98ecd9924837aab13c676eeca
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Sep 2 09:53:37 2025 +0800
+
+    media: i2c: ADV7604: Remove redundant cancel_delayed_work in probe
+    
+    The delayed_work delayed_work_enable_hotplug is initialized with
+    INIT_DELAYED_WORK() in adv76xx_probe(), but it is never scheduled
+    anywhere in the probe function.
+    
+    Calling cancel_delayed_work() on a work that has never been
+    scheduled is redundant and unnecessary, as there is no pending
+    work to cancel.
+    
+    Remove the redundant cancel_delayed_work() from error handling
+    path and adjust the goto label accordingly to simplify the code
+    and avoid potential confusion.
+    
+    Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Hans Verkuil &lt;hverkuil+cisco@kernel.org&gt;
+
+diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
+index 8fe7c2f72883..516553fb17e9 100644
+--- a/drivers/media/i2c/adv7604.c
++++ b/drivers/media/i2c/adv7604.c
+@@ -3670,7 +3670,7 @@ static int adv76xx_probe(struct i2c_client *client)
+ 	err = media_entity_pads_init(&amp;sd-&gt;entity, state-&gt;source_pad + 1,
+ 				state-&gt;pads);
+ 	if (err)
+-		goto err_work_queues;
++		goto err_i2c;
+ 
+ 	/* Configure regmaps */
+ 	err = configure_regmaps(state);
+@@ -3711,8 +3711,6 @@ static int adv76xx_probe(struct i2c_client *client)
+ 
+ err_entity:
+ 	media_entity_cleanup(&amp;sd-&gt;entity);
+-err_work_queues:
+-	cancel_delayed_work(&amp;state-&gt;delayed_work_enable_hotplug);
+ err_i2c:
+ 	adv76xx_unregister_clients(state);
+ err_hdl:</pre><hr><pre>commit e66a5cc606c58e72f18f9cdd868a3672e918f9f8
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Tue Sep 2 09:10:31 2025 +0800
+
+    media: i2c: adv7842: Remove redundant cancel_delayed_work in probe
+    
+    The delayed_work delayed_work_enable_hotplug is initialized with
+    INIT_DELAYED_WORK() in adv7842_probe(), but it is never scheduled
+    anywhere in the probe function.
+    
+    Calling cancel_delayed_work() on a work that has never been
+    scheduled is redundant and unnecessary, as there is no pending
+    work to cancel.
+    
+    Remove the redundant cancel_delayed_work() from error handling
+    path and adjust the goto label accordingly to simplify the code
+    and avoid potential confusion.
+    
+    Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Hans Verkuil &lt;hverkuil+cisco@kernel.org&gt;
+
+diff --git a/drivers/media/i2c/adv7842.c b/drivers/media/i2c/adv7842.c
+index 9780082db841..331c5171d1ab 100644
+--- a/drivers/media/i2c/adv7842.c
++++ b/drivers/media/i2c/adv7842.c
+@@ -3626,7 +3626,7 @@ static int adv7842_probe(struct i2c_client *client)
+ 	err = media_entity_pads_init(&amp;sd-&gt;entity, ADV7842_PAD_SOURCE + 1,
+ 				     state-&gt;pads);
+ 	if (err)
+-		goto err_work_queues;
++		goto err_i2c;
+ 
+ 	err = adv7842_core_init(sd);
+ 	if (err)
+@@ -3647,8 +3647,6 @@ static int adv7842_probe(struct i2c_client *client)
+ 
+ err_entity:
+ 	media_entity_cleanup(&amp;sd-&gt;entity);
+-err_work_queues:
+-	cancel_delayed_work(&amp;state-&gt;delayed_work_enable_hotplug);
+ err_i2c:
+ 	adv7842_unregister_clients(sd);
+ err_hdl:</pre><hr><pre>commit 29de195ca39fc2ac0af6fd45522994df9f431f80
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Mon Sep 1 21:26:17 2025 +0800
+
+    media: TDA1997x: Remove redundant cancel_delayed_work in probe
+    
+    The delayed_work delayed_work_enable_hpd is initialized with
+    INIT_DELAYED_WORK(), but it is never scheduled in tda1997x_probe().
+    
+    Calling cancel_delayed_work() on a work that has never been
+    scheduled is redundant and unnecessary, as there is no pending
+    work to cancel.
+    
+    Remove the redundant cancel_delayed_work() from error handling
+    path in tda1997x_probe() to avoid potential confusion.
+    
+    Fixes: 9ac0038db9a7 ("media: i2c: Add TDA1997x HDMI receiver driver")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Hans Verkuil &lt;hverkuil+cisco@kernel.org&gt;
+
+diff --git a/drivers/media/i2c/tda1997x.c b/drivers/media/i2c/tda1997x.c
+index 1087d2bddaf2..3532766cd795 100644
+--- a/drivers/media/i2c/tda1997x.c
++++ b/drivers/media/i2c/tda1997x.c
+@@ -2797,7 +2797,6 @@ static int tda1997x_probe(struct i2c_client *client)
+ err_free_handler:
+ 	v4l2_ctrl_handler_free(&amp;state-&gt;hdl);
+ err_free_mutex:
+-	cancel_delayed_work(&amp;state-&gt;delayed_work_enable_hpd);
+ 	mutex_destroy(&amp;state-&gt;page_lock);
+ 	mutex_destroy(&amp;state-&gt;lock);
+ 	tda1997x_set_power(state, 0);</pre><hr><pre>commit bc9ea787079671cb19a8b25ff9f02be5ef6bfcf5
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Wed Oct 1 09:11:49 2025 +0800
+
+    net: mscc: ocelot: Fix use-after-free caused by cyclic delayed work
+    
+    The origin code calls cancel_delayed_work() in ocelot_stats_deinit()
+    to cancel the cyclic delayed work item ocelot-&gt;stats_work. However,
+    cancel_delayed_work() may fail to cancel the work item if it is already
+    executing. While destroy_workqueue() does wait for all pending work items
+    in the work queue to complete before destroying the work queue, it cannot
+    prevent the delayed work item from being rescheduled within the
+    ocelot_check_stats_work() function. This limitation exists because the
+    delayed work item is only enqueued into the work queue after its timer
+    expires. Before the timer expiration, destroy_workqueue() has no visibility
+    of this pending work item. Once the work queue appears empty,
+    destroy_workqueue() proceeds with destruction. When the timer eventually
+    expires, the delayed work item gets queued again, leading to the following
+    warning:
+    
+    workqueue: cannot queue ocelot_check_stats_work on wq ocelot-switch-stats
+    WARNING: CPU: 2 PID: 0 at kernel/workqueue.c:2255 __queue_work+0x875/0xaf0
+    ...
+    RIP: 0010:__queue_work+0x875/0xaf0
+    ...
+    RSP: 0018:ffff88806d108b10 EFLAGS: 00010086
+    RAX: 0000000000000000 RBX: 0000000000000101 RCX: 0000000000000027
+    RDX: 0000000000000027 RSI: 0000000000000004 RDI: ffff88806d123e88
+    RBP: ffffffff813c3170 R08: 0000000000000000 R09: ffffed100da247d2
+    R10: ffffed100da247d1 R11: ffff88806d123e8b R12: ffff88800c00f000
+    R13: ffff88800d7285c0 R14: ffff88806d0a5580 R15: ffff88800d7285a0
+    FS:  0000000000000000(0000) GS:ffff8880e5725000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 00007fe18e45ea10 CR3: 0000000005e6c000 CR4: 00000000000006f0
+    Call Trace:
+     &lt;IRQ&gt;
+     ? kasan_report+0xc6/0xf0
+     ? __pfx_delayed_work_timer_fn+0x10/0x10
+     ? __pfx_delayed_work_timer_fn+0x10/0x10
+     call_timer_fn+0x25/0x1c0
+     __run_timer_base.part.0+0x3be/0x8c0
+     ? __pfx_delayed_work_timer_fn+0x10/0x10
+     ? rcu_sched_clock_irq+0xb06/0x27d0
+     ? __pfx___run_timer_base.part.0+0x10/0x10
+     ? try_to_wake_up+0xb15/0x1960
+     ? _raw_spin_lock_irq+0x80/0xe0
+     ? __pfx__raw_spin_lock_irq+0x10/0x10
+     tmigr_handle_remote_up+0x603/0x7e0
+     ? __pfx_tmigr_handle_remote_up+0x10/0x10
+     ? sched_balance_trigger+0x1c0/0x9f0
+     ? sched_tick+0x221/0x5a0
+     ? _raw_spin_lock_irq+0x80/0xe0
+     ? __pfx__raw_spin_lock_irq+0x10/0x10
+     ? tick_nohz_handler+0x339/0x440
+     ? __pfx_tmigr_handle_remote_up+0x10/0x10
+     __walk_groups.isra.0+0x42/0x150
+     tmigr_handle_remote+0x1f4/0x2e0
+     ? __pfx_tmigr_handle_remote+0x10/0x10
+     ? ktime_get+0x60/0x140
+     ? lapic_next_event+0x11/0x20
+     ? clockevents_program_event+0x1d4/0x2a0
+     ? hrtimer_interrupt+0x322/0x780
+     handle_softirqs+0x16a/0x550
+     irq_exit_rcu+0xaf/0xe0
+     sysvec_apic_timer_interrupt+0x70/0x80
+     &lt;/IRQ&gt;
+    ...
+    
+    The following diagram reveals the cause of the above warning:
+    
+    CPU 0 (remove)             | CPU 1 (delayed work callback)
+    mscc_ocelot_remove()       |
+      ocelot_deinit()          | ocelot_check_stats_work()
+        ocelot_stats_deinit()  |
+          cancel_delayed_work()|   ...
+                               |   queue_delayed_work()
+          destroy_workqueue()  | (wait a time)
+                               | __queue_work() //UAF
+    
+    The above scenario actually constitutes a UAF vulnerability.
+    
+    The ocelot_stats_deinit() is only invoked when initialization
+    failure or resource destruction, so we must ensure that any
+    delayed work items cannot be rescheduled.
+    
+    Replace cancel_delayed_work() with disable_delayed_work_sync()
+    to guarantee proper cancellation of the delayed work item and
+    ensure completion of any currently executing work before the
+    workqueue is deallocated.
+    
+    A deadlock concern was considered: ocelot_stats_deinit() is called
+    in a process context and is not holding any locks that the delayed
+    work item might also need. Therefore, the use of the _sync() variant
+    is safe here.
+    
+    This bug was identified through static analysis. To reproduce the
+    issue and validate the fix, I simulated ocelot-switch device by
+    writing a kernel module and prepared the necessary resources for
+    the virtual ocelot-switch device's probe process. Then, removing
+    the virtual device will trigger the mscc_ocelot_remove() function,
+    which in turn destroys the workqueue.
+    
+    Fixes: a556c76adc05 ("net: mscc: Add initial Ocelot switch support")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Link: https://patch.msgid.link/20251001011149.55073-1-duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/net/ethernet/mscc/ocelot_stats.c b/drivers/net/ethernet/mscc/ocelot_stats.c
+index 545710dadcf5..d2be1be37716 100644
+--- a/drivers/net/ethernet/mscc/ocelot_stats.c
++++ b/drivers/net/ethernet/mscc/ocelot_stats.c
+@@ -1021,6 +1021,6 @@ int ocelot_stats_init(struct ocelot *ocelot)
+ 
+ void ocelot_stats_deinit(struct ocelot *ocelot)
+ {
+-	cancel_delayed_work(&amp;ocelot-&gt;stats_work);
++	disable_delayed_work_sync(&amp;ocelot-&gt;stats_work);
+ 	destroy_workqueue(ocelot-&gt;stats_queue);
+ }</pre><hr><pre>commit 60cd16a3b7439ccb699d0bf533799eeb894fd217
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Sat Sep 20 21:42:01 2025 +0800
+
+    scsi: mvsas: Fix use-after-free bugs in mvs_work_queue
+    
+    During the detaching of Marvell's SAS/SATA controller, the original code
+    calls cancel_delayed_work() in mvs_free() to cancel the delayed work
+    item mwq-&gt;work_q. However, if mwq-&gt;work_q is already running, the
+    cancel_delayed_work() may fail to cancel it. This can lead to
+    use-after-free scenarios where mvs_free() frees the mvs_info while
+    mvs_work_queue() is still executing and attempts to access the
+    already-freed mvs_info.
+    
+    A typical race condition is illustrated below:
+    
+    CPU 0 (remove)            | CPU 1 (delayed work callback)
+    mvs_pci_remove()          |
+      mvs_free()              | mvs_work_queue()
+        cancel_delayed_work() |
+          kfree(mvi)          |
+                              |   mvi-&gt; // UAF
+    
+    Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+    that the delayed work item is properly canceled and any executing
+    delayed work item completes before the mvs_info is deallocated.
+    
+    This bug was found by static analysis.
+    
+    Fixes: 20b09c2992fe ("[SCSI] mvsas: add support for 94xx; layout change; bug fixes")
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Signed-off-by: Martin K. Petersen &lt;martin.petersen@oracle.com&gt;
+
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index 2c72da6b8cf0..7f1ad305eee6 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -124,7 +124,7 @@ static void mvs_free(struct mvs_info *mvi)
+ 	if (mvi-&gt;shost)
+ 		scsi_host_put(mvi-&gt;shost);
+ 	list_for_each_entry(mwq, &amp;mvi-&gt;wq_list, entry)
+-		cancel_delayed_work(&amp;mwq-&gt;work_q);
++		cancel_delayed_work_sync(&amp;mwq-&gt;work_q);
+ 	kfree(mvi-&gt;rsvd_tags);
+ 	kfree(mvi);
+ }</pre>
+    <div class="pagination">
+        <span>[1]</span><a href='6_2.html'>2</a><a href='6_3.html'>3</a><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_37.html'>37</a><a href='6_38.html'>38</a><a href='6_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Huazhong University of Science and Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Huazhong University of Science and Technology</h1>
+    <div class="pagination">
+        <a href='11_3.html'>&lt;&lt;Prev</a><a href='11.html'>1</a><a href='11_2.html'>2</a><a href='11_3.html'>3</a><span>[4]</span><a href='11_5.html'>5</a><a href='11_6.html'>6</a><a href='11_7.html'>7</a><a href='11_8.html'>8</a><a href='11_9.html'>9</a><a href='11_10.html'>10</a><a href='11_11.html'>11</a><a href='11_12.html'>12</a><a href='11_5.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 8663dd38a7ba5b2bfd2c7b4271e6e63bc0ef1e42
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Tue Jul 30 13:36:40 2024 +0800
+
+    docs/zh_CN: fix a broken reference
+    
+    Warning: Documentation/translations/zh_CN/kbuild/index.rst
+    references a file that doesn't exist: Documentation/kbuild/index
+    
+    Fix this by adding its full name.
+    
+    Reported-by: kernel test robot &lt;lkp@intel.com&gt;
+    Closes: https://lore.kernel.org/oe-kbuild-all/202407300812.1VvDFdxD-lkp@intel.com/
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240730053652.4073433-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/kbuild/index.rst b/Documentation/translations/zh_CN/kbuild/index.rst
+index b9feb56b846a..d906a4e88d0f 100644
+--- a/Documentation/translations/zh_CN/kbuild/index.rst
++++ b/Documentation/translations/zh_CN/kbuild/index.rst
+@@ -2,7 +2,7 @@
+ 
+ .. include:: ../disclaimer-zh_CN.rst
+ 
+-:Original: Documentation/kbuild/index
++:Original: Documentation/kbuild/index.rst
+ :Translator: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+ 
+ ============</pre><hr><pre>commit d40981350844c2cfa437abfc80596e10ea8f1149
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Jul 19 12:13:34 2024 +0800
+
+    doc-guide: add help documentation checktransupdate.rst
+    
+    This commit adds help documents - doc-guide/checktransupdate.rst
+    and zh_CN/doc-guide/checktransupdate.rst for scripts/checktransupdate.py
+    , including English and Chinese versions
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    [jc: fixed missing title problem in the new file]
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240719041400.3909775-3-dzm91@hust.edu.cn
+
+diff --git a/Documentation/doc-guide/checktransupdate.rst b/Documentation/doc-guide/checktransupdate.rst
+new file mode 100644
+index 000000000000..dfaf9d373747
+--- /dev/null
++++ b/Documentation/doc-guide/checktransupdate.rst
+@@ -0,0 +1,54 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Checking for needed translation updates
++=======================================
++
++This script helps track the translation status of the documentation in
++different locales, i.e., whether the documentation is up-to-date with
++the English counterpart.
++
++How it works
++------------
++
++It uses ``git log`` command to track the latest English commit from the
++translation commit (order by author date) and the latest English commits
++from HEAD. If any differences occur, the file is considered as out-of-date,
++then commits that need to be updated will be collected and reported.
++
++Features implemented
++
++-  check all files in a certain locale
++-  check a single file or a set of files
++-  provide options to change output format
++-  track the translation status of files that have no translation
++
++Usage
++-----
++
++::
++
++   ./scripts/checktransupdate.py --help
++
++Please refer to the output of argument parser for usage details.
++
++Samples
++
++-  ``./scripts/checktransupdate.py -l zh_CN``
++   This will print all the files that need to be updated in the zh_CN locale.
++-  ``./scripts/checktransupdate.py Documentation/translations/zh_CN/dev-tools/testing-overview.rst``
++   This will only print the status of the specified file.
++
++Then the output is something like:
++
++::
++
++    Documentation/dev-tools/kfence.rst
++    No translation in the locale of zh_CN
++
++    Documentation/translations/zh_CN/dev-tools/testing-overview.rst
++    commit 42fb9cfd5b18 ("Documentation: dev-tools: Add link to RV docs")
++    1 commits needs resolving in total
++
++Features to be implemented
++
++- files can be a folder instead of only a file
+diff --git a/Documentation/doc-guide/index.rst b/Documentation/doc-guide/index.rst
+index 7c7d97784626..24d058faa75c 100644
+--- a/Documentation/doc-guide/index.rst
++++ b/Documentation/doc-guide/index.rst
+@@ -12,6 +12,7 @@ How to write kernel documentation
+    parse-headers
+    contributing
+    maintainer-profile
++   checktransupdate
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/translations/zh_CN/doc-guide/checktransupdate.rst b/Documentation/translations/zh_CN/doc-guide/checktransupdate.rst
+new file mode 100644
+index 000000000000..d20b4ce66b9f
+--- /dev/null
++++ b/Documentation/translations/zh_CN/doc-guide/checktransupdate.rst
+@@ -0,0 +1,55 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/doc-guide/checktransupdate.rst
++
++:译者: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++检查翻译更新
++
++这个脚本帮助跟踪不同语言的文档翻译状态，即文档是否与对应的英文版本保持更新。
++
++工作原理
++------------
++
++它使用 ``git log`` 命令来跟踪翻译提交的最新英文提交（按作者日期排序）和英文文档的
++最新提交。如果有任何差异，则该文件被认为是过期的，然后需要更新的提交将被收集并报告。
++
++实现的功能
++
++- 检查特定语言中的所有文件
++- 检查单个文件或一组文件
++- 提供更改输出格式的选项
++- 跟踪没有翻译过的文件的翻译状态
++
++用法
++-----
++
++::
++
++    ./scripts/checktransupdate.py --help
++
++具体用法请参考参数解析器的输出
++
++示例
++
++-  ``./scripts/checktransupdate.py -l zh_CN``
++   这将打印 zh_CN 语言中需要更新的所有文件。
++-  ``./scripts/checktransupdate.py Documentation/translations/zh_CN/dev-tools/testing-overview.rst``
++   这将只打印指定文件的状态。
++
++然后输出类似如下的内容：
++
++::
++
++    Documentation/dev-tools/kfence.rst
++    No translation in the locale of zh_CN
++
++    Documentation/translations/zh_CN/dev-tools/testing-overview.rst
++    commit 42fb9cfd5b18 ("Documentation: dev-tools: Add link to RV docs")
++    1 commits needs resolving in total
++
++待实现的功能
++
++- 文件参数可以是文件夹而不仅仅是单个文件
+diff --git a/Documentation/translations/zh_CN/doc-guide/index.rst b/Documentation/translations/zh_CN/doc-guide/index.rst
+index 78c2e9a1697f..0ac1fc9315ea 100644
+--- a/Documentation/translations/zh_CN/doc-guide/index.rst
++++ b/Documentation/translations/zh_CN/doc-guide/index.rst
+@@ -18,6 +18,7 @@
+    parse-headers
+    contributing
+    maintainer-profile
++   checktransupdate
+ 
+ .. only::  subproject and html
+ </pre><hr><pre>commit 63e96ce050e52613eafe5c5dd90a9b81ce6eddb2
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Jul 19 12:13:33 2024 +0800
+
+    scripts: fix all issues reported by pylint
+    
+    This patch 1) fixes all the issues (not most) reported by pylint,
+    2) add the functionability to tackle documents that need translation,
+    3) add logging to adjust the logging level and log file
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240719041400.3909775-2-dzm91@hust.edu.cn
+
+diff --git a/scripts/checktransupdate.py b/scripts/checktransupdate.py
+index 5a0fc99e3f93..578c3fecfdfd 100755
+--- a/scripts/checktransupdate.py
++++ b/scripts/checktransupdate.py
+@@ -10,31 +10,28 @@ differences occur, report the file and commits that need to be updated.
+ 
+ The usage is as follows:
+ - ./scripts/checktransupdate.py -l zh_CN
+-This will print all the files that need to be updated in the zh_CN locale.
++This will print all the files that need to be updated or translated in the zh_CN locale.
+ - ./scripts/checktransupdate.py Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+ This will only print the status of the specified file.
+ 
+ The output is something like:
+-Documentation/translations/zh_CN/dev-tools/testing-overview.rst (1 commits)
++Documentation/dev-tools/kfence.rst
++No translation in the locale of zh_CN
++
++Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+ commit 42fb9cfd5b18 ("Documentation: dev-tools: Add link to RV docs")
++1 commits needs resolving in total
+ """
+ 
+ import os
+-from argparse import ArgumentParser, BooleanOptionalAction
++import time
++import logging
++from argparse import ArgumentParser, ArgumentTypeError, BooleanOptionalAction
+ from datetime import datetime
+ 
+-flag_p_c = False
+-flag_p_uf = False
+-flag_debug = False
+-
+-
+-def dprint(*args, **kwargs):
+-    if flag_debug:
+-        print("[DEBUG] ", end="")
+-        print(*args, **kwargs)
+-
+ 
+ def get_origin_path(file_path):
++    """Get the origin path from the translation path"""
+     paths = file_path.split("/")
+     tidx = paths.index("translations")
+     opaths = paths[:tidx]
+@@ -43,17 +40,16 @@ def get_origin_path(file_path):
+ 
+ 
+ def get_latest_commit_from(file_path, commit):
+-    command = "git log --pretty=format:%H%n%aD%n%cD%n%n%B {} -1 -- {}".format(
+-        commit, file_path
+-    )
+-    dprint(command)
++    """Get the latest commit from the specified commit for the specified file"""
++    command = f"git log --pretty=format:%H%n%aD%n%cD%n%n%B {commit} -1 -- {file_path}"
++    logging.debug(command)
+     pipe = os.popen(command)
+     result = pipe.read()
+     result = result.split("\n")
+     if len(result) &lt;= 1:
+         return None
+ 
+-    dprint("Result: {}".format(result[0]))
++    logging.debug("Result: %s", result[0])
+ 
+     return {
+         "hash": result[0],
+@@ -64,17 +60,19 @@ def get_latest_commit_from(file_path, commit):
+ 
+ 
+ def get_origin_from_trans(origin_path, t_from_head):
++    """Get the latest origin commit from the translation commit"""
+     o_from_t = get_latest_commit_from(origin_path, t_from_head["hash"])
+     while o_from_t is not None and o_from_t["author_date"] &gt; t_from_head["author_date"]:
+         o_from_t = get_latest_commit_from(origin_path, o_from_t["hash"] + "^")
+     if o_from_t is not None:
+-        dprint("tracked origin commit id: {}".format(o_from_t["hash"]))
++        logging.debug("tracked origin commit id: %s", o_from_t["hash"])
+     return o_from_t
+ 
+ 
+ def get_commits_count_between(opath, commit1, commit2):
+-    command = "git log --pretty=format:%H {}...{} -- {}".format(commit1, commit2, opath)
+-    dprint(command)
++    """Get the commits count between two commits for the specified file"""
++    command = f"git log --pretty=format:%H {commit1}...{commit2} -- {opath}"
++    logging.debug(command)
+     pipe = os.popen(command)
+     result = pipe.read().split("\n")
+     # filter out empty lines
+@@ -83,50 +81,120 @@ def get_commits_count_between(opath, commit1, commit2):
+ 
+ 
+ def pretty_output(commit):
+-    command = "git log --pretty='format:%h (\"%s\")' -1 {}".format(commit)
+-    dprint(command)
++    """Pretty print the commit message"""
++    command = f"git log --pretty='format:%h (\"%s\")' -1 {commit}"
++    logging.debug(command)
+     pipe = os.popen(command)
+     return pipe.read()
+ 
+ 
++def valid_commit(commit):
++    """Check if the commit is valid or not"""
++    msg = pretty_output(commit)
++    return "Merge tag" not in msg
++
+ def check_per_file(file_path):
++    """Check the translation status for the specified file"""
+     opath = get_origin_path(file_path)
+ 
+     if not os.path.isfile(opath):
+-        dprint("Error: Cannot find the origin path for {}".format(file_path))
++        logging.error("Cannot find the origin path for {file_path}")
+         return
+ 
+     o_from_head = get_latest_commit_from(opath, "HEAD")
+     t_from_head = get_latest_commit_from(file_path, "HEAD")
+ 
+     if o_from_head is None or t_from_head is None:
+-        print("Error: Cannot find the latest commit for {}".format(file_path))
++        logging.error("Cannot find the latest commit for %s", file_path)
+         return
+ 
+     o_from_t = get_origin_from_trans(opath, t_from_head)
+ 
+     if o_from_t is None:
+-        print("Error: Cannot find the latest origin commit for {}".format(file_path))
++        logging.error("Error: Cannot find the latest origin commit for %s", file_path)
+         return
+ 
+     if o_from_head["hash"] == o_from_t["hash"]:
+-        if flag_p_uf:
+-            print("No update needed for {}".format(file_path))
+-        return
++        logging.debug("No update needed for %s", file_path)
+     else:
+-        print("{}".format(file_path), end="\t")
++        logging.info(file_path)
+         commits = get_commits_count_between(
+             opath, o_from_t["hash"], o_from_head["hash"]
+         )
+-        print("({} commits)".format(len(commits)))
+-        if flag_p_c:
+-            for commit in commits:
+-                msg = pretty_output(commit)
+-                if "Merge tag" not in msg:
+-                    print("commit", msg)
++        count = 0
++        for commit in commits:
++            if valid_commit(commit):
++                logging.info("commit %s", pretty_output(commit))
++                count += 1
++        logging.info("%d commits needs resolving in total\n", count)
++
++
++def valid_locales(locale):
++    """Check if the locale is valid or not"""
++    script_path = os.path.dirname(os.path.abspath(__file__))
++    linux_path = os.path.join(script_path, "..")
++    if not os.path.isdir(f"{linux_path}/Documentation/translations/{locale}"):
++        raise ArgumentTypeError("Invalid locale: {locale}")
++    return locale
++
++
++def list_files_with_excluding_folders(folder, exclude_folders, include_suffix):
++    """List all files with the specified suffix in the folder and its subfolders"""
++    files = []
++    stack = [folder]
++
++    while stack:
++        pwd = stack.pop()
++        # filter out the exclude folders
++        if os.path.basename(pwd) in exclude_folders:
++            continue
++        # list all files and folders
++        for item in os.listdir(pwd):
++            ab_item = os.path.join(pwd, item)
++            if os.path.isdir(ab_item):
++                stack.append(ab_item)
++            else:
++                if ab_item.endswith(include_suffix):
++                    files.append(ab_item)
++
++    return files
++
++
++class DmesgFormatter(logging.Formatter):
++    """Custom dmesg logging formatter"""
++    def format(self, record):
++        timestamp = time.time()
++        formatted_time = f"[{timestamp:&gt;10.6f}]"
++        log_message = f"{formatted_time} {record.getMessage()}"
++        return log_message
++
++
++def config_logging(log_level, log_file="checktransupdate.log"):
++    """configure logging based on the log level"""
++    # set up the root logger
++    logger = logging.getLogger()
++    logger.setLevel(log_level)
++
++    # Create console handler
++    console_handler = logging.StreamHandler()
++    console_handler.setLevel(log_level)
++
++    # Create file handler
++    file_handler = logging.FileHandler(log_file)
++    file_handler.setLevel(log_level)
++
++    # Create formatter and add it to the handlers
++    formatter = DmesgFormatter()
++    console_handler.setFormatter(formatter)
++    file_handler.setFormatter(formatter)
++
++    # Add the handler to the logger
++    logger.addHandler(console_handler)
++    logger.addHandler(file_handler)
+ 
+ 
+ def main():
++    """Main function of the script"""
+     script_path = os.path.dirname(os.path.abspath(__file__))
+     linux_path = os.path.join(script_path, "..")
+ 
+@@ -134,62 +202,62 @@ def main():
+     parser.add_argument(
+         "-l",
+         "--locale",
++        default="zh_CN",
++        type=valid_locales,
+         help="Locale to check when files are not specified",
+     )
++
+     parser.add_argument(
+-        "--print-commits",
++        "--print-missing-translations",
+         action=BooleanOptionalAction,
+         default=True,
+-        help="Print commits between the origin and the translation",
++        help="Print files that do not have translations",
+     )
+ 
+     parser.add_argument(
+-        "--print-updated-files",
+-        action=BooleanOptionalAction,
+-        default=False,
+-        help="Print files that do no need to be updated",
+-    )
++        '--log',
++        default='INFO',
++        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
++        help='Set the logging level')
+ 
+     parser.add_argument(
+-        "--debug",
+-        action=BooleanOptionalAction,
+-        help="Print debug information",
+-        default=False,
+-    )
++        '--logfile',
++        default='checktransupdate.log',
++        help='Set the logging file (default: checktransupdate.log)')
+ 
+     parser.add_argument(
+         "files", nargs="*", help="Files to check, if not specified, check all files"
+     )
+     args = parser.parse_args()
+ 
+-    global flag_p_c, flag_p_uf, flag_debug
+-    flag_p_c = args.print_commits
+-    flag_p_uf = args.print_updated_files
+-    flag_debug = args.debug
++    # Configure logging based on the --log argument
++    log_level = getattr(logging, args.log.upper(), logging.INFO)
++    config_logging(log_level)
+ 
+-    # get files related to linux path
++    # Get files related to linux path
+     files = args.files
+     if len(files) == 0:
+-        if args.locale is not None:
+-            files = (
+-                os.popen(
+-                    "find {}/Documentation/translations/{} -type f".format(
+-                        linux_path, args.locale
+-                    )
+-                )
+-                .read()
+-                .split("\n")
+-            )
+-        else:
+-            files = (
+-                os.popen(
+-                    "find {}/Documentation/translations -type f".format(linux_path)
+-                )
+-                .read()
+-                .split("\n")
+-            )
+-
+-    files = list(filter(lambda x: x != "", files))
++        offical_files = list_files_with_excluding_folders(
++            os.path.join(linux_path, "Documentation"), ["translations", "output"], "rst"
++        )
++
++        for file in offical_files:
++            # split the path into parts
++            path_parts = file.split(os.sep)
++            # find the index of the "Documentation" directory
++            kindex = path_parts.index("Documentation")
++            # insert the translations and locale after the Documentation directory
++            new_path_parts = path_parts[:kindex + 1] + ["translations", args.locale] \
++                           + path_parts[kindex + 1 :]
++            # join the path parts back together
++            new_file = os.sep.join(new_path_parts)
++            if os.path.isfile(new_file):
++                files.append(new_file)
++            else:
++                if args.print_missing_translations:
++                    logging.info(os.path.relpath(os.path.abspath(file), linux_path))
++                    logging.info("No translation in the locale of %s\n", args.locale)
++
+     files = list(map(lambda x: os.path.relpath(os.path.abspath(x), linux_path), files))
+ 
+     # cd to linux root directory</pre><hr><pre>commit e6a5af90f0a24f08445e3b8a11b727ac84a9520c
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Jul 26 22:57:23 2024 +0800
+
+    docs/zh_CN: add the translation of kbuild/headers_install.rst
+    
+    Finish the translation of kbuild/headers_install.rst and
+    kbuild/index.rst, then add kbuild into zh_CN/index.rst.
+    
+    Update to commit 5b67fbfc32b5 ("Merge tag 'kbuild-v5.7' of
+    git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild")
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    [jc: added missing EOF newline ]
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240726145754.2598197-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/index.rst b/Documentation/translations/zh_CN/index.rst
+index 20b9d4270d1f..7574e1673180 100644
+--- a/Documentation/translations/zh_CN/index.rst
++++ b/Documentation/translations/zh_CN/index.rst
+@@ -89,10 +89,10 @@ TODOList:
+    admin-guide/index
+    admin-guide/reporting-issues.rst
+    userspace-api/index
++   内核构建系统 &lt;kbuild/index&gt;
+ 
+ TODOList:
+ 
+-* 内核构建系统 &lt;kbuild/index&gt;
+ * 用户空间工具 &lt;tools/index&gt;
+ 
+ 也可参考独立于内核文档的 `Linux 手册页 &lt;https://www.kernel.org/doc/man-pages/&gt;`_ 。
+diff --git a/Documentation/translations/zh_CN/kbuild/headers_install.rst b/Documentation/translations/zh_CN/kbuild/headers_install.rst
+new file mode 100644
+index 000000000000..02cb8896e555
+--- /dev/null
++++ b/Documentation/translations/zh_CN/kbuild/headers_install.rst
+@@ -0,0 +1,39 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/kbuild/headers_install.rst
++:Translator: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++============================
++导出内核头文件供用户空间使用
++============================
++
++"make headers_install" 命令以适合于用户空间程序的形式导出内核头文件。
++
++Linux 内核导出的头文件描述了用户空间程序尝试使用内核服务的 API。这些内核
++头文件被系统的 C 库（例如 glibc 和 uClibc）用于定义可用的系统调用，以及
++与这些系统调用一起使用的常量和结构。C 库的头文件包括来自 linux 子目录的
++内核头文件。系统的 libc 头文件通常被安装在默认位置 /usr/include，而内核
++头文件在该位置的子目录中（主要是 /usr/include/linux 和 /usr/include/asm）。
++
++内核头文件向后兼容，但不向前兼容。这意味着使用旧内核头文件的 C 库构建的程序
++可以在新内核上运行（尽管它可能无法访问新特性），但使用新内核头文件构建的程序
++可能无法在旧内核上运行。
++
++"make headers_install" 命令可以在内核源代码的顶层目录中运行（或使用标准
++的树外构建）。它接受两个可选参数::
++
++  make headers_install ARCH=i386 INSTALL_HDR_PATH=/usr
++
++ARCH 表明为其生成头文件的架构，默认为当前架构。导出内核头文件的 linux/asm
++目录是基于特定平台的，要查看支持架构的完整列表，使用以下命令::
++
++  ls -d include/asm-* | sed 's/.*-//'
++
++INSTALL_HDR_PATH 表明头文件的安装位置，默认为 "./usr"。
++
++该命令会在 INSTALL_HDR_PATH 中自动创建创建一个 'include' 目录，而头文件
++会被安装在 INSTALL_HDR_PATH/include 中。
++
++内核头文件导出的基础设施由 David Woodhouse &lt;dwmw2@infradead.org&gt; 维护。
+diff --git a/Documentation/translations/zh_CN/kbuild/index.rst b/Documentation/translations/zh_CN/kbuild/index.rst
+new file mode 100644
+index 000000000000..b9feb56b846a
+--- /dev/null
++++ b/Documentation/translations/zh_CN/kbuild/index.rst
+@@ -0,0 +1,35 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/kbuild/index
++:Translator: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++============
++内核编译系统
++============
++
++.. toctree::
++    :maxdepth: 1
++
++    headers_install
++
++TODO:
++
++- kconfig-language
++- kconfig-macro-language
++- kbuild
++- kconfig
++- makefiles
++- modules
++- issues
++- reproducible-builds
++- gcc-plugins
++- llvm
++
++.. only::  subproject and html
++
++   目录
++   =====
++
++   * :ref:`genindex`</pre><hr><pre>commit 0e5fbf627fb9f9b2718c7a484d686e4f73a3175a
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Jun 14 11:21:44 2024 +0800
+
+    docs/zh_CN: add process/researcher-guidelines Chinese translation
+    
+    Finish the translation of researcher-guidelines and add it to the
+    index file.
+    
+    Update to commit 27103dddc2da ("Documentation: update mailing list
+    addresses")
+    
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240614032211.241899-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/process/index.rst b/Documentation/translations/zh_CN/process/index.rst
+index 5c6c8ccdd50d..5a5cd7c01c62 100644
+--- a/Documentation/translations/zh_CN/process/index.rst
++++ b/Documentation/translations/zh_CN/process/index.rst
+@@ -64,6 +64,7 @@ TODOLIST:
+    management-style
+    stable-kernel-rules
+    submit-checklist
++   researcher-guidelines
+ 
+ TODOLIST:
+ 
+@@ -71,7 +72,6 @@ TODOLIST:
+ * kernel-docs
+ * deprecated
+ * maintainers
+-* researcher-guidelines
+ * contribution-maturity-model
+ 
+ 
+diff --git a/Documentation/translations/zh_CN/process/researcher-guidelines.rst b/Documentation/translations/zh_CN/process/researcher-guidelines.rst
+new file mode 100644
+index 000000000000..1f2da68fc4e8
+--- /dev/null
++++ b/Documentation/translations/zh_CN/process/researcher-guidelines.rst
+@@ -0,0 +1,129 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
++
++.. include:: ../disclaimer-zh_CN.rst
++
++.. _cn_researcherguidelines:
++
++:Original: Documentation/process/researcher-guidelines.rst
++
++:译者:
++ - 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++研究人员指南
+++++++++++++++++++++++
++
++Linux 内核社区欢迎对 Linux 内核及其开发过程中涉及的活动与任何其他副产品
++进行透明的研究。Linux 从这种研究中受益匪浅，其多方面均由某种形式的研究所推动。
++
++社区非常感谢研究人员在公开研究结果之前能分享初步发现，特别是涉及安全的研究。
++早期参与有助于提高研究质量并使 Linux 受益。无论如何，推荐研究人员与社区分享
++已发表研究的开放访问副本。
++
++本文旨在澄清研究开展过程中 Linux 内核社区认可与不认可的一些做法。至少，这类
++研究及相关活动应遵循标准的研究伦理规则。有关研究伦理、技术伦理以及开发者社区
++研究的更多背景信息，请查阅：
++
++* `研究伦理史 &lt;https://www.unlv.edu/research/ORI-HSR/history-ethics&gt;`_
++* `IEEE 伦理 &lt;https://www.ieee.org/about/ethics/index.html&gt;`_
++* `开发者和研究人员对开源项目实验伦理的看法 &lt;https://arxiv.org/pdf/2112.13217.pdf&gt;`_
++
++Linux 内核社区期望与项目互动的每个人都是真诚地为了使 Linux 变得更好。
++对 Linux 内核社区产生的任何公开可用的成果（包括但不限于源代码）的研究
++是受欢迎的，对开发者的研究如若要开展，则必须要明确说明，获得（开发者）同意。
++
++完全基于公开可用资源（包括公共邮件列表的帖子和公开代码库的提交）的被动研究
++显然是允许的。不过，和任何研究一样，仍需遵循标准伦理。
++
++然而，针对开发者行为的主动研究必须在获得相关开发者的明确同意和完全披露的情况下进行。
++未经同意，不得与开发者互动或对其进行实验；这也是标准的研究伦理。
++
++调查
++=======
++
++研究通常采用调查问卷的形式发送给维护者或贡献者。然而，内核社区通常从这些调查问卷中获益
++甚少。内核开发过程之所以有效，是因为每个开发者都从中受益，即使与目标不同的人一起工作。
++而回应调查则是对繁忙开发者的单向需求，对他们自己或整个内核社区没有相应的好处。因此，
++这种研究方法不被鼓励。
++
++内核社区成员已经收到过多的电子邮件，可能会将调查请求视为对他们时间的又一要求。发送
++此类请求会剥夺社区宝贵的贡献者时间，且不太可能产生有统计意义的回应。
++
++作为替代，研究人员应考虑参加开发者活动，举办研讨会来介绍研究项目及其对参与者的益处，
++并直接与社区互动。该方式获得的信息将比电子邮件调查问卷丰富得多，且社区也能从中学习
++到您的见解。
++
++补丁
++=======
++
++澄清：向开发者发送补丁**是**与他们互动，但他们已经同意接收**善意贡献**。故意发送有缺陷/
++有漏洞的补丁或在讨论中提供误导信息是不被同意的。这种交流会对开发者造成损害
++（例如，消耗时间、精力和士气），并通过破坏整个开发者社区对贡献者（及其所在组织）
++的信任而损害项目，削弱为贡献者提供建设性反馈的努力，并使最终用户面临软件缺陷的风险。
++
++研究人员参与 Linux 本身的开发与其他人一样受到欢迎和鼓励。研究 Linux 代码是常见
++做法，尤其是在开发或运行可产生可操作结果的分析工具时。
++
++在与开发者社区互动时，发送补丁历来是产生影响的最佳方式。Linux 已经有很多已知的
++漏洞 -- 更有帮助的是经过审核的修复。在贡献之前，请仔细阅读相关文档：
++
++* Documentation/process/development-process.rst
++* Documentation/process/submitting-patches.rst
++* Documentation/admin-guide/reporting-issues.rst
++* Documentation/process/security-bugs.rst
++
++然后发送补丁（包括所有如下详细信息的提交日志）并跟进其他开发者的任何反馈。
++
++当发送因研究而产生的补丁时，提交日志应至少包含以下详细信息，以便开发者有适当的上下文
++来理解贡献。回答：
++
++* 找到了什么具体问题？
++* 在运行系统上如何触发这个问题？
++* 遇到这个问题对系统会有什么影响？
++* 如何发现这个问题？具体包括任何测试、静态或动态分析程序及其他用于执行工作的工具或方法的详细信息。
++* 在哪个版本的 Linux 上发现了这个问题？强烈推荐使用最新的发布版本或最近的 linux-next 分支（参见 Documentation/process/howto.rst）。
++* 进行了哪些更改来修复这个问题，为什么认为这些更改是正确的？
++* 如何进行构建测试和运行时测试？
++* 此更改修复了哪个先前的提交？这应该在 "Fixes:" 标签中，如文档所述。
++* 还有谁审查了这个补丁？这应该在适当的 "Reviewed-by:" 标签中注明；见下文。
++
++例如::
++
++  From: Author &lt;author@email&gt;
++  Subject: [PATCH] drivers/foo_bar: Add missing kfree()
++
++  The error path in foo_bar driver does not correctly free the allocated
++  struct foo_bar_info. This can happen if the attached foo_bar device
++  rejects the initialization packets sent during foo_bar_probe(). This
++  would result in a 64 byte slab memory leak once per device attach,
++  wasting memory resources over time.
++
++  This flaw was found using an experimental static analysis tool we are
++  developing, LeakMagic[1], which reported the following warning when
++  analyzing the v5.15 kernel release:
++
++   path/to/foo_bar.c:187: missing kfree() call?
++
++  Add the missing kfree() to the error path. No other references to
++  this memory exist outside the probe function, so this is the only
++  place it can be freed.
++
++  x86_64 and arm64 defconfig builds with CONFIG_FOO_BAR=y using GCC
++  11.2 show no new warnings, and LeakMagic no longer warns about this
++  code path. As we don't have a FooBar device to test with, no runtime
++  testing was able to be performed.
++
++  [1] https://url/to/leakmagic/details
++
++  Reported-by: Researcher &lt;researcher@email&gt;
++  Fixes: aaaabbbbccccdddd ("Introduce support for FooBar")
++  Signed-off-by: Author &lt;author@email&gt;
++  Reviewed-by: Reviewer &lt;reviewer@email&gt;
++
++如果您是第一次参与贡献，建议在补丁在发布到公共列表前请其他人私下进行审核。（如果明确
++告诉您补丁需要更仔细的内部审查，则这是必需的。）这些人预计会在最终的补丁中包含他们的
++"Reviewed-by" 标签。找到熟悉 Linux 贡献的其他开发者，特别是您自己组织内的开发者，
++并在将补丁发送到公共邮件列表前请他们帮助审核，往往会显著提高补丁的质量，从而减少
++其他开发者的负担。
++
++如果你找不到人内部审核补丁且需要帮助找到这样的人，或者如果您对本文档和开发者社区的期望
++有任何其他问题，请联系技术咨询委员会私有邮件列表：&lt;tech-board@groups.linuxfoundation.org&gt;。</pre><hr><pre>commit 2fca11bb4692fe951d16b0d2049ba75bfcd53663
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Jun 14 22:03:20 2024 +0800
+
+    docs/zh_CN: add back the missing part in the English version
+    
+    The zh_CN kasan document misses the code change in commit eefe68280c94
+    ("kasan: Add documentation for CONFIG_KASAN_EXTRA_INFO").
+    
+    Fix this by adding the translation of the missing part.
+    
+    Note that this missing commit is found by checktransupdate.py
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240614140326.3028384-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/kasan.rst b/Documentation/translations/zh_CN/dev-tools/kasan.rst
+index 2b1e8f74904b..4491ad2830ed 100644
+--- a/Documentation/translations/zh_CN/dev-tools/kasan.rst
++++ b/Documentation/translations/zh_CN/dev-tools/kasan.rst
+@@ -235,6 +235,24 @@ slab对象的描述以及关于访问的内存页的信息。
+ 通用KASAN还报告两个辅助调用堆栈跟踪。这些堆栈跟踪指向代码中与对象交互但不直接
+ 出现在错误访问堆栈跟踪中的位置。目前，这包括 call_rcu() 和排队的工作队列。
+ 
++CONFIG_KASAN_EXTRA_INFO
++~~~~~~~~~~~~~~~~~~~~~~~
++
++启用 CONFIG_KASAN_EXTRA_INFO 选项允许 KASAN 记录和报告更多信息。目前支持的
++额外信息包括分配和释放时的 CPU 编号和时间戳。更多的信息可以帮助找到内核错误的原因，
++并将错误与其他系统事件关联起来，但代价是用额外的内存来记录更多信息（有关更多
++开销的细节，请参见 CONFIG_KASAN_EXTRA_INFO 选项的帮助文本）。
++
++以下为 CONFIG_KASAN_EXTRA_INFO 开启后的报告（仅显示不同部分）::
++
++    ==================================================================
++    ...
++    Allocated by task 134 on cpu 5 at 229.133855s:
++    ...
++    Freed by task 136 on cpu 3 at 230.199335s:
++    ...
++    ==================================================================
++
+ 实施细则
+ --------
+ </pre><hr><pre>commit 4280517ebe15a52463966ae286e3219ffa32a2f8
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Wed Jun 12 22:50:45 2024 +0800
+
+    docs/zh_CN: Update the translation of dev-tools/gdb-kernel-debugging
+    
+    Update to commit 6b219431037b ("docs/scripts/gdb: add necessary
+    make scripts_gdb step")
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    [jc: fixed whitespace error]
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240612145048.57829-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/gdb-kernel-debugging.rst b/Documentation/translations/zh_CN/dev-tools/gdb-kernel-debugging.rst
+index 17b5ce85a90c..3c133a918f30 100644
+--- a/Documentation/translations/zh_CN/dev-tools/gdb-kernel-debugging.rst
++++ b/Documentation/translations/zh_CN/dev-tools/gdb-kernel-debugging.rst
+@@ -34,6 +34,10 @@ Kgdb内核调试器、QEMU等虚拟机管理程序或基于JTAG的硬件接口
+   但这通常仅在不依赖内核模块时才有效。有关此模式的更多详细信息，请参阅QEMU文档。
+   在这种情况下，如果架构支持KASLR，应该在禁用CONFIG_RANDOMIZE_BASE的情况下构建内核。
+ 
++- 构建gdb脚本（适用于内核v5.1版本及以上）
++
++    make scripts_gdb
++
+ - 启用QEMU/KVM的gdb stub，可以通过如下方式实现
+ 
+     - 在VM启动时，通过在QEMU命令行中添加“-s”参数</pre><hr><pre>commit 50c0fa7f98c61bd270d6beec637b567ad3096622
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Tue Jun 11 21:17:16 2024 +0800
+
+    scripts: add scripts/checktransupdate.py
+    
+    The checktransupdate.py script helps track the translation status of
+    the documentation in different locales, e.g., zh_CN and verify if
+    these documenation is up-to-date. More specially, it uses `git log`
+    commit to find the latest english commit from the translation commit
+    (order by author date) and the latest english commits from HEAD. If
+    differences occur, report the file and commits that need to be updated.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Cheng Ziqiu &lt;chengziqiu@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240611131723.53515-1-dzm91@hust.edu.cn
+
+diff --git a/scripts/checktransupdate.py b/scripts/checktransupdate.py
+new file mode 100755
+index 000000000000..5a0fc99e3f93
+--- /dev/null
++++ b/scripts/checktransupdate.py
+@@ -0,0 +1,203 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++
++"""
++This script helps track the translation status of the documentation
++in different locales, e.g., zh_CN. More specially, it uses `git log`
++commit to find the latest english commit from the translation commit
++(order by author date) and the latest english commits from HEAD. If
++differences occur, report the file and commits that need to be updated.
++
++The usage is as follows:
++- ./scripts/checktransupdate.py -l zh_CN
++This will print all the files that need to be updated in the zh_CN locale.
++- ./scripts/checktransupdate.py Documentation/translations/zh_CN/dev-tools/testing-overview.rst
++This will only print the status of the specified file.
++
++The output is something like:
++Documentation/translations/zh_CN/dev-tools/testing-overview.rst (1 commits)
++commit 42fb9cfd5b18 ("Documentation: dev-tools: Add link to RV docs")
++"""
++
++import os
++from argparse import ArgumentParser, BooleanOptionalAction
++from datetime import datetime
++
++flag_p_c = False
++flag_p_uf = False
++flag_debug = False
++
++
++def dprint(*args, **kwargs):
++    if flag_debug:
++        print("[DEBUG] ", end="")
++        print(*args, **kwargs)
++
++
++def get_origin_path(file_path):
++    paths = file_path.split("/")
++    tidx = paths.index("translations")
++    opaths = paths[:tidx]
++    opaths += paths[tidx + 2 :]
++    return "/".join(opaths)
++
++
++def get_latest_commit_from(file_path, commit):
++    command = "git log --pretty=format:%H%n%aD%n%cD%n%n%B {} -1 -- {}".format(
++        commit, file_path
++    )
++    dprint(command)
++    pipe = os.popen(command)
++    result = pipe.read()
++    result = result.split("\n")
++    if len(result) &lt;= 1:
++        return None
++
++    dprint("Result: {}".format(result[0]))
++
++    return {
++        "hash": result[0],
++        "author_date": datetime.strptime(result[1], "%a, %d %b %Y %H:%M:%S %z"),
++        "commit_date": datetime.strptime(result[2], "%a, %d %b %Y %H:%M:%S %z"),
++        "message": result[4:],
++    }
++
++
++def get_origin_from_trans(origin_path, t_from_head):
++    o_from_t = get_latest_commit_from(origin_path, t_from_head["hash"])
++    while o_from_t is not None and o_from_t["author_date"] &gt; t_from_head["author_date"]:
++        o_from_t = get_latest_commit_from(origin_path, o_from_t["hash"] + "^")
++    if o_from_t is not None:
++        dprint("tracked origin commit id: {}".format(o_from_t["hash"]))
++    return o_from_t
++
++
++def get_commits_count_between(opath, commit1, commit2):
++    command = "git log --pretty=format:%H {}...{} -- {}".format(commit1, commit2, opath)
++    dprint(command)
++    pipe = os.popen(command)
++    result = pipe.read().split("\n")
++    # filter out empty lines
++    result = list(filter(lambda x: x != "", result))
++    return result
++
++
++def pretty_output(commit):
++    command = "git log --pretty='format:%h (\"%s\")' -1 {}".format(commit)
++    dprint(command)
++    pipe = os.popen(command)
++    return pipe.read()
++
++
++def check_per_file(file_path):
++    opath = get_origin_path(file_path)
++
++    if not os.path.isfile(opath):
++        dprint("Error: Cannot find the origin path for {}".format(file_path))
++        return
++
++    o_from_head = get_latest_commit_from(opath, "HEAD")
++    t_from_head = get_latest_commit_from(file_path, "HEAD")
++
++    if o_from_head is None or t_from_head is None:
++        print("Error: Cannot find the latest commit for {}".format(file_path))
++        return
++
++    o_from_t = get_origin_from_trans(opath, t_from_head)
++
++    if o_from_t is None:
++        print("Error: Cannot find the latest origin commit for {}".format(file_path))
++        return
++
++    if o_from_head["hash"] == o_from_t["hash"]:
++        if flag_p_uf:
++            print("No update needed for {}".format(file_path))
++        return
++    else:
++        print("{}".format(file_path), end="\t")
++        commits = get_commits_count_between(
++            opath, o_from_t["hash"], o_from_head["hash"]
++        )
++        print("({} commits)".format(len(commits)))
++        if flag_p_c:
++            for commit in commits:
++                msg = pretty_output(commit)
++                if "Merge tag" not in msg:
++                    print("commit", msg)
++
++
++def main():
++    script_path = os.path.dirname(os.path.abspath(__file__))
++    linux_path = os.path.join(script_path, "..")
++
++    parser = ArgumentParser(description="Check the translation update")
++    parser.add_argument(
++        "-l",
++        "--locale",
++        help="Locale to check when files are not specified",
++    )
++    parser.add_argument(
++        "--print-commits",
++        action=BooleanOptionalAction,
++        default=True,
++        help="Print commits between the origin and the translation",
++    )
++
++    parser.add_argument(
++        "--print-updated-files",
++        action=BooleanOptionalAction,
++        default=False,
++        help="Print files that do no need to be updated",
++    )
++
++    parser.add_argument(
++        "--debug",
++        action=BooleanOptionalAction,
++        help="Print debug information",
++        default=False,
++    )
++
++    parser.add_argument(
++        "files", nargs="*", help="Files to check, if not specified, check all files"
++    )
++    args = parser.parse_args()
++
++    global flag_p_c, flag_p_uf, flag_debug
++    flag_p_c = args.print_commits
++    flag_p_uf = args.print_updated_files
++    flag_debug = args.debug
++
++    # get files related to linux path
++    files = args.files
++    if len(files) == 0:
++        if args.locale is not None:
++            files = (
++                os.popen(
++                    "find {}/Documentation/translations/{} -type f".format(
++                        linux_path, args.locale
++                    )
++                )
++                .read()
++                .split("\n")
++            )
++        else:
++            files = (
++                os.popen(
++                    "find {}/Documentation/translations -type f".format(linux_path)
++                )
++                .read()
++                .split("\n")
++            )
++
++    files = list(filter(lambda x: x != "", files))
++    files = list(map(lambda x: os.path.relpath(os.path.abspath(x), linux_path), files))
++
++    # cd to linux root directory
++    os.chdir(linux_path)
++
++    for file in files:
++        check_per_file(file)
++
++
++if __name__ == "__main__":
++    main()</pre><hr><pre>commit 74de938eb502adab1a6cd7ad869b7b64a7ee1828
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Wed Jun 12 17:11:52 2024 +0800
+
+    docs/zh_CN: Update the translation of dev-tools/testing-overview
+    
+    Update to commit 42fb9cfd5b18 ("Documentation: dev-tools:
+    Add link to RV docs")
+    
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240612091155.38866-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/testing-overview.rst b/Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+index c91f9b60f9f1..286ed6b01f65 100644
+--- a/Documentation/translations/zh_CN/dev-tools/testing-overview.rst
++++ b/Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+@@ -99,6 +99,8 @@ Documentation/dev-tools/kcov.rst 是能够构建在内核之中，用于在每
+   参阅 Documentation/dev-tools/kfence.rst
+ * lockdep是一个锁定正确性检测器。参阅
+   Documentation/locking/lockdep-design.rst
++* 运行时确认（Runtime Verification）支持检查给定子系统的特定行为。参阅
++  Documentation/trace/rv/runtime-verification.rst。
+ * 除此以外，在内核中还有一些其它的调试工具，大多数能在
+   lib/Kconfig.debug 中找到。
+ </pre><hr><pre>commit b3d6c48029116971a998c20ea87f51402a2a40f2
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Thu Jun 13 00:18:32 2024 +0800
+
+    docs/zh_CN: Update dev-tools/index.rst
+    
+    Add several newish dev-tools documents to the todo list.
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240612161835.18931-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/index.rst b/Documentation/translations/zh_CN/dev-tools/index.rst
+index fa900f5beb68..c540e4a7d5db 100644
+--- a/Documentation/translations/zh_CN/dev-tools/index.rst
++++ b/Documentation/translations/zh_CN/dev-tools/index.rst
+@@ -20,18 +20,22 @@ Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+ 
+    testing-overview
+    sparse
++   kcov
+    gcov
+    kasan
+-   kcov
+    ubsan
+    kmemleak
+    gdb-kernel-debugging
+ 
+ Todolist:
+ 
++ - checkpatch
+  - coccinelle
++ - kmsan
+  - kcsan
+  - kfence
+  - kgdb
+  - kselftest
+  - kunit/index
++ - ktap
++ - checkuapi</pre>
+    <div class="pagination">
+        <a href='11_3.html'>&lt;&lt;Prev</a><a href='11.html'>1</a><a href='11_2.html'>2</a><a href='11_3.html'>3</a><span>[4]</span><a href='11_5.html'>5</a><a href='11_6.html'>6</a><a href='11_7.html'>7</a><a href='11_8.html'>8</a><a href='11_9.html'>9</a><a href='11_10.html'>10</a><a href='11_11.html'>11</a><a href='11_12.html'>12</a><a href='11_5.html'>Next&gt;&gt;</a>
+    <div>
+</body>

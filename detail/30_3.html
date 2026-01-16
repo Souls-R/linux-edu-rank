@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Rochester Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Rochester Institute of Technology</h1>
+    <div class="pagination">
+        <a href='30_2.html'>&lt;&lt;Prev</a><a href='30.html'>1</a><a href='30_2.html'>2</a><span>[3]</span>
+    </div>
+    <hr>
+    <pre>commit c876486be17aeefe0da569f3d111cbd8de6f675d
+Author: Andrew Elble &lt;aweits@rit.edu&gt;
+Date:   Wed Feb 25 17:46:27 2015 -0500
+
+    nfsd: fix clp-&gt;cl_revoked list deletion causing softlock in nfsd
+    
+    commit 2d4a532d385f ("nfsd: ensure that clp-&gt;cl_revoked list is
+    protected by clp-&gt;cl_lock") removed the use of the reaplist to
+    clean out clp-&gt;cl_revoked. It failed to change list_entry() to
+    walk clp-&gt;cl_revoked.next instead of reaplist.next
+    
+    Fixes: 2d4a532d385f ("nfsd: ensure that clp-&gt;cl_revoked list is protected by clp-&gt;cl_lock")
+    Cc: stable@vger.kernel.org
+    Reported-by: Eric Meddaugh &lt;etmsys@rit.edu&gt;
+    Tested-by: Eric Meddaugh &lt;etmsys@rit.edu&gt;
+    Signed-off-by: Andrew Elble &lt;aweits@rit.edu&gt;
+    Reviewed-by: Jeff Layton &lt;jeff.layton@primarydata.com&gt;
+    Signed-off-by: J. Bruce Fields &lt;bfields@redhat.com&gt;
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index f6b2a09f793f..d2f2c37dc2db 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1638,7 +1638,7 @@ __destroy_client(struct nfs4_client *clp)
+ 		nfs4_put_stid(&amp;dp-&gt;dl_stid);
+ 	}
+ 	while (!list_empty(&amp;clp-&gt;cl_revoked)) {
+-		dp = list_entry(reaplist.next, struct nfs4_delegation, dl_recall_lru);
++		dp = list_entry(clp-&gt;cl_revoked.next, struct nfs4_delegation, dl_recall_lru);
+ 		list_del_init(&amp;dp-&gt;dl_recall_lru);
+ 		nfs4_put_stid(&amp;dp-&gt;dl_stid);
+ 	}</pre><hr><pre>commit 278702074ff77b1a3fa2061267997095959f5e2c
+Author: Andrew Elble &lt;aweits@rit.edu&gt;
+Date:   Mon Feb 9 12:53:04 2015 -0500
+
+    GFS2: Fix crash during ACL deletion in acl max entry check in gfs2_set_acl()
+    
+    Fixes: e01580bf9e ("gfs2: use generic posix ACL infrastructure")
+    Reported-by: Eric Meddaugh &lt;etmsys@rit.edu&gt;
+    Tested-by: Eric Meddaugh &lt;etmsys@rit.edu&gt;
+    Signed-off-by: Andrew Elble &lt;aweits@rit.edu&gt;
+    Signed-off-by: Steven Whitehouse &lt;swhiteho@redhat.com&gt;
+
+diff --git a/fs/gfs2/acl.c b/fs/gfs2/acl.c
+index 3088e2a38e30..7b3143064af1 100644
+--- a/fs/gfs2/acl.c
++++ b/fs/gfs2/acl.c
+@@ -73,7 +73,7 @@ int gfs2_set_acl(struct inode *inode, struct posix_acl *acl, int type)
+ 
+ 	BUG_ON(name == NULL);
+ 
+-	if (acl-&gt;a_count &gt; GFS2_ACL_MAX_ENTRIES(GFS2_SB(inode)))
++	if (acl &amp;&amp; acl-&gt;a_count &gt; GFS2_ACL_MAX_ENTRIES(GFS2_SB(inode)))
+ 		return -E2BIG;
+ 
+ 	if (type == ACL_TYPE_ACCESS) {</pre>
+    <div class="pagination">
+        <a href='30_2.html'>&lt;&lt;Prev</a><a href='30.html'>1</a><a href='30_2.html'>2</a><span>[3]</span>
+    <div>
+</body>

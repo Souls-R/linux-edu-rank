@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_50.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><span>[51]</span><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_52.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 981250ca89261f98bdfd2d6be1fcccb96cbbc00d
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Jun 12 11:48:29 2013 -0400
+
+    ext4: don't use EXT4_FREE_BLOCKS_FORGET unnecessarily
+    
+    Commit 18888cf0883c: "ext4: speed up truncate/unlink by not using
+    bforget() unless needed" removed the use of EXT4_FREE_BLOCKS_FORGET in
+    the most important codepath for file systems using extents, but a
+    similar optimization also can be done for file systems using indirect
+    blocks, and for the two special cases in the ext4 extents code.
+    
+    Cc: Andrey Sidorov &lt;qrxd43@motorola.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 208f664f9ee0..d04f40936397 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -2355,6 +2355,15 @@ int ext4_ext_index_trans_blocks(struct inode *inode, int extents)
+ 	return index;
+ }
+ 
++static inline int get_default_free_blocks_flags(struct inode *inode)
++{
++	if (S_ISDIR(inode-&gt;i_mode) || S_ISLNK(inode-&gt;i_mode))
++		return EXT4_FREE_BLOCKS_METADATA | EXT4_FREE_BLOCKS_FORGET;
++	else if (ext4_should_journal_data(inode))
++		return EXT4_FREE_BLOCKS_FORGET;
++	return 0;
++}
++
+ static int ext4_remove_blocks(handle_t *handle, struct inode *inode,
+ 			      struct ext4_extent *ex,
+ 			      long long *partial_cluster,
+@@ -2363,12 +2372,7 @@ static int ext4_remove_blocks(handle_t *handle, struct inode *inode,
+ 	struct ext4_sb_info *sbi = EXT4_SB(inode-&gt;i_sb);
+ 	unsigned short ee_len =  ext4_ext_get_actual_len(ex);
+ 	ext4_fsblk_t pblk;
+-	int flags = 0;
+-
+-	if (S_ISDIR(inode-&gt;i_mode) || S_ISLNK(inode-&gt;i_mode))
+-		flags |= EXT4_FREE_BLOCKS_METADATA | EXT4_FREE_BLOCKS_FORGET;
+-	else if (ext4_should_journal_data(inode))
+-		flags |= EXT4_FREE_BLOCKS_FORGET;
++	int flags = get_default_free_blocks_flags(inode);
+ 
+ 	/*
+ 	 * For bigalloc file systems, we never free a partial cluster
+@@ -2635,10 +2639,7 @@ ext4_ext_rm_leaf(handle_t *handle, struct inode *inode,
+ 	if (*partial_cluster &gt; 0 &amp;&amp;
+ 	    (EXT4_B2C(sbi, ext4_ext_pblock(ex) + ex_ee_len - 1) !=
+ 	     *partial_cluster)) {
+-		int flags = EXT4_FREE_BLOCKS_FORGET;
+-
+-		if (S_ISDIR(inode-&gt;i_mode) || S_ISLNK(inode-&gt;i_mode))
+-			flags |= EXT4_FREE_BLOCKS_METADATA;
++		int flags = get_default_free_blocks_flags(inode);
+ 
+ 		ext4_free_blocks(handle, inode, NULL,
+ 				 EXT4_C2B(sbi, *partial_cluster),
+@@ -2869,10 +2870,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
+ 	 * even the first extent, then we should free the blocks in the partial
+ 	 * cluster as well. */
+ 	if (partial_cluster &gt; 0 &amp;&amp; path-&gt;p_hdr-&gt;eh_entries == 0) {
+-		int flags = EXT4_FREE_BLOCKS_FORGET;
+-
+-		if (S_ISDIR(inode-&gt;i_mode) || S_ISLNK(inode-&gt;i_mode))
+-			flags |= EXT4_FREE_BLOCKS_METADATA;
++		int flags = get_default_free_blocks_flags(inode);
+ 
+ 		ext4_free_blocks(handle, inode, NULL,
+ 				 EXT4_C2B(EXT4_SB(sb), partial_cluster),
+diff --git a/fs/ext4/indirect.c b/fs/ext4/indirect.c
+index 2a1f8a577e08..963d23dc1028 100644
+--- a/fs/ext4/indirect.c
++++ b/fs/ext4/indirect.c
+@@ -926,11 +926,13 @@ static int ext4_clear_blocks(handle_t *handle, struct inode *inode,
+ 			     __le32 *last)
+ {
+ 	__le32 *p;
+-	int	flags = EXT4_FREE_BLOCKS_FORGET | EXT4_FREE_BLOCKS_VALIDATED;
++	int	flags = EXT4_FREE_BLOCKS_VALIDATED;
+ 	int	err;
+ 
+ 	if (S_ISDIR(inode-&gt;i_mode) || S_ISLNK(inode-&gt;i_mode))
+-		flags |= EXT4_FREE_BLOCKS_METADATA;
++		flags |= EXT4_FREE_BLOCKS_FORGET | EXT4_FREE_BLOCKS_METADATA;
++	else if (ext4_should_journal_data(inode))
++		flags |= EXT4_FREE_BLOCKS_FORGET;
+ 
+ 	if (!ext4_data_block_valid(EXT4_SB(inode-&gt;i_sb), block_to_free,
+ 				   count)) {</pre><hr><pre>commit 2ed5724d5a78a22864ef0bd6af4fcb8a15379f00
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Jun 12 11:43:02 2013 -0400
+
+    ext4: add cond_resched() to ext4_free_blocks() &amp; ext4_mb_regular_allocator()
+    
+    For a file systems with a very large number of block groups, if all of
+    the block group bitmaps are in memory and the file system is
+    relatively badly fragmented, it's possible ext4_mb_regular_allocator()
+    to take a long time trying to find a good match.  This is especially
+    true if the tuning parameter mb_max_to_scan has been sent to a very
+    large number.  So add a cond_resched() to avoid soft lockup warnings
+    and to provide better system responsiveness.
+    
+    For ext4_free_blocks(), if we are deleting a large range of blocks,
+    and data=journal is enabled so that EXT4_FREE_BLOCKS_FORGET is passed,
+    the loop to call sb_find_get_block() and to call ext4_forget() can
+    take over 10-15 milliseocnds or more.  So it's better to add a
+    cond_resched() here a well.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index def84082a9a9..1a9c22b45a01 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2105,6 +2105,7 @@ ext4_mb_regular_allocator(struct ext4_allocation_context *ac)
+ 		group = ac-&gt;ac_g_ex.fe_group;
+ 
+ 		for (i = 0; i &lt; ngroups; group++, i++) {
++			cond_resched();
+ 			/*
+ 			 * Artificially restricted ngroups for non-extent
+ 			 * files makes group &gt; ngroups possible on first loop.
+@@ -4612,10 +4613,11 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
+ 		BUG_ON(bh &amp;&amp; (count &gt; 1));
+ 
+ 		for (i = 0; i &lt; count; i++) {
++			cond_resched();
+ 			if (!bh)
+ 				tbh = sb_find_get_block(inode-&gt;i_sb,
+ 							block + i);
+-			if (unlikely(!tbh))
++			if (!tbh)
+ 				continue;
+ 			ext4_forget(handle, flags &amp; EXT4_FREE_BLOCKS_METADATA,
+ 				    inode, tbh, block + i);</pre><hr><pre>commit 20970ba65d5a22f2e4efbfa100377722fde56935
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Jun 6 14:00:46 2013 -0400
+
+    ext4: use ext4_da_writepages() for all modes
+    
+    Rename ext4_da_writepages() to ext4_writepages() and use it for all
+    modes.  We still need to iterate over all the pages in the case of
+    data=journalling, but in the case of nodelalloc/data=ordered (which is
+    what file systems mounted using ext3 backwards compatibility will use)
+    this will allow us to use a much more efficient I/O submission path.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 442c5d2e0978..0db830d541ec 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1799,7 +1799,7 @@ static int __ext4_journalled_writepage(struct page *page,
+  * lock so we have to do some magic.
+  *
+  * This function can get called via...
+- *   - ext4_da_writepages after taking page lock (have journal handle)
++ *   - ext4_writepages after taking page lock (have journal handle)
+  *   - journal_submit_inode_data_buffers (no journal handle)
+  *   - shrink_page_list via the kswapd/direct reclaim (no journal handle)
+  *   - grab_page_cache when doing write_begin (have journal handle)
+@@ -2217,7 +2217,7 @@ static int mpage_map_and_submit_extent(handle_t *handle,
+ 
+ /*
+  * Calculate the total number of credits to reserve for one writepages
+- * iteration. This is called from ext4_da_writepages(). We map an extent of
++ * iteration. This is called from ext4_writepages(). We map an extent of
+  * upto MAX_WRITEPAGES_EXTENT_LEN blocks and then we go on and finish mapping
+  * the last partial page. So in total we can map MAX_WRITEPAGES_EXTENT_LEN +
+  * bpp - 1 blocks in bpp different extents.
+@@ -2349,8 +2349,17 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
+ 	return err;
+ }
+ 
+-static int ext4_da_writepages(struct address_space *mapping,
+-			      struct writeback_control *wbc)
++static int __writepage(struct page *page, struct writeback_control *wbc,
++		       void *data)
++{
++	struct address_space *mapping = data;
++	int ret = ext4_writepage(page, wbc);
++	mapping_set_error(mapping, ret);
++	return ret;
++}
++
++static int ext4_writepages(struct address_space *mapping,
++			   struct writeback_control *wbc)
+ {
+ 	pgoff_t	writeback_index = 0;
+ 	long nr_to_write = wbc-&gt;nr_to_write;
+@@ -2364,7 +2373,7 @@ static int ext4_da_writepages(struct address_space *mapping,
+ 	bool done;
+ 	struct blk_plug plug;
+ 
+-	trace_ext4_da_writepages(inode, wbc);
++	trace_ext4_writepages(inode, wbc);
+ 
+ 	/*
+ 	 * No pages to write? This is mainly a kludge to avoid starting
+@@ -2374,13 +2383,23 @@ static int ext4_da_writepages(struct address_space *mapping,
+ 	if (!mapping-&gt;nrpages || !mapping_tagged(mapping, PAGECACHE_TAG_DIRTY))
+ 		return 0;
+ 
++	if (ext4_should_journal_data(inode)) {
++		struct blk_plug plug;
++		int ret;
++
++		blk_start_plug(&amp;plug);
++		ret = write_cache_pages(mapping, wbc, __writepage, mapping);
++		blk_finish_plug(&amp;plug);
++		return ret;
++	}
++
+ 	/*
+ 	 * If the filesystem has aborted, it is read-only, so return
+ 	 * right away instead of dumping stack traces later on that
+ 	 * will obscure the real source of the problem.  We test
+ 	 * EXT4_MF_FS_ABORTED instead of sb-&gt;s_flag's MS_RDONLY because
+ 	 * the latter could be true if the filesystem is mounted
+-	 * read-only, and in that case, ext4_da_writepages should
++	 * read-only, and in that case, ext4_writepages should
+ 	 * *never* be called, so if that ever happens, we would want
+ 	 * the stack trace.
+ 	 */
+@@ -2520,8 +2539,8 @@ static int ext4_da_writepages(struct address_space *mapping,
+ 		mapping-&gt;writeback_index = mpd.first_page;
+ 
+ out_writepages:
+-	trace_ext4_da_writepages_result(inode, wbc, ret,
+-					nr_to_write - wbc-&gt;nr_to_write);
++	trace_ext4_writepages_result(inode, wbc, ret,
++				     nr_to_write - wbc-&gt;nr_to_write);
+ 	return ret;
+ }
+ 
+@@ -2769,7 +2788,7 @@ int ext4_alloc_da_blocks(struct inode *inode)
+ 	 * laptop_mode, not even desirable).  However, to do otherwise
+ 	 * would require replicating code paths in:
+ 	 *
+-	 * ext4_da_writepages() -&gt;
++	 * ext4_writepages() -&gt;
+ 	 *    write_cache_pages() ---&gt; (via passed in callback function)
+ 	 *        __mpage_da_writepage() --&gt;
+ 	 *           mpage_add_bh_to_extent()
+@@ -3213,6 +3232,7 @@ static const struct address_space_operations ext4_aops = {
+ 	.readpage		= ext4_readpage,
+ 	.readpages		= ext4_readpages,
+ 	.writepage		= ext4_writepage,
++	.writepages		= ext4_writepages,
+ 	.write_begin		= ext4_write_begin,
+ 	.write_end		= ext4_write_end,
+ 	.bmap			= ext4_bmap,
+@@ -3228,6 +3248,7 @@ static const struct address_space_operations ext4_journalled_aops = {
+ 	.readpage		= ext4_readpage,
+ 	.readpages		= ext4_readpages,
+ 	.writepage		= ext4_writepage,
++	.writepages		= ext4_writepages,
+ 	.write_begin		= ext4_write_begin,
+ 	.write_end		= ext4_journalled_write_end,
+ 	.set_page_dirty		= ext4_journalled_set_page_dirty,
+@@ -3243,7 +3264,7 @@ static const struct address_space_operations ext4_da_aops = {
+ 	.readpage		= ext4_readpage,
+ 	.readpages		= ext4_readpages,
+ 	.writepage		= ext4_writepage,
+-	.writepages		= ext4_da_writepages,
++	.writepages		= ext4_writepages,
+ 	.write_begin		= ext4_da_write_begin,
+ 	.write_end		= ext4_da_write_end,
+ 	.bmap			= ext4_bmap,
+diff --git a/include/trace/events/ext4.h b/include/trace/events/ext4.h
+index 832a412e6515..72f523eb82e0 100644
+--- a/include/trace/events/ext4.h
++++ b/include/trace/events/ext4.h
+@@ -281,7 +281,7 @@ DEFINE_EVENT(ext4__write_end, ext4_da_write_end,
+ 	TP_ARGS(inode, pos, len, copied)
+ );
+ 
+-TRACE_EVENT(ext4_da_writepages,
++TRACE_EVENT(ext4_writepages,
+ 	TP_PROTO(struct inode *inode, struct writeback_control *wbc),
+ 
+ 	TP_ARGS(inode, wbc),
+@@ -379,7 +379,7 @@ TRACE_EVENT(ext4_da_write_pages_extent,
+ 		  __entry-&gt;flags)
+ );
+ 
+-TRACE_EVENT(ext4_da_writepages_result,
++TRACE_EVENT(ext4_writepages_result,
+ 	TP_PROTO(struct inode *inode, struct writeback_control *wbc,
+ 			int ret, int pages_written),
+ </pre><hr><pre>commit f4afb4f4e3e9af626ad695c87e4f9aaa780b29ec
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Jun 6 11:40:37 2013 -0400
+
+    ext4: optimize test_root()
+    
+    The test_root() function could potentially loop forever due to
+    overflow issues.  So rewrite test_root() to avoid this issue; as a
+    bonus, it is 38% faster when benchmarked via a test loop:
+    
+    int main(int argc, char **argv)
+    {
+            int  i;
+    
+            for (i = 0; i &lt; 1 &lt;&lt; 24; i++) {
+                    if (test_root(i, 7))
+                            printf("%d\n", i);
+            }
+    }
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index d0f13eada0ed..58339393fa6e 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -682,11 +682,15 @@ ext4_fsblk_t ext4_count_free_clusters(struct super_block *sb)
+ 
+ static inline int test_root(ext4_group_t a, int b)
+ {
+-	int num = b;
+-
+-	while (a &gt; num)
+-		num *= b;
+-	return num == a;
++	while (1) {
++		if (a &lt; b)
++			return 0;
++		if (a == b)
++			return 1;
++		if ((a % b) != 0)
++			return 0;
++		a = a / b;
++	}
+ }
+ 
+ static int ext4_group_sparse(ext4_group_t group)</pre><hr><pre>commit 2f2e09eb15849562aede80ed007658e4504ded26
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Jun 6 11:16:43 2013 -0400
+
+    ext4: add sanity check to ext4_get_group_info()
+    
+    The group number passed to ext4_get_group_info() should be valid, but
+    let's add an assert to check this before we start creating a pointer
+    based on that group number and dereferencing it.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index bd9890f6d9ce..f85f1fb49df8 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -2313,6 +2313,7 @@ struct ext4_group_info *ext4_get_group_info(struct super_block *sb,
+ {
+ 	 struct ext4_group_info ***grp_info;
+ 	 long indexv, indexh;
++	 BUG_ON(group &gt;= EXT4_SB(sb)-&gt;s_groups_count);
+ 	 grp_info = EXT4_SB(sb)-&gt;s_group_info;
+ 	 indexv = group &gt;&gt; (EXT4_DESC_PER_BLOCK_BITS(sb));
+ 	 indexh = group &amp; ((EXT4_DESC_PER_BLOCK(sb)) - 1);</pre><hr><pre>commit b302ef2d3c73d8a07ed2f0679ce35f00b6dcacef
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Jun 6 11:14:31 2013 -0400
+
+    ext4: verify group number in verify_group_input() before using it
+    
+    Check the group number for sanity earilier, before calling routines
+    such as ext4_bg_has_super() or ext4_group_overhead_blocks().
+    
+    Reported-by: Jonathan Salwan &lt;jonathan.salwan@gmail.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index b27c96d01965..6ed4df27da8d 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -79,12 +79,20 @@ static int verify_group_input(struct super_block *sb,
+ 	ext4_fsblk_t end = start + input-&gt;blocks_count;
+ 	ext4_group_t group = input-&gt;group;
+ 	ext4_fsblk_t itend = input-&gt;inode_table + sbi-&gt;s_itb_per_group;
+-	unsigned overhead = ext4_group_overhead_blocks(sb, group);
+-	ext4_fsblk_t metaend = start + overhead;
++	unsigned overhead;
++	ext4_fsblk_t metaend;
+ 	struct buffer_head *bh = NULL;
+ 	ext4_grpblk_t free_blocks_count, offset;
+ 	int err = -EINVAL;
+ 
++	if (group != sbi-&gt;s_groups_count) {
++		ext4_warning(sb, "Cannot add at group %u (only %u groups)",
++			     input-&gt;group, sbi-&gt;s_groups_count);
++		return -EINVAL;
++	}
++
++	overhead = ext4_group_overhead_blocks(sb, group);
++	metaend = start + overhead;
+ 	input-&gt;free_blocks_count = free_blocks_count =
+ 		input-&gt;blocks_count - 2 - overhead - sbi-&gt;s_itb_per_group;
+ 
+@@ -96,10 +104,7 @@ static int verify_group_input(struct super_block *sb,
+ 		       free_blocks_count, input-&gt;reserved_blocks);
+ 
+ 	ext4_get_group_no_and_offset(sb, start, NULL, &amp;offset);
+-	if (group != sbi-&gt;s_groups_count)
+-		ext4_warning(sb, "Cannot add at group %u (only %u groups)",
+-			     input-&gt;group, sbi-&gt;s_groups_count);
+-	else if (offset != 0)
++	if (offset != 0)
+ 			ext4_warning(sb, "Last group not full");
+ 	else if (input-&gt;reserved_blocks &gt; input-&gt;blocks_count / 5)
+ 		ext4_warning(sb, "Reserved blocks too high (%u)",</pre><hr><pre>commit a1d8d9a757cd46e044a3f6061c315eda14bf697e
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Jun 6 10:18:22 2013 -0400
+
+    ext4: add check to io_submit_init_bio
+    
+    The bio_alloc() function can return NULL if the memory allocation
+    fails.  So we need to check for this.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/page-io.c b/fs/ext4/page-io.c
+index ce8c15a7eabc..48786cdb5e6c 100644
+--- a/fs/ext4/page-io.c
++++ b/fs/ext4/page-io.c
+@@ -372,6 +372,8 @@ static int io_submit_init_bio(struct ext4_io_submit *io,
+ 	struct bio *bio;
+ 
+ 	bio = bio_alloc(GFP_NOIO, min(nvecs, BIO_MAX_PAGES));
++	if (!bio)
++		return -ENOMEM;
+ 	bio-&gt;bi_sector = bh-&gt;b_blocknr * (bh-&gt;b_size &gt;&gt; 9);
+ 	bio-&gt;bi_bdev = bh-&gt;b_bdev;
+ 	bio-&gt;bi_end_io = ext4_end_bio;</pre><hr><pre>commit a549984b8c95acbecefd1fdd4bfdbea4d29b0588
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat May 11 19:07:42 2013 -0400
+
+    ext4: revert "ext4: use io_end for multiple bios"
+    
+    This reverts commit 4eec708d263f0ee10861d69251708a225b64cac7.
+    
+    Multiple users have reported crashes which is apparently caused by
+    this commit.  Thanks to Dmitry Monakhov for bisecting it.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: Dmitry Monakhov &lt;dmonakhov@openvz.org&gt;
+    Cc: Jan Kara &lt;jack@suse.cz&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 0aabb344b02e..5aae3d12d400 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -209,7 +209,6 @@ typedef struct ext4_io_end {
+ 	ssize_t			size;		/* size of the extent */
+ 	struct kiocb		*iocb;		/* iocb struct for AIO */
+ 	int			result;		/* error value for AIO */
+-	atomic_t		count;		/* reference counter */
+ } ext4_io_end_t;
+ 
+ struct ext4_io_submit {
+@@ -2651,14 +2650,11 @@ extern int ext4_move_extents(struct file *o_filp, struct file *d_filp,
+ 
+ /* page-io.c */
+ extern int __init ext4_init_pageio(void);
++extern void ext4_add_complete_io(ext4_io_end_t *io_end);
+ extern void ext4_exit_pageio(void);
+ extern void ext4_ioend_shutdown(struct inode *);
++extern void ext4_free_io_end(ext4_io_end_t *io);
+ extern ext4_io_end_t *ext4_init_io_end(struct inode *inode, gfp_t flags);
+-extern ext4_io_end_t *ext4_get_io_end(ext4_io_end_t *io_end);
+-extern int ext4_put_io_end(ext4_io_end_t *io_end);
+-extern void ext4_put_io_end_defer(ext4_io_end_t *io_end);
+-extern void ext4_io_submit_init(struct ext4_io_submit *io,
+-				struct writeback_control *wbc);
+ extern void ext4_end_io_work(struct work_struct *work);
+ extern void ext4_io_submit(struct ext4_io_submit *io);
+ extern int ext4_bio_write_page(struct ext4_io_submit *io,
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 793d44b84d7f..d66656992358 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1487,10 +1487,7 @@ static int mpage_da_submit_io(struct mpage_da_data *mpd,
+ 	struct ext4_io_submit io_submit;
+ 
+ 	BUG_ON(mpd-&gt;next_page &lt;= mpd-&gt;first_page);
+-	ext4_io_submit_init(&amp;io_submit, mpd-&gt;wbc);
+-	io_submit.io_end = ext4_init_io_end(inode, GFP_NOFS);
+-	if (!io_submit.io_end)
+-		return -ENOMEM;
++	memset(&amp;io_submit, 0, sizeof(io_submit));
+ 	/*
+ 	 * We need to start from the first_page to the next_page - 1
+ 	 * to make sure we also write the mapped dirty buffer_heads.
+@@ -1578,8 +1575,6 @@ static int mpage_da_submit_io(struct mpage_da_data *mpd,
+ 		pagevec_release(&amp;pvec);
+ 	}
+ 	ext4_io_submit(&amp;io_submit);
+-	/* Drop io_end reference we got from init */
+-	ext4_put_io_end_defer(io_submit.io_end);
+ 	return ret;
+ }
+ 
+@@ -2238,16 +2233,9 @@ static int ext4_writepage(struct page *page,
+ 		 */
+ 		return __ext4_journalled_writepage(page, len);
+ 
+-	ext4_io_submit_init(&amp;io_submit, wbc);
+-	io_submit.io_end = ext4_init_io_end(inode, GFP_NOFS);
+-	if (!io_submit.io_end) {
+-		redirty_page_for_writepage(wbc, page);
+-		return -ENOMEM;
+-	}
++	memset(&amp;io_submit, 0, sizeof(io_submit));
+ 	ret = ext4_bio_write_page(&amp;io_submit, page, len, wbc);
+ 	ext4_io_submit(&amp;io_submit);
+-	/* Drop io_end reference we got from init */
+-	ext4_put_io_end_defer(io_submit.io_end);
+ 	return ret;
+ }
+ 
+@@ -3078,13 +3066,9 @@ static void ext4_end_io_dio(struct kiocb *iocb, loff_t offset,
+ 	struct inode *inode = file_inode(iocb-&gt;ki_filp);
+         ext4_io_end_t *io_end = iocb-&gt;private;
+ 
+-	/* if not async direct IO just return */
+-	if (!io_end) {
+-		inode_dio_done(inode);
+-		if (is_async)
+-			aio_complete(iocb, ret, 0);
+-		return;
+-	}
++	/* if not async direct IO or dio with 0 bytes write, just return */
++	if (!io_end || !size)
++		goto out;
+ 
+ 	ext_debug("ext4_end_io_dio(): io_end 0x%p "
+ 		  "for inode %lu, iocb 0x%p, offset %llu, size %zd\n",
+@@ -3092,13 +3076,25 @@ static void ext4_end_io_dio(struct kiocb *iocb, loff_t offset,
+ 		  size);
+ 
+ 	iocb-&gt;private = NULL;
++
++	/* if not aio dio with unwritten extents, just free io and return */
++	if (!(io_end-&gt;flag &amp; EXT4_IO_END_UNWRITTEN)) {
++		ext4_free_io_end(io_end);
++out:
++		inode_dio_done(inode);
++		if (is_async)
++			aio_complete(iocb, ret, 0);
++		return;
++	}
++
+ 	io_end-&gt;offset = offset;
+ 	io_end-&gt;size = size;
+ 	if (is_async) {
+ 		io_end-&gt;iocb = iocb;
+ 		io_end-&gt;result = ret;
+ 	}
+-	ext4_put_io_end_defer(io_end);
++
++	ext4_add_complete_io(io_end);
+ }
+ 
+ /*
+@@ -3132,7 +3128,6 @@ static ssize_t ext4_ext_direct_IO(int rw, struct kiocb *iocb,
+ 	get_block_t *get_block_func = NULL;
+ 	int dio_flags = 0;
+ 	loff_t final_size = offset + count;
+-	ext4_io_end_t *io_end = NULL;
+ 
+ 	/* Use the old path for reads and writes beyond i_size. */
+ 	if (rw != WRITE || final_size &gt; inode-&gt;i_size)
+@@ -3171,16 +3166,13 @@ static ssize_t ext4_ext_direct_IO(int rw, struct kiocb *iocb,
+ 	iocb-&gt;private = NULL;
+ 	ext4_inode_aio_set(inode, NULL);
+ 	if (!is_sync_kiocb(iocb)) {
+-		io_end = ext4_init_io_end(inode, GFP_NOFS);
++		ext4_io_end_t *io_end = ext4_init_io_end(inode, GFP_NOFS);
+ 		if (!io_end) {
+ 			ret = -ENOMEM;
+ 			goto retake_lock;
+ 		}
+ 		io_end-&gt;flag |= EXT4_IO_END_DIRECT;
+-		/*
+-		 * Grab reference for DIO. Will be dropped in ext4_end_io_dio()
+-		 */
+-		iocb-&gt;private = ext4_get_io_end(io_end);
++		iocb-&gt;private = io_end;
+ 		/*
+ 		 * we save the io structure for current async direct
+ 		 * IO, so that later ext4_map_blocks() could flag the
+@@ -3204,27 +3196,26 @@ static ssize_t ext4_ext_direct_IO(int rw, struct kiocb *iocb,
+ 				   NULL,
+ 				   dio_flags);
+ 
++	if (iocb-&gt;private)
++		ext4_inode_aio_set(inode, NULL);
+ 	/*
+-	 * Put our reference to io_end. This can free the io_end structure e.g.
+-	 * in sync IO case or in case of error. It can even perform extent
+-	 * conversion if all bios we submitted finished before we got here.
+-	 * Note that in that case iocb-&gt;private can be already set to NULL
+-	 * here.
++	 * The io_end structure takes a reference to the inode, that
++	 * structure needs to be destroyed and the reference to the
++	 * inode need to be dropped, when IO is complete, even with 0
++	 * byte write, or failed.
++	 *
++	 * In the successful AIO DIO case, the io_end structure will
++	 * be destroyed and the reference to the inode will be dropped
++	 * after the end_io call back function is called.
++	 *
++	 * In the case there is 0 byte write, or error case, since VFS
++	 * direct IO won't invoke the end_io call back function, we
++	 * need to free the end_io structure here.
+ 	 */
+-	if (io_end) {
+-		ext4_inode_aio_set(inode, NULL);
+-		ext4_put_io_end(io_end);
+-		/*
+-		 * In case of error or no write ext4_end_io_dio() was not
+-		 * called so we have to put iocb's reference.
+-		 */
+-		if (ret &lt;= 0 &amp;&amp; ret != -EIOCBQUEUED) {
+-			WARN_ON(iocb-&gt;private != io_end);
+-			ext4_put_io_end(io_end);
+-			iocb-&gt;private = NULL;
+-		}
+-	}
+-	if (ret &gt; 0 &amp;&amp; !overwrite &amp;&amp; ext4_test_inode_state(inode,
++	if (ret != -EIOCBQUEUED &amp;&amp; ret &lt;= 0 &amp;&amp; iocb-&gt;private) {
++		ext4_free_io_end(iocb-&gt;private);
++		iocb-&gt;private = NULL;
++	} else if (ret &gt; 0 &amp;&amp; !overwrite &amp;&amp; ext4_test_inode_state(inode,
+ 						EXT4_STATE_DIO_UNWRITTEN)) {
+ 		int err;
+ 		/*
+diff --git a/fs/ext4/page-io.c b/fs/ext4/page-io.c
+index 5929cd0baa20..6626aba57ebb 100644
+--- a/fs/ext4/page-io.c
++++ b/fs/ext4/page-io.c
+@@ -61,28 +61,15 @@ void ext4_ioend_shutdown(struct inode *inode)
+ 		cancel_work_sync(&amp;EXT4_I(inode)-&gt;i_unwritten_work);
+ }
+ 
+-static void ext4_release_io_end(ext4_io_end_t *io_end)
++void ext4_free_io_end(ext4_io_end_t *io)
+ {
+-	BUG_ON(!list_empty(&amp;io_end-&gt;list));
+-	BUG_ON(io_end-&gt;flag &amp; EXT4_IO_END_UNWRITTEN);
+-
+-	if (atomic_dec_and_test(&amp;EXT4_I(io_end-&gt;inode)-&gt;i_ioend_count))
+-		wake_up_all(ext4_ioend_wq(io_end-&gt;inode));
+-	if (io_end-&gt;flag &amp; EXT4_IO_END_DIRECT)
+-		inode_dio_done(io_end-&gt;inode);
+-	if (io_end-&gt;iocb)
+-		aio_complete(io_end-&gt;iocb, io_end-&gt;result, 0);
+-	kmem_cache_free(io_end_cachep, io_end);
+-}
+-
+-static void ext4_clear_io_unwritten_flag(ext4_io_end_t *io_end)
+-{
+-	struct inode *inode = io_end-&gt;inode;
++	BUG_ON(!io);
++	BUG_ON(!list_empty(&amp;io-&gt;list));
++	BUG_ON(io-&gt;flag &amp; EXT4_IO_END_UNWRITTEN);
+ 
+-	io_end-&gt;flag &amp;= ~EXT4_IO_END_UNWRITTEN;
+-	/* Wake up anyone waiting on unwritten extent conversion */
+-	if (atomic_dec_and_test(&amp;EXT4_I(inode)-&gt;i_unwritten))
+-		wake_up_all(ext4_ioend_wq(inode));
++	if (atomic_dec_and_test(&amp;EXT4_I(io-&gt;inode)-&gt;i_ioend_count))
++		wake_up_all(ext4_ioend_wq(io-&gt;inode));
++	kmem_cache_free(io_end_cachep, io);
+ }
+ 
+ /* check a range of space and convert unwritten extents to written. */
+@@ -105,8 +92,13 @@ static int ext4_end_io(ext4_io_end_t *io)
+ 			 "(inode %lu, offset %llu, size %zd, error %d)",
+ 			 inode-&gt;i_ino, offset, size, ret);
+ 	}
+-	ext4_clear_io_unwritten_flag(io);
+-	ext4_release_io_end(io);
++	/* Wake up anyone waiting on unwritten extent conversion */
++	if (atomic_dec_and_test(&amp;EXT4_I(inode)-&gt;i_unwritten))
++		wake_up_all(ext4_ioend_wq(inode));
++	if (io-&gt;flag &amp; EXT4_IO_END_DIRECT)
++		inode_dio_done(inode);
++	if (io-&gt;iocb)
++		aio_complete(io-&gt;iocb, io-&gt;result, 0);
+ 	return ret;
+ }
+ 
+@@ -137,7 +129,7 @@ static void dump_completed_IO(struct inode *inode)
+ }
+ 
+ /* Add the io_end to per-inode completed end_io list. */
+-static void ext4_add_complete_io(ext4_io_end_t *io_end)
++void ext4_add_complete_io(ext4_io_end_t *io_end)
+ {
+ 	struct ext4_inode_info *ei = EXT4_I(io_end-&gt;inode);
+ 	struct workqueue_struct *wq;
+@@ -174,6 +166,8 @@ static int ext4_do_flush_completed_IO(struct inode *inode)
+ 		err = ext4_end_io(io);
+ 		if (unlikely(!ret &amp;&amp; err))
+ 			ret = err;
++		io-&gt;flag &amp;= ~EXT4_IO_END_UNWRITTEN;
++		ext4_free_io_end(io);
+ 	}
+ 	return ret;
+ }
+@@ -205,43 +199,10 @@ ext4_io_end_t *ext4_init_io_end(struct inode *inode, gfp_t flags)
+ 		atomic_inc(&amp;EXT4_I(inode)-&gt;i_ioend_count);
+ 		io-&gt;inode = inode;
+ 		INIT_LIST_HEAD(&amp;io-&gt;list);
+-		atomic_set(&amp;io-&gt;count, 1);
+ 	}
+ 	return io;
+ }
+ 
+-void ext4_put_io_end_defer(ext4_io_end_t *io_end)
+-{
+-	if (atomic_dec_and_test(&amp;io_end-&gt;count)) {
+-		if (!(io_end-&gt;flag &amp; EXT4_IO_END_UNWRITTEN) || !io_end-&gt;size) {
+-			ext4_release_io_end(io_end);
+-			return;
+-		}
+-		ext4_add_complete_io(io_end);
+-	}
+-}
+-
+-int ext4_put_io_end(ext4_io_end_t *io_end)
+-{
+-	int err = 0;
+-
+-	if (atomic_dec_and_test(&amp;io_end-&gt;count)) {
+-		if (io_end-&gt;flag &amp; EXT4_IO_END_UNWRITTEN) {
+-			err = ext4_convert_unwritten_extents(io_end-&gt;inode,
+-						io_end-&gt;offset, io_end-&gt;size);
+-			ext4_clear_io_unwritten_flag(io_end);
+-		}
+-		ext4_release_io_end(io_end);
+-	}
+-	return err;
+-}
+-
+-ext4_io_end_t *ext4_get_io_end(ext4_io_end_t *io_end)
+-{
+-	atomic_inc(&amp;io_end-&gt;count);
+-	return io_end;
+-}
+-
+ /*
+  * Print an buffer I/O error compatible with the fs/buffer.c.  This
+  * provides compatibility with dmesg scrapers that look for a specific
+@@ -324,7 +285,12 @@ static void ext4_end_bio(struct bio *bio, int error)
+ 			     bi_sector &gt;&gt; (inode-&gt;i_blkbits - 9));
+ 	}
+ 
+-	ext4_put_io_end_defer(io_end);
++	if (!(io_end-&gt;flag &amp; EXT4_IO_END_UNWRITTEN)) {
++		ext4_free_io_end(io_end);
++		return;
++	}
++
++	ext4_add_complete_io(io_end);
+ }
+ 
+ void ext4_io_submit(struct ext4_io_submit *io)
+@@ -338,37 +304,40 @@ void ext4_io_submit(struct ext4_io_submit *io)
+ 		bio_put(io-&gt;io_bio);
+ 	}
+ 	io-&gt;io_bio = NULL;
+-}
+-
+-void ext4_io_submit_init(struct ext4_io_submit *io,
+-			 struct writeback_control *wbc)
+-{
+-	io-&gt;io_op = (wbc-&gt;sync_mode == WB_SYNC_ALL ?  WRITE_SYNC : WRITE);
+-	io-&gt;io_bio = NULL;
++	io-&gt;io_op = 0;
+ 	io-&gt;io_end = NULL;
+ }
+ 
+-static int io_submit_init_bio(struct ext4_io_submit *io,
+-			      struct buffer_head *bh)
++static int io_submit_init(struct ext4_io_submit *io,
++			  struct inode *inode,
++			  struct writeback_control *wbc,
++			  struct buffer_head *bh)
+ {
++	ext4_io_end_t *io_end;
++	struct page *page = bh-&gt;b_page;
+ 	int nvecs = bio_get_nr_vecs(bh-&gt;b_bdev);
+ 	struct bio *bio;
+ 
++	io_end = ext4_init_io_end(inode, GFP_NOFS);
++	if (!io_end)
++		return -ENOMEM;
+ 	bio = bio_alloc(GFP_NOIO, min(nvecs, BIO_MAX_PAGES));
+ 	bio-&gt;bi_sector = bh-&gt;b_blocknr * (bh-&gt;b_size &gt;&gt; 9);
+ 	bio-&gt;bi_bdev = bh-&gt;b_bdev;
++	bio-&gt;bi_private = io-&gt;io_end = io_end;
+ 	bio-&gt;bi_end_io = ext4_end_bio;
+-	bio-&gt;bi_private = ext4_get_io_end(io-&gt;io_end);
+-	if (!io-&gt;io_end-&gt;size)
+-		io-&gt;io_end-&gt;offset = (bh-&gt;b_page-&gt;index &lt;&lt; PAGE_CACHE_SHIFT)
+-				     + bh_offset(bh);
++
++	io_end-&gt;offset = (page-&gt;index &lt;&lt; PAGE_CACHE_SHIFT) + bh_offset(bh);
++
+ 	io-&gt;io_bio = bio;
++	io-&gt;io_op = (wbc-&gt;sync_mode == WB_SYNC_ALL ?  WRITE_SYNC : WRITE);
+ 	io-&gt;io_next_block = bh-&gt;b_blocknr;
+ 	return 0;
+ }
+ 
+ static int io_submit_add_bh(struct ext4_io_submit *io,
+ 			    struct inode *inode,
++			    struct writeback_control *wbc,
+ 			    struct buffer_head *bh)
+ {
+ 	ext4_io_end_t *io_end;
+@@ -379,18 +348,18 @@ static int io_submit_add_bh(struct ext4_io_submit *io,
+ 		ext4_io_submit(io);
+ 	}
+ 	if (io-&gt;io_bio == NULL) {
+-		ret = io_submit_init_bio(io, bh);
++		ret = io_submit_init(io, inode, wbc, bh);
+ 		if (ret)
+ 			return ret;
+ 	}
+-	ret = bio_add_page(io-&gt;io_bio, bh-&gt;b_page, bh-&gt;b_size, bh_offset(bh));
+-	if (ret != bh-&gt;b_size)
+-		goto submit_and_retry;
+ 	io_end = io-&gt;io_end;
+ 	if (test_clear_buffer_uninit(bh))
+ 		ext4_set_io_unwritten_flag(inode, io_end);
+-	io_end-&gt;size += bh-&gt;b_size;
++	io-&gt;io_end-&gt;size += bh-&gt;b_size;
+ 	io-&gt;io_next_block++;
++	ret = bio_add_page(io-&gt;io_bio, bh-&gt;b_page, bh-&gt;b_size, bh_offset(bh));
++	if (ret != bh-&gt;b_size)
++		goto submit_and_retry;
+ 	return 0;
+ }
+ 
+@@ -462,7 +431,7 @@ int ext4_bio_write_page(struct ext4_io_submit *io,
+ 	do {
+ 		if (!buffer_async_write(bh))
+ 			continue;
+-		ret = io_submit_add_bh(io, inode, bh);
++		ret = io_submit_add_bh(io, inode, wbc, bh);
+ 		if (ret) {
+ 			/*
+ 			 * We only get here on ENOMEM.  Not much else</pre><hr><pre>commit 0d606e2c9fccdd4e67febf1e2da500e1bfe9e045
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Apr 23 08:59:35 2013 -0400
+
+    ext4: fix type-widening bug in inode table readahead code
+    
+    Due to a missing cast, the high 32-bits of a 64-bit block number used
+    when calculating the readahead block for inode tables can get lost.
+    This means we can end up fetching the wrong blocks for readahead for
+    file systems &gt; 16TB.
+    
+    Linus found this when experimenting with an enhacement to the sparse
+    static code checker which checks for missing widening casts before
+    binary "not" operators.
+    
+    Reported-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index d7518e2728f1..793d44b84d7f 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4011,13 +4011,14 @@ static int __ext4_get_inode_loc(struct inode *inode,
+ 		if (EXT4_SB(sb)-&gt;s_inode_readahead_blks) {
+ 			ext4_fsblk_t b, end, table;
+ 			unsigned num;
++			__u32 ra_blks = EXT4_SB(sb)-&gt;s_inode_readahead_blks;
+ 
+ 			table = ext4_inode_table(sb, gdp);
+ 			/* s_inode_readahead_blks is always a power of 2 */
+-			b = block &amp; ~(EXT4_SB(sb)-&gt;s_inode_readahead_blks-1);
++			b = block &amp; ~((ext4_fsblk_t) ra_blks - 1);
+ 			if (table &gt; b)
+ 				b = table;
+-			end = b + EXT4_SB(sb)-&gt;s_inode_readahead_blks;
++			end = b + ra_blks;
+ 			num = EXT4_INODES_PER_GROUP(sb);
+ 			if (ext4_has_group_desc_csum(sb))
+ 				num -= ext4_itable_unused_count(sb, gdp);</pre><hr><pre>commit 3f8a6411fbada1fa482276591e037f3b1adcf55b
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Apr 21 22:56:32 2013 -0400
+
+    ext4: add check for inodes_count overflow in new resize ioctl
+    
+    Addresses-Red-Hat-Bugzilla: #913245
+    
+    Reported-by: Eric Sandeen &lt;sandeen@redhat.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Reviewed-by: Carlos Maiolino &lt;cmaiolino@redhat.com&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index 08d2312c0fd4..b27c96d01965 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -1882,6 +1882,10 @@ int ext4_resize_fs(struct super_block *sb, ext4_fsblk_t n_blocks_count)
+ 		return 0;
+ 
+ 	n_group = ext4_get_group_number(sb, n_blocks_count - 1);
++	if (n_group &gt; (0xFFFFFFFFUL / EXT4_INODES_PER_GROUP(sb))) {
++		ext4_warning(sb, "resize would cause inodes_count overflow");
++		return -EINVAL;
++	}
+ 	ext4_get_group_no_and_offset(sb, o_blocks_count - 1, &amp;o_group, &amp;offset);
+ 
+ 	n_desc_blocks = num_desc_blocks(sb, n_group + 1);</pre>
+    <div class="pagination">
+        <a href='1_50.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><span>[51]</span><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_52.html'>Next&gt;&gt;</a>
+    <div>
+</body>

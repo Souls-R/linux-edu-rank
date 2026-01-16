@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Jimei University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Jimei University</h1>
+    <div class="pagination">
+        <a href='14_2.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><span>[3]</span><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_9.html'>9</a><a href='14_4.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 2783335329e5762deb0dc5b6d634225d8613af16
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue May 20 18:01:02 2025 +0800
+
+    arm64: dts: rockchip: Add spi nodes for RK3528
+    
+    There are 2 SPI controllers on the RK3528 SoC, describe it.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250520100102.1226725-3-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index d1c72b52aa4e..50c8cb504885 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -439,6 +439,34 @@ ioc_grf: syscon@ff540000 {
+ 			reg = &lt;0x0 0xff540000 0x0 0x40000&gt;;
+ 		};
+ 
++		spi0: spi@ff9c0000 {
++			compatible = "rockchip,rk3528-spi",
++				     "rockchip,rk3066-spi";
++			reg = &lt;0x0 0xff9c0000 0x0 0x1000&gt;;
++			clocks = &lt;&amp;cru CLK_SPI0&gt;, &lt;&amp;cru PCLK_SPI0&gt;;
++			clock-names = "spiclk", "apb_pclk";
++			interrupts = &lt;GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 25&gt;, &lt;&amp;dmac 24&gt;;
++			dma-names = "tx", "rx";
++			#address-cells = &lt;1&gt;;
++			#size-cells = &lt;0&gt;;
++			status = "disabled";
++		};
++
++		spi1: spi@ff9d0000 {
++			compatible = "rockchip,rk3528-spi",
++				     "rockchip,rk3066-spi";
++			reg = &lt;0x0 0xff9d0000 0x0 0x1000&gt;;
++			clocks = &lt;&amp;cru CLK_SPI1&gt;, &lt;&amp;cru PCLK_SPI1&gt;;
++			clock-names = "spiclk", "apb_pclk";
++			interrupts = &lt;GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 31&gt;, &lt;&amp;dmac 30&gt;;
++			dma-names = "tx", "rx";
++			#address-cells = &lt;1&gt;;
++			#size-cells = &lt;0&gt;;
++			status = "disabled";
++		};
++
+ 		uart0: serial@ff9f0000 {
+ 			compatible = "rockchip,rk3528-uart", "snps,dw-apb-uart";
+ 			reg = &lt;0x0 0xff9f0000 0x0 0x100&gt;;</pre><hr><pre>commit 70e5f38e734572ca5a56cff48cf01a0f31917099
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue May 20 18:01:01 2025 +0800
+
+    spi: dt-bindings: Add rk3528-spi compatible
+    
+    This adds a compatible string for the SPI controller on RK3528.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Acked-by: Conor Dooley &lt;conor.dooley@microchip.com&gt;
+    Link: https://patch.msgid.link/20250520100102.1226725-2-amadeus@jmu.edu.cn
+    Signed-off-by: Mark Brown &lt;broonie@kernel.org&gt;
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+index 104f5ffdd04e..748faf7f7081 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+@@ -34,6 +34,7 @@ properties:
+               - rockchip,rk3328-spi
+               - rockchip,rk3368-spi
+               - rockchip,rk3399-spi
++              - rockchip,rk3528-spi
+               - rockchip,rk3562-spi
+               - rockchip,rk3568-spi
+               - rockchip,rk3576-spi</pre><hr><pre>commit fbea35a661ed100cee2f3bab8015fb0155508106
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Sat Mar 8 17:30:08 2025 +0800
+
+    arm64: dts: rockchip: Move rk3568 PCIe3 MSI to use GIC ITS
+    
+    Following commit b956c9de9175 ("arm64: dts: rockchip: rk356x: Move
+    PCIe MSI to use GIC ITS instead of MBI"), change the PCIe3 controller's
+    MSI on rk3568 to use ITS, so that all MSI-X can work properly.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250308093008.568437-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+index 695cccbdab0f..e719a3df126c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+@@ -152,7 +152,7 @@ pcie3x1: pcie@fe270000 {
+ 		compatible = "rockchip,rk3568-pcie";
+ 		#address-cells = &lt;3&gt;;
+ 		#size-cells = &lt;2&gt;;
+-		bus-range = &lt;0x0 0xf&gt;;
++		bus-range = &lt;0x10 0x1f&gt;;
+ 		clocks = &lt;&amp;cru ACLK_PCIE30X1_MST&gt;, &lt;&amp;cru ACLK_PCIE30X1_SLV&gt;,
+ 			 &lt;&amp;cru ACLK_PCIE30X1_DBI&gt;, &lt;&amp;cru PCLK_PCIE30X1&gt;,
+ 			 &lt;&amp;cru CLK_PCIE30X1_AUX_NDFT&gt;;
+@@ -175,7 +175,7 @@ pcie3x1: pcie@fe270000 {
+ 		num-ib-windows = &lt;6&gt;;
+ 		num-ob-windows = &lt;2&gt;;
+ 		max-link-speed = &lt;3&gt;;
+-		msi-map = &lt;0x0 &amp;gic 0x1000 0x1000&gt;;
++		msi-map = &lt;0x1000 &amp;its 0x1000 0x1000&gt;;
+ 		num-lanes = &lt;1&gt;;
+ 		phys = &lt;&amp;pcie30phy&gt;;
+ 		phy-names = "pcie-phy";
+@@ -205,7 +205,7 @@ pcie3x2: pcie@fe280000 {
+ 		compatible = "rockchip,rk3568-pcie";
+ 		#address-cells = &lt;3&gt;;
+ 		#size-cells = &lt;2&gt;;
+-		bus-range = &lt;0x0 0xf&gt;;
++		bus-range = &lt;0x20 0x2f&gt;;
+ 		clocks = &lt;&amp;cru ACLK_PCIE30X2_MST&gt;, &lt;&amp;cru ACLK_PCIE30X2_SLV&gt;,
+ 			 &lt;&amp;cru ACLK_PCIE30X2_DBI&gt;, &lt;&amp;cru PCLK_PCIE30X2&gt;,
+ 			 &lt;&amp;cru CLK_PCIE30X2_AUX_NDFT&gt;;
+@@ -228,7 +228,7 @@ pcie3x2: pcie@fe280000 {
+ 		num-ib-windows = &lt;6&gt;;
+ 		num-ob-windows = &lt;2&gt;;
+ 		max-link-speed = &lt;3&gt;;
+-		msi-map = &lt;0x0 &amp;gic 0x2000 0x1000&gt;;
++		msi-map = &lt;0x2000 &amp;its 0x2000 0x1000&gt;;
+ 		num-lanes = &lt;2&gt;;
+ 		phys = &lt;&amp;pcie30phy&gt;;
+ 		phy-names = "pcie-phy";</pre><hr><pre>commit c6599944af5a09029259ff8c533d22754f2b1ba4
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue Apr 1 20:00:20 2025 +0800
+
+    arm64: dts: rockchip: Enable regulators for Radxa E20C
+    
+    Enable pwm and fixed regulators for Radxa E20C. The pwm regulator is
+    used to power the CPU and GPU. Note that the LPDDR4 voltage is 1.1V.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Reviewed-by: Jonas Karlman &lt;jonas@kwiboo.se&gt;
+    Link: https://lore.kernel.org/r/20250401120020.976343-3-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts b/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
+index 6e77f7753ff7..0942baba6b8f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
+@@ -9,6 +9,7 @@
+ 
+ #include &lt;dt-bindings/input/input.h&gt;
+ #include &lt;dt-bindings/leds/common.h&gt;
++#include &lt;dt-bindings/pwm/pwm.h&gt;
+ #include "rk3528.dtsi"
+ 
+ / {
+@@ -80,6 +81,26 @@ led-wan {
+ 		};
+ 	};
+ 
++	vdd_0v9: regulator-0v9-vdd {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd_0v9";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = &lt;900000&gt;;
++		regulator-max-microvolt = &lt;900000&gt;;
++		vin-supply = &lt;&amp;vcc5v0_sys&gt;;
++	};
++
++	vcc_ddr: regulator-1v1-vcc-ddr {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc_ddr";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = &lt;1100000&gt;;
++		regulator-max-microvolt = &lt;1100000&gt;;
++		vin-supply = &lt;&amp;vcc5v0_sys&gt;;
++	};
++
+ 	vcc_1v8: regulator-1v8-vcc {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc_1v8";
+@@ -108,6 +129,46 @@ vcc5v0_sys: regulator-5v0-vcc-sys {
+ 		regulator-min-microvolt = &lt;5000000&gt;;
+ 		regulator-max-microvolt = &lt;5000000&gt;;
+ 	};
++
++	vdd_arm: regulator-vdd-arm {
++		compatible = "pwm-regulator";
++		pwms = &lt;&amp;pwm1 0 5000 PWM_POLARITY_INVERTED&gt;;
++		pwm-supply = &lt;&amp;vcc5v0_sys&gt;;
++		regulator-name = "vdd_arm";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = &lt;746000&gt;;
++		regulator-max-microvolt = &lt;1201000&gt;;
++		regulator-settling-time-up-us = &lt;250&gt;;
++	};
++
++	vdd_logic: regulator-vdd-logic {
++		compatible = "pwm-regulator";
++		pwms = &lt;&amp;pwm2 0 5000 PWM_POLARITY_INVERTED&gt;;
++		pwm-supply = &lt;&amp;vcc5v0_sys&gt;;
++		regulator-name = "vdd_logic";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = &lt;705000&gt;;
++		regulator-max-microvolt = &lt;1006000&gt;;
++		regulator-settling-time-up-us = &lt;250&gt;;
++	};
++};
++
++&amp;cpu0 {
++	cpu-supply = &lt;&amp;vdd_arm&gt;;
++};
++
++&amp;cpu1 {
++	cpu-supply = &lt;&amp;vdd_arm&gt;;
++};
++
++&amp;cpu2 {
++	cpu-supply = &lt;&amp;vdd_arm&gt;;
++};
++
++&amp;cpu3 {
++	cpu-supply = &lt;&amp;vdd_arm&gt;;
+ };
+ 
+ &amp;i2c1 {
+@@ -146,6 +207,18 @@ wan_led_g: wan-led-g {
+ 	};
+ };
+ 
++&amp;pwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;pwm1m0_pins&gt;;
++	status = "okay";
++};
++
++&amp;pwm2 {
++	pinctrl-names = "default";
++	pinctrl-0 = &lt;&amp;pwm2m0_pins&gt;;
++	status = "okay";
++};
++
+ &amp;saradc {
+ 	vref-supply = &lt;&amp;vcc_1v8&gt;;
+ 	status = "okay";</pre><hr><pre>commit 9e701ad7c3551b3ab87ed5fa439569696ddf42e4
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue Apr 1 20:00:19 2025 +0800
+
+    arm64: dts: rockchip: Add pwm nodes for RK3528
+    
+    Add pwm nodes for RK3528. The PWM core on RK3528 is the same as
+    RK3328, but the driver does not support interrupts yet.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Reviewed-by: Jonas Karlman &lt;jonas@kwiboo.se&gt;
+    Link: https://lore.kernel.org/r/20250401120020.976343-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index 2c9780069af9..923cff6bb103 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -575,6 +575,86 @@ i2c7: i2c@ffa88000 {
+ 			status = "disabled";
+ 		};
+ 
++		pwm0: pwm@ffa90000 {
++			compatible = "rockchip,rk3528-pwm",
++				     "rockchip,rk3328-pwm";
++			reg = &lt;0x0 0xffa90000 0x0 0x10&gt;;
++			clocks = &lt;&amp;cru CLK_PWM0&gt;, &lt;&amp;cru PCLK_PWM0&gt;;
++			clock-names = "pwm", "pclk";
++			#pwm-cells = &lt;3&gt;;
++			status = "disabled";
++		};
++
++		pwm1: pwm@ffa90010 {
++			compatible = "rockchip,rk3528-pwm",
++				     "rockchip,rk3328-pwm";
++			reg = &lt;0x0 0xffa90010 0x0 0x10&gt;;
++			clocks = &lt;&amp;cru CLK_PWM0&gt;, &lt;&amp;cru PCLK_PWM0&gt;;
++			clock-names = "pwm", "pclk";
++			#pwm-cells = &lt;3&gt;;
++			status = "disabled";
++		};
++
++		pwm2: pwm@ffa90020 {
++			compatible = "rockchip,rk3528-pwm",
++				     "rockchip,rk3328-pwm";
++			reg = &lt;0x0 0xffa90020 0x0 0x10&gt;;
++			clocks = &lt;&amp;cru CLK_PWM0&gt;, &lt;&amp;cru PCLK_PWM0&gt;;
++			clock-names = "pwm", "pclk";
++			#pwm-cells = &lt;3&gt;;
++			status = "disabled";
++		};
++
++		pwm3: pwm@ffa90030 {
++			compatible = "rockchip,rk3528-pwm",
++				     "rockchip,rk3328-pwm";
++			reg = &lt;0x0 0xffa90030 0x0 0x10&gt;;
++			clocks = &lt;&amp;cru CLK_PWM0&gt;, &lt;&amp;cru PCLK_PWM0&gt;;
++			clock-names = "pwm", "pclk";
++			#pwm-cells = &lt;3&gt;;
++			status = "disabled";
++		};
++
++		pwm4: pwm@ffa98000 {
++			compatible = "rockchip,rk3528-pwm",
++				     "rockchip,rk3328-pwm";
++			reg = &lt;0x0 0xffa98000 0x0 0x10&gt;;
++			clocks = &lt;&amp;cru CLK_PWM1&gt;, &lt;&amp;cru PCLK_PWM1&gt;;
++			clock-names = "pwm", "pclk";
++			#pwm-cells = &lt;3&gt;;
++			status = "disabled";
++		};
++
++		pwm5: pwm@ffa98010 {
++			compatible = "rockchip,rk3528-pwm",
++				     "rockchip,rk3328-pwm";
++			reg = &lt;0x0 0xffa98010 0x0 0x10&gt;;
++			clocks = &lt;&amp;cru CLK_PWM1&gt;, &lt;&amp;cru PCLK_PWM1&gt;;
++			clock-names = "pwm", "pclk";
++			#pwm-cells = &lt;3&gt;;
++			status = "disabled";
++		};
++
++		pwm6: pwm@ffa98020 {
++			compatible = "rockchip,rk3528-pwm",
++				     "rockchip,rk3328-pwm";
++			reg = &lt;0x0 0xffa98020 0x0 0x10&gt;;
++			clocks = &lt;&amp;cru CLK_PWM1&gt;, &lt;&amp;cru PCLK_PWM1&gt;;
++			clock-names = "pwm", "pclk";
++			#pwm-cells = &lt;3&gt;;
++			status = "disabled";
++		};
++
++		pwm7: pwm@ffa98030 {
++			compatible = "rockchip,rk3528-pwm",
++				     "rockchip,rk3328-pwm";
++			reg = &lt;0x0 0xffa98030 0x0 0x10&gt;;
++			clocks = &lt;&amp;cru CLK_PWM1&gt;, &lt;&amp;cru PCLK_PWM1&gt;;
++			clock-names = "pwm", "pclk";
++			#pwm-cells = &lt;3&gt;;
++			status = "disabled";
++		};
++
+ 		saradc: adc@ffae0000 {
+ 			compatible = "rockchip,rk3528-saradc";
+ 			reg = &lt;0x0 0xffae0000 0x0 0x10000&gt;;</pre><hr><pre>commit a1c3985cc7231185aa38734cc7996f94ff7febca
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Wed Apr 16 18:00:06 2025 +0800
+
+    arm64: dts: allwinner: correct the model name for Radxa Cubie A5E
+    
+    According to https://radxa.com/products/cubie/a5e,
+    the name of this board should be "Radxa Cubie A5E".
+    This is also consistent with the dt-bindings.
+    
+    Fixes: 80e0fb4e491b ("arm64: dts: allwinner: a523: add Radxa A5E support")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Reviewed-by: Andre Przywara &lt;andre.przywara@arm.com&gt;
+    Link: https://patch.msgid.link/20250416100006.82920-1-amadeus@jmu.edu.cn
+    Signed-off-by: Chen-Yu Tsai &lt;wens@csie.org&gt;
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+index ad9bd6da4249..2d2f3af91d05 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
++++ b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+@@ -8,7 +8,7 @@
+ #include &lt;dt-bindings/gpio/gpio.h&gt;
+ 
+ / {
+-	model = "Radxa A5E";
++	model = "Radxa Cubie A5E";
+ 	compatible = "radxa,cubie-a5e", "allwinner,sun55i-a527";
+ 
+ 	aliases {</pre><hr><pre>commit 8ecd096d018be8a6bd3bd930f3a41a85db66a67d
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue Apr 1 17:00:09 2025 +0800
+
+    arm64: dts: rockchip: Move SHMEM memory to reserved memory on rk3588
+    
+    0x0 to 0xf0000000 are SDRAM memory areas where 0x10f000 is located.
+    So move the SHMEM memory of arm_scmi to the reserved memory node.
+    
+    Fixes: c9211fa2602b ("arm64: dts: rockchip: Add base DT for rk3588 SoC")
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250401090009.733771-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+index 1401d9fecfc4..4e3c28d99459 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+@@ -439,16 +439,15 @@ xin32k: clock-2 {
+ 		#clock-cells = &lt;0&gt;;
+ 	};
+ 
+-	pmu_sram: sram@10f000 {
+-		compatible = "mmio-sram";
+-		reg = &lt;0x0 0x0010f000 0x0 0x100&gt;;
+-		ranges = &lt;0 0x0 0x0010f000 0x100&gt;;
+-		#address-cells = &lt;1&gt;;
+-		#size-cells = &lt;1&gt;;
++	reserved-memory {
++		#address-cells = &lt;2&gt;;
++		#size-cells = &lt;2&gt;;
++		ranges;
+ 
+-		scmi_shmem: sram@0 {
++		scmi_shmem: shmem@10f000 {
+ 			compatible = "arm,scmi-shmem";
+-			reg = &lt;0x0 0x100&gt;;
++			reg = &lt;0x0 0x0010f000 0x0 0x100&gt;;
++			no-map;
+ 		};
+ 	};
+ </pre><hr><pre>commit ab6fcb58aedf7df1d146b47d5fedd844a7c346e2
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue Apr 1 18:00:20 2025 +0800
+
+    arm64: dts: rockchip: Add UART DMA support for RK3528
+    
+    The UART ports on RK3528 have DMA capability, describe it.
+    Flow control is optional, so dma-names are not added.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250401100020.944658-4-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index 9c60bb414638..826f9be0be19 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -375,6 +375,7 @@ uart0: serial@ff9f0000 {
+ 			clocks = &lt;&amp;cru SCLK_UART0&gt;, &lt;&amp;cru PCLK_UART0&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = &lt;GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 8&gt;, &lt;&amp;dmac 9&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";
+@@ -386,6 +387,7 @@ uart1: serial@ff9f8000 {
+ 			clocks = &lt;&amp;cru SCLK_UART1&gt;, &lt;&amp;cru PCLK_UART1&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = &lt;GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 10&gt;, &lt;&amp;dmac 11&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";
+@@ -397,6 +399,7 @@ uart2: serial@ffa00000 {
+ 			clocks = &lt;&amp;cru SCLK_UART2&gt;, &lt;&amp;cru PCLK_UART2&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = &lt;GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 12&gt;, &lt;&amp;dmac 13&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";
+@@ -408,6 +411,7 @@ uart3: serial@ffa08000 {
+ 			clocks = &lt;&amp;cru SCLK_UART3&gt;, &lt;&amp;cru PCLK_UART3&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = &lt;GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 14&gt;, &lt;&amp;dmac 15&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";
+@@ -419,6 +423,7 @@ uart4: serial@ffa10000 {
+ 			clocks = &lt;&amp;cru SCLK_UART4&gt;, &lt;&amp;cru PCLK_UART4&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = &lt;GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 16&gt;, &lt;&amp;dmac 17&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";
+@@ -430,6 +435,7 @@ uart5: serial@ffa18000 {
+ 			clocks = &lt;&amp;cru SCLK_UART5&gt;, &lt;&amp;cru PCLK_UART5&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = &lt;GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 18&gt;, &lt;&amp;dmac 19&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";
+@@ -441,6 +447,7 @@ uart6: serial@ffa20000 {
+ 			clocks = &lt;&amp;cru SCLK_UART6&gt;, &lt;&amp;cru PCLK_UART6&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = &lt;GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 20&gt;, &lt;&amp;dmac 21&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";
+@@ -452,6 +459,7 @@ uart7: serial@ffa28000 {
+ 			clocks = &lt;&amp;cru SCLK_UART7&gt;, &lt;&amp;cru PCLK_UART7&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = &lt;GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH&gt;;
++			dmas = &lt;&amp;dmac 22&gt;, &lt;&amp;dmac 23&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";</pre><hr><pre>commit 762b1f6503340b4729bc8a5fa6a5780712012cd8
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue Apr 1 18:00:19 2025 +0800
+
+    arm64: dts: rockchip: Add DMA controller for RK3528
+    
+    Add DMA controller dt node for RK3528 SoC.
+    
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250401100020.944658-3-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index 7f1ffd6003f5..9c60bb414638 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -493,6 +493,24 @@ sdhci: mmc@ffbf0000 {
+ 			status = "disabled";
+ 		};
+ 
++		dmac: dma-controller@ffd60000 {
++			compatible = "arm,pl330", "arm,primecell";
++			reg = &lt;0x0 0xffd60000 0x0 0x4000&gt;;
++			clocks = &lt;&amp;cru ACLK_DMAC&gt;;
++			clock-names = "apb_pclk";
++			interrupts = &lt;GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 4 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH&gt;,
++				     &lt;GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH&gt;;
++			#dma-cells = &lt;1&gt;;
++			arm,pl330-periph-burst;
++		};
++
+ 		pinctrl: pinctrl {
+ 			compatible = "rockchip,rk3528-pinctrl";
+ 			rockchip,grf = &lt;&amp;ioc_grf&gt;;</pre><hr><pre>commit a37d21a9b45e47ed6bc1f94e738096c07db78a07
+Author: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+Date:   Tue Apr 1 18:00:18 2025 +0800
+
+    arm64: dts: rockchip: Add missing uart3 interrupt for RK3528
+    
+    The interrupt of uart3 node on rk3528 is missing, fix it.
+    
+    Fixes: 7983e6c379a9 ("arm64: dts: rockchip: Add base DT for rk3528 SoC")
+    Reviewed-by: Yao Zi &lt;ziyao@disroot.org&gt;
+    Signed-off-by: Chukun Pan &lt;amadeus@jmu.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20250401100020.944658-2-amadeus@jmu.edu.cn
+    Signed-off-by: Heiko Stuebner &lt;heiko@sntech.de&gt;
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index 26c3559d6a6d..7f1ffd6003f5 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -404,9 +404,10 @@ uart2: serial@ffa00000 {
+ 
+ 		uart3: serial@ffa08000 {
+ 			compatible = "rockchip,rk3528-uart", "snps,dw-apb-uart";
++			reg = &lt;0x0 0xffa08000 0x0 0x100&gt;;
+ 			clocks = &lt;&amp;cru SCLK_UART3&gt;, &lt;&amp;cru PCLK_UART3&gt;;
+ 			clock-names = "baudclk", "apb_pclk";
+-			reg = &lt;0x0 0xffa08000 0x0 0x100&gt;;
++			interrupts = &lt;GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH&gt;;
+ 			reg-io-width = &lt;4&gt;;
+ 			reg-shift = &lt;2&gt;;
+ 			status = "disabled";</pre>
+    <div class="pagination">
+        <a href='14_2.html'>&lt;&lt;Prev</a><a href='14.html'>1</a><a href='14_2.html'>2</a><span>[3]</span><a href='14_4.html'>4</a><a href='14_5.html'>5</a><a href='14_6.html'>6</a><a href='14_7.html'>7</a><a href='14_8.html'>8</a><a href='14_9.html'>9</a><a href='14_4.html'>Next&gt;&gt;</a>
+    <div>
+</body>

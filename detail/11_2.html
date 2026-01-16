@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Huazhong University of Science and Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Huazhong University of Science and Technology</h1>
+    <div class="pagination">
+        <a href='11.html'>&lt;&lt;Prev</a><a href='11.html'>1</a><span>[2]</span><a href='11_3.html'>3</a><a href='11_4.html'>4</a><a href='11_5.html'>5</a><a href='11_6.html'>6</a><a href='11_7.html'>7</a><a href='11_8.html'>8</a><a href='11_9.html'>9</a><a href='11_10.html'>10</a><a href='11_11.html'>11</a><a href='11_12.html'>12</a><a href='11_3.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit b934bc754265e5307be96a0485ef3cdc9d0d6356
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Wed Oct 23 23:32:02 2024 +0800
+
+    docs/zh_CN: add the translation of kbuild/llvm.rst
+    
+    Finish the translation of kbuild/llvm.rst and move llvm from TODO
+    to the main body.
+    
+    Update to commit 145082ebfcf0 ("Documentation/llvm: turn make command
+    for ccache into code block")
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;si.yanteng@linux.dev&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20241023153235.1291567-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/kbuild/index.rst b/Documentation/translations/zh_CN/kbuild/index.rst
+index 0ba96aecb13a..3f9ab52fa5bb 100644
+--- a/Documentation/translations/zh_CN/kbuild/index.rst
++++ b/Documentation/translations/zh_CN/kbuild/index.rst
+@@ -17,6 +17,7 @@
+     gcc-plugins
+     kbuild
+     reproducible-builds
++    llvm
+ 
+ TODO:
+ 
+@@ -25,7 +26,7 @@ TODO:
+ - makefiles
+ - modules
+ - issues
+-- llvm
++
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/translations/zh_CN/kbuild/llvm.rst b/Documentation/translations/zh_CN/kbuild/llvm.rst
+new file mode 100644
+index 000000000000..f71092144a26
+--- /dev/null
++++ b/Documentation/translations/zh_CN/kbuild/llvm.rst
+@@ -0,0 +1,203 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/kbuild/llvm.rst
++:Translator: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++==========================
++使用 Clang/LLVM 构建 Linux
++==========================
++
++本文档介绍如何使用 Clang 和 LLVM 工具构建 Linux 内核。
++
++关于
++----
++
++Linux 内核传统上一直使用 GNU 工具链（如 GCC 和 binutils）进行编译。持续的工作使得
++`Clang &lt;https://clang.llvm.org/&gt;`_ 和 `LLVM &lt;https://llvm.org/&gt;`_ 工具可
++作为可行的替代品。一些发行版，如 `Android &lt;https://www.android.com/&gt;`_、
++`ChromeOS &lt;https://www.chromium.org/chromium-os&gt;`_、`OpenMandriva
++&lt;https://www.openmandriva.org/&gt;`_ 和 `Chimera Linux
++&lt;https://chimera-linux.org/&gt;`_ 使用 Clang 编译的内核。谷歌和 Meta 的数据中心
++集群也运行由 Clang 编译的内核。
++
++`LLVM 是由 C++ 对象实现的工具链组件集合 &lt;https://www.aosabook.org/en/llvm.html&gt;`_。
++Clang 是 LLVM 的前端，支持 C 语言和内核所需的 GNU C 扩展，其发音为 "klang"，而非
++"see-lang"。
++
++使用 LLVM 构建
++--------------
++
++通过以下命令调用 ``make``::
++
++	make LLVM=1
++
++为主机目标进行编译。对于交叉编译::
++
++	make LLVM=1 ARCH=arm64
++
++LLVM= 参数
++----------
++
++LLVM 有 GNU binutils 工具的替代品。这些工具可以单独启用。以下是支持的 make 变量
++完整列表::
++
++	make CC=clang LD=ld.lld AR=llvm-ar NM=llvm-nm STRIP=llvm-strip \
++	  OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf \
++	  HOSTCC=clang HOSTCXX=clang++ HOSTAR=llvm-ar HOSTLD=ld.lld
++
++``LLVM=1`` 扩展为上述命令。
++
++如果你的 LLVM 工具不在 PATH 中，你可以使用以斜杠结尾的 LLVM 变量提供它们的位置::
++
++	make LLVM=/path/to/llvm/
++
++这将使用 ``/path/to/llvm/clang``、``/path/to/llvm/ld.lld`` 等工具。也可以
++使用以下命令::
++
++	PATH=/path/to/llvm:$PATH make LLVM=1
++
++如果你的 LLVM 工具带有版本后缀，并且你希望测试该特定版本而非无后缀的可执行文件，
++类似于 ``LLVM=1``，你可以使用 ``LLVM`` 变量传递该后缀::
++
++	make LLVM=-14
++
++这将使用 ``clang-14``、``ld.lld-14`` 等工具。为了支持带有版本后缀的树外路径组合，
++我们建议::
++
++	PATH=/path/to/llvm/:$PATH make LLVM=-14
++
++``LLVM=0`` 与省略 ``LLVM`` 完全不同，它将表现得像 ``LLVM=1``。如果你只希望使用
++某些 LLVM 工具，请使用它们各自的 make 变量。
++
++在通过不同命令配置和构建时，应为每次调用 ``make`` 设置相同的 ``LLVM=`` 值。如果
++运行的脚本最终会调用 ``make``，则还应将 ``LLVM=`` 设置为环境变量。
++
++交叉编译
++--------
++
++单个 Clang 编译器二进制文件（及其对应的 LLVM 工具）通常会包含所有支持的后端，这可以
++简化交叉编译，尤其是使用 ``LLVM=1`` 时。如果仅使用 LLVM 工具，``CROSS_COMPILE``
++或目标三元组前缀就变得不必要。示例::
++
++	make LLVM=1 ARCH=arm64
++
++作为混合 LLVM 和 GNU 工具的示例，对于像 ``ARCH=s390`` 这样目前尚不支持
++``ld.lld`` 或 ``llvm-objcopy`` 的目标，你可以通过以下方式调用 ``make``::
++
++	make LLVM=1 ARCH=s390 LD=s390x-linux-gnu-ld.bfd \
++	  OBJCOPY=s390x-linux-gnu-objcopy
++
++此示例将调用 ``s390x-linux-gnu-ld.bfd`` 作为链接器和
++``s390x-linux-gnu-objcopy``，因此请确保它们在你的 ``$PATH`` 中。
++
++当 ``LLVM=1`` 未设置时，``CROSS_COMPILE`` 不会用于给 Clang 编译器二进制文件
++（或相应的 LLVM 工具）添加前缀，而 GNU 工具则需要这样做。
++
++LLVM_IAS= 参数
++--------------
++
++Clang 可以编译汇编代码。你可以传递 ``LLVM_IAS=0`` 禁用此行为，使 Clang 调用
++相应的非集成汇编器。示例::
++
++	make LLVM=1 LLVM_IAS=0
++
++在交叉编译时，你需要使用 ``CROSS_COMPILE`` 与 ``LLVM_IAS=0``，从而设置
++``--prefix=`` 使得编译器可以对应的非集成汇编器（通常，在面向另一种架构时，
++你不想使用系统汇编器）。例如::
++
++	make LLVM=1 ARCH=arm LLVM_IAS=0 CROSS_COMPILE=arm-linux-gnueabi-
++
++Ccache
++------
++
++``ccache`` 可以与 ``clang`` 一起使用，以改善后续构建（尽管在不同构建之间
++KBUILD_BUILD_TIMESTAMP_ 应设置为同一确定值，以避免 100% 的缓存未命中，
++详见 Reproducible_builds_ 获取更多信息）::
++
++	KBUILD_BUILD_TIMESTAMP='' make LLVM=1 CC="ccache clang"
++
++.. _KBUILD_BUILD_TIMESTAMP: kbuild.html#kbuild-build-timestamp
++.. _Reproducible_builds: reproducible-builds.html#timestamps
++
++支持的架构
++----------
++
++LLVM 并不支持 Linux 内核所有可支持的架构，同样，即使 LLVM 支持某一架构，也并不意味着在
++该架构下内核可以正常构建或工作。以下是当前 ``CC=clang`` 或 ``LLVM=1`` 支持的架构总结。
++支持级别对应于 MAINTAINERS 文件中的 "S" 值。如果某个架构未列出，则表示 LLVM 不支持它
++或存在已知问题。使用最新的稳定版 LLVM 或甚至开发版本通常会得到最佳结果。一个架构的
++``defconfig`` 通常预期能够良好工作，但某些配置可能存在尚未发现的问题。欢迎在以下
++问题跟踪器中提交错误报告！
++
++.. list-table::
++   :widths: 10 10 10
++   :header-rows: 1
++
++   * - 架构
++     - 支持级别
++     - ``make`` 命令
++   * - arm
++     - 支持
++     - ``LLVM=1``
++   * - arm64
++     - 支持
++     - ``LLVM=1``
++   * - hexagon
++     - 维护
++     - ``LLVM=1``
++   * - loongarch
++     - 维护
++     - ``LLVM=1``
++   * - mips
++     - 维护
++     - ``LLVM=1``
++   * - powerpc
++     - 维护
++     - ``LLVM=1``
++   * - riscv
++     - 支持
++     - ``LLVM=1``
++   * - s390
++     - 维护
++     - ``LLVM=1`` （LLVM &gt;= 18.1.0），``CC=clang`` （LLVM &lt; 18.1.0）
++   * - um (用户模式)
++     - 维护
++     - ``LLVM=1``
++   * - x86
++     - 支持
++     - ``LLVM=1``
++
++获取帮助
++--------
++
++- `网站 &lt;https://clangbuiltlinux.github.io/&gt;`_
++- `邮件列表 &lt;https://lore.kernel.org/llvm/&gt;`_: &lt;llvm@lists.linux.dev&gt;
++- `旧邮件列表档案 &lt;https://groups.google.com/g/clang-built-linux&gt;`_
++- `问题跟踪器 &lt;https://github.com/ClangBuiltLinux/linux/issues&gt;`_
++- IRC: #clangbuiltlinux 在 irc.libera.chat
++- `Telegram &lt;https://t.me/ClangBuiltLinux&gt;`_: @ClangBuiltLinux
++- `维基 &lt;https://github.com/ClangBuiltLinux/linux/wiki&gt;`_
++- `初学者问题 &lt;https://github.com/ClangBuiltLinux/linux/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22&gt;`_
++
++.. _zh_cn_getting_llvm:
++
++获取 LLVM
++---------
++
++我们在 `kernel.org &lt;https://kernel.org/pub/tools/llvm/&gt;`_ 提供预编译的稳定版 LLVM。
++这些版本已经针对 Linux 内核构建，使用配置文件数据进行优化。相较于其他发行版中的 LLVM，它们应该
++能提高内核构建时间。
++
++以下是一些有助于从源代码构建 LLVM 或通过发行版的包管理器获取 LLVM 的链接。
++
++- https://releases.llvm.org/download.html
++- https://github.com/llvm/llvm-project
++- https://llvm.org/docs/GettingStarted.html
++- https://llvm.org/docs/CMake.html
++- https://apt.llvm.org/
++- https://www.archlinux.org/packages/extra/x86_64/llvm/
++- https://github.com/ClangBuiltLinux/tc-build
++- https://github.com/ClangBuiltLinux/linux/wiki/Building-Clang-from-source
++- https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/</pre><hr><pre>commit 062d98be0e3f6dcf08e40a1101e967b2eb4fb92f
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Wed Oct 23 14:27:43 2024 +0800
+
+    docs/zh_CN: update the translation of process/programming-language.rst
+    
+    Update to commit 0b02076f9953 ("docs: programming-language: add Rust
+    programming language section")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/process/programming-language.rst
+    commit 0b02076f9953 ("docs: programming-language: add Rust programming
+    language section")
+    commit 38484a1d0c50 ("docs: programming-language: remove mention of the
+    Intel compiler")
+    2 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Message-ID: &lt;20241023062750.849951-1-dzm91@hust.edu.cn&gt;
+
+diff --git a/Documentation/translations/zh_CN/process/programming-language.rst b/Documentation/translations/zh_CN/process/programming-language.rst
+index fabdc338dbfb..95aa4829d78f 100644
+--- a/Documentation/translations/zh_CN/process/programming-language.rst
++++ b/Documentation/translations/zh_CN/process/programming-language.rst
+@@ -3,25 +3,22 @@
+ :Original: :ref:`Documentation/process/programming-language.rst &lt;programming_language&gt;`
+ :Translator: Alex Shi &lt;alex.shi@linux.alibaba.com&gt;
+ 
+-.. _cn_programming_language:
+-
+ 程序设计语言
+ ============
+ 
+-内核是用C语言 :ref:`c-language &lt;cn_c-language&gt;` 编写的。更准确地说，内核通常是用 :ref:`gcc &lt;cn_gcc&gt;`
+-在 ``-std=gnu11`` :ref:`gcc-c-dialect-options &lt;cn_gcc-c-dialect-options&gt;` 下编译的：ISO C11的 GNU 方言
+-
+-这种方言包含对语言 :ref:`gnu-extensions &lt;cn_gnu-extensions&gt;` 的许多扩展，当然，它们许多都在内核中使用。
++内核是用 C 编程语言编写的 [zh_cn_c-language]_。更准确地说，内核通常使用 ``gcc`` [zh_cn_gcc]_ 编译，
++并且使用 ``-std=gnu11`` [zh_cn_gcc-c-dialect-options]_：这是 ISO C11 的 GNU 方言。
++``clang`` [zh_cn_clang]_ 也得到了支持，详见文档：
++:ref:`使用 Clang/LLVM 构建 Linux &lt;kbuild_llvm&gt;`。
+ 
+-对于一些体系结构，有一些使用 :ref:`clang &lt;cn_clang&gt;` 和 :ref:`icc &lt;cn_icc&gt;` 编译内核
+-的支持，尽管在编写此文档时还没有完成，仍需要第三方补丁。
++这种方言包含对 C 语言的许多扩展 [zh_cn_gnu-extensions]_，当然，它们许多都在内核中使用。
+ 
+ 属性
+ ----
+ 
+-在整个内核中使用的一个常见扩展是属性（attributes） :ref:`gcc-attribute-syntax &lt;cn_gcc-attribute-syntax&gt;`
++在整个内核中使用的一个常见扩展是属性（attributes） [zh_cn_gcc-attribute-syntax]_。
+ 属性允许将实现定义的语义引入语言实体（如变量、函数或类型），而无需对语言进行
+-重大的语法更改（例如添加新关键字） :ref:`n2049 &lt;cn_n2049&gt;`
++重大的语法更改（例如添加新关键字） [zh_cn_n2049]_。
+ 
+ 在某些情况下，属性是可选的（即不支持这些属性的编译器仍然应该生成正确的代码，
+ 即使其速度较慢或执行的编译时检查/诊断次数不够）
+@@ -30,42 +27,27 @@
+ ``__attribute__((__pure__))`` ），以检测可以使用哪些关键字和/或缩短代码, 具体
+ 请参阅 ``include/linux/compiler_attributes.h``
+ 
+-.. _cn_c-language:
+-
+-c-language
+-   http://www.open-std.org/jtc1/sc22/wg14/www/standards
+-
+-.. _cn_gcc:
+-
+-gcc
+-   https://gcc.gnu.org
+-
+-.. _cn_clang:
+-
+-clang
+-   https://clang.llvm.org
+-
+-.. _cn_icc:
+-
+-icc
+-   https://software.intel.com/en-us/c-compilers
+-
+-.. _cn_gcc-c-dialect-options:
+-
+-c-dialect-options
+-   https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-Options.html
+-
+-.. _cn_gnu-extensions:
+-
+-gnu-extensions
+-   https://gcc.gnu.org/onlinedocs/gcc/C-Extensions.html
+-
+-.. _cn_gcc-attribute-syntax:
+-
+-gcc-attribute-syntax
+-   https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html
+-
+-.. _cn_n2049:
++Rust
++----
+ 
+-n2049
+-   http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2049.pdf
++内核对 Rust 编程语言 [zh_cn_rust-language]_ 的支持是实验性的，并且可以通过配置选项
++``CONFIG_RUST`` 来启用。Rust 代码使用 ``rustc`` [zh_cn_rustc]_ 编译器在
++``--edition=2021`` [zh_cn_rust-editions]_ 选项下进行编译。版本（Editions）是一种
++在语言中引入非后向兼容的小型变更的方式。
++
++除此之外，内核中还使用了一些不稳定的特性 [zh_cn_rust-unstable-features]_。这些不稳定
++的特性将来可能会发生变化，因此，一个重要的目标是达到仅使用稳定特性的程度。
++
++具体请参阅 Documentation/rust/index.rst
++
++.. [zh_cn_c-language] http://www.open-std.org/jtc1/sc22/wg14/www/standards
++.. [zh_cn_gcc] https://gcc.gnu.org
++.. [zh_cn_clang] https://clang.llvm.org
++.. [zh_cn_gcc-c-dialect-options] https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-Options.html
++.. [zh_cn_gnu-extensions] https://gcc.gnu.org/onlinedocs/gcc/C-Extensions.html
++.. [zh_cn_gcc-attribute-syntax] https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html
++.. [zh_cn_n2049] http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2049.pdf
++.. [zh_cn_rust-language] https://www.rust-lang.org
++.. [zh_cn_rustc] https://doc.rust-lang.org/rustc/
++.. [zh_cn_rust-editions] https://doc.rust-lang.org/edition-guide/editions/
++.. [zh_cn_rust-unstable-features] https://github.com/Rust-for-Linux/linux/issues/2</pre><hr><pre>commit 20e845db4678c1d7febb1d72165e88b59ef965e4
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Oct 19 16:54:56 2024 +0800
+
+    docs/zh_CN: update the translation of mm/page_owner.rst
+    
+    Update to commit f5c12105c15f ("mm,page_owner: fix refcount imbalance")
+    
+    Documentation/translations/zh_CN/mm/page_owner.rst
+    commit f5c12105c15f ("mm,page_owner: fix refcount imbalance")
+    commit ba6fe5377244 ("mm,page_owner: update Documentation regarding
+    page_owner_stacks")
+    2 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Message-ID: &lt;38a9d8868e0f98dc5d2a08fb865313cc4db943a3.1729327831.git.dzm91@hust.edu.cn&gt;
+
+diff --git a/Documentation/translations/zh_CN/mm/page_owner.rst b/Documentation/translations/zh_CN/mm/page_owner.rst
+index b72a972271d9..c0d1ca4b9695 100644
+--- a/Documentation/translations/zh_CN/mm/page_owner.rst
++++ b/Documentation/translations/zh_CN/mm/page_owner.rst
+@@ -26,6 +26,9 @@ page owner是用来追踪谁分配的每一个页面。它可以用来调试内
+ 页面所有者也可以用于各种目的。例如，可以通过每个页面的gfp标志信息获得精确的碎片
+ 统计。如果启用了page owner，它就已经实现并激活了。我们非常欢迎其他用途。
+ 
++它也可以用来显示所有的栈以及它们当前分配的基础页面数，这让我们能够快速了解内存的
++使用情况，而无需浏览所有页面并匹配分配和释放操作。
++
+ page owner在默认情况下是禁用的。所以，如果你想使用它，你需要在你的启动cmdline
+ 中加入"page_owner=on"。如果内核是用page owner构建的，并且由于没有启用启动
+ 选项而在运行时禁用page owner，那么运行时的开销是很小的。如果在运行时禁用，它不
+@@ -60,6 +63,49 @@ page owner在默认情况下是禁用的。所以，如果你想使用它，你
+ 
+ 4) 分析来自页面所有者的信息::
+ 
++	cat /sys/kernel/debug/page_owner_stacks/show_stacks &gt; stacks.txt
++	cat stacks.txt
++	 post_alloc_hook+0x177/0x1a0
++	 get_page_from_freelist+0xd01/0xd80
++	 __alloc_pages+0x39e/0x7e0
++	 allocate_slab+0xbc/0x3f0
++	 ___slab_alloc+0x528/0x8a0
++	 kmem_cache_alloc+0x224/0x3b0
++	 sk_prot_alloc+0x58/0x1a0
++	 sk_alloc+0x32/0x4f0
++	 inet_create+0x427/0xb50
++	 __sock_create+0x2e4/0x650
++	 inet_ctl_sock_create+0x30/0x180
++	 igmp_net_init+0xc1/0x130
++	 ops_init+0x167/0x410
++	 setup_net+0x304/0xa60
++	 copy_net_ns+0x29b/0x4a0
++	 create_new_namespaces+0x4a1/0x820
++	nr_base_pages: 16
++	...
++	...
++	echo 7000 &gt; /sys/kernel/debug/page_owner_stacks/count_threshold
++	cat /sys/kernel/debug/page_owner_stacks/show_stacks&gt; stacks_7000.txt
++	cat stacks_7000.txt
++	 post_alloc_hook+0x177/0x1a0
++	 get_page_from_freelist+0xd01/0xd80
++	 __alloc_pages+0x39e/0x7e0
++	 alloc_pages_mpol+0x22e/0x490
++	 folio_alloc+0xd5/0x110
++	 filemap_alloc_folio+0x78/0x230
++	 page_cache_ra_order+0x287/0x6f0
++	 filemap_get_pages+0x517/0x1160
++	 filemap_read+0x304/0x9f0
++	 xfs_file_buffered_read+0xe6/0x1d0 [xfs]
++	 xfs_file_read_iter+0x1f0/0x380 [xfs]
++	 __kernel_read+0x3b9/0x730
++	 kernel_read_file+0x309/0x4d0
++	 __do_sys_finit_module+0x381/0x730
++	 do_syscall_64+0x8d/0x150
++	 entry_SYSCALL_64_after_hwframe+0x62/0x6a
++	nr_base_pages: 20824
++	...
++
+ 	cat /sys/kernel/debug/page_owner &gt; page_owner_full.txt
+ 	./page_owner_sort page_owner_full.txt sorted_page_owner.txt
+ </pre><hr><pre>commit 9d197b627e5f696adfd06e57343c41e8c128bfa5
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Oct 19 16:54:55 2024 +0800
+
+    docs/zh_CN: update the translation of mm/page_table_check.rst
+    
+    Update to commit 8430557fc584 ("mm/page_table_check: support
+    userfault wr-protect entries")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/mm/page_table_check.rst
+    commit 8430557fc584 ("mm/page_table_check: support userfault wr-protect
+    entries")
+    commit 81a31a860bb6 ("mm: page_table_check: Make it dependent on
+    EXCLUSIVE_SYSTEM_RAM")
+    commit ee86588960e2 ("docs/mm: remove useless markup")
+    3 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Message-ID: &lt;68b62a5713d5a465f09226c1a607dee7ec76a6aa.1729327831.git.dzm91@hust.edu.cn&gt;
+
+diff --git a/Documentation/translations/zh_CN/mm/page_table_check.rst b/Documentation/translations/zh_CN/mm/page_table_check.rst
+index e8077310a76c..dc34570dceff 100644
+--- a/Documentation/translations/zh_CN/mm/page_table_check.rst
++++ b/Documentation/translations/zh_CN/mm/page_table_check.rst
+@@ -54,3 +54,16 @@
+ 
+ 可以选择用PAGE_TABLE_CHECK_ENFORCED来构建内核，以便在没有额外的内核参数的情况下获得页表
+ 支持。
++
++实现注意事项
++============
++
++我们特意决定不使用 VMA 信息，以避免依赖于 MM 状态（除了有限的 “struct page” 信息）。页表检查
++独立于 Linux-MM 状态机，它验证用户可访问的页面不会被错误地共享。
++
++PAGE_TABLE_CHECK 依赖于 EXCLUSIVE_SYSTEM_RAM。原因在于，若没有 EXCLUSIVE_SYSTEM_RAM，
++用户被允许通过 /dev/mem 将任意物理内存区域映射到用户空间。同时，页面可能在映射到用户空间期间
++改变自己的属性（例如，从匿名页面变为命名页面），导致页表检查检测到“损坏”。
++
++即使有 EXCLUSIVE_SYSTEM_RAM，I/O 页面可能仍然被允许通过 /dev/mem 映射。然而，这些页面始终
++被视为命名页面，所以它们不会破坏页表检查中使用的逻辑。</pre><hr><pre>commit 63435ec4b74baac2a88a872ad1110bd6bf18d591
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Oct 19 16:54:54 2024 +0800
+
+    docs/zh_CN: update the translation of mm/overcommit-accounting.rst
+    
+    Update to commit d17ff438a036 ("docs: mm: fix vm overcommit
+    documentation for OVERCOMMIT_GUESS")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/mm/overcommit-accounting.rst
+    commit d17ff438a036 ("docs: mm: fix vm overcommit documentation
+    for OVERCOMMIT_GUESS")
+    1 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Message-ID: &lt;d426f3f3d9aac061c20c3b766c17369f4e60f398.1729327831.git.dzm91@hust.edu.cn&gt;
+
+diff --git a/Documentation/translations/zh_CN/mm/overcommit-accounting.rst b/Documentation/translations/zh_CN/mm/overcommit-accounting.rst
+index d8452d8b7fbb..f136a8b81859 100644
+--- a/Documentation/translations/zh_CN/mm/overcommit-accounting.rst
++++ b/Documentation/translations/zh_CN/mm/overcommit-accounting.rst
+@@ -16,8 +16,7 @@ Linux内核支持下列超量使用处理模式
+ 
+ 0
+ 	启发式超量使用处理。拒绝明显的地址空间超量使用。用于一个典型的系统。
+-	它确保严重的疯狂分配失败，同时允许超量使用以减少swap的使用。在这种模式下，
+-	允许root分配稍多的内存。这是默认的。
++	它确保严重的疯狂分配失败，同时允许超量使用以减少swap的使用。这是默认的。
+ 1
+ 	总是超量使用。适用于一些科学应用。经典的例子是使用稀疏数组的代码，只是依赖
+ 	几乎完全由零页组成的虚拟内存</pre><hr><pre>commit 0244846a79d5a0ef70ef4fa4d8e05f57d95233de
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Oct 19 16:54:53 2024 +0800
+
+    docs/zh_CN: update the translation of mm/admon/faq.rst
+    
+    Update to commit c6bb975aa60b ("Docs/mm/damon/faq: remove old questions")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/mm/damon/faq.rst
+    commit c6bb975aa60b ("Docs/mm/damon/faq: remove old questions")
+    1 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Message-ID: &lt;20e7e17b18542ecbf924234ed40438b95345e514.1729327831.git.dzm91@hust.edu.cn&gt;
+
+diff --git a/Documentation/translations/zh_CN/mm/damon/faq.rst b/Documentation/translations/zh_CN/mm/damon/faq.rst
+index de4be417494a..234d63f4f072 100644
+--- a/Documentation/translations/zh_CN/mm/damon/faq.rst
++++ b/Documentation/translations/zh_CN/mm/damon/faq.rst
+@@ -13,23 +13,6 @@
+ 常见问题
+ ========
+ 
+-为什么是一个新的子系统，而不是扩展perf或其他用户空间工具？
+-==========================================================
+-
+-首先，因为它需要尽可能的轻量级，以便可以在线使用，所以应该避免任何不必要的开销，如内核-用户
+-空间的上下文切换成本。第二，DAMON的目标是被包括内核在内的其他程序所使用。因此，对特定工具
+-（如perf）的依赖性是不可取的。这就是DAMON在内核空间实现的两个最大的原因。
+-
+-
+-“闲置页面跟踪” 或 “perf mem” 可以替代DAMON吗？
+-==============================================
+-
+-闲置页跟踪是物理地址空间访问检查的一个低层次的原始方法。“perf mem”也是类似的，尽管它可以
+-使用采样来减少开销。另一方面，DAMON是一个更高层次的框架，用于监控各种地址空间。它专注于内
+-存管理优化，并提供复杂的精度/开销处理机制。因此，“空闲页面跟踪” 和 “perf mem” 可以提供
+-DAMON输出的一个子集，但不能替代DAMON。
+-
+-
+ DAMON是否只支持虚拟内存？
+ =========================
+ </pre><hr><pre>commit 6a8897de11adedaf13e2175340e1c95e1b40a307
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Oct 19 16:54:52 2024 +0800
+
+    docs/zh_CN: update the translation of mm/active_mm.rst
+    
+    Update to commit 88e3009b5283 ("lazy tlb: allow lazy tlb
+    mm refcounting to be configurable")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/mm/active_mm.rst
+    commit 88e3009b5283 ("lazy tlb: allow lazy tlb mm refcounting
+    to be configurable")
+    commit ee86588960e2 ("docs/mm: remove useless markup")
+    2 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Message-ID: &lt;985f62236dad7c9446272d94bffc20eb8f45ae4b.1729327831.git.dzm91@hust.edu.cn&gt;
+
+diff --git a/Documentation/translations/zh_CN/mm/active_mm.rst b/Documentation/translations/zh_CN/mm/active_mm.rst
+index c2816f523bd7..b3352668c4c8 100644
+--- a/Documentation/translations/zh_CN/mm/active_mm.rst
++++ b/Documentation/translations/zh_CN/mm/active_mm.rst
+@@ -13,6 +13,11 @@
+ Active MM
+ =========
+ 
++注意，在配置了 CONFIG_MMU_LAZY_TLB_REFCOUNT=n 的内核中，mm_count 引用计数
++可能不再包括“懒惰”用户（运行任务中 -&gt;active_mm == mm &amp;&amp; -&gt;mm == NULL）。
++获取和释放这些懒惰引用必须使用 mmgrab_lazy_tlb() 和 mmdrop_lazy_tlb() 这
++两个辅助函数，它们抽象了这个配置选项。
++
+ 这是一封linux之父回复开发者的一封邮件，所以翻译时我尽量保持邮件格式的完整。
+ 
+ ::</pre><hr><pre>commit 047545e560186ac7ae9177289350086cb9c6dff7
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Oct 19 16:54:51 2024 +0800
+
+    docs/zh_CN: update the translation of mm/hmm.rst
+    
+    Update to commit 406c4c5ee4ea ("docs:mm: fix spelling mistakes in
+    heterogeneous memory management page")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/mm/hmm.rst
+    commit 406c4c5ee4ea ("docs:mm: fix spelling mistakes in heterogeneous
+    memory management page")
+    commit 090a7f1009b8 ("docs/mm: remove references to hmm_mirror ops and
+    clean typos")
+    commit d56b699d76d1 ("Documentation: Fix typos")
+    3 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Message-ID: &lt;82259a2656549c90591dc3873f3d2e8a4fb41233.1729327831.git.dzm91@hust.edu.cn&gt;
+
+diff --git a/Documentation/translations/zh_CN/mm/hmm.rst b/Documentation/translations/zh_CN/mm/hmm.rst
+index babbbe756c0f..0669f947d0bc 100644
+--- a/Documentation/translations/zh_CN/mm/hmm.rst
++++ b/Documentation/translations/zh_CN/mm/hmm.rst
+@@ -129,13 +129,7 @@ struct page可以与现有的 mm 机制进行最简单、最干净的集成。
+   int hmm_range_fault(struct hmm_range *range);
+ 
+ 如果请求写访问，它将在丢失或只读条目上触发缺页异常（见下文）。缺页异常使用通用的 mm 缺
+-页异常代码路径，就像 CPU 缺页异常一样。
+-
+-这两个函数都将 CPU 页表条目复制到它们的 pfns 数组参数中。该数组中的每个条目对应于虚拟
+-范围中的一个地址。HMM 提供了一组标志来帮助驱动程序识别特殊的 CPU 页表项。
+-
+-在 sync_cpu_device_pagetables() 回调中锁定是驱动程序必须尊重的最重要的方面，以保
+-持事物正确同步。使用模式是::
++页异常代码路径，就像 CPU 缺页异常一样。使用模式是::
+ 
+  int driver_populate_range(...)
+  {</pre><hr><pre>commit 5ca1c920add1838ae65f64d30f13cfd66934d26f
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Oct 18 09:46:01 2024 +0800
+
+    docs/zh_CN: update the translation of process/coding-style.rst
+    
+    Update to commit c5d436f05a3f ("docs/process: fix typos")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/process/coding-style.rst
+    commit c5d436f05a3f ("docs/process: fix typos")
+    commit 82b8000c28b5 ("net: drop special comment style")
+    2 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;si.yanteng@linux.dev&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20241018014609.3781089-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/process/coding-style.rst b/Documentation/translations/zh_CN/process/coding-style.rst
+index 10b9cb4f6a65..0484d0c65c25 100644
+--- a/Documentation/translations/zh_CN/process/coding-style.rst
++++ b/Documentation/translations/zh_CN/process/coding-style.rst
+@@ -560,17 +560,6 @@ Documentation/translations/zh_CN/doc-guide/index.rst 和 scripts/kernel-doc 。
+ 	 * with beginning and ending almost-blank lines.
+ 	 */
+ 
+-对于在 net/ 和 drivers/net/ 的文件，首选的长 (多行) 注释风格有些不同。
+-
+-.. code-block:: c
+-
+-	/* The preferred comment style for files in net/ and drivers/net
+-	 * looks like this.
+-	 *
+-	 * It is nearly the same as the generally preferred comment style,
+-	 * but there is no initial almost-blank line.
+-	 */
+-
+ 注释数据也是很重要的，不管是基本类型还是衍生类型。为了方便实现这一点，每一行
+ 应只声明一个数据 (不要使用逗号来一次声明多个数据)。这样你就有空间来为每个数据
+ 写一段小注释来解释它们的用途了。</pre><hr><pre>commit f63874b2dbe94436a50cdb6ca2469721d1087657
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Oct 18 09:49:01 2024 +0800
+
+    docs/zh_CN: update the translation of process/email-clients.rst
+    
+    Update to commit 91031ca349ee ("docs: improve comment consistency in
+    .muttrc example configuration")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/process/email-clients.rst
+    commit 91031ca349ee ("docs: improve comment consistency in .muttrc
+    example configuration")
+    commit 7fe7de7be828 ("Docs/process/email-clients: Document HacKerMaiL")
+    commit 9c03bc90c065 ("Documentation: process: Revert "Document suitability
+    of Proton Mail for kernel development"")
+    commit 1d2ed9234c85 ("Documentation: process: Document suitability of
+    Proton Mail for kernel development")
+    4 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;si.yanteng@linux.dev&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20241018014908.3783976-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/process/email-clients.rst b/Documentation/translations/zh_CN/process/email-clients.rst
+index 34d51cdadc7b..a70393089df3 100644
+--- a/Documentation/translations/zh_CN/process/email-clients.rst
++++ b/Documentation/translations/zh_CN/process/email-clients.rst
+@@ -197,7 +197,7 @@ Mutt不自带编辑器，所以不管你使用什么编辑器，不自动断行
+ Mutt 是高度可配置的。 这里是个使用mutt通过 Gmail 发送的补丁的最小配置::
+ 
+   # .muttrc
+-  # ================  IMAP ====================
++  # ================  IMAP  ====================
+   set imap_user = 'yourusername@gmail.com'
+   set imap_pass = 'yourpassword'
+   set spoolfile = imaps://imap.gmail.com/INBOX
+@@ -325,3 +325,10 @@ Gmail网页客户端自动地把制表符转换为空格。
+ 另一个问题是Gmail还会把任何含有非ASCII的字符的消息改用base64编码，如欧洲人的
+ 名字。
+ 
++HacKerMaiL (TUI)
++****************
++
++HacKerMaiL (hkml) 是一个基于公共收件箱的简单邮件管理工具，它不需要订阅邮件列表。
++该工具由 DAMON 维护者开发和维护，旨在支持 DAMON 和通用内核子系统的基本开发工作
++流程。详细信息可参考 HacKerMaiL 的 README 文件
++(https://github.com/sjp38/hackermail/blob/master/README.md)。</pre>
+    <div class="pagination">
+        <a href='11.html'>&lt;&lt;Prev</a><a href='11.html'>1</a><span>[2]</span><a href='11_3.html'>3</a><a href='11_4.html'>4</a><a href='11_5.html'>5</a><a href='11_6.html'>6</a><a href='11_7.html'>7</a><a href='11_8.html'>8</a><a href='11_9.html'>9</a><a href='11_10.html'>10</a><a href='11_11.html'>11</a><a href='11_12.html'>12</a><a href='11_3.html'>Next&gt;&gt;</a>
+    <div>
+</body>

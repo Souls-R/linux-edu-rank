@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_45.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><span>[46]</span><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_47.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit f5a44db5d2d677dfbf12deee461f85e9ec633961
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Dec 20 09:29:35 2013 -0500
+
+    ext4: add explicit casts when masking cluster sizes
+    
+    The missing casts can cause the high 64-bits of the physical blocks to
+    be lost.  Set up new macros which allows us to make sure the right
+    thing happen, even if at some point we end up supporting larger
+    logical block numbers.
+    
+    Thanks to the Emese Revfy and the PaX security team for reporting this
+    issue.
+    
+    Reported-by: PaX Team &lt;pageexec@freemail.hu&gt;
+    Reported-by: Emese Revfy &lt;re.emese@gmail.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index e6185031c1cc..ece55565b9cd 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -268,6 +268,16 @@ struct ext4_io_submit {
+ /* Translate # of blks to # of clusters */
+ #define EXT4_NUM_B2C(sbi, blks)	(((blks) + (sbi)-&gt;s_cluster_ratio - 1) &gt;&gt; \
+ 				 (sbi)-&gt;s_cluster_bits)
++/* Mask out the low bits to get the starting block of the cluster */
++#define EXT4_PBLK_CMASK(s, pblk) ((pblk) &amp;				\
++				  ~((ext4_fsblk_t) (s)-&gt;s_cluster_ratio - 1))
++#define EXT4_LBLK_CMASK(s, lblk) ((lblk) &amp;				\
++				  ~((ext4_lblk_t) (s)-&gt;s_cluster_ratio - 1))
++/* Get the cluster offset */
++#define EXT4_PBLK_COFF(s, pblk) ((pblk) &amp;				\
++				 ((ext4_fsblk_t) (s)-&gt;s_cluster_ratio - 1))
++#define EXT4_LBLK_COFF(s, lblk) ((lblk) &amp;				\
++				 ((ext4_lblk_t) (s)-&gt;s_cluster_ratio - 1))
+ 
+ /*
+  * Structure of a blocks group descriptor
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 267c9fb53bf9..4410cc3d6ee2 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1851,8 +1851,7 @@ static unsigned int ext4_ext_check_overlap(struct ext4_sb_info *sbi,
+ 	depth = ext_depth(inode);
+ 	if (!path[depth].p_ext)
+ 		goto out;
+-	b2 = le32_to_cpu(path[depth].p_ext-&gt;ee_block);
+-	b2 &amp;= ~(sbi-&gt;s_cluster_ratio - 1);
++	b2 = EXT4_LBLK_CMASK(sbi, le32_to_cpu(path[depth].p_ext-&gt;ee_block));
+ 
+ 	/*
+ 	 * get the next allocated block if the extent in the path
+@@ -1862,7 +1861,7 @@ static unsigned int ext4_ext_check_overlap(struct ext4_sb_info *sbi,
+ 		b2 = ext4_ext_next_allocated_block(path);
+ 		if (b2 == EXT_MAX_BLOCKS)
+ 			goto out;
+-		b2 &amp;= ~(sbi-&gt;s_cluster_ratio - 1);
++		b2 = EXT4_LBLK_CMASK(sbi, b2);
+ 	}
+ 
+ 	/* check for wrap through zero on extent logical start block*/
+@@ -2521,7 +2520,7 @@ static int ext4_remove_blocks(handle_t *handle, struct inode *inode,
+ 		 * extent, we have to mark the cluster as used (store negative
+ 		 * cluster number in partial_cluster).
+ 		 */
+-		unaligned = pblk &amp; (sbi-&gt;s_cluster_ratio - 1);
++		unaligned = EXT4_PBLK_COFF(sbi, pblk);
+ 		if (unaligned &amp;&amp; (ee_len == num) &amp;&amp;
+ 		    (*partial_cluster != -((long long)EXT4_B2C(sbi, pblk))))
+ 			*partial_cluster = EXT4_B2C(sbi, pblk);
+@@ -2615,7 +2614,7 @@ ext4_ext_rm_leaf(handle_t *handle, struct inode *inode,
+ 			 * accidentally freeing it later on
+ 			 */
+ 			pblk = ext4_ext_pblock(ex);
+-			if (pblk &amp; (sbi-&gt;s_cluster_ratio - 1))
++			if (EXT4_PBLK_COFF(sbi, pblk))
+ 				*partial_cluster =
+ 					-((long long)EXT4_B2C(sbi, pblk));
+ 			ex--;
+@@ -3770,7 +3769,7 @@ int ext4_find_delalloc_cluster(struct inode *inode, ext4_lblk_t lblk)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(inode-&gt;i_sb);
+ 	ext4_lblk_t lblk_start, lblk_end;
+-	lblk_start = lblk &amp; (~(sbi-&gt;s_cluster_ratio - 1));
++	lblk_start = EXT4_LBLK_CMASK(sbi, lblk);
+ 	lblk_end = lblk_start + sbi-&gt;s_cluster_ratio - 1;
+ 
+ 	return ext4_find_delalloc_range(inode, lblk_start, lblk_end);
+@@ -3829,9 +3828,9 @@ get_reserved_cluster_alloc(struct inode *inode, ext4_lblk_t lblk_start,
+ 	trace_ext4_get_reserved_cluster_alloc(inode, lblk_start, num_blks);
+ 
+ 	/* Check towards left side */
+-	c_offset = lblk_start &amp; (sbi-&gt;s_cluster_ratio - 1);
++	c_offset = EXT4_LBLK_COFF(sbi, lblk_start);
+ 	if (c_offset) {
+-		lblk_from = lblk_start &amp; (~(sbi-&gt;s_cluster_ratio - 1));
++		lblk_from = EXT4_LBLK_CMASK(sbi, lblk_start);
+ 		lblk_to = lblk_from + c_offset - 1;
+ 
+ 		if (ext4_find_delalloc_range(inode, lblk_from, lblk_to))
+@@ -3839,7 +3838,7 @@ get_reserved_cluster_alloc(struct inode *inode, ext4_lblk_t lblk_start,
+ 	}
+ 
+ 	/* Now check towards right. */
+-	c_offset = (lblk_start + num_blks) &amp; (sbi-&gt;s_cluster_ratio - 1);
++	c_offset = EXT4_LBLK_COFF(sbi, lblk_start + num_blks);
+ 	if (allocated_clusters &amp;&amp; c_offset) {
+ 		lblk_from = lblk_start + num_blks;
+ 		lblk_to = lblk_from + (sbi-&gt;s_cluster_ratio - c_offset) - 1;
+@@ -4047,7 +4046,7 @@ static int get_implied_cluster_alloc(struct super_block *sb,
+ 				     struct ext4_ext_path *path)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	ext4_lblk_t c_offset = map-&gt;m_lblk &amp; (sbi-&gt;s_cluster_ratio-1);
++	ext4_lblk_t c_offset = EXT4_LBLK_COFF(sbi, map-&gt;m_lblk);
+ 	ext4_lblk_t ex_cluster_start, ex_cluster_end;
+ 	ext4_lblk_t rr_cluster_start;
+ 	ext4_lblk_t ee_block = le32_to_cpu(ex-&gt;ee_block);
+@@ -4065,8 +4064,7 @@ static int get_implied_cluster_alloc(struct super_block *sb,
+ 	    (rr_cluster_start == ex_cluster_start)) {
+ 		if (rr_cluster_start == ex_cluster_end)
+ 			ee_start += ee_len - 1;
+-		map-&gt;m_pblk = (ee_start &amp; ~(sbi-&gt;s_cluster_ratio - 1)) +
+-			c_offset;
++		map-&gt;m_pblk = EXT4_PBLK_CMASK(sbi, ee_start) + c_offset;
+ 		map-&gt;m_len = min(map-&gt;m_len,
+ 				 (unsigned) sbi-&gt;s_cluster_ratio - c_offset);
+ 		/*
+@@ -4220,7 +4218,7 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	 */
+ 	map-&gt;m_flags &amp;= ~EXT4_MAP_FROM_CLUSTER;
+ 	newex.ee_block = cpu_to_le32(map-&gt;m_lblk);
+-	cluster_offset = map-&gt;m_lblk &amp; (sbi-&gt;s_cluster_ratio-1);
++	cluster_offset = EXT4_LBLK_CMASK(sbi, map-&gt;m_lblk);
+ 
+ 	/*
+ 	 * If we are doing bigalloc, check to see if the extent returned
+@@ -4288,7 +4286,7 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	 * needed so that future calls to get_implied_cluster_alloc()
+ 	 * work correctly.
+ 	 */
+-	offset = map-&gt;m_lblk &amp; (sbi-&gt;s_cluster_ratio - 1);
++	offset = EXT4_LBLK_COFF(sbi, map-&gt;m_lblk);
+ 	ar.len = EXT4_NUM_B2C(sbi, offset+allocated);
+ 	ar.goal -= offset;
+ 	ar.logical -= offset;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 04766d9a29cd..04a5c7504be9 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4126,7 +4126,7 @@ ext4_mb_initialize_context(struct ext4_allocation_context *ac,
+ 	ext4_get_group_no_and_offset(sb, goal, &amp;group, &amp;block);
+ 
+ 	/* set up allocation goals */
+-	ac-&gt;ac_b_ex.fe_logical = ar-&gt;logical &amp; ~(sbi-&gt;s_cluster_ratio - 1);
++	ac-&gt;ac_b_ex.fe_logical = EXT4_LBLK_CMASK(sbi, ar-&gt;logical);
+ 	ac-&gt;ac_status = AC_STATUS_CONTINUE;
+ 	ac-&gt;ac_sb = sb;
+ 	ac-&gt;ac_inode = ar-&gt;inode;
+@@ -4668,7 +4668,7 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
+ 	 * blocks at the beginning or the end unless we are explicitly
+ 	 * requested to avoid doing so.
+ 	 */
+-	overflow = block &amp; (sbi-&gt;s_cluster_ratio - 1);
++	overflow = EXT4_PBLK_COFF(sbi, block);
+ 	if (overflow) {
+ 		if (flags &amp; EXT4_FREE_BLOCKS_NOFREE_FIRST_CLUSTER) {
+ 			overflow = sbi-&gt;s_cluster_ratio - overflow;
+@@ -4682,7 +4682,7 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
+ 			count += overflow;
+ 		}
+ 	}
+-	overflow = count &amp; (sbi-&gt;s_cluster_ratio - 1);
++	overflow = EXT4_LBLK_COFF(sbi, count);
+ 	if (overflow) {
+ 		if (flags &amp; EXT4_FREE_BLOCKS_NOFREE_LAST_CLUSTER) {
+ 			if (count &gt; overflow)</pre><hr><pre>commit f6c07cad081ba222d63623d913aafba5586c1d2c
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Dec 8 21:12:59 2013 -0500
+
+    jbd2: don't BUG but return ENOSPC if a handle runs out of space
+    
+    If a handle runs out of space, we currently stop the kernel with a BUG
+    in jbd2_journal_dirty_metadata().  This makes it hard to figure out
+    what might be going on.  So return an error of ENOSPC, so we can let
+    the file system layer figure out what is going on, to make it more
+    likely we can get useful debugging information).  This should make it
+    easier to debug problems such as the one which was reported by:
+    
+        https://bugzilla.kernel.org/show_bug.cgi?id=44731
+    
+    The only two callers of this function are ext4_handle_dirty_metadata()
+    and ocfs2_journal_dirty().  The ocfs2 function will trigger a
+    BUG_ON(), which means there will be no change in behavior.  The ext4
+    function will call ext4_error_inode() which will print the useful
+    debugging information and then handle the situation using ext4's error
+    handling mechanisms (i.e., which might mean halting the kernel or
+    remounting the file system read-only).
+    
+    Also, since both file systems already call WARN_ON(), drop the WARN_ON
+    from jbd2_journal_dirty_metadata() to avoid two stack traces from
+    being displayed.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: ocfs2-devel@oss.oracle.com
+    Acked-by: Joel Becker &lt;jlbec@evilplan.org&gt;
+
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 7aa9a32573bb..b0b74e58697b 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1290,7 +1290,10 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
+ 		 * once a transaction -bzzz
+ 		 */
+ 		jh-&gt;b_modified = 1;
+-		J_ASSERT_JH(jh, handle-&gt;h_buffer_credits &gt; 0);
++		if (handle-&gt;h_buffer_credits &lt;= 0) {
++			ret = -ENOSPC;
++			goto out_unlock_bh;
++		}
+ 		handle-&gt;h_buffer_credits--;
+ 	}
+ 
+@@ -1373,7 +1376,6 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
+ 	jbd2_journal_put_journal_head(jh);
+ out:
+ 	JBUFFER_TRACE(jh, "exit");
+-	WARN_ON(ret);	/* All errors are bugs, so dump the stack */
+ 	return ret;
+ }
+ </pre><hr><pre>commit ae1495b12df1897d4f42842a7aa7276d920f6290
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Dec 2 09:31:36 2013 -0500
+
+    ext4: call ext4_error_inode() if jbd2_journal_dirty_metadata() fails
+    
+    While it's true that errors can only happen if there is a bug in
+    jbd2_journal_dirty_metadata(), if a bug does happen, we need to halt
+    the kernel or remount the file system read-only in order to avoid
+    further data loss.  The ext4_journal_abort_handle() function doesn't
+    do any of this, and while it's likely that this call (since it doesn't
+    adjust refcounts) will likely result in the file system eventually
+    deadlocking since the current transaction will never be able to close,
+    it's much cleaner to call let ext4's error handling system deal with
+    this situation.
+    
+    There's a separate bug here which is that if certain jbd2 errors
+    errors occur and file system is mounted errors=continue, the file
+    system will probably eventually end grind to a halt as described
+    above.  But things have been this way in a long time, and usually when
+    we have these sorts of errors it's pretty much a disaster --- and
+    that's why the jbd2 layer aggressively retries memory allocations,
+    which is the most likely cause of these jbd2 errors.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/ext4_jbd2.c b/fs/ext4/ext4_jbd2.c
+index 17ac112ab101..3fe29de832c8 100644
+--- a/fs/ext4/ext4_jbd2.c
++++ b/fs/ext4/ext4_jbd2.c
+@@ -259,6 +259,15 @@ int __ext4_handle_dirty_metadata(const char *where, unsigned int line,
+ 		if (WARN_ON_ONCE(err)) {
+ 			ext4_journal_abort_handle(where, line, __func__, bh,
+ 						  handle, err);
++			ext4_error_inode(inode, where, line,
++					 bh-&gt;b_blocknr,
++					 "journal_dirty_metadata failed: "
++					 "handle type %u started at line %u, "
++					 "credits %u/%u, errcode %d",
++					 handle-&gt;h_type,
++					 handle-&gt;h_line_no,
++					 handle-&gt;h_requested_credits,
++					 handle-&gt;h_buffer_credits, err);
+ 		}
+ 	} else {
+ 		if (inode)</pre><hr><pre>commit dd1f723bf56bd96efc9d90e9e60dc511c79de48f
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Nov 8 00:14:53 2013 -0500
+
+    ext4: use prandom_u32() instead of get_random_bytes()
+    
+    Many of the uses of get_random_bytes() do not actually need
+    cryptographically secure random numbers.  Replace those uses with a
+    call to prandom_u32(), which is faster and which doesn't consume
+    entropy from the /dev/random driver.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index 137193ff389b..0ee59a6644e2 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -432,7 +432,7 @@ static int find_group_orlov(struct super_block *sb, struct inode *parent,
+ 			ext4fs_dirhash(qstr-&gt;name, qstr-&gt;len, &amp;hinfo);
+ 			grp = hinfo.hash;
+ 		} else
+-			get_random_bytes(&amp;grp, sizeof(grp));
++			grp = prandom_u32();
+ 		parent_group = (unsigned)grp % ngroups;
+ 		for (i = 0; i &lt; ngroups; i++) {
+ 			g = (parent_group + i) % ngroups;
+diff --git a/fs/ext4/mmp.c b/fs/ext4/mmp.c
+index 214461e42a05..04434ad3e8e0 100644
+--- a/fs/ext4/mmp.c
++++ b/fs/ext4/mmp.c
+@@ -259,7 +259,7 @@ static unsigned int mmp_new_seq(void)
+ 	u32 new_seq;
+ 
+ 	do {
+-		get_random_bytes(&amp;new_seq, sizeof(u32));
++		new_seq = prandom_u32();
+ 	} while (new_seq &gt; EXT4_MMP_SEQ_MAX);
+ 
+ 	return new_seq;
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index d3a857bfae47..c977f4e4e63b 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3068,7 +3068,6 @@ static struct ext4_li_request *ext4_li_request_new(struct super_block *sb,
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_li_request *elr;
+-	unsigned long rnd;
+ 
+ 	elr = kzalloc(sizeof(*elr), GFP_KERNEL);
+ 	if (!elr)
+@@ -3083,10 +3082,8 @@ static struct ext4_li_request *ext4_li_request_new(struct super_block *sb,
+ 	 * spread the inode table initialization requests
+ 	 * better.
+ 	 */
+-	get_random_bytes(&amp;rnd, sizeof(rnd));
+-	elr-&gt;lr_next_sched = jiffies + (unsigned long)rnd %
+-			     (EXT4_DEF_LI_MAX_START_DELAY * HZ);
+-
++	elr-&gt;lr_next_sched = jiffies + (prandom_u32() %
++				(EXT4_DEF_LI_MAX_START_DELAY * HZ));
+ 	return elr;
+ }
+ </pre><hr><pre>commit 392a546dc8368d1745f9891ef3f8f7c380de8650
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Nov 3 18:24:08 2013 -0500
+
+    random: add debugging code to detect early use of get_random_bytes()
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 0894d86253fd..cdf4cfb2da4d 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -280,6 +280,8 @@
+ #define SEC_XFER_SIZE		512
+ #define EXTRACT_SIZE		10
+ 
++#define DEBUG_RANDOM_BOOT 0
++
+ #define LONGS(x) (((x) + sizeof(unsigned long) - 1)/sizeof(unsigned long))
+ 
+ /*
+@@ -1177,6 +1179,13 @@ static ssize_t extract_entropy_user(struct entropy_store *r, void __user *buf,
+  */
+ void get_random_bytes(void *buf, int nbytes)
+ {
++#if DEBUG_RANDOM_BOOT &gt; 0
++	if (unlikely(nonblocking_pool.initialized == 0))
++		printk(KERN_NOTICE "random: %pF get_random_bytes called "
++		       "with %d bits of entropy available\n",
++		       (void *) _RET_IP_,
++		       nonblocking_pool.entropy_total);
++#endif
+ 	trace_get_random_bytes(nbytes, _RET_IP_);
+ 	extract_entropy(&amp;nonblocking_pool, buf, nbytes, 0, 0);
+ }</pre><hr><pre>commit 644008df899ec252e78db28c1b6d6b86779aada8
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Nov 3 16:40:53 2013 -0500
+
+    random: initialize the last_time field in struct timer_rand_state
+    
+    Since we initialize jiffies to wrap five minutes before boot (see
+    INITIAL_JIFFIES defined in include/linux/jiffies.h) it's important to
+    make sure the last_time field is initialized to INITIAL_JIFFIES.
+    Otherwise, the entropy estimator will overestimate the amount of
+    entropy resulting from the first call to add_timer_randomness(),
+    generally by about 8 bits.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index a38d97a21455..0894d86253fd 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -724,6 +724,8 @@ struct timer_rand_state {
+ 	unsigned dont_count_entropy:1;
+ };
+ 
++#define INIT_TIMER_RAND_STATE { INITIAL_JIFFIES, };
++
+ /*
+  * Add device- or boot-specific data to the input and nonblocking
+  * pools to help initialize them to unique values.
+@@ -750,7 +752,7 @@ void add_device_randomness(const void *buf, unsigned int size)
+ }
+ EXPORT_SYMBOL(add_device_randomness);
+ 
+-static struct timer_rand_state input_timer_state;
++static struct timer_rand_state input_timer_state = INIT_TIMER_RAND_STATE;
+ 
+ /*
+  * This function adds entropy to the entropy "pool" by using timing
+@@ -1267,8 +1269,10 @@ void rand_initialize_disk(struct gendisk *disk)
+ 	 * source.
+ 	 */
+ 	state = kzalloc(sizeof(struct timer_rand_state), GFP_KERNEL);
+-	if (state)
++	if (state) {
++		state-&gt;last_time = INITIAL_JIFFIES;
+ 		disk-&gt;random = state;
++	}
+ }
+ #endif
+ </pre><hr><pre>commit ae9ecd92ddabc250817baa7eb401df3cfbd4c2da
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Nov 3 07:56:17 2013 -0500
+
+    random: don't zap entropy count in rand_initialize()
+    
+    The rand_initialize() function was being run fairly late in the kernel
+    boot sequence.  This was unfortunate, since it zero'ed the entropy
+    counters, thus throwing away credit that was accumulated earlier in
+    the boot sequence, and it also meant that initcall functions run
+    before rand_initialize were using a minimally initialized pool.
+    
+    To fix this, fix init_std_data() to no longer zap the entropy counter;
+    it wasn't necessary, and move rand_initialize() to be an early
+    initcall.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index a19a7a63ec35..a38d97a21455 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -1228,14 +1228,11 @@ static void init_std_data(struct entropy_store *r)
+ 	ktime_t now = ktime_get_real();
+ 	unsigned long rv;
+ 
+-	r-&gt;entropy_count = 0;
+-	r-&gt;entropy_total = 0;
+-	r-&gt;last_data_init = 0;
+ 	r-&gt;last_pulled = jiffies;
+ 	mix_pool_bytes(r, &amp;now, sizeof(now), NULL);
+ 	for (i = r-&gt;poolinfo-&gt;poolbytes; i &gt; 0; i -= sizeof(rv)) {
+ 		if (!arch_get_random_long(&amp;rv))
+-			break;
++			rv = random_get_entropy();
+ 		mix_pool_bytes(r, &amp;rv, sizeof(rv), NULL);
+ 	}
+ 	mix_pool_bytes(r, utsname(), sizeof(*(utsname())), NULL);
+@@ -1258,7 +1255,7 @@ static int rand_initialize(void)
+ 	init_std_data(&amp;nonblocking_pool);
+ 	return 0;
+ }
+-module_init(rand_initialize);
++early_initcall(rand_initialize);
+ 
+ #ifdef CONFIG_BLOCK
+ void rand_initialize_disk(struct gendisk *disk)
+@@ -1433,10 +1430,15 @@ static long random_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
+ 		return 0;
+ 	case RNDZAPENTCNT:
+ 	case RNDCLEARPOOL:
+-		/* Clear the entropy pool counters. */
++		/*
++		 * Clear the entropy pool counters. We no longer clear
++		 * the entropy pool, as that's silly.
++		 */
+ 		if (!capable(CAP_SYS_ADMIN))
+ 			return -EPERM;
+-		rand_initialize();
++		input_pool.entropy_count = 0;
++		nonblocking_pool.entropy_count = 0;
++		blocking_pool.entropy_count = 0;
+ 		return 0;
+ 	default:
+ 		return -EINVAL;</pre><hr><pre>commit 301f0595c0e788edacc3521c4caa90b4e56ffee1
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Nov 3 06:54:51 2013 -0500
+
+    random: printk notifications for urandom pool initialization
+    
+    Print a notification to the console when the nonblocking pool is
+    initialized.  Also printk a warning when a process tries reading from
+    /dev/urandom before it is fully initialized.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 62923138e77a..a19a7a63ec35 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -655,6 +655,9 @@ static void credit_entropy_bits(struct entropy_store *r, int nbits)
+ 	r-&gt;entropy_total += nbits;
+ 	if (!r-&gt;initialized &amp;&amp; nbits &gt; 0) {
+ 		if (r-&gt;entropy_total &gt; 128) {
++			if (r == &amp;nonblocking_pool)
++				pr_notice("random: %s pool is initialized\n",
++					  r-&gt;name);
+ 			r-&gt;initialized = 1;
+ 			r-&gt;entropy_total = 0;
+ 		}
+@@ -1327,7 +1330,14 @@ random_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+ static ssize_t
+ urandom_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+ {
+-	int ret = extract_entropy_user(&amp;nonblocking_pool, buf, nbytes);
++	int ret;
++
++	if (unlikely(nonblocking_pool.initialized == 0))
++		printk_once(KERN_NOTICE "random: %s urandom read "
++			    "with %d bits of entropy available\n",
++			    current-&gt;comm, nonblocking_pool.entropy_total);
++
++	ret = extract_entropy_user(&amp;nonblocking_pool, buf, nbytes);
+ 
+ 	trace_urandom_read(8 * nbytes, ENTROPY_BITS(&amp;nonblocking_pool),
+ 			   ENTROPY_BITS(&amp;input_pool));</pre><hr><pre>commit 40db23e5337d99fda05ee6cd18034b516f8f123d
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Nov 3 00:15:05 2013 -0400
+
+    random: make add_timer_randomness() fill the nonblocking pool first
+    
+    Change add_timer_randomness() so that it directs incoming entropy to
+    the nonblocking pool first if it hasn't been fully initialized yet.
+    This matches the strategy we use in add_interrupt_randomness(), which
+    allows us to push the randomness where we need it the most during when
+    the system is first booting up, so that get_random_bytes() and
+    /dev/urandom become safe to use as soon as possible.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index f126bd2f69fe..62923138e77a 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -761,6 +761,7 @@ static struct timer_rand_state input_timer_state;
+  */
+ static void add_timer_randomness(struct timer_rand_state *state, unsigned num)
+ {
++	struct entropy_store	*r;
+ 	struct {
+ 		long jiffies;
+ 		unsigned cycles;
+@@ -773,7 +774,8 @@ static void add_timer_randomness(struct timer_rand_state *state, unsigned num)
+ 	sample.jiffies = jiffies;
+ 	sample.cycles = random_get_entropy();
+ 	sample.num = num;
+-	mix_pool_bytes(&amp;input_pool, &amp;sample, sizeof(sample), NULL);
++	r = nonblocking_pool.initialized ? &amp;input_pool : &amp;nonblocking_pool;
++	mix_pool_bytes(r, &amp;sample, sizeof(sample), NULL);
+ 
+ 	/*
+ 	 * Calculate number of bits of randomness we probably added.
+@@ -807,8 +809,7 @@ static void add_timer_randomness(struct timer_rand_state *state, unsigned num)
+ 		 * Round down by 1 bit on general principles,
+ 		 * and limit entropy entimate to 12 bits.
+ 		 */
+-		credit_entropy_bits(&amp;input_pool,
+-				    min_t(int, fls(delta&gt;&gt;1), 11));
++		credit_entropy_bits(r, min_t(int, fls(delta&gt;&gt;1), 11));
+ 	}
+ 	preempt_enable();
+ }</pre><hr><pre>commit dcb9917ba041866686fe152850364826c4622a36
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Oct 31 23:00:24 2013 -0400
+
+    ext4: avoid bh leak in retry path of ext4_expand_extra_isize_ea()
+    
+    Reported-by: Dave Jones &lt;davej@redhat.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 03e9bebba198..1423c4816a47 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1352,6 +1352,7 @@ int ext4_expand_extra_isize_ea(struct inode *inode, int new_extra_isize,
+ 					new_extra_isize = s_min_extra_isize;
+ 					kfree(is); is = NULL;
+ 					kfree(bs); bs = NULL;
++					brelse(bh);
+ 					goto retry;
+ 				}
+ 				error = -1;</pre>
+    <div class="pagination">
+        <a href='1_45.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><span>[46]</span><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_47.html'>Next&gt;&gt;</a>
+    <div>
+</body>

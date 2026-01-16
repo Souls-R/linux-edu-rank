@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_42.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><span>[43]</span><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_44.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 40c406c74eb9eed58ae7d4d12a0197f7279c9499
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Apr 12 22:53:53 2014 -0400
+
+    ext4: COLLAPSE_RANGE only works on extent-based files
+    
+    Unfortunately, we weren't checking to make sure of this the inode was
+    extent-based before attempt operate on it.  Hilarity ensues.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: Namjae Jeon &lt;namjae.jeon@samsung.com&gt;
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index f24ef8697609..96e0a4bc8faa 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4878,9 +4878,6 @@ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ 	if (mode &amp; FALLOC_FL_PUNCH_HOLE)
+ 		return ext4_punch_hole(inode, offset, len);
+ 
+-	if (mode &amp; FALLOC_FL_COLLAPSE_RANGE)
+-		return ext4_collapse_range(inode, offset, len);
+-
+ 	ret = ext4_convert_inline_data(inode);
+ 	if (ret)
+ 		return ret;
+@@ -4892,6 +4889,9 @@ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ 	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
+ 		return -EOPNOTSUPP;
+ 
++	if (mode &amp; FALLOC_FL_COLLAPSE_RANGE)
++		return ext4_collapse_range(inode, offset, len);
++
+ 	if (mode &amp; FALLOC_FL_ZERO_RANGE)
+ 		return ext4_zero_range(file, offset, len, mode);
+ </pre><hr><pre>commit 6e6358fc3c3c862bfe9a5bc029d3f8ce43dc9765
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Apr 12 12:45:25 2014 -0400
+
+    ext4: use i_size_read in ext4_unaligned_aio()
+    
+    We haven't taken i_mutex yet, so we need to use i_size_read().
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/file.c b/fs/ext4/file.c
+index 6db7f7db7777..bc765591101a 100644
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -82,7 +82,7 @@ ext4_unaligned_aio(struct inode *inode, const struct iovec *iov,
+ 	size_t count = iov_length(iov, nr_segs);
+ 	loff_t final_size = pos + count;
+ 
+-	if (pos &gt;= inode-&gt;i_size)
++	if (pos &gt;= i_size_read(inode))
+ 		return 0;
+ 
+ 	if ((pos &amp; blockmask) || (final_size &amp; blockmask))</pre><hr><pre>commit 622cad1325e404598fe3b148c3fa640dbaabc235
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Apr 11 10:35:17 2014 -0400
+
+    ext4: move ext4_update_i_disksize() into mpage_map_and_submit_extent()
+    
+    The function ext4_update_i_disksize() is used in only one place, in
+    the function mpage_map_and_submit_extent().  Move its code to simplify
+    the code paths, and also move the call to ext4_mark_inode_dirty() into
+    the i_data_sem's critical region, to be consistent with all of the
+    other places where we update i_disksize.  That way, we also keep the
+    raw_inode's i_disksize protected, to avoid the following race:
+    
+          CPU #1                                 CPU #2
+    
+       down_write(&amp;i_data_sem)
+       Modify i_disk_size
+       up_write(&amp;i_data_sem)
+                                            down_write(&amp;i_data_sem)
+                                            Modify i_disk_size
+                                            Copy i_disk_size to on-disk inode
+                                            up_write(&amp;i_data_sem)
+       Copy i_disk_size to on-disk inode
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index f1c65dc7cc0a..66946aa62127 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -2466,23 +2466,6 @@ static inline void ext4_update_i_disksize(struct inode *inode, loff_t newsize)
+ 	up_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
+ }
+ 
+-/*
+- * Update i_disksize after writeback has been started. Races with truncate
+- * are avoided by checking i_size under i_data_sem.
+- */
+-static inline void ext4_wb_update_i_disksize(struct inode *inode, loff_t newsize)
+-{
+-	loff_t i_size;
+-
+-	down_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
+-	i_size = i_size_read(inode);
+-	if (newsize &gt; i_size)
+-		newsize = i_size;
+-	if (newsize &gt; EXT4_I(inode)-&gt;i_disksize)
+-		EXT4_I(inode)-&gt;i_disksize = newsize;
+-	up_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
+-}
+-
+ struct ext4_group_info {
+ 	unsigned long   bb_state;
+ 	struct rb_root  bb_free_root;
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 7b93df9aa182..f023f0cb46fc 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -2247,13 +2247,23 @@ static int mpage_map_and_submit_extent(handle_t *handle,
+ 			return err;
+ 	} while (map-&gt;m_len);
+ 
+-	/* Update on-disk size after IO is submitted */
++	/*
++	 * Update on-disk size after IO is submitted.  Races with
++	 * truncate are avoided by checking i_size under i_data_sem.
++	 */
+ 	disksize = ((loff_t)mpd-&gt;first_page) &lt;&lt; PAGE_CACHE_SHIFT;
+ 	if (disksize &gt; EXT4_I(inode)-&gt;i_disksize) {
+ 		int err2;
+-
+-		ext4_wb_update_i_disksize(inode, disksize);
++		loff_t i_size;
++
++		down_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
++		i_size = i_size_read(inode);
++		if (disksize &gt; i_size)
++			disksize = i_size;
++		if (disksize &gt; EXT4_I(inode)-&gt;i_disksize)
++			EXT4_I(inode)-&gt;i_disksize = disksize;
+ 		err2 = ext4_mark_inode_dirty(handle, inode);
++		up_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
+ 		if (err2)
+ 			ext4_error(inode-&gt;i_sb,
+ 				   "Failed to mark inode %lu dirty",</pre><hr><pre>commit 87f7e41636ff201148443551d06bc74497160aac
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Apr 8 11:38:28 2014 -0400
+
+    ext4: update PF_MEMALLOC handling in ext4_write_inode()
+    
+    The special handling of PF_MEMALLOC callers in ext4_write_inode()
+    shouldn't be necessary as there shouldn't be any. Warn about it. Also
+    update comment before the function as it seems somewhat outdated.
+    
+    (Changes modeled on an ext3 patch posted by Jan Kara to the linux-ext4
+    mailing list on Februaryt 28, 2014, which apparently never went into
+    the ext3 tree.)
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: Jan Kara &lt;jack@suse.cz&gt;
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 93f16c5e8a8e..7b93df9aa182 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4427,21 +4427,20 @@ static int ext4_do_update_inode(handle_t *handle,
+  *
+  * We are called from a few places:
+  *
+- * - Within generic_file_write() for O_SYNC files.
++ * - Within generic_file_aio_write() -&gt; generic_write_sync() for O_SYNC files.
+  *   Here, there will be no transaction running. We wait for any running
+  *   transaction to commit.
+  *
+- * - Within sys_sync(), kupdate and such.
+- *   We wait on commit, if tol to.
++ * - Within flush work (sys_sync(), kupdate and such).
++ *   We wait on commit, if told to.
+  *
+- * - Within prune_icache() (PF_MEMALLOC == true)
+- *   Here we simply return.  We can't afford to block kswapd on the
+- *   journal commit.
++ * - Within iput_final() -&gt; write_inode_now()
++ *   We wait on commit, if told to.
+  *
+  * In all cases it is actually safe for us to return without doing anything,
+  * because the inode has been copied into a raw inode buffer in
+- * ext4_mark_inode_dirty().  This is a correctness thing for O_SYNC and for
+- * knfsd.
++ * ext4_mark_inode_dirty().  This is a correctness thing for WB_SYNC_ALL
++ * writeback.
+  *
+  * Note that we are absolutely dependent upon all inode dirtiers doing the
+  * right thing: they *must* call mark_inode_dirty() after dirtying info in
+@@ -4453,15 +4452,15 @@ static int ext4_do_update_inode(handle_t *handle,
+  *	stuff();
+  *	inode-&gt;i_size = expr;
+  *
+- * is in error because a kswapd-driven write_inode() could occur while
+- * `stuff()' is running, and the new i_size will be lost.  Plus the inode
+- * will no longer be on the superblock's dirty inode list.
++ * is in error because write_inode() could occur while `stuff()' is running,
++ * and the new i_size will be lost.  Plus the inode will no longer be on the
++ * superblock's dirty inode list.
+  */
+ int ext4_write_inode(struct inode *inode, struct writeback_control *wbc)
+ {
+ 	int err;
+ 
+-	if (current-&gt;flags &amp; PF_MEMALLOC)
++	if (WARN_ON_ONCE(current-&gt;flags &amp; PF_MEMALLOC))
+ 		return 0;
+ 
+ 	if (EXT4_SB(inode-&gt;i_sb)-&gt;s_journal) {</pre><hr><pre>commit 00a1a053ebe5febcfc2ec498bd894f035ad2aa06
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Mar 30 10:20:01 2014 -0400
+
+    ext4: atomically set inode-&gt;i_flags in ext4_set_inode_flags()
+    
+    Use cmpxchg() to atomically set i_flags instead of clearing out the
+    S_IMMUTABLE, S_APPEND, etc. flags and then setting them from the
+    EXT4_IMMUTABLE_FL, EXT4_APPEND_FL flags, since this opens up a race
+    where an immutable file has the immutable flag cleared for a brief
+    window of time.
+    
+    Reported-by: John Sullivan &lt;jsrhbz@kanargh.force9.co.uk&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@kernel.org
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 6e39895a91b8..24bfd7ff3049 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -38,6 +38,7 @@
+ #include &lt;linux/slab.h&gt;
+ #include &lt;linux/ratelimit.h&gt;
+ #include &lt;linux/aio.h&gt;
++#include &lt;linux/bitops.h&gt;
+ 
+ #include "ext4_jbd2.h"
+ #include "xattr.h"
+@@ -3921,18 +3922,20 @@ int ext4_get_inode_loc(struct inode *inode, struct ext4_iloc *iloc)
+ void ext4_set_inode_flags(struct inode *inode)
+ {
+ 	unsigned int flags = EXT4_I(inode)-&gt;i_flags;
++	unsigned int new_fl = 0;
+ 
+-	inode-&gt;i_flags &amp;= ~(S_SYNC|S_APPEND|S_IMMUTABLE|S_NOATIME|S_DIRSYNC);
+ 	if (flags &amp; EXT4_SYNC_FL)
+-		inode-&gt;i_flags |= S_SYNC;
++		new_fl |= S_SYNC;
+ 	if (flags &amp; EXT4_APPEND_FL)
+-		inode-&gt;i_flags |= S_APPEND;
++		new_fl |= S_APPEND;
+ 	if (flags &amp; EXT4_IMMUTABLE_FL)
+-		inode-&gt;i_flags |= S_IMMUTABLE;
++		new_fl |= S_IMMUTABLE;
+ 	if (flags &amp; EXT4_NOATIME_FL)
+-		inode-&gt;i_flags |= S_NOATIME;
++		new_fl |= S_NOATIME;
+ 	if (flags &amp; EXT4_DIRSYNC_FL)
+-		inode-&gt;i_flags |= S_DIRSYNC;
++		new_fl |= S_DIRSYNC;
++	set_mask_bits(&amp;inode-&gt;i_flags,
++		      S_SYNC|S_APPEND|S_IMMUTABLE|S_NOATIME|S_DIRSYNC, new_fl);
+ }
+ 
+ /* Propagate flags from i_flags to EXT4_I(inode)-&gt;i_flags */
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index abc9ca778456..be5fd38bd5a0 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -196,6 +196,21 @@ static inline unsigned long __ffs64(u64 word)
+ 
+ #ifdef __KERNEL__
+ 
++#ifndef set_mask_bits
++#define set_mask_bits(ptr, _mask, _bits)	\
++({								\
++	const typeof(*ptr) mask = (_mask), bits = (_bits);	\
++	typeof(*ptr) old, new;					\
++								\
++	do {							\
++		old = ACCESS_ONCE(*ptr);			\
++		new = (old &amp; ~mask) | bits;			\
++	} while (cmpxchg(ptr, old, new) != old);		\
++								\
++	new;							\
++})
++#endif
++
+ #ifndef find_last_bit
+ /**
+  * find_last_bit - find the last set bit in a memory region</pre><hr><pre>commit 5f16f3225b06242a9ee876f07c1c9b6ed36a22b6
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Mar 24 14:43:12 2014 -0400
+
+    ext4: atomically set inode-&gt;i_flags in ext4_set_inode_flags()
+    
+    Use cmpxchg() to atomically set i_flags instead of clearing out the
+    S_IMMUTABLE, S_APPEND, etc. flags and then setting them from the
+    EXT4_IMMUTABLE_FL, EXT4_APPEND_FL flags, since this opens up a race
+    where an immutable file has the immutable flag cleared for a brief
+    window of time.
+    
+    Reported-by: John Sullivan &lt;jsrhbz@kanargh.force9.co.uk&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+    Cc: stable@kernel.org
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index b5e182acf9b9..df067c3c6c93 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3938,18 +3938,20 @@ int ext4_get_inode_loc(struct inode *inode, struct ext4_iloc *iloc)
+ void ext4_set_inode_flags(struct inode *inode)
+ {
+ 	unsigned int flags = EXT4_I(inode)-&gt;i_flags;
++	unsigned int new_fl = 0;
+ 
+-	inode-&gt;i_flags &amp;= ~(S_SYNC|S_APPEND|S_IMMUTABLE|S_NOATIME|S_DIRSYNC);
+ 	if (flags &amp; EXT4_SYNC_FL)
+-		inode-&gt;i_flags |= S_SYNC;
++		new_fl |= S_SYNC;
+ 	if (flags &amp; EXT4_APPEND_FL)
+-		inode-&gt;i_flags |= S_APPEND;
++		new_fl |= S_APPEND;
+ 	if (flags &amp; EXT4_IMMUTABLE_FL)
+-		inode-&gt;i_flags |= S_IMMUTABLE;
++		new_fl |= S_IMMUTABLE;
+ 	if (flags &amp; EXT4_NOATIME_FL)
+-		inode-&gt;i_flags |= S_NOATIME;
++		new_fl |= S_NOATIME;
+ 	if (flags &amp; EXT4_DIRSYNC_FL)
+-		inode-&gt;i_flags |= S_DIRSYNC;
++		new_fl |= S_DIRSYNC;
++	inode_set_flags(inode, new_fl,
++			S_SYNC|S_APPEND|S_IMMUTABLE|S_NOATIME|S_DIRSYNC);
+ }
+ 
+ /* Propagate flags from i_flags to EXT4_I(inode)-&gt;i_flags */
+diff --git a/fs/inode.c b/fs/inode.c
+index 4bcdad3c9361..26f95ceb6250 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -1899,3 +1899,34 @@ void inode_dio_done(struct inode *inode)
+ 		wake_up_bit(&amp;inode-&gt;i_state, __I_DIO_WAKEUP);
+ }
+ EXPORT_SYMBOL(inode_dio_done);
++
++/*
++ * inode_set_flags - atomically set some inode flags
++ *
++ * Note: the caller should be holding i_mutex, or else be sure that
++ * they have exclusive access to the inode structure (i.e., while the
++ * inode is being instantiated).  The reason for the cmpxchg() loop
++ * --- which wouldn't be necessary if all code paths which modify
++ * i_flags actually followed this rule, is that there is at least one
++ * code path which doesn't today --- for example,
++ * __generic_file_aio_write() calls file_remove_suid() without holding
++ * i_mutex --- so we use cmpxchg() out of an abundance of caution.
++ *
++ * In the long run, i_mutex is overkill, and we should probably look
++ * at using the i_lock spinlock to protect i_flags, and then make sure
++ * it is so documented in include/linux/fs.h and that all code follows
++ * the locking convention!!
++ */
++void inode_set_flags(struct inode *inode, unsigned int flags,
++		     unsigned int mask)
++{
++	unsigned int old_flags, new_flags;
++
++	WARN_ON_ONCE(flags &amp; ~mask);
++	do {
++		old_flags = ACCESS_ONCE(inode-&gt;i_flags);
++		new_flags = (old_flags &amp; ~mask) | flags;
++	} while (unlikely(cmpxchg(&amp;inode-&gt;i_flags, old_flags,
++				  new_flags) != old_flags));
++}
++EXPORT_SYMBOL(inode_set_flags);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 60829565e552..5d1f6fa8daed 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2556,6 +2556,9 @@ static inline ssize_t blockdev_direct_IO(int rw, struct kiocb *iocb,
+ void inode_dio_wait(struct inode *inode);
+ void inode_dio_done(struct inode *inode);
+ 
++extern void inode_set_flags(struct inode *inode, unsigned int flags,
++			    unsigned int mask);
++
+ extern const struct file_operations generic_ro_fops;
+ 
+ #define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))</pre><hr><pre>commit ed3654eb981fd44694b4d2a636e13f998bc10e7f
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Mar 24 14:09:06 2014 -0400
+
+    ext4: optimize Hurd tests when reading/writing inodes
+    
+    Set a in-memory superblock flag to indicate whether the file system is
+    designed to support the Hurd.
+    
+    Also, add a sanity check to make sure the 64-bit feature is not set
+    for Hurd file systems, since i_file_acl_high conflicts with a
+    Hurd-specific field.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index f4f889e6df83..e01135d791ca 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1001,6 +1001,8 @@ struct ext4_inode_info {
+ #define EXT4_MOUNT2_STD_GROUP_SIZE	0x00000002 /* We have standard group
+ 						      size of blocksize * 8
+ 						      blocks */
++#define EXT4_MOUNT2_HURD_COMPAT		0x00000004 /* Support HURD-castrated
++						      file systems */
+ 
+ #define clear_opt(sb, opt)		EXT4_SB(sb)-&gt;s_mount_opt &amp;= \
+ 						~EXT4_MOUNT_##opt
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index ed2c13a7f293..b5e182acf9b9 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4168,8 +4168,7 @@ struct inode *ext4_iget(struct super_block *sb, unsigned long ino)
+ 	EXT4_INODE_GET_XTIME(i_atime, inode, raw_inode);
+ 	EXT4_EINODE_GET_XTIME(i_crtime, ei, raw_inode);
+ 
+-	if (EXT4_SB(inode-&gt;i_sb)-&gt;s_es-&gt;s_creator_os !=
+-	    cpu_to_le32(EXT4_OS_HURD)) {
++	if (likely(!test_opt2(inode-&gt;i_sb, HURD_COMPAT))) {
+ 		inode-&gt;i_version = le32_to_cpu(raw_inode-&gt;i_disk_version);
+ 		if (EXT4_INODE_SIZE(inode-&gt;i_sb) &gt; EXT4_GOOD_OLD_INODE_SIZE) {
+ 			if (EXT4_FITS_IN_INODE(raw_inode, ei, i_version_hi))
+@@ -4345,8 +4344,7 @@ static int ext4_do_update_inode(handle_t *handle,
+ 		goto out_brelse;
+ 	raw_inode-&gt;i_dtime = cpu_to_le32(ei-&gt;i_dtime);
+ 	raw_inode-&gt;i_flags = cpu_to_le32(ei-&gt;i_flags &amp; 0xFFFFFFFF);
+-	if (EXT4_SB(inode-&gt;i_sb)-&gt;s_es-&gt;s_creator_os !=
+-	    cpu_to_le32(EXT4_OS_HURD))
++	if (likely(!test_opt2(inode-&gt;i_sb, HURD_COMPAT)))
+ 		raw_inode-&gt;i_file_acl_high =
+ 			cpu_to_le16(ei-&gt;i_file_acl &gt;&gt; 32);
+ 	raw_inode-&gt;i_file_acl_lo = cpu_to_le32(ei-&gt;i_file_acl);
+@@ -4391,8 +4389,7 @@ static int ext4_do_update_inode(handle_t *handle,
+ 			raw_inode-&gt;i_block[block] = ei-&gt;i_data[block];
+ 	}
+ 
+-	if (EXT4_SB(inode-&gt;i_sb)-&gt;s_es-&gt;s_creator_os !=
+-	    cpu_to_le32(EXT4_OS_HURD)) {
++	if (likely(!test_opt2(inode-&gt;i_sb, HURD_COMPAT))) {
+ 		raw_inode-&gt;i_disk_version = cpu_to_le32(inode-&gt;i_version);
+ 		if (ei-&gt;i_extra_isize) {
+ 			if (EXT4_FITS_IN_INODE(raw_inode, ei, i_version_hi))
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 5a51af7d0335..f3c667091618 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3580,6 +3580,16 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 		       "feature flags set on rev 0 fs, "
+ 		       "running e2fsck is recommended");
+ 
++	if (es-&gt;s_creator_os == cpu_to_le32(EXT4_OS_HURD)) {
++		set_opt2(sb, HURD_COMPAT);
++		if (EXT4_HAS_INCOMPAT_FEATURE(sb,
++					      EXT4_FEATURE_INCOMPAT_64BIT)) {
++			ext4_msg(sb, KERN_ERR,
++				 "The Hurd can't support 64-bit file systems");
++			goto failed_mount;
++		}
++	}
++
+ 	if (IS_EXT2_SB(sb)) {
+ 		if (ext2_feature_set_ok(sb))
+ 			ext4_msg(sb, KERN_INFO, "mounting ext2 file system "</pre><hr><pre>commit c4f65706056e9f0c2cf126b29c6920a179d91150
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Mar 20 00:32:57 2014 -0400
+
+    ext4: kill i_version support for Hurd-castrated file systems
+    
+    The Hurd file system uses uses the inode field which is now used for
+    i_version for its translator block.  This means that ext2 file systems
+    that are formatted for GNU Hurd can't be used to support NFSv4.  Given
+    that Hurd file systems don't support extents, and a huge number of
+    modern file system features, this is no great loss.
+    
+    If we don't do this, the attempt to update the i_version field will
+    stomp over the translator block field, which will cause file system
+    corruption for Hurd file systems.  This can be replicated via:
+    
+    mke2fs -t ext2 -o hurd /dev/vdc
+    mount -t ext4 /dev/vdc /vdc
+    touch /vdc/bug0000
+    umount /dev/vdc
+    e2fsck -f /dev/vdc
+    
+    Addresses-Debian-Bug: #738758
+    
+    Reported-By: Gabriele Giacone &lt;1o5g4r8o@gmail.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 7cc24555eca8..ed2c13a7f293 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4168,11 +4168,14 @@ struct inode *ext4_iget(struct super_block *sb, unsigned long ino)
+ 	EXT4_INODE_GET_XTIME(i_atime, inode, raw_inode);
+ 	EXT4_EINODE_GET_XTIME(i_crtime, ei, raw_inode);
+ 
+-	inode-&gt;i_version = le32_to_cpu(raw_inode-&gt;i_disk_version);
+-	if (EXT4_INODE_SIZE(inode-&gt;i_sb) &gt; EXT4_GOOD_OLD_INODE_SIZE) {
+-		if (EXT4_FITS_IN_INODE(raw_inode, ei, i_version_hi))
+-			inode-&gt;i_version |=
+-			(__u64)(le32_to_cpu(raw_inode-&gt;i_version_hi)) &lt;&lt; 32;
++	if (EXT4_SB(inode-&gt;i_sb)-&gt;s_es-&gt;s_creator_os !=
++	    cpu_to_le32(EXT4_OS_HURD)) {
++		inode-&gt;i_version = le32_to_cpu(raw_inode-&gt;i_disk_version);
++		if (EXT4_INODE_SIZE(inode-&gt;i_sb) &gt; EXT4_GOOD_OLD_INODE_SIZE) {
++			if (EXT4_FITS_IN_INODE(raw_inode, ei, i_version_hi))
++				inode-&gt;i_version |=
++		    (__u64)(le32_to_cpu(raw_inode-&gt;i_version_hi)) &lt;&lt; 32;
++		}
+ 	}
+ 
+ 	ret = 0;
+@@ -4388,12 +4391,16 @@ static int ext4_do_update_inode(handle_t *handle,
+ 			raw_inode-&gt;i_block[block] = ei-&gt;i_data[block];
+ 	}
+ 
+-	raw_inode-&gt;i_disk_version = cpu_to_le32(inode-&gt;i_version);
+-	if (ei-&gt;i_extra_isize) {
+-		if (EXT4_FITS_IN_INODE(raw_inode, ei, i_version_hi))
+-			raw_inode-&gt;i_version_hi =
+-			cpu_to_le32(inode-&gt;i_version &gt;&gt; 32);
+-		raw_inode-&gt;i_extra_isize = cpu_to_le16(ei-&gt;i_extra_isize);
++	if (EXT4_SB(inode-&gt;i_sb)-&gt;s_es-&gt;s_creator_os !=
++	    cpu_to_le32(EXT4_OS_HURD)) {
++		raw_inode-&gt;i_disk_version = cpu_to_le32(inode-&gt;i_version);
++		if (ei-&gt;i_extra_isize) {
++			if (EXT4_FITS_IN_INODE(raw_inode, ei, i_version_hi))
++				raw_inode-&gt;i_version_hi =
++					cpu_to_le32(inode-&gt;i_version &gt;&gt; 32);
++			raw_inode-&gt;i_extra_isize =
++				cpu_to_le16(ei-&gt;i_extra_isize);
++		}
+ 	}
+ 
+ 	ext4_inode_csum_set(inode, raw_inode, ei);</pre><hr><pre>commit 46884442fc5bb81a896f7245bd850fde9b435509
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Dec 17 21:16:39 2013 -0500
+
+    random: use the architectural HWRNG for the SHA's IV in extract_buf()
+    
+    To help assuage the fears of those who think the NSA can introduce a
+    massive hack into the instruction decode and out of order execution
+    engine in the CPU without hundreds of Intel engineers knowing about
+    it (only one of which woud need to have the conscience and courage of
+    Edward Snowden to spill the beans to the public), use the HWRNG to
+    initialize the SHA starting value, instead of xor'ing it in
+    afterwards.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 8cc7d6515676..d07575c99a5f 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -1012,23 +1012,23 @@ static void extract_buf(struct entropy_store *r, __u8 *out)
+ 	__u8 extract[64];
+ 	unsigned long flags;
+ 
+-	/* Generate a hash across the pool, 16 words (512 bits) at a time */
+-	sha_init(hash.w);
+-	spin_lock_irqsave(&amp;r-&gt;lock, flags);
+-	for (i = 0; i &lt; r-&gt;poolinfo-&gt;poolwords; i += 16)
+-		sha_transform(hash.w, (__u8 *)(r-&gt;pool + i), workspace);
+-
+ 	/*
+ 	 * If we have an architectural hardware random number
+-	 * generator, mix that in, too.
++	 * generator, use it for SHA's initial vector
+ 	 */
++	sha_init(hash.w);
+ 	for (i = 0; i &lt; LONGS(20); i++) {
+ 		unsigned long v;
+ 		if (!arch_get_random_long(&amp;v))
+ 			break;
+-		hash.l[i] ^= v;
++		hash.l[i] = v;
+ 	}
+ 
++	/* Generate a hash across the pool, 16 words (512 bits) at a time */
++	spin_lock_irqsave(&amp;r-&gt;lock, flags);
++	for (i = 0; i &lt; r-&gt;poolinfo-&gt;poolwords; i += 16)
++		sha_transform(hash.w, (__u8 *)(r-&gt;pool + i), workspace);
++
+ 	/*
+ 	 * We mix the hash back into the pool to prevent backtracking
+ 	 * attacks (where the attacker knows the state of the pool</pre><hr><pre>commit 38c03b34391dd25a39576073e58485e5949d29fe
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Mar 13 22:49:42 2014 -0400
+
+    ext4: only call sync_filesystm() when remounting read-only
+    
+    This is the only time it is required for ext4.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index a5f1170048bd..89baee42f353 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -4765,8 +4765,6 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ #endif
+ 	char *orig_data = kstrdup(data, GFP_KERNEL);
+ 
+-	sync_filesystem(sb);
+-
+ 	/* Store the original options */
+ 	old_sb_flags = sb-&gt;s_flags;
+ 	old_opts.s_mount_opt = sbi-&gt;s_mount_opt;
+@@ -4837,6 +4835,9 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ 		}
+ 
+ 		if (*flags &amp; MS_RDONLY) {
++			err = sync_filesystem(sb);
++			if (err &lt; 0)
++				goto restore_opts;
+ 			err = dquot_suspend(sb, -1);
+ 			if (err &lt; 0)
+ 				goto restore_opts;</pre>
+    <div class="pagination">
+        <a href='1_42.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><span>[43]</span><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_44.html'>Next&gt;&gt;</a>
+    <div>
+</body>

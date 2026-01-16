@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_6.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><span>[7]</span><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_8.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit b33d9f5909c8d30f1429fb9aefbb32760901a023
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Aug 14 10:54:09 2021 -0400
+
+    jbd2: add sparse annotations for add_transaction_credits()
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 8804e126805f..5347411ae13e 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -223,9 +223,15 @@ static void sub_reserved_credits(journal_t *journal, int blocks)
+  * with j_state_lock held for reading. Returns 0 if handle joined the running
+  * transaction. Returns 1 if we had to wait, j_state_lock is dropped, and
+  * caller must retry.
++ *
++ * Note: because j_state_lock may be dropped depending on the return
++ * value, we need to fake out sparse so ti doesn't complain about a
++ * locking imbalance.  Callers of add_transaction_credits will need to
++ * make a similar accomodation.
+  */
+ static int add_transaction_credits(journal_t *journal, int blocks,
+ 				   int rsv_blocks)
++__must_hold(&amp;journal-&gt;j_state_lock)
+ {
+ 	transaction_t *t = journal-&gt;j_running_transaction;
+ 	int needed;
+@@ -238,6 +244,7 @@ static int add_transaction_credits(journal_t *journal, int blocks,
+ 	if (t-&gt;t_state != T_RUNNING) {
+ 		WARN_ON_ONCE(t-&gt;t_state &gt;= T_FLUSH);
+ 		wait_transaction_locked(journal);
++		__acquire(&amp;journal-&gt;j_state_lock); /* fake out sparse */
+ 		return 1;
+ 	}
+ 
+@@ -266,10 +273,12 @@ static int add_transaction_credits(journal_t *journal, int blocks,
+ 			wait_event(journal-&gt;j_wait_reserved,
+ 				   atomic_read(&amp;journal-&gt;j_reserved_credits) + total &lt;=
+ 				   journal-&gt;j_max_transaction_buffers);
++			__acquire(&amp;journal-&gt;j_state_lock); /* fake out sparse */
+ 			return 1;
+ 		}
+ 
+ 		wait_transaction_locked(journal);
++		__acquire(&amp;journal-&gt;j_state_lock); /* fake out sparse */
+ 		return 1;
+ 	}
+ 
+@@ -293,6 +302,7 @@ static int add_transaction_credits(journal_t *journal, int blocks,
+ 					journal-&gt;j_max_transaction_buffers)
+ 			__jbd2_log_wait_for_space(journal);
+ 		write_unlock(&amp;journal-&gt;j_state_lock);
++		__acquire(&amp;journal-&gt;j_state_lock); /* fake out sparse */
+ 		return 1;
+ 	}
+ 
+@@ -310,6 +320,7 @@ static int add_transaction_credits(journal_t *journal, int blocks,
+ 		wait_event(journal-&gt;j_wait_reserved,
+ 			 atomic_read(&amp;journal-&gt;j_reserved_credits) + rsv_blocks
+ 			 &lt;= journal-&gt;j_max_transaction_buffers / 2);
++		__acquire(&amp;journal-&gt;j_state_lock); /* fake out sparse */
+ 		return 1;
+ 	}
+ 	return 0;
+@@ -413,8 +424,14 @@ static int start_this_handle(journal_t *journal, handle_t *handle,
+ 
+ 	if (!handle-&gt;h_reserved) {
+ 		/* We may have dropped j_state_lock - restart in that case */
+-		if (add_transaction_credits(journal, blocks, rsv_blocks))
++		if (add_transaction_credits(journal, blocks, rsv_blocks)) {
++			/*
++			 * add_transaction_credits releases
++			 * j_state_lock on a non-zero return
++			 */
++			__release(&amp;journal-&gt;j_state_lock);
+ 			goto repeat;
++		}
+ 	} else {
+ 		/*
+ 		 * We have handle reserved so we are allowed to join T_LOCKED</pre><hr><pre>commit a5fda11338180db13f3e9eec20c9deda1f7bad72
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Aug 14 10:41:30 2021 -0400
+
+    ext4: fix sparse warnings
+    
+    Add sparse annotations to suppress false positive context imbalance
+    warnings, and use NULL instead of 0 in EXT_MAX_{EXTENT,INDEX}.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4_extents.h b/fs/ext4/ext4_extents.h
+index 44e59881a1f0..26435f3a3094 100644
+--- a/fs/ext4/ext4_extents.h
++++ b/fs/ext4/ext4_extents.h
+@@ -173,10 +173,11 @@ struct partial_cluster {
+ #define EXT_MAX_EXTENT(__hdr__)	\
+ 	((le16_to_cpu((__hdr__)-&gt;eh_max)) ? \
+ 	((EXT_FIRST_EXTENT((__hdr__)) + le16_to_cpu((__hdr__)-&gt;eh_max) - 1)) \
+-					: 0)
++					: NULL)
+ #define EXT_MAX_INDEX(__hdr__) \
+ 	((le16_to_cpu((__hdr__)-&gt;eh_max)) ? \
+-	((EXT_FIRST_INDEX((__hdr__)) + le16_to_cpu((__hdr__)-&gt;eh_max) - 1)) : 0)
++	((EXT_FIRST_INDEX((__hdr__)) + le16_to_cpu((__hdr__)-&gt;eh_max) - 1)) \
++					: NULL)
+ 
+ static inline struct ext4_extent_header *ext_inode_hdr(struct inode *inode)
+ {
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 34670cb63588..665646a12e01 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2478,6 +2478,12 @@ static bool ext4_mb_good_group(struct ext4_allocation_context *ac,
+  * This could return negative error code if something goes wrong
+  * during ext4_mb_init_group(). This should not be called with
+  * ext4_lock_group() held.
++ *
++ * Note: because we are conditionally operating with the group lock in
++ * the EXT4_MB_STRICT_CHECK case, we need to fake out sparse in this
++ * function using __acquire and __release.  This means we need to be
++ * super careful before messing with the error path handling via "goto
++ * out"!
+  */
+ static int ext4_mb_good_group_nolock(struct ext4_allocation_context *ac,
+ 				     ext4_group_t group, int cr)
+@@ -2491,8 +2497,10 @@ static int ext4_mb_good_group_nolock(struct ext4_allocation_context *ac,
+ 
+ 	if (sbi-&gt;s_mb_stats)
+ 		atomic64_inc(&amp;sbi-&gt;s_bal_cX_groups_considered[ac-&gt;ac_criteria]);
+-	if (should_lock)
++	if (should_lock) {
+ 		ext4_lock_group(sb, group);
++		__release(ext4_group_lock_ptr(sb, group));
++	}
+ 	free = grp-&gt;bb_free;
+ 	if (free == 0)
+ 		goto out;
+@@ -2500,8 +2508,10 @@ static int ext4_mb_good_group_nolock(struct ext4_allocation_context *ac,
+ 		goto out;
+ 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(grp)))
+ 		goto out;
+-	if (should_lock)
++	if (should_lock) {
++		__acquire(ext4_group_lock_ptr(sb, group));
+ 		ext4_unlock_group(sb, group);
++	}
+ 
+ 	/* We only do this if the grp has never been initialized */
+ 	if (unlikely(EXT4_MB_GRP_NEED_INIT(grp))) {
+@@ -2528,12 +2538,16 @@ static int ext4_mb_good_group_nolock(struct ext4_allocation_context *ac,
+ 			return ret;
+ 	}
+ 
+-	if (should_lock)
++	if (should_lock) {
+ 		ext4_lock_group(sb, group);
++		__release(ext4_group_lock_ptr(sb, group));
++	}
+ 	ret = ext4_mb_good_group(ac, group, cr);
+ out:
+-	if (should_lock)
++	if (should_lock) {
++		__acquire(ext4_group_lock_ptr(sb, group));
+ 		ext4_unlock_group(sb, group);
++	}
+ 	return ret;
+ }
+ 
+@@ -2969,6 +2983,7 @@ int ext4_seq_mb_stats_show(struct seq_file *seq, void *offset)
+ }
+ 
+ static void *ext4_mb_seq_structs_summary_start(struct seq_file *seq, loff_t *pos)
++__acquires(&amp;EXT4_SB(sb)-&gt;s_mb_rb_lock)
+ {
+ 	struct super_block *sb = PDE_DATA(file_inode(seq-&gt;file));
+ 	unsigned long position;
+@@ -3041,6 +3056,7 @@ static int ext4_mb_seq_structs_summary_show(struct seq_file *seq, void *v)
+ }
+ 
+ static void ext4_mb_seq_structs_summary_stop(struct seq_file *seq, void *v)
++__releases(&amp;EXT4_SB(sb)-&gt;s_mb_rb_lock)
+ {
+ 	struct super_block *sb = PDE_DATA(file_inode(seq-&gt;file));
+ 
+@@ -6275,6 +6291,8 @@ __acquires(bitlock)
+ static int ext4_try_to_trim_range(struct super_block *sb,
+ 		struct ext4_buddy *e4b, ext4_grpblk_t start,
+ 		ext4_grpblk_t max, ext4_grpblk_t minblocks)
++__acquires(ext4_group_lock_ptr(sb, e4b-&gt;bd_group))
++__releases(ext4_group_lock_ptr(sb, e4b-&gt;bd_group))
+ {
+ 	ext4_grpblk_t next, count, free_count;
+ 	void *bitmap;</pre><hr><pre>commit a54c4613dac1500b40e4ab55199f7c51f028e848
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Aug 20 23:44:17 2021 -0400
+
+    ext4: fix race writing to an inline_data file while its xattrs are changing
+    
+    The location of the system.data extended attribute can change whenever
+    xattr_sem is not taken.  So we need to recalculate the i_inline_off
+    field since it mgiht have changed between ext4_write_begin() and
+    ext4_write_end().
+    
+    This means that caching i_inline_off is probably not helpful, so in
+    the long run we should probably get rid of it and shrink the in-memory
+    ext4 inode slightly, but let's fix the race the simple way for now.
+    
+    Cc: stable@kernel.org
+    Fixes: f19d5870cbf72 ("ext4: add normal write support for inline data")
+    Reported-by: syzbot+13146364637c7363a7de@syzkaller.appspotmail.com
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 70cb64db33f7..24e994e75f5c 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -750,6 +750,12 @@ int ext4_write_inline_data_end(struct inode *inode, loff_t pos, unsigned len,
+ 	ext4_write_lock_xattr(inode, &amp;no_expand);
+ 	BUG_ON(!ext4_has_inline_data(inode));
+ 
++	/*
++	 * ei-&gt;i_inline_off may have changed since ext4_write_begin()
++	 * called ext4_try_to_write_inline_data()
++	 */
++	(void) ext4_find_inline_data_nolock(inode);
++
+ 	kaddr = kmap_atomic(page);
+ 	ext4_write_inline_data(inode, &amp;iloc, kaddr, pos, len);
+ 	kunmap_atomic(kaddr);</pre><hr><pre>commit 308c57ccf4318236be75dfa251c84713e694457b
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Aug 13 11:20:48 2021 -0400
+
+    ext4: if zeroout fails fall back to splitting the extent node
+    
+    If the underlying storage device is using thin-provisioning, it's
+    possible for a zeroout operation to return ENOSPC.
+    
+    Commit df22291ff0fd ("ext4: Retry block allocation if we have free blocks
+    left") added logic to retry block allocation since we might get free block
+    after we commit a transaction. But the ENOSPC from thin-provisioning
+    will confuse ext4, and lead to an infinite loop.
+    
+    Since using zeroout instead of splitting the extent node is an
+    optimization, if it fails, we might as well fall back to splitting the
+    extent node.
+    
+    Reported-by: yangerkun &lt;yangerkun@huawei.com&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 92ad64b89d9b..501516cadc1b 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3569,7 +3569,7 @@ static int ext4_ext_convert_to_initialized(handle_t *handle,
+ 				split_map.m_len - ee_block);
+ 			err = ext4_ext_zeroout(inode, &amp;zero_ex1);
+ 			if (err)
+-				goto out;
++				goto fallback;
+ 			split_map.m_len = allocated;
+ 		}
+ 		if (split_map.m_lblk - ee_block + split_map.m_len &lt;
+@@ -3583,7 +3583,7 @@ static int ext4_ext_convert_to_initialized(handle_t *handle,
+ 						      ext4_ext_pblock(ex));
+ 				err = ext4_ext_zeroout(inode, &amp;zero_ex2);
+ 				if (err)
+-					goto out;
++					goto fallback;
+ 			}
+ 
+ 			split_map.m_len += split_map.m_lblk - ee_block;
+@@ -3592,6 +3592,7 @@ static int ext4_ext_convert_to_initialized(handle_t *handle,
+ 		}
+ 	}
+ 
++fallback:
+ 	err = ext4_split_extent(handle, inode, ppath, &amp;split_map, split_flag,
+ 				flags);
+ 	if (err &gt; 0)</pre><hr><pre>commit 4009cc7ad6b5f8a260e46cdaabb3763f2e6ca2e0
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Aug 10 14:02:33 2021 -0400
+
+    jbd2: clean up two gcc -Wall warnings in recovery.c
+    
+    Fix a signed vs unsigned and a void * pointer arithmetic warning.
+    
+    This cleanup is also in e2fsprogs commit aec460db9a93 ("e2fsck: clean
+    up two gcc -Wall warnings in recovery.c").
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
+index ba979fcf1cd3..8ca3527189f8 100644
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -179,8 +179,8 @@ static int jbd2_descriptor_block_csum_verify(journal_t *j, void *buf)
+ 	if (!jbd2_journal_has_csum_v2or3(j))
+ 		return 1;
+ 
+-	tail = (struct jbd2_journal_block_tail *)(buf + j-&gt;j_blocksize -
+-			sizeof(struct jbd2_journal_block_tail));
++	tail = (struct jbd2_journal_block_tail *)((char *)buf +
++		j-&gt;j_blocksize - sizeof(struct jbd2_journal_block_tail));
+ 	provided = tail-&gt;t_checksum;
+ 	tail-&gt;t_checksum = 0;
+ 	calculated = jbd2_chksum(j, j-&gt;j_csum_seed, buf, j-&gt;j_blocksize);
+@@ -896,7 +896,7 @@ static int scan_revoke_records(journal_t *journal, struct buffer_head *bh,
+ {
+ 	jbd2_journal_revoke_header_t *header;
+ 	int offset, max;
+-	int csum_size = 0;
++	unsigned csum_size = 0;
+ 	__u32 rcount;
+ 	int record_len = 4;
+ </pre><hr><pre>commit 390add0cc9f4d7fda89cf3db7651717e82cf0afc
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Aug 10 12:55:51 2021 -0400
+
+    jbd2: fix clang warning in recovery.c
+    
+    Remove unused variable store which was never used.
+    
+    This fix is also in e2fsprogs commit 99a2294f85f0 ("e2fsck: value
+    stored to err is never read").
+    
+    Signed-off-by: Lukas Czerner &lt;lczerner@redhat.com&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
+index 4c4209262437..ba979fcf1cd3 100644
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -760,7 +760,6 @@ static int do_one_pass(journal_t *journal,
+ 				 */
+ 				jbd_debug(1, "JBD2: Invalid checksum ignored in transaction %u, likely stale data\n",
+ 					  next_commit_ID);
+-				err = 0;
+ 				brelse(bh);
+ 				goto done;
+ 			}</pre><hr><pre>commit a20d1cebb98bba75f2e34fddc768dd8712c1bded
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon May 3 15:37:33 2021 -0400
+
+    jbd2: fix portability problems caused by unaligned accesses
+    
+    This commit applies the e2fsck/recovery.c portions of commit
+    1e0c8ca7c08a ("e2fsck: fix portability problems caused by unaligned
+    accesses) from the e2fsprogs git tree.
+    
+    The on-disk format for the ext4 journal can have unaigned 32-bit
+    integers.  This can happen when replaying a journal using a obsolete
+    checksum format (which was never popularly used, since the v3 format
+    replaced v2 while the metadata checksum feature was being stablized).
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
+index d47a0d96bf30..4c4209262437 100644
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -196,7 +196,7 @@ static int jbd2_descriptor_block_csum_verify(journal_t *j, void *buf)
+ static int count_tags(journal_t *journal, struct buffer_head *bh)
+ {
+ 	char *			tagp;
+-	journal_block_tag_t *	tag;
++	journal_block_tag_t	tag;
+ 	int			nr = 0, size = journal-&gt;j_blocksize;
+ 	int			tag_bytes = journal_tag_bytes(journal);
+ 
+@@ -206,14 +206,14 @@ static int count_tags(journal_t *journal, struct buffer_head *bh)
+ 	tagp = &amp;bh-&gt;b_data[sizeof(journal_header_t)];
+ 
+ 	while ((tagp - bh-&gt;b_data + tag_bytes) &lt;= size) {
+-		tag = (journal_block_tag_t *) tagp;
++		memcpy(&amp;tag, tagp, sizeof(tag));
+ 
+ 		nr++;
+ 		tagp += tag_bytes;
+-		if (!(tag-&gt;t_flags &amp; cpu_to_be16(JBD2_FLAG_SAME_UUID)))
++		if (!(tag.t_flags &amp; cpu_to_be16(JBD2_FLAG_SAME_UUID)))
+ 			tagp += 16;
+ 
+-		if (tag-&gt;t_flags &amp; cpu_to_be16(JBD2_FLAG_LAST_TAG))
++		if (tag.t_flags &amp; cpu_to_be16(JBD2_FLAG_LAST_TAG))
+ 			break;
+ 	}
+ 
+@@ -433,9 +433,9 @@ static int jbd2_commit_block_csum_verify(journal_t *j, void *buf)
+ }
+ 
+ static int jbd2_block_tag_csum_verify(journal_t *j, journal_block_tag_t *tag,
++				      journal_block_tag3_t *tag3,
+ 				      void *buf, __u32 sequence)
+ {
+-	journal_block_tag3_t *tag3 = (journal_block_tag3_t *)tag;
+ 	__u32 csum32;
+ 	__be32 seq;
+ 
+@@ -496,7 +496,7 @@ static int do_one_pass(journal_t *journal,
+ 	while (1) {
+ 		int			flags;
+ 		char *			tagp;
+-		journal_block_tag_t *	tag;
++		journal_block_tag_t	tag;
+ 		struct buffer_head *	obh;
+ 		struct buffer_head *	nbh;
+ 
+@@ -613,8 +613,8 @@ static int do_one_pass(journal_t *journal,
+ 			       &lt;= journal-&gt;j_blocksize - descr_csum_size) {
+ 				unsigned long io_block;
+ 
+-				tag = (journal_block_tag_t *) tagp;
+-				flags = be16_to_cpu(tag-&gt;t_flags);
++				memcpy(&amp;tag, tagp, sizeof(tag));
++				flags = be16_to_cpu(tag.t_flags);
+ 
+ 				io_block = next_log_block++;
+ 				wrap(journal, next_log_block);
+@@ -632,7 +632,7 @@ static int do_one_pass(journal_t *journal,
+ 
+ 					J_ASSERT(obh != NULL);
+ 					blocknr = read_tag_block(journal,
+-								 tag);
++								 &amp;tag);
+ 
+ 					/* If the block has been
+ 					 * revoked, then we're all done
+@@ -647,8 +647,8 @@ static int do_one_pass(journal_t *journal,
+ 
+ 					/* Look for block corruption */
+ 					if (!jbd2_block_tag_csum_verify(
+-						journal, tag, obh-&gt;b_data,
+-						be32_to_cpu(tmp-&gt;h_sequence))) {
++			journal, &amp;tag, (journal_block_tag3_t *)tagp,
++			obh-&gt;b_data, be32_to_cpu(tmp-&gt;h_sequence))) {
+ 						brelse(obh);
+ 						success = -EFSBADCRC;
+ 						printk(KERN_ERR "JBD2: Invalid "</pre><hr><pre>commit 877ba3f729fd3d8ef0e29bc2a55e57cfa54b2e43
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Aug 4 14:23:55 2021 -0400
+
+    ext4: fix potential htree corruption when growing large_dir directories
+    
+    Commit b5776e7524af ("ext4: fix potential htree index checksum
+    corruption) removed a required restart when multiple levels of index
+    nodes need to be split.  Fix this to avoid directory htree corruptions
+    when using the large_dir feature.
+    
+    Cc: stable@kernel.org # v5.11
+    Cc: Благодаренко Артём &lt;artem.blagodarenko@gmail.com&gt;
+    Fixes: b5776e7524af ("ext4: fix potential htree index checksum corruption)
+    Reported-by: Denis &lt;denis@voxelsoft.com&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 5fd56f616cf0..f3bbcd4efb56 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2517,7 +2517,7 @@ static int ext4_dx_add_entry(handle_t *handle, struct ext4_filename *fname,
+ 				goto journal_error;
+ 			err = ext4_handle_dirty_dx_node(handle, dir,
+ 							frame-&gt;bh);
+-			if (err)
++			if (restart || err)
+ 				goto journal_error;
+ 		} else {
+ 			struct dx_root *dxroot;</pre><hr><pre>commit 0705e8d1e2207ceeb83dc6e1751b6b82718b353a
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Jul 2 18:05:03 2021 -0400
+
+    ext4: inline jbd2_journal_[un]register_shrinker()
+    
+    The function jbd2_journal_unregister_shrinker() was getting called
+    twice when the file system was getting unmounted.  On Power and ARM
+    platforms this was causing kernel crash when unmounting the file
+    system, when a percpu_counter was destroyed twice.
+    
+    Fix this by removing jbd2_journal_[un]register_shrinker() functions,
+    and inlining the shrinker setup and teardown into
+    journal_init_common() and jbd2_journal_destroy().  This means that
+    ext4 and ocfs2 now no longer need to know about registering and
+    unregistering jbd2's shrinker.
+    
+    Also, while we're at it, rename the percpu counter from
+    j_jh_shrink_count to j_checkpoint_jh_count, since this makes it
+    clearer what this counter is intended to track.
+    
+    Link: https://lore.kernel.org/r/20210705145025.3363130-1-tytso@mit.edu
+    Fixes: 4ba3fcdde7e3 ("jbd2,ext4: add a shrinker to release checkpointed buffers")
+    Reported-by: Jon Hunter &lt;jonathanh@nvidia.com&gt;
+    Reported-by: Sachin Sant &lt;sachinp@linux.vnet.ibm.com&gt;
+    Tested-by: Sachin Sant &lt;sachinp@linux.vnet.ibm.com&gt;
+    Tested-by: Jon Hunter &lt;jonathanh@nvidia.com&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index b8ff0399e171..dfa09a277b56 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1184,7 +1184,6 @@ static void ext4_put_super(struct super_block *sb)
+ 	ext4_unregister_sysfs(sb);
+ 
+ 	if (sbi-&gt;s_journal) {
+-		jbd2_journal_unregister_shrinker(sbi-&gt;s_journal);
+ 		aborted = is_journal_aborted(sbi-&gt;s_journal);
+ 		err = jbd2_journal_destroy(sbi-&gt;s_journal);
+ 		sbi-&gt;s_journal = NULL;
+@@ -5176,7 +5175,6 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 	sbi-&gt;s_ea_block_cache = NULL;
+ 
+ 	if (sbi-&gt;s_journal) {
+-		jbd2_journal_unregister_shrinker(sbi-&gt;s_journal);
+ 		jbd2_journal_destroy(sbi-&gt;s_journal);
+ 		sbi-&gt;s_journal = NULL;
+ 	}
+@@ -5502,12 +5500,6 @@ static int ext4_load_journal(struct super_block *sb,
+ 		ext4_commit_super(sb);
+ 	}
+ 
+-	err = jbd2_journal_register_shrinker(journal);
+-	if (err) {
+-		EXT4_SB(sb)-&gt;s_journal = NULL;
+-		goto err_out;
+-	}
+-
+ 	return 0;
+ 
+ err_out:
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 51d1eb2ffeb9..746132998c57 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -701,7 +701,7 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
+ 
+ 	__buffer_unlink(jh);
+ 	jh-&gt;b_cp_transaction = NULL;
+-	percpu_counter_dec(&amp;journal-&gt;j_jh_shrink_count);
++	percpu_counter_dec(&amp;journal-&gt;j_checkpoint_jh_count);
+ 	jbd2_journal_put_journal_head(jh);
+ 
+ 	/* Is this transaction empty? */
+@@ -764,7 +764,7 @@ void __jbd2_journal_insert_checkpoint(struct journal_head *jh,
+ 		jh-&gt;b_cpnext-&gt;b_cpprev = jh;
+ 	}
+ 	transaction-&gt;t_checkpoint_list = jh;
+-	percpu_counter_inc(&amp;transaction-&gt;t_journal-&gt;j_jh_shrink_count);
++	percpu_counter_inc(&amp;transaction-&gt;t_journal-&gt;j_checkpoint_jh_count);
+ }
+ 
+ /*
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 152880c298ca..35302bc192eb 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1283,6 +1283,48 @@ static int jbd2_min_tag_size(void)
+ 	return sizeof(journal_block_tag_t) - 4;
+ }
+ 
++/**
++ * jbd2_journal_shrink_scan()
++ *
++ * Scan the checkpointed buffer on the checkpoint list and release the
++ * journal_head.
++ */
++static unsigned long jbd2_journal_shrink_scan(struct shrinker *shrink,
++					      struct shrink_control *sc)
++{
++	journal_t *journal = container_of(shrink, journal_t, j_shrinker);
++	unsigned long nr_to_scan = sc-&gt;nr_to_scan;
++	unsigned long nr_shrunk;
++	unsigned long count;
++
++	count = percpu_counter_read_positive(&amp;journal-&gt;j_checkpoint_jh_count);
++	trace_jbd2_shrink_scan_enter(journal, sc-&gt;nr_to_scan, count);
++
++	nr_shrunk = jbd2_journal_shrink_checkpoint_list(journal, &amp;nr_to_scan);
++
++	count = percpu_counter_read_positive(&amp;journal-&gt;j_checkpoint_jh_count);
++	trace_jbd2_shrink_scan_exit(journal, nr_to_scan, nr_shrunk, count);
++
++	return nr_shrunk;
++}
++
++/**
++ * jbd2_journal_shrink_count()
++ *
++ * Count the number of checkpoint buffers on the checkpoint list.
++ */
++static unsigned long jbd2_journal_shrink_count(struct shrinker *shrink,
++					       struct shrink_control *sc)
++{
++	journal_t *journal = container_of(shrink, journal_t, j_shrinker);
++	unsigned long count;
++
++	count = percpu_counter_read_positive(&amp;journal-&gt;j_checkpoint_jh_count);
++	trace_jbd2_shrink_count(journal, sc-&gt;nr_to_scan, count);
++
++	return count;
++}
++
+ /*
+  * Management for journal control blocks: functions to create and
+  * destroy journal_t structures, and to initialise and read existing
+@@ -1361,9 +1403,23 @@ static journal_t *journal_init_common(struct block_device *bdev,
+ 	journal-&gt;j_sb_buffer = bh;
+ 	journal-&gt;j_superblock = (journal_superblock_t *)bh-&gt;b_data;
+ 
++	journal-&gt;j_shrink_transaction = NULL;
++	journal-&gt;j_shrinker.scan_objects = jbd2_journal_shrink_scan;
++	journal-&gt;j_shrinker.count_objects = jbd2_journal_shrink_count;
++	journal-&gt;j_shrinker.seeks = DEFAULT_SEEKS;
++	journal-&gt;j_shrinker.batch = journal-&gt;j_max_transaction_buffers;
++
++	if (percpu_counter_init(&amp;journal-&gt;j_checkpoint_jh_count, 0, GFP_KERNEL))
++		goto err_cleanup;
++
++	if (register_shrinker(&amp;journal-&gt;j_shrinker)) {
++		percpu_counter_destroy(&amp;journal-&gt;j_checkpoint_jh_count);
++		goto err_cleanup;
++	}
+ 	return journal;
+ 
+ err_cleanup:
++	brelse(journal-&gt;j_sb_buffer);
+ 	kfree(journal-&gt;j_wbuf);
+ 	jbd2_journal_destroy_revoke(journal);
+ 	kfree(journal);
+@@ -2050,93 +2106,6 @@ int jbd2_journal_load(journal_t *journal)
+ 	return -EIO;
+ }
+ 
+-/**
+- * jbd2_journal_shrink_scan()
+- *
+- * Scan the checkpointed buffer on the checkpoint list and release the
+- * journal_head.
+- */
+-static unsigned long jbd2_journal_shrink_scan(struct shrinker *shrink,
+-					      struct shrink_control *sc)
+-{
+-	journal_t *journal = container_of(shrink, journal_t, j_shrinker);
+-	unsigned long nr_to_scan = sc-&gt;nr_to_scan;
+-	unsigned long nr_shrunk;
+-	unsigned long count;
+-
+-	count = percpu_counter_read_positive(&amp;journal-&gt;j_jh_shrink_count);
+-	trace_jbd2_shrink_scan_enter(journal, sc-&gt;nr_to_scan, count);
+-
+-	nr_shrunk = jbd2_journal_shrink_checkpoint_list(journal, &amp;nr_to_scan);
+-
+-	count = percpu_counter_read_positive(&amp;journal-&gt;j_jh_shrink_count);
+-	trace_jbd2_shrink_scan_exit(journal, nr_to_scan, nr_shrunk, count);
+-
+-	return nr_shrunk;
+-}
+-
+-/**
+- * jbd2_journal_shrink_count()
+- *
+- * Count the number of checkpoint buffers on the checkpoint list.
+- */
+-static unsigned long jbd2_journal_shrink_count(struct shrinker *shrink,
+-					       struct shrink_control *sc)
+-{
+-	journal_t *journal = container_of(shrink, journal_t, j_shrinker);
+-	unsigned long count;
+-
+-	count = percpu_counter_read_positive(&amp;journal-&gt;j_jh_shrink_count);
+-	trace_jbd2_shrink_count(journal, sc-&gt;nr_to_scan, count);
+-
+-	return count;
+-}
+-
+-/**
+- * jbd2_journal_register_shrinker()
+- * @journal: Journal to act on.
+- *
+- * Init a percpu counter to record the checkpointed buffers on the checkpoint
+- * list and register a shrinker to release their journal_head.
+- */
+-int jbd2_journal_register_shrinker(journal_t *journal)
+-{
+-	int err;
+-
+-	journal-&gt;j_shrink_transaction = NULL;
+-
+-	err = percpu_counter_init(&amp;journal-&gt;j_jh_shrink_count, 0, GFP_KERNEL);
+-	if (err)
+-		return err;
+-
+-	journal-&gt;j_shrinker.scan_objects = jbd2_journal_shrink_scan;
+-	journal-&gt;j_shrinker.count_objects = jbd2_journal_shrink_count;
+-	journal-&gt;j_shrinker.seeks = DEFAULT_SEEKS;
+-	journal-&gt;j_shrinker.batch = journal-&gt;j_max_transaction_buffers;
+-
+-	err = register_shrinker(&amp;journal-&gt;j_shrinker);
+-	if (err) {
+-		percpu_counter_destroy(&amp;journal-&gt;j_jh_shrink_count);
+-		return err;
+-	}
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL(jbd2_journal_register_shrinker);
+-
+-/**
+- * jbd2_journal_unregister_shrinker()
+- * @journal: Journal to act on.
+- *
+- * Unregister the checkpointed buffer shrinker and destroy the percpu counter.
+- */
+-void jbd2_journal_unregister_shrinker(journal_t *journal)
+-{
+-	percpu_counter_destroy(&amp;journal-&gt;j_jh_shrink_count);
+-	unregister_shrinker(&amp;journal-&gt;j_shrinker);
+-}
+-EXPORT_SYMBOL(jbd2_journal_unregister_shrinker);
+-
+ /**
+  * jbd2_journal_destroy() - Release a journal_t structure.
+  * @journal: Journal to act on.
+@@ -2209,8 +2178,10 @@ int jbd2_journal_destroy(journal_t *journal)
+ 		brelse(journal-&gt;j_sb_buffer);
+ 	}
+ 
+-	jbd2_journal_unregister_shrinker(journal);
+-
++	if (journal-&gt;j_shrinker.flags &amp; SHRINKER_REGISTERED) {
++		percpu_counter_destroy(&amp;journal-&gt;j_checkpoint_jh_count);
++		unregister_shrinker(&amp;journal-&gt;j_shrinker);
++	}
+ 	if (journal-&gt;j_proc_entry)
+ 		jbd2_stats_proc_exit(journal);
+ 	iput(journal-&gt;j_inode);
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index 6cc035321562..fd933c45281a 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -918,11 +918,11 @@ struct journal_s
+ 	struct shrinker		j_shrinker;
+ 
+ 	/**
+-	 * @j_jh_shrink_count:
++	 * @j_checkpoint_jh_count:
+ 	 *
+ 	 * Number of journal buffers on the checkpoint list. [j_list_lock]
+ 	 */
+-	struct percpu_counter	j_jh_shrink_count;
++	struct percpu_counter	j_checkpoint_jh_count;
+ 
+ 	/**
+ 	 * @j_shrink_transaction:
+@@ -1556,8 +1556,6 @@ extern int	   jbd2_journal_set_features
+ 		   (journal_t *, unsigned long, unsigned long, unsigned long);
+ extern void	   jbd2_journal_clear_features
+ 		   (journal_t *, unsigned long, unsigned long, unsigned long);
+-extern int	   jbd2_journal_register_shrinker(journal_t *journal);
+-extern void	   jbd2_journal_unregister_shrinker(journal_t *journal);
+ extern int	   jbd2_journal_load       (journal_t *journal);
+ extern int	   jbd2_journal_destroy    (journal_t *);
+ extern int	   jbd2_journal_recover    (journal_t *journal);</pre><hr><pre>commit 0955901908e80384592ed85aa164d7e5be6cc067
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Jul 2 13:21:06 2021 -0400
+
+    ext4: fix flags validity checking for EXT4_IOC_CHECKPOINT
+    
+    Use the correct bitmask when checking for any not-yet-supported flags.
+    
+    Link: https://lore.kernel.org/r/20210702173425.1276158-1-tytso@mit.edu
+    Fixes: 351a0a3fbc35 ("ext4: add ioctl EXT4_IOC_CHECKPOINT")
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reviewed-by: Leah Rumancik &lt;leah.rumancik@gmail.com&gt;
+
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 5730aeca563c..6eed6170aded 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -823,7 +823,7 @@ static int ext4_ioctl_checkpoint(struct file *filp, unsigned long arg)
+ 	if (!EXT4_SB(sb)-&gt;s_journal)
+ 		return -ENODEV;
+ 
+-	if (flags &amp; ~JBD2_JOURNAL_FLUSH_VALID)
++	if (flags &amp; ~EXT4_IOC_CHECKPOINT_FLAG_VALID)
+ 		return -EINVAL;
+ 
+ 	q = bdev_get_queue(EXT4_SB(sb)-&gt;s_journal-&gt;j_dev);</pre>
+    <div class="pagination">
+        <a href='1_6.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><span>[7]</span><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_8.html'>Next&gt;&gt;</a>
+    <div>
+</body>

@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_37.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><span>[38]</span><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_39.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit e3cf5d5d9a86df1c5e413bdd3725c25a16ff854c
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Sep 4 18:07:25 2014 -0400
+
+    ext4: prepare to drop EXT4_STATE_DELALLOC_RESERVED
+    
+    The EXT4_STATE_DELALLOC_RESERVED flag was originally implemented
+    because it was too hard to make sure the mballoc and get_block flags
+    could be reliably passed down through all of the codepaths that end up
+    calling ext4_mb_new_blocks().
+    
+    Since then, we have mb_flags passed down through most of the code
+    paths, so getting rid of EXT4_STATE_DELALLOC_RESERVED isn't as tricky
+    as it used to.
+    
+    This commit plumbs in the last of what is required, and then adds a
+    WARN_ON check to make sure we haven't missed anything.  If this passes
+    a full regression test run, we can then drop
+    EXT4_STATE_DELALLOC_RESERVED.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index 581ef40fbe90..d70f154f6da3 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -636,8 +636,7 @@ ext4_fsblk_t ext4_new_meta_blocks(handle_t *handle, struct inode *inode,
+ 	 * Account for the allocated meta blocks.  We will never
+ 	 * fail EDQUOT for metdata, but we do account for it.
+ 	 */
+-	if (!(*errp) &amp;&amp;
+-	    ext4_test_inode_state(inode, EXT4_STATE_DELALLOC_RESERVED)) {
++	if (!(*errp) &amp;&amp; (flags &amp; EXT4_MB_DELALLOC_RESERVED)) {
+ 		spin_lock(&amp;EXT4_I(inode)-&gt;i_block_reservation_lock);
+ 		spin_unlock(&amp;EXT4_I(inode)-&gt;i_block_reservation_lock);
+ 		dquot_alloc_block_nofail(inode,
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 3ac1686efff8..8170b3254767 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1933,6 +1933,8 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
+ 	ext4_lblk_t next;
+ 	int mb_flags = 0, unwritten;
+ 
++	if (gb_flags &amp; EXT4_GET_BLOCKS_DELALLOC_RESERVE)
++		mb_flags |= EXT4_MB_DELALLOC_RESERVED;
+ 	if (unlikely(ext4_ext_get_actual_len(newext) == 0)) {
+ 		EXT4_ERROR_INODE(inode, "ext4_ext_get_actual_len(newext) == 0");
+ 		return -EIO;
+@@ -2054,7 +2056,7 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
+ 	 * We're gonna add a new leaf in the tree.
+ 	 */
+ 	if (gb_flags &amp; EXT4_GET_BLOCKS_METADATA_NOFAIL)
+-		mb_flags = EXT4_MB_USE_RESERVED;
++		mb_flags |= EXT4_MB_USE_RESERVED;
+ 	err = ext4_ext_create_new_leaf(handle, inode, mb_flags, gb_flags,
+ 				       ppath, newext);
+ 	if (err)
+@@ -4438,6 +4440,8 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 		ar.flags = 0;
+ 	if (flags &amp; EXT4_GET_BLOCKS_NO_NORMALIZE)
+ 		ar.flags |= EXT4_MB_HINT_NOPREALLOC;
++	if (flags &amp; EXT4_GET_BLOCKS_DELALLOC_RESERVE)
++		ar.flags |= EXT4_MB_DELALLOC_RESERVED;
+ 	newblock = ext4_mb_new_blocks(handle, &amp;ar, &amp;err);
+ 	if (!newblock)
+ 		goto out2;
+diff --git a/fs/ext4/indirect.c b/fs/ext4/indirect.c
+index 69af0cd64724..36b369697a13 100644
+--- a/fs/ext4/indirect.c
++++ b/fs/ext4/indirect.c
+@@ -333,7 +333,9 @@ static int ext4_alloc_branch(handle_t *handle,
+ 			new_blocks[i] = ext4_mb_new_blocks(handle, ar, &amp;err);
+ 		} else
+ 			ar-&gt;goal = new_blocks[i] = ext4_new_meta_blocks(handle,
+-				    ar-&gt;inode, ar-&gt;goal, 0, NULL, &amp;err);
++					ar-&gt;inode, ar-&gt;goal,
++					ar-&gt;flags &amp; EXT4_MB_DELALLOC_RESERVED,
++					NULL, &amp;err);
+ 		if (err) {
+ 			i--;
+ 			goto failed;
+@@ -572,6 +574,8 @@ int ext4_ind_map_blocks(handle_t *handle, struct inode *inode,
+ 	ar.logical = map-&gt;m_lblk;
+ 	if (S_ISREG(inode-&gt;i_mode))
+ 		ar.flags = EXT4_MB_HINT_DATA;
++	if (flags &amp; EXT4_GET_BLOCKS_DELALLOC_RESERVE)
++		ar.flags |= EXT4_MB_DELALLOC_RESERVED;
+ 
+ 	ar.goal = ext4_find_goal(inode, map-&gt;m_lblk, partial);
+ 
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 8b0f9ef517d6..15dffdac5907 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4415,9 +4415,12 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
+ 	 * EDQUOT check, as blocks and quotas have been already
+ 	 * reserved when data being copied into pagecache.
+ 	 */
+-	if (ext4_test_inode_state(ar-&gt;inode, EXT4_STATE_DELALLOC_RESERVED))
++	if (ext4_test_inode_state(ar-&gt;inode, EXT4_STATE_DELALLOC_RESERVED)) {
++		WARN_ON((ar-&gt;flags &amp; EXT4_MB_DELALLOC_RESERVED) == 0);
+ 		ar-&gt;flags |= EXT4_MB_DELALLOC_RESERVED;
+-	else {
++	}
++
++	if ((ar-&gt;flags &amp; EXT4_MB_DELALLOC_RESERVED) == 0) {
+ 		/* Without delayed allocation we need to verify
+ 		 * there is enough free blocks to do block allocation
+ 		 * and verify allocation doesn't exceed the quota limits.
+@@ -4528,8 +4531,7 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
+ 	if (inquota &amp;&amp; ar-&gt;len &lt; inquota)
+ 		dquot_free_block(ar-&gt;inode, EXT4_C2B(sbi, inquota - ar-&gt;len));
+ 	if (!ar-&gt;len) {
+-		if (!ext4_test_inode_state(ar-&gt;inode,
+-					   EXT4_STATE_DELALLOC_RESERVED))
++		if ((ar-&gt;flags &amp; EXT4_MB_DELALLOC_RESERVED) == 0)
+ 			/* release all the reserved blocks if non delalloc */
+ 			percpu_counter_sub(&amp;sbi-&gt;s_dirtyclusters_counter,
+ 						reserv_clstrs);
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index e7387337060c..da4df703c211 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -899,14 +899,8 @@ ext4_xattr_block_set(handle_t *handle, struct inode *inode,
+ 			if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
+ 				goal = goal &amp; EXT4_MAX_BLOCK_FILE_PHYS;
+ 
+-			/*
+-			 * take i_data_sem because we will test
+-			 * i_delalloc_reserved_flag in ext4_mb_new_blocks
+-			 */
+-			down_read(&amp;EXT4_I(inode)-&gt;i_data_sem);
+ 			block = ext4_new_meta_blocks(handle, inode, goal, 0,
+ 						     NULL, &amp;error);
+-			up_read((&amp;EXT4_I(inode)-&gt;i_data_sem));
+ 			if (error)
+ 				goto cleanup;
+ </pre><hr><pre>commit a521100231f816f8cdd9c8e77da14ff1e42c2b17
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Sep 4 18:06:25 2014 -0400
+
+    ext4: pass allocation_request struct to ext4_(alloc,splice)_branch
+    
+    Instead of initializing the allocation_request structure in
+    ext4_alloc_branch(), set it up in ext4_ind_map_blocks(), and then pass
+    it to ext4_alloc_branch() and ext4_splice_branch().
+    
+    This allows ext4_ind_map_blocks to pass flags in the allocation
+    request structure without having to add Yet Another argument to
+    ext4_alloc_branch().
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+
+diff --git a/fs/ext4/indirect.c b/fs/ext4/indirect.c
+index e75f840000a0..69af0cd64724 100644
+--- a/fs/ext4/indirect.c
++++ b/fs/ext4/indirect.c
+@@ -318,34 +318,22 @@ static int ext4_blks_to_allocate(Indirect *branch, int k, unsigned int blks,
+  *	ext4_alloc_block() (normally -ENOSPC). Otherwise we set the chain
+  *	as described above and return 0.
+  */
+-static int ext4_alloc_branch(handle_t *handle, struct inode *inode,
+-			     ext4_lblk_t iblock, int indirect_blks,
+-			     int *blks, ext4_fsblk_t goal,
+-			     ext4_lblk_t *offsets, Indirect *branch)
++static int ext4_alloc_branch(handle_t *handle,
++			     struct ext4_allocation_request *ar,
++			     int indirect_blks, ext4_lblk_t *offsets,
++			     Indirect *branch)
+ {
+-	struct ext4_allocation_request	ar;
+ 	struct buffer_head *		bh;
+ 	ext4_fsblk_t			b, new_blocks[4];
+ 	__le32				*p;
+ 	int				i, j, err, len = 1;
+ 
+-	/*
+-	 * Set up for the direct block allocation
+-	 */
+-	memset(&amp;ar, 0, sizeof(ar));
+-	ar.inode = inode;
+-	ar.len = *blks;
+-	ar.logical = iblock;
+-	if (S_ISREG(inode-&gt;i_mode))
+-		ar.flags = EXT4_MB_HINT_DATA;
+-
+ 	for (i = 0; i &lt;= indirect_blks; i++) {
+ 		if (i == indirect_blks) {
+-			ar.goal = goal;
+-			new_blocks[i] = ext4_mb_new_blocks(handle, &amp;ar, &amp;err);
++			new_blocks[i] = ext4_mb_new_blocks(handle, ar, &amp;err);
+ 		} else
+-			goal = new_blocks[i] = ext4_new_meta_blocks(handle, inode,
+-							goal, 0, NULL, &amp;err);
++			ar-&gt;goal = new_blocks[i] = ext4_new_meta_blocks(handle,
++				    ar-&gt;inode, ar-&gt;goal, 0, NULL, &amp;err);
+ 		if (err) {
+ 			i--;
+ 			goto failed;
+@@ -354,7 +342,7 @@ static int ext4_alloc_branch(handle_t *handle, struct inode *inode,
+ 		if (i == 0)
+ 			continue;
+ 
+-		bh = branch[i].bh = sb_getblk(inode-&gt;i_sb, new_blocks[i-1]);
++		bh = branch[i].bh = sb_getblk(ar-&gt;inode-&gt;i_sb, new_blocks[i-1]);
+ 		if (unlikely(!bh)) {
+ 			err = -ENOMEM;
+ 			goto failed;
+@@ -372,7 +360,7 @@ static int ext4_alloc_branch(handle_t *handle, struct inode *inode,
+ 		b = new_blocks[i];
+ 
+ 		if (i == indirect_blks)
+-			len = ar.len;
++			len = ar-&gt;len;
+ 		for (j = 0; j &lt; len; j++)
+ 			*p++ = cpu_to_le32(b++);
+ 
+@@ -381,11 +369,10 @@ static int ext4_alloc_branch(handle_t *handle, struct inode *inode,
+ 		unlock_buffer(bh);
+ 
+ 		BUFFER_TRACE(bh, "call ext4_handle_dirty_metadata");
+-		err = ext4_handle_dirty_metadata(handle, inode, bh);
++		err = ext4_handle_dirty_metadata(handle, ar-&gt;inode, bh);
+ 		if (err)
+ 			goto failed;
+ 	}
+-	*blks = ar.len;
+ 	return 0;
+ failed:
+ 	for (; i &gt;= 0; i--) {
+@@ -396,10 +383,10 @@ static int ext4_alloc_branch(handle_t *handle, struct inode *inode,
+ 		 * existing before ext4_alloc_branch() was called.
+ 		 */
+ 		if (i &gt; 0 &amp;&amp; i != indirect_blks &amp;&amp; branch[i].bh)
+-			ext4_forget(handle, 1, inode, branch[i].bh,
++			ext4_forget(handle, 1, ar-&gt;inode, branch[i].bh,
+ 				    branch[i].bh-&gt;b_blocknr);
+-		ext4_free_blocks(handle, inode, NULL, new_blocks[i],
+-				 (i == indirect_blks) ? ar.len : 1, 0);
++		ext4_free_blocks(handle, ar-&gt;inode, NULL, new_blocks[i],
++				 (i == indirect_blks) ? ar-&gt;len : 1, 0);
+ 	}
+ 	return err;
+ }
+@@ -419,9 +406,9 @@ static int ext4_alloc_branch(handle_t *handle, struct inode *inode,
+  * inode (-&gt;i_blocks, etc.). In case of success we end up with the full
+  * chain to new block and return 0.
+  */
+-static int ext4_splice_branch(handle_t *handle, struct inode *inode,
+-			      ext4_lblk_t block, Indirect *where, int num,
+-			      int blks)
++static int ext4_splice_branch(handle_t *handle,
++			      struct ext4_allocation_request *ar,
++			      Indirect *where, int num)
+ {
+ 	int i;
+ 	int err = 0;
+@@ -446,9 +433,9 @@ static int ext4_splice_branch(handle_t *handle, struct inode *inode,
+ 	 * Update the host buffer_head or inode to point to more just allocated
+ 	 * direct blocks blocks
+ 	 */
+-	if (num == 0 &amp;&amp; blks &gt; 1) {
++	if (num == 0 &amp;&amp; ar-&gt;len &gt; 1) {
+ 		current_block = le32_to_cpu(where-&gt;key) + 1;
+-		for (i = 1; i &lt; blks; i++)
++		for (i = 1; i &lt; ar-&gt;len; i++)
+ 			*(where-&gt;p + i) = cpu_to_le32(current_block++);
+ 	}
+ 
+@@ -465,14 +452,14 @@ static int ext4_splice_branch(handle_t *handle, struct inode *inode,
+ 		 */
+ 		jbd_debug(5, "splicing indirect only\n");
+ 		BUFFER_TRACE(where-&gt;bh, "call ext4_handle_dirty_metadata");
+-		err = ext4_handle_dirty_metadata(handle, inode, where-&gt;bh);
++		err = ext4_handle_dirty_metadata(handle, ar-&gt;inode, where-&gt;bh);
+ 		if (err)
+ 			goto err_out;
+ 	} else {
+ 		/*
+ 		 * OK, we spliced it into the inode itself on a direct block.
+ 		 */
+-		ext4_mark_inode_dirty(handle, inode);
++		ext4_mark_inode_dirty(handle, ar-&gt;inode);
+ 		jbd_debug(5, "splicing direct\n");
+ 	}
+ 	return err;
+@@ -484,11 +471,11 @@ static int ext4_splice_branch(handle_t *handle, struct inode *inode,
+ 		 * need to revoke the block, which is why we don't
+ 		 * need to set EXT4_FREE_BLOCKS_METADATA.
+ 		 */
+-		ext4_free_blocks(handle, inode, where[i].bh, 0, 1,
++		ext4_free_blocks(handle, ar-&gt;inode, where[i].bh, 0, 1,
+ 				 EXT4_FREE_BLOCKS_FORGET);
+ 	}
+-	ext4_free_blocks(handle, inode, NULL, le32_to_cpu(where[num].key),
+-			 blks, 0);
++	ext4_free_blocks(handle, ar-&gt;inode, NULL, le32_to_cpu(where[num].key),
++			 ar-&gt;len, 0);
+ 
+ 	return err;
+ }
+@@ -525,11 +512,11 @@ int ext4_ind_map_blocks(handle_t *handle, struct inode *inode,
+ 			struct ext4_map_blocks *map,
+ 			int flags)
+ {
++	struct ext4_allocation_request ar;
+ 	int err = -EIO;
+ 	ext4_lblk_t offsets[4];
+ 	Indirect chain[4];
+ 	Indirect *partial;
+-	ext4_fsblk_t goal;
+ 	int indirect_blks;
+ 	int blocks_to_boundary = 0;
+ 	int depth;
+@@ -579,7 +566,14 @@ int ext4_ind_map_blocks(handle_t *handle, struct inode *inode,
+ 		return -ENOSPC;
+ 	}
+ 
+-	goal = ext4_find_goal(inode, map-&gt;m_lblk, partial);
++	/* Set up for the direct block allocation */
++	memset(&amp;ar, 0, sizeof(ar));
++	ar.inode = inode;
++	ar.logical = map-&gt;m_lblk;
++	if (S_ISREG(inode-&gt;i_mode))
++		ar.flags = EXT4_MB_HINT_DATA;
++
++	ar.goal = ext4_find_goal(inode, map-&gt;m_lblk, partial);
+ 
+ 	/* the number of blocks need to allocate for [d,t]indirect blocks */
+ 	indirect_blks = (chain + depth) - partial - 1;
+@@ -588,13 +582,13 @@ int ext4_ind_map_blocks(handle_t *handle, struct inode *inode,
+ 	 * Next look up the indirect map to count the totoal number of
+ 	 * direct blocks to allocate for this branch.
+ 	 */
+-	count = ext4_blks_to_allocate(partial, indirect_blks,
+-				      map-&gt;m_len, blocks_to_boundary);
++	ar.len = ext4_blks_to_allocate(partial, indirect_blks,
++				       map-&gt;m_len, blocks_to_boundary);
++
+ 	/*
+ 	 * Block out ext4_truncate while we alter the tree
+ 	 */
+-	err = ext4_alloc_branch(handle, inode, map-&gt;m_lblk, indirect_blks,
+-				&amp;count, goal,
++	err = ext4_alloc_branch(handle, &amp;ar, indirect_blks,
+ 				offsets + (partial - chain), partial);
+ 
+ 	/*
+@@ -605,14 +599,14 @@ int ext4_ind_map_blocks(handle_t *handle, struct inode *inode,
+ 	 * may need to return -EAGAIN upwards in the worst case.  --sct
+ 	 */
+ 	if (!err)
+-		err = ext4_splice_branch(handle, inode, map-&gt;m_lblk,
+-					 partial, indirect_blks, count);
++		err = ext4_splice_branch(handle, &amp;ar, partial, indirect_blks);
+ 	if (err)
+ 		goto cleanup;
+ 
+ 	map-&gt;m_flags |= EXT4_MAP_NEW;
+ 
+ 	ext4_update_inode_fsync_trans(handle, inode, 1);
++	count = ar.len;
+ got_it:
+ 	map-&gt;m_flags |= EXT4_MAP_MAPPED;
+ 	map-&gt;m_pblk = le32_to_cpu(chain[depth-1].key);</pre><hr><pre>commit a9cfcd63e8d206ce4235c355d857c4fbdf0f4587
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Wed Sep 3 09:33:00 2014 -0400
+
+    ext4: avoid trying to kfree an ERR_PTR pointer
+    
+    Thanks to Dan Carpenter for extending smatch to find bugs like this.
+    (This was found using a development version of smatch.)
+    
+    Fixes: 36de928641ee48b2078d3fe9514242aaa2f92013
+    Reported-by: Dan Carpenter &lt;dan.carpenter@oracle.com
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 90a3cdca3f88..603e4ebbd0ac 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -3240,6 +3240,7 @@ static int ext4_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 				 &amp;new.de, &amp;new.inlined);
+ 	if (IS_ERR(new.bh)) {
+ 		retval = PTR_ERR(new.bh);
++		new.bh = NULL;
+ 		goto end_rename;
+ 	}
+ 	if (new.bh) {
+@@ -3386,6 +3387,7 @@ static int ext4_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 				 &amp;new.de, &amp;new.inlined);
+ 	if (IS_ERR(new.bh)) {
+ 		retval = PTR_ERR(new.bh);
++		new.bh = NULL;
+ 		goto end_rename;
+ 	}
+ 
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index bb0e80f03e2e..1e43b905ff98 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -575,6 +575,7 @@ static int setup_new_flex_group_blocks(struct super_block *sb,
+ 		bh = bclean(handle, sb, block);
+ 		if (IS_ERR(bh)) {
+ 			err = PTR_ERR(bh);
++			bh = NULL;
+ 			goto out;
+ 		}
+ 		overhead = ext4_group_overhead_blocks(sb, group);
+@@ -603,6 +604,7 @@ static int setup_new_flex_group_blocks(struct super_block *sb,
+ 		bh = bclean(handle, sb, block);
+ 		if (IS_ERR(bh)) {
+ 			err = PTR_ERR(bh);
++			bh = NULL;
+ 			goto out;
+ 		}
+ </pre><hr><pre>commit 88fe1acb5bedfcba5f42fcdf165493ee587ba643
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Sep 1 21:26:09 2014 -0400
+
+    jbd2: fold __wait_cp_io into jbd2_log_do_checkpoint()
+    
+    __wait_cp_io() is only called by jbd2_log_do_checkpoint().  Fold it in
+    to make it a bit easier to understand.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index f1507e5b7c9a..18c7a8d3da13 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -183,58 +183,6 @@ void __jbd2_log_wait_for_space(journal_t *journal)
+ 	}
+ }
+ 
+-/*
+- * Clean up transaction's list of buffers submitted for io.
+- * We wait for any pending IO to complete and remove any clean
+- * buffers. Note that we take the buffers in the opposite ordering
+- * from the one in which they were submitted for IO.
+- *
+- * Return 0 on success, and return &lt;0 if some buffers have failed
+- * to be written out.
+- *
+- * Called with j_list_lock held.
+- */
+-static int __wait_cp_io(journal_t *journal, transaction_t *transaction)
+-{
+-	struct journal_head *jh;
+-	struct buffer_head *bh;
+-	tid_t this_tid;
+-	int released = 0;
+-	int ret = 0;
+-
+-	this_tid = transaction-&gt;t_tid;
+-restart:
+-	/* Did somebody clean up the transaction in the meanwhile? */
+-	if (journal-&gt;j_checkpoint_transactions != transaction ||
+-			transaction-&gt;t_tid != this_tid)
+-		return ret;
+-	while (!released &amp;&amp; transaction-&gt;t_checkpoint_io_list) {
+-		jh = transaction-&gt;t_checkpoint_io_list;
+-		bh = jh2bh(jh);
+-		get_bh(bh);
+-		if (buffer_locked(bh)) {
+-			spin_unlock(&amp;journal-&gt;j_list_lock);
+-			wait_on_buffer(bh);
+-			/* the journal_head may have gone by now */
+-			BUFFER_TRACE(bh, "brelse");
+-			__brelse(bh);
+-			spin_lock(&amp;journal-&gt;j_list_lock);
+-			goto restart;
+-		}
+-		if (unlikely(buffer_write_io_error(bh)))
+-			ret = -EIO;
+-
+-		/*
+-		 * Now in whatever state the buffer currently is, we know that
+-		 * it has been written out and so we can drop it from the list
+-		 */
+-		released = __jbd2_journal_remove_checkpoint(jh);
+-		__brelse(bh);
+-	}
+-
+-	return ret;
+-}
+-
+ static void
+ __flush_batch(journal_t *journal, int *batch_count)
+ {
+@@ -268,7 +216,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 	struct buffer_head	*bh;
+ 	transaction_t		*transaction;
+ 	tid_t			this_tid;
+-	int			err, result, batch_count = 0;
++	int			result, batch_count = 0, done = 0;
+ 
+ 	jbd_debug(1, "Start checkpoint\n");
+ 
+@@ -384,9 +332,36 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 	 * Now we issued all of the transaction's buffers, let's deal
+ 	 * with the buffers that are out for I/O.
+ 	 */
+-	err = __wait_cp_io(journal, transaction);
+-	if (!result)
+-		result = err;
++restart2:
++	/* Did somebody clean up the transaction in the meanwhile? */
++	if (journal-&gt;j_checkpoint_transactions != transaction ||
++	    transaction-&gt;t_tid != this_tid)
++		goto out;
++
++	while (!done &amp;&amp; transaction-&gt;t_checkpoint_io_list) {
++		jh = transaction-&gt;t_checkpoint_io_list;
++		bh = jh2bh(jh);
++		get_bh(bh);
++		if (buffer_locked(bh)) {
++			spin_unlock(&amp;journal-&gt;j_list_lock);
++			wait_on_buffer(bh);
++			/* the journal_head may have gone by now */
++			BUFFER_TRACE(bh, "brelse");
++			__brelse(bh);
++			spin_lock(&amp;journal-&gt;j_list_lock);
++			goto restart2;
++		}
++		if (unlikely(buffer_write_io_error(bh)) &amp;&amp; !result)
++			result = -EIO;
++
++		/*
++		 * Now in whatever state the buffer currently is, we
++		 * know that it has been written out and so we can
++		 * drop it from the list
++		 */
++		done = __jbd2_journal_remove_checkpoint(jh);
++		__brelse(bh);
++	}
+ out:
+ 	spin_unlock(&amp;journal-&gt;j_list_lock);
+ 	if (result &lt; 0)</pre><hr><pre>commit be1158cc615fd723552f0d9912087423c7cadda5
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Sep 1 21:19:01 2014 -0400
+
+    jbd2: fold __process_buffer() into jbd2_log_do_checkpoint()
+    
+    __process_buffer() is only called by jbd2_log_do_checkpoint(), and it
+    had a very complex locking protocol where it would be called with the
+    j_list_lock, and sometimes exit with the lock held (if the return code
+    was 0), or release the lock.
+    
+    This was confusing both to humans and to smatch (which erronously
+    complained that the lock was taken twice).
+    
+    Folding __process_buffer() to the caller allows us to simplify the
+    control flow, making the resulting function easier to read and reason
+    about, and dropping the compiled size of fs/jbd2/checkpoint.c by 150
+    bytes (over 4% of the text size).
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reviewed-by: Jan Kara &lt;jack@suse.cz&gt;
+
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 7f34f4716165..f1507e5b7c9a 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -254,81 +254,6 @@ __flush_batch(journal_t *journal, int *batch_count)
+ 	*batch_count = 0;
+ }
+ 
+-/*
+- * Try to flush one buffer from the checkpoint list to disk.
+- *
+- * Return 1 if something happened which requires us to abort the current
+- * scan of the checkpoint list.  Return &lt;0 if the buffer has failed to
+- * be written out.
+- *
+- * Called with j_list_lock held and drops it if 1 is returned
+- */
+-static int __process_buffer(journal_t *journal, struct journal_head *jh,
+-			    int *batch_count, transaction_t *transaction)
+-{
+-	struct buffer_head *bh = jh2bh(jh);
+-	int ret = 0;
+-
+-	if (buffer_locked(bh)) {
+-		get_bh(bh);
+-		spin_unlock(&amp;journal-&gt;j_list_lock);
+-		wait_on_buffer(bh);
+-		/* the journal_head may have gone by now */
+-		BUFFER_TRACE(bh, "brelse");
+-		__brelse(bh);
+-		ret = 1;
+-	} else if (jh-&gt;b_transaction != NULL) {
+-		transaction_t *t = jh-&gt;b_transaction;
+-		tid_t tid = t-&gt;t_tid;
+-
+-		transaction-&gt;t_chp_stats.cs_forced_to_close++;
+-		spin_unlock(&amp;journal-&gt;j_list_lock);
+-		if (unlikely(journal-&gt;j_flags &amp; JBD2_UNMOUNT))
+-			/*
+-			 * The journal thread is dead; so starting and
+-			 * waiting for a commit to finish will cause
+-			 * us to wait for a _very_ long time.
+-			 */
+-			printk(KERN_ERR "JBD2: %s: "
+-			       "Waiting for Godot: block %llu\n",
+-			       journal-&gt;j_devname,
+-			       (unsigned long long) bh-&gt;b_blocknr);
+-		jbd2_log_start_commit(journal, tid);
+-		jbd2_log_wait_commit(journal, tid);
+-		ret = 1;
+-	} else if (!buffer_dirty(bh)) {
+-		ret = 1;
+-		if (unlikely(buffer_write_io_error(bh)))
+-			ret = -EIO;
+-		get_bh(bh);
+-		BUFFER_TRACE(bh, "remove from checkpoint");
+-		__jbd2_journal_remove_checkpoint(jh);
+-		spin_unlock(&amp;journal-&gt;j_list_lock);
+-		__brelse(bh);
+-	} else {
+-		/*
+-		 * Important: we are about to write the buffer, and
+-		 * possibly block, while still holding the journal lock.
+-		 * We cannot afford to let the transaction logic start
+-		 * messing around with this buffer before we write it to
+-		 * disk, as that would break recoverability.
+-		 */
+-		BUFFER_TRACE(bh, "queue");
+-		get_bh(bh);
+-		J_ASSERT_BH(bh, !buffer_jwrite(bh));
+-		journal-&gt;j_chkpt_bhs[*batch_count] = bh;
+-		__buffer_relink_io(jh);
+-		transaction-&gt;t_chp_stats.cs_written++;
+-		(*batch_count)++;
+-		if (*batch_count == JBD2_NR_BATCH) {
+-			spin_unlock(&amp;journal-&gt;j_list_lock);
+-			__flush_batch(journal, batch_count);
+-			ret = 1;
+-		}
+-	}
+-	return ret;
+-}
+-
+ /*
+  * Perform an actual checkpoint. We take the first transaction on the
+  * list of transactions to be checkpointed and send all its buffers
+@@ -339,9 +264,11 @@ static int __process_buffer(journal_t *journal, struct journal_head *jh,
+  */
+ int jbd2_log_do_checkpoint(journal_t *journal)
+ {
+-	transaction_t *transaction;
+-	tid_t this_tid;
+-	int result;
++	struct journal_head	*jh;
++	struct buffer_head	*bh;
++	transaction_t		*transaction;
++	tid_t			this_tid;
++	int			err, result, batch_count = 0;
+ 
+ 	jbd_debug(1, "Start checkpoint\n");
+ 
+@@ -374,46 +301,92 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 	 * done (maybe it's a new transaction, but it fell at the same
+ 	 * address).
+ 	 */
+-	if (journal-&gt;j_checkpoint_transactions == transaction &amp;&amp;
+-			transaction-&gt;t_tid == this_tid) {
+-		int batch_count = 0;
+-		struct journal_head *jh;
+-		int retry = 0, err;
+-
+-		while (!retry &amp;&amp; transaction-&gt;t_checkpoint_list) {
+-			jh = transaction-&gt;t_checkpoint_list;
+-			retry = __process_buffer(journal, jh, &amp;batch_count,
+-						 transaction);
+-			if (retry &lt; 0 &amp;&amp; !result)
+-				result = retry;
+-			if (!retry &amp;&amp; (need_resched() ||
+-				spin_needbreak(&amp;journal-&gt;j_list_lock))) {
+-				spin_unlock(&amp;journal-&gt;j_list_lock);
+-				retry = 1;
+-				break;
+-			}
+-		}
++	if (journal-&gt;j_checkpoint_transactions != transaction ||
++	    transaction-&gt;t_tid != this_tid)
++		goto out;
+ 
+-		if (batch_count) {
+-			if (!retry) {
+-				spin_unlock(&amp;journal-&gt;j_list_lock);
+-				retry = 1;
+-			}
+-			__flush_batch(journal, &amp;batch_count);
++	/* checkpoint all of the transaction's buffers */
++	while (transaction-&gt;t_checkpoint_list) {
++		jh = transaction-&gt;t_checkpoint_list;
++		bh = jh2bh(jh);
++
++		if (buffer_locked(bh)) {
++			spin_unlock(&amp;journal-&gt;j_list_lock);
++			get_bh(bh);
++			wait_on_buffer(bh);
++			/* the journal_head may have gone by now */
++			BUFFER_TRACE(bh, "brelse");
++			__brelse(bh);
++			goto retry;
+ 		}
++		if (jh-&gt;b_transaction != NULL) {
++			transaction_t *t = jh-&gt;b_transaction;
++			tid_t tid = t-&gt;t_tid;
+ 
+-		if (retry) {
+-			spin_lock(&amp;journal-&gt;j_list_lock);
+-			goto restart;
++			transaction-&gt;t_chp_stats.cs_forced_to_close++;
++			spin_unlock(&amp;journal-&gt;j_list_lock);
++			if (unlikely(journal-&gt;j_flags &amp; JBD2_UNMOUNT))
++				/*
++				 * The journal thread is dead; so
++				 * starting and waiting for a commit
++				 * to finish will cause us to wait for
++				 * a _very_ long time.
++				 */
++				printk(KERN_ERR
++		"JBD2: %s: Waiting for Godot: block %llu\n",
++		journal-&gt;j_devname, (unsigned long long) bh-&gt;b_blocknr);
++
++			jbd2_log_start_commit(journal, tid);
++			jbd2_log_wait_commit(journal, tid);
++			goto retry;
++		}
++		if (!buffer_dirty(bh)) {
++			if (unlikely(buffer_write_io_error(bh)) &amp;&amp; !result)
++				result = -EIO;
++			get_bh(bh);
++			BUFFER_TRACE(bh, "remove from checkpoint");
++			__jbd2_journal_remove_checkpoint(jh);
++			spin_unlock(&amp;journal-&gt;j_list_lock);
++			__brelse(bh);
++			goto retry;
+ 		}
+ 		/*
+-		 * Now we have cleaned up the first transaction's checkpoint
+-		 * list. Let's clean up the second one
++		 * Important: we are about to write the buffer, and
++		 * possibly block, while still holding the journal
++		 * lock.  We cannot afford to let the transaction
++		 * logic start messing around with this buffer before
++		 * we write it to disk, as that would break
++		 * recoverability.
+ 		 */
+-		err = __wait_cp_io(journal, transaction);
+-		if (!result)
+-			result = err;
++		BUFFER_TRACE(bh, "queue");
++		get_bh(bh);
++		J_ASSERT_BH(bh, !buffer_jwrite(bh));
++		journal-&gt;j_chkpt_bhs[batch_count++] = bh;
++		__buffer_relink_io(jh);
++		transaction-&gt;t_chp_stats.cs_written++;
++		if ((batch_count == JBD2_NR_BATCH) ||
++		    need_resched() ||
++		    spin_needbreak(&amp;journal-&gt;j_list_lock))
++			goto unlock_and_flush;
+ 	}
++
++	if (batch_count) {
++		unlock_and_flush:
++			spin_unlock(&amp;journal-&gt;j_list_lock);
++		retry:
++			if (batch_count)
++				__flush_batch(journal, &amp;batch_count);
++			spin_lock(&amp;journal-&gt;j_list_lock);
++			goto restart;
++	}
++
++	/*
++	 * Now we issued all of the transaction's buffers, let's deal
++	 * with the buffers that are out for I/O.
++	 */
++	err = __wait_cp_io(journal, transaction);
++	if (!result)
++		result = err;
+ out:
+ 	spin_unlock(&amp;journal-&gt;j_list_lock);
+ 	if (result &lt; 0)</pre><hr><pre>commit ed8a1a766af7371bfbe41857a3a11496b4165143
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Sep 1 14:43:09 2014 -0400
+
+    ext4: rename ext4_ext_find_extent() to ext4_find_extent()
+    
+    Make the function name less redundant.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 4a5a6b95b2fa..c07f43f8eb93 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -573,7 +573,7 @@ enum {
+ 
+ /*
+  * The bit position of these flags must not overlap with any of the
+- * EXT4_GET_BLOCKS_*.  They are used by ext4_ext_find_extent(),
++ * EXT4_GET_BLOCKS_*.  They are used by ext4_find_extent(),
+  * read_extent_tree_block(), ext4_split_extent_at(),
+  * ext4_ext_insert_extent(), and ext4_ext_create_new_leaf().
+  * EXT4_EX_NOCACHE is used to indicate that the we shouldn't be
+@@ -2732,9 +2732,9 @@ extern int ext4_can_extents_be_merged(struct inode *inode,
+ extern int ext4_ext_insert_extent(handle_t *, struct inode *,
+ 				  struct ext4_ext_path **,
+ 				  struct ext4_extent *, int);
+-extern struct ext4_ext_path *ext4_ext_find_extent(struct inode *, ext4_lblk_t,
+-						  struct ext4_ext_path **,
+-						  int flags);
++extern struct ext4_ext_path *ext4_find_extent(struct inode *, ext4_lblk_t,
++					      struct ext4_ext_path **,
++					      int flags);
+ extern void ext4_ext_drop_refs(struct ext4_ext_path *);
+ extern int ext4_ext_check_inode(struct inode *inode);
+ extern int ext4_find_delalloc_range(struct inode *inode,
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 22828e44a70d..3ac1686efff8 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -857,8 +857,8 @@ int ext4_ext_tree_init(handle_t *handle, struct inode *inode)
+ }
+ 
+ struct ext4_ext_path *
+-ext4_ext_find_extent(struct inode *inode, ext4_lblk_t block,
+-		     struct ext4_ext_path **orig_path, int flags)
++ext4_find_extent(struct inode *inode, ext4_lblk_t block,
++		 struct ext4_ext_path **orig_path, int flags)
+ {
+ 	struct ext4_extent_header *eh;
+ 	struct buffer_head *bh;
+@@ -1366,7 +1366,7 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 			goto out;
+ 
+ 		/* refill path */
+-		path = ext4_ext_find_extent(inode,
++		path = ext4_find_extent(inode,
+ 				    (ext4_lblk_t)le32_to_cpu(newext-&gt;ee_block),
+ 				    ppath, gb_flags);
+ 		if (IS_ERR(path))
+@@ -1378,7 +1378,7 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 			goto out;
+ 
+ 		/* refill path */
+-		path = ext4_ext_find_extent(inode,
++		path = ext4_find_extent(inode,
+ 				   (ext4_lblk_t)le32_to_cpu(newext-&gt;ee_block),
+ 				    ppath, gb_flags);
+ 		if (IS_ERR(path)) {
+@@ -1951,7 +1951,7 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
+ 		/*
+ 		 * Try to see whether we should rather test the extent on
+ 		 * right from ex, or from the left of ex. This is because
+-		 * ext4_ext_find_extent() can return either extent on the
++		 * ext4_find_extent() can return either extent on the
+ 		 * left, or on the right from the searched position. This
+ 		 * will make merging more effective.
+ 		 */
+@@ -2034,7 +2034,7 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
+ 	if (next != EXT_MAX_BLOCKS) {
+ 		ext_debug("next leaf block - %u\n", next);
+ 		BUG_ON(npath != NULL);
+-		npath = ext4_ext_find_extent(inode, next, NULL, 0);
++		npath = ext4_find_extent(inode, next, NULL, 0);
+ 		if (IS_ERR(npath))
+ 			return PTR_ERR(npath);
+ 		BUG_ON(npath-&gt;p_depth != path-&gt;p_depth);
+@@ -2157,7 +2157,7 @@ static int ext4_fill_fiemap_extents(struct inode *inode,
+ 		/* find extent for this block */
+ 		down_read(&amp;EXT4_I(inode)-&gt;i_data_sem);
+ 
+-		path = ext4_ext_find_extent(inode, block, &amp;path, 0);
++		path = ext4_find_extent(inode, block, &amp;path, 0);
+ 		if (IS_ERR(path)) {
+ 			up_read(&amp;EXT4_I(inode)-&gt;i_data_sem);
+ 			err = PTR_ERR(path);
+@@ -2840,7 +2840,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
+ 		ext4_lblk_t ee_block;
+ 
+ 		/* find extent for this block */
+-		path = ext4_ext_find_extent(inode, end, NULL, EXT4_EX_NOCACHE);
++		path = ext4_find_extent(inode, end, NULL, EXT4_EX_NOCACHE);
+ 		if (IS_ERR(path)) {
+ 			ext4_journal_stop(handle);
+ 			return PTR_ERR(path);
+@@ -3314,7 +3314,7 @@ static int ext4_split_extent(handle_t *handle,
+ 	 * Update path is required because previous ext4_split_extent_at() may
+ 	 * result in split of original leaf or extent zeroout.
+ 	 */
+-	path = ext4_ext_find_extent(inode, map-&gt;m_lblk, ppath, 0);
++	path = ext4_find_extent(inode, map-&gt;m_lblk, ppath, 0);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+ 	depth = ext_depth(inode);
+@@ -3712,7 +3712,7 @@ static int ext4_convert_unwritten_extents_endio(handle_t *handle,
+ 						 EXT4_GET_BLOCKS_CONVERT);
+ 		if (err &lt; 0)
+ 			return err;
+-		path = ext4_ext_find_extent(inode, map-&gt;m_lblk, ppath, 0);
++		path = ext4_find_extent(inode, map-&gt;m_lblk, ppath, 0);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+ 		depth = ext_depth(inode);
+@@ -3940,7 +3940,7 @@ convert_initialized_extent(handle_t *handle, struct inode *inode,
+ 				EXT4_GET_BLOCKS_CONVERT_UNWRITTEN);
+ 		if (err &lt; 0)
+ 			return err;
+-		path = ext4_ext_find_extent(inode, map-&gt;m_lblk, ppath, 0);
++		path = ext4_find_extent(inode, map-&gt;m_lblk, ppath, 0);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+ 		depth = ext_depth(inode);
+@@ -4266,7 +4266,7 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	trace_ext4_ext_map_blocks_enter(inode, map-&gt;m_lblk, map-&gt;m_len, flags);
+ 
+ 	/* find extent for this block */
+-	path = ext4_ext_find_extent(inode, map-&gt;m_lblk, NULL, 0);
++	path = ext4_find_extent(inode, map-&gt;m_lblk, NULL, 0);
+ 	if (IS_ERR(path)) {
+ 		err = PTR_ERR(path);
+ 		path = NULL;
+@@ -4278,7 +4278,7 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	/*
+ 	 * consistent leaf must not be empty;
+ 	 * this situation is possible, though, _during_ tree modification;
+-	 * this is why assert can't be put in ext4_ext_find_extent()
++	 * this is why assert can't be put in ext4_find_extent()
+ 	 */
+ 	if (unlikely(path[depth].p_ext == NULL &amp;&amp; depth != 0)) {
+ 		EXT4_ERROR_INODE(inode, "bad extent address "
+@@ -4363,7 +4363,7 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 
+ 	/*
+ 	 * If we are doing bigalloc, check to see if the extent returned
+-	 * by ext4_ext_find_extent() implies a cluster we can use.
++	 * by ext4_find_extent() implies a cluster we can use.
+ 	 */
+ 	if (cluster_offset &amp;&amp; ex &amp;&amp;
+ 	    get_implied_cluster_alloc(inode-&gt;i_sb, map, ex, path)) {
+@@ -5300,7 +5300,7 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 	ext4_lblk_t ex_start, ex_end;
+ 
+ 	/* Let path point to the last extent */
+-	path = ext4_ext_find_extent(inode, EXT_MAX_BLOCKS - 1, NULL, 0);
++	path = ext4_find_extent(inode, EXT_MAX_BLOCKS - 1, NULL, 0);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+ 
+@@ -5320,7 +5320,7 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 	 * Don't start shifting extents until we make sure the hole is big
+ 	 * enough to accomodate the shift.
+ 	 */
+-	path = ext4_ext_find_extent(inode, start - 1, &amp;path, 0);
++	path = ext4_find_extent(inode, start - 1, &amp;path, 0);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+ 	depth = path-&gt;p_depth;
+@@ -5340,7 +5340,7 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 
+ 	/* Its safe to start updating extents */
+ 	while (start &lt; stop_block) {
+-		path = ext4_ext_find_extent(inode, start, &amp;path, 0);
++		path = ext4_find_extent(inode, start, &amp;path, 0);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+ 		depth = path-&gt;p_depth;
+@@ -5537,7 +5537,7 @@ ext4_swap_extents(handle_t *handle, struct inode *inode1,
+ 		int e1_len, e2_len, len;
+ 		int split = 0;
+ 
+-		path1 = ext4_ext_find_extent(inode1, lblk1, NULL, EXT4_EX_NOCACHE);
++		path1 = ext4_find_extent(inode1, lblk1, NULL, EXT4_EX_NOCACHE);
+ 		if (unlikely(IS_ERR(path1))) {
+ 			*erp = PTR_ERR(path1);
+ 			path1 = NULL;
+@@ -5545,7 +5545,7 @@ ext4_swap_extents(handle_t *handle, struct inode *inode1,
+ 			count = 0;
+ 			goto repeat;
+ 		}
+-		path2 = ext4_ext_find_extent(inode2, lblk2, NULL, EXT4_EX_NOCACHE);
++		path2 = ext4_find_extent(inode2, lblk2, NULL, EXT4_EX_NOCACHE);
+ 		if (unlikely(IS_ERR(path2))) {
+ 			*erp = PTR_ERR(path2);
+ 			path2 = NULL;
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 8ffff966d594..bdd400c81533 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -426,7 +426,7 @@ static void ext4_es_insert_extent_ext_check(struct inode *inode,
+ 	unsigned short ee_len;
+ 	int depth, ee_status, es_status;
+ 
+-	path = ext4_ext_find_extent(inode, es-&gt;es_lblk, NULL, EXT4_EX_NOCACHE);
++	path = ext4_find_extent(inode, es-&gt;es_lblk, NULL, EXT4_EX_NOCACHE);
+ 	if (IS_ERR(path))
+ 		return;
+ 
+diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
+index 061c300703c7..a432634f2e6a 100644
+--- a/fs/ext4/migrate.c
++++ b/fs/ext4/migrate.c
+@@ -41,8 +41,7 @@ static int finish_range(handle_t *handle, struct inode *inode,
+ 	ext4_ext_store_pblock(&amp;newext, lb-&gt;first_pblock);
+ 	/* Locking only for convinience since we are operating on temp inode */
+ 	down_write(&amp;EXT4_I(inode)-&gt;i_data_sem);
+-	path = ext4_ext_find_extent(inode, lb-&gt;first_block, NULL, 0);
+-
++	path = ext4_find_extent(inode, lb-&gt;first_block, NULL, 0);
+ 	if (IS_ERR(path)) {
+ 		retval = PTR_ERR(path);
+ 		path = NULL;
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index 7bf970dd61f5..5d7806390102 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -27,7 +27,7 @@
+  * @lblock:	logical block number to find an extent path
+  * @path:	pointer to an extent path pointer (for output)
+  *
+- * ext4_ext_find_extent wrapper. Return 0 on success, or a negative error value
++ * ext4_find_extent wrapper. Return 0 on success, or a negative error value
+  * on failure.
+  */
+ static inline int
+@@ -36,7 +36,7 @@ get_ext_path(struct inode *inode, ext4_lblk_t lblock,
+ {
+ 	struct ext4_ext_path *path;
+ 
+-	path = ext4_ext_find_extent(inode, lblock, ppath, EXT4_EX_NOCACHE);
++	path = ext4_find_extent(inode, lblock, ppath, EXT4_EX_NOCACHE);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+ 	if (path[ext_depth(inode)].p_ext == NULL) {</pre><hr><pre>commit 3bdf14b4d7a3a7416577e9f9f421dbf29b5b6747
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Sep 1 14:42:09 2014 -0400
+
+    ext4: reuse path object in ext4_move_extents()
+    
+    Reuse the path object in ext4_move_extents() so we don't unnecessarily
+    free and reallocate it.
+    
+    Also clean up the get_ext_path() wrapper so that it has the same
+    semantics of freeing the path object on error as ext4_ext_find_extent().
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index a34c0760276c..7bf970dd61f5 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -32,20 +32,21 @@
+  */
+ static inline int
+ get_ext_path(struct inode *inode, ext4_lblk_t lblock,
+-		struct ext4_ext_path **orig_path)
++		struct ext4_ext_path **ppath)
+ {
+-	int ret = 0;
+ 	struct ext4_ext_path *path;
+ 
+-	path = ext4_ext_find_extent(inode, lblock, orig_path, EXT4_EX_NOCACHE);
++	path = ext4_ext_find_extent(inode, lblock, ppath, EXT4_EX_NOCACHE);
+ 	if (IS_ERR(path))
+-		ret = PTR_ERR(path);
+-	else if (path[ext_depth(inode)].p_ext == NULL)
+-		ret = -ENODATA;
+-	else
+-		*orig_path = path;
+-
+-	return ret;
++		return PTR_ERR(path);
++	if (path[ext_depth(inode)].p_ext == NULL) {
++		ext4_ext_drop_refs(path);
++		kfree(path);
++		*ppath = NULL;
++		return -ENODATA;
++	}
++	*ppath = path;
++	return 0;
+ }
+ 
+ /**
+@@ -667,7 +668,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 			}
+ 			d_start += next_blk - o_start;
+ 			o_start = next_blk;
+-			goto repeat;
++			continue;
+ 		/* Check hole after the start pos */
+ 		} else if (cur_blk &gt; o_start) {
+ 			/* Skip hole */
+@@ -708,10 +709,6 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 			break;
+ 		o_start += cur_len;
+ 		d_start += cur_len;
+-	repeat:
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-		path = NULL;
+ 	}
+ 	*moved_len = o_start - orig_blk;
+ 	if (*moved_len &gt; len)</pre><hr><pre>commit ee4bd0d963b75cbad9bfb59b547146671c7a655a
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Sep 1 14:41:09 2014 -0400
+
+    ext4: reuse path object in ext4_ext_shift_extents()
+    
+    Now that the semantics of ext4_ext_find_extent() are much cleaner,
+    it's safe and more efficient to reuse the path object across the
+    multiple calls to ext4_ext_find_extent() in ext4_ext_shift_extents().
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index c94c7480053e..22828e44a70d 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5306,26 +5306,21 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 
+ 	depth = path-&gt;p_depth;
+ 	extent = path[depth].p_ext;
+-	if (!extent) {
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-		return ret;
+-	}
++	if (!extent)
++		goto out;
+ 
+ 	stop_block = le32_to_cpu(extent-&gt;ee_block) +
+ 			ext4_ext_get_actual_len(extent);
+-	ext4_ext_drop_refs(path);
+-	kfree(path);
+ 
+ 	/* Nothing to shift, if hole is at the end of file */
+ 	if (start &gt;= stop_block)
+-		return ret;
++		goto out;
+ 
+ 	/*
+ 	 * Don't start shifting extents until we make sure the hole is big
+ 	 * enough to accomodate the shift.
+ 	 */
+-	path = ext4_ext_find_extent(inode, start - 1, NULL, 0);
++	path = ext4_ext_find_extent(inode, start - 1, &amp;path, 0);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+ 	depth = path-&gt;p_depth;
+@@ -5338,8 +5333,6 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 		ex_start = 0;
+ 		ex_end = 0;
+ 	}
+-	ext4_ext_drop_refs(path);
+-	kfree(path);
+ 
+ 	if ((start == ex_start &amp;&amp; shift &gt; ex_start) ||
+ 	    (shift &gt; start - ex_end))
+@@ -5347,7 +5340,7 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 
+ 	/* Its safe to start updating extents */
+ 	while (start &lt; stop_block) {
+-		path = ext4_ext_find_extent(inode, start, NULL, 0);
++		path = ext4_ext_find_extent(inode, start, &amp;path, 0);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+ 		depth = path-&gt;p_depth;
+@@ -5363,19 +5356,17 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 				path[depth].p_ext++;
+ 			} else {
+ 				start = ext4_ext_next_allocated_block(path);
+-				ext4_ext_drop_refs(path);
+-				kfree(path);
+ 				continue;
+ 			}
+ 		}
+ 		ret = ext4_ext_shift_path_extents(path, shift, inode,
+ 				handle, &amp;start);
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+ 		if (ret)
+ 			break;
+ 	}
+-
++out:
++	ext4_ext_drop_refs(path);
++	kfree(path);
+ 	return ret;
+ }
+ </pre><hr><pre>commit 10809df84a4d868db61af621bae3658494165279
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Sep 1 14:40:09 2014 -0400
+
+    ext4: teach ext4_ext_find_extent() to realloc path if necessary
+    
+    This adds additional safety in case for some reason we end reusing a
+    path structure which isn't big enough for current depth of the inode.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/ext4_extents.h b/fs/ext4/ext4_extents.h
+index a867f5ca9991..3c9381547094 100644
+--- a/fs/ext4/ext4_extents.h
++++ b/fs/ext4/ext4_extents.h
+@@ -123,6 +123,7 @@ find_ext4_extent_tail(struct ext4_extent_header *eh)
+ struct ext4_ext_path {
+ 	ext4_fsblk_t			p_block;
+ 	__u16				p_depth;
++	__u16				p_maxdepth;
+ 	struct ext4_extent		*p_ext;
+ 	struct ext4_extent_idx		*p_idx;
+ 	struct ext4_extent_header	*p_hdr;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 538f9a4d96ff..c94c7480053e 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -869,14 +869,20 @@ ext4_ext_find_extent(struct inode *inode, ext4_lblk_t block,
+ 	eh = ext_inode_hdr(inode);
+ 	depth = ext_depth(inode);
+ 
+-	if (path)
++	if (path) {
+ 		ext4_ext_drop_refs(path);
+-	else {
++		if (depth &gt; path[0].p_maxdepth) {
++			kfree(path);
++			*orig_path = path = NULL;
++		}
++	}
++	if (!path) {
+ 		/* account possible depth increase */
+ 		path = kzalloc(sizeof(struct ext4_ext_path) * (depth + 2),
+ 				GFP_NOFS);
+ 		if (unlikely(!path))
+ 			return ERR_PTR(-ENOMEM);
++		path[0].p_maxdepth = depth + 1;
+ 	}
+ 	path[0].p_hdr = eh;
+ 	path[0].p_bh = NULL;
+@@ -1820,6 +1826,7 @@ static void ext4_ext_try_to_merge_up(handle_t *handle,
+ 		sizeof(struct ext4_extent_idx);
+ 	s += sizeof(struct ext4_extent_header);
+ 
++	path[1].p_maxdepth = path[0].p_maxdepth;
+ 	memcpy(path[0].p_hdr, path[1].p_hdr, s);
+ 	path[0].p_depth = 0;
+ 	path[0].p_ext = EXT_FIRST_EXTENT(path[0].p_hdr) +
+@@ -2150,12 +2157,6 @@ static int ext4_fill_fiemap_extents(struct inode *inode,
+ 		/* find extent for this block */
+ 		down_read(&amp;EXT4_I(inode)-&gt;i_data_sem);
+ 
+-		if (path &amp;&amp; ext_depth(inode) != depth) {
+-			/* depth was changed. we have to realloc path */
+-			kfree(path);
+-			path = NULL;
+-		}
+-
+ 		path = ext4_ext_find_extent(inode, block, &amp;path, 0);
+ 		if (IS_ERR(path)) {
+ 			up_read(&amp;EXT4_I(inode)-&gt;i_data_sem);
+@@ -2173,7 +2174,6 @@ static int ext4_fill_fiemap_extents(struct inode *inode,
+ 		}
+ 		ex = path[depth].p_ext;
+ 		next = ext4_ext_next_allocated_block(path);
+-		ext4_ext_drop_refs(path);
+ 
+ 		flags = 0;
+ 		exists = 0;
+@@ -2897,7 +2897,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
+ 			ext4_journal_stop(handle);
+ 			return -ENOMEM;
+ 		}
+-		path[0].p_depth = depth;
++		path[0].p_maxdepth = path[0].p_depth = depth;
+ 		path[0].p_hdr = ext_inode_hdr(inode);
+ 		i = 0;
+ </pre><hr><pre>commit b7ea89ad0a6b855172158a999d3f5008403f4011
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Sep 1 14:39:09 2014 -0400
+
+    ext4: allow a NULL argument to ext4_ext_drop_refs()
+    
+    Teach ext4_ext_drop_refs() to accept a NULL argument, much like
+    kfree().  This allows us to drop a lot of checks to make sure path is
+    non-NULL before calling ext4_ext_drop_refs().
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 4f4d52398712..538f9a4d96ff 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -709,9 +709,11 @@ static void ext4_ext_show_move(struct inode *inode, struct ext4_ext_path *path,
+ 
+ void ext4_ext_drop_refs(struct ext4_ext_path *path)
+ {
+-	int depth = path-&gt;p_depth;
+-	int i;
++	int depth, i;
+ 
++	if (!path)
++		return;
++	depth = path-&gt;p_depth;
+ 	for (i = 0; i &lt;= depth; i++, path++)
+ 		if (path-&gt;p_bh) {
+ 			brelse(path-&gt;p_bh);
+@@ -2125,10 +2127,8 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
+ 	err = ext4_ext_dirty(handle, inode, path + path-&gt;p_depth);
+ 
+ cleanup:
+-	if (npath) {
+-		ext4_ext_drop_refs(npath);
+-		kfree(npath);
+-	}
++	ext4_ext_drop_refs(npath);
++	kfree(npath);
+ 	return err;
+ }
+ 
+@@ -2283,11 +2283,8 @@ static int ext4_fill_fiemap_extents(struct inode *inode,
+ 		block = es.es_lblk + es.es_len;
+ 	}
+ 
+-	if (path) {
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-	}
+-
++	ext4_ext_drop_refs(path);
++	kfree(path);
+ 	return err;
+ }
+ 
+@@ -3018,11 +3015,9 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
+ 		}
+ 	}
+ out:
+-	if (path) {
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-		path = NULL;
+-	}
++	ext4_ext_drop_refs(path);
++	kfree(path);
++	path = NULL;
+ 	if (err == -EAGAIN)
+ 		goto again;
+ 	ext4_journal_stop(handle);
+@@ -4611,10 +4606,8 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	map-&gt;m_pblk = newblock;
+ 	map-&gt;m_len = allocated;
+ out2:
+-	if (path) {
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-	}
++	ext4_ext_drop_refs(path);
++	kfree(path);
+ 
+ 	trace_ext4_ext_map_blocks_exit(inode, flags, map,
+ 				       err ? err : allocated);
+@@ -5693,16 +5686,11 @@ ext4_swap_extents(handle_t *handle, struct inode *inode1,
+ 		count -= len;
+ 
+ 	repeat:
+-		if (path1) {
+-			ext4_ext_drop_refs(path1);
+-			kfree(path1);
+-			path1 = NULL;
+-		}
+-		if (path2) {
+-			ext4_ext_drop_refs(path2);
+-			kfree(path2);
+-			path2 = NULL;
+-		}
++		ext4_ext_drop_refs(path1);
++		kfree(path1);
++		ext4_ext_drop_refs(path2);
++		kfree(path2);
++		path1 = path2 = NULL;
+ 	}
+ 	return replaced_count;
+ }
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 0b7e28e7eaa4..8ffff966d594 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -499,10 +499,8 @@ static void ext4_es_insert_extent_ext_check(struct inode *inode,
+ 		}
+ 	}
+ out:
+-	if (path) {
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-	}
++	ext4_ext_drop_refs(path);
++	kfree(path);
+ }
+ 
+ static void ext4_es_insert_extent_ind_check(struct inode *inode,
+diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
+index aff7bdfdc461..061c300703c7 100644
+--- a/fs/ext4/migrate.c
++++ b/fs/ext4/migrate.c
+@@ -84,10 +84,8 @@ static int finish_range(handle_t *handle, struct inode *inode,
+ 	retval = ext4_ext_insert_extent(handle, inode, &amp;path, &amp;newext, 0);
+ err_out:
+ 	up_write((&amp;EXT4_I(inode)-&gt;i_data_sem));
+-	if (path) {
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-	}
++	ext4_ext_drop_refs(path);
++	kfree(path);
+ 	lb-&gt;first_pblock = 0;
+ 	return retval;
+ }
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index 5e2465a8e4ce..a34c0760276c 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -113,10 +113,8 @@ mext_check_coverage(struct inode *inode, ext4_lblk_t from, ext4_lblk_t count,
+ 	}
+ 	ret = 1;
+ out:
+-	if (path) {
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-	}
++	ext4_ext_drop_refs(path);
++	kfree(path);
+ 	return ret;
+ }
+ 
+@@ -711,11 +709,9 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 		o_start += cur_len;
+ 		d_start += cur_len;
+ 	repeat:
+-		if (path) {
+-			ext4_ext_drop_refs(path);
+-			kfree(path);
+-			path = NULL;
+-		}
++		ext4_ext_drop_refs(path);
++		kfree(path);
++		path = NULL;
+ 	}
+ 	*moved_len = o_start - orig_blk;
+ 	if (*moved_len &gt; len)
+@@ -727,10 +723,8 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 		ext4_discard_preallocations(donor_inode);
+ 	}
+ 
+-	if (path) {
+-		ext4_ext_drop_refs(path);
+-		kfree(path);
+-	}
++	ext4_ext_drop_refs(path);
++	kfree(path);
+ 	ext4_double_up_write_data_sem(orig_inode, donor_inode);
+ 	ext4_inode_resume_unlocked_dio(orig_inode);
+ 	ext4_inode_resume_unlocked_dio(donor_inode);</pre>
+    <div class="pagination">
+        <a href='1_37.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><span>[38]</span><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_39.html'>Next&gt;&gt;</a>
+    <div>
+</body>

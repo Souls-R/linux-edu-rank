@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Fudan University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Fudan University</h1>
+    <div class="pagination">
+        <a href='16_6.html'>&lt;&lt;Prev</a><a href='16.html'>1</a><a href='16_2.html'>2</a><a href='16_3.html'>3</a><a href='16_4.html'>4</a><a href='16_5.html'>5</a><a href='16_6.html'>6</a><span>[7]</span><a href='16_8.html'>8</a><a href='16_8.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit f6033c5e333238f299c3ae03fac8cc1365b23b77
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Tue Apr 21 10:54:11 2020 +0800
+
+    btrfs: fix block group leak when removing fails
+    
+    btrfs_remove_block_group() invokes btrfs_lookup_block_group(), which
+    returns a local reference of the block group that contains the given
+    bytenr to "block_group" with increased refcount.
+    
+    When btrfs_remove_block_group() returns, "block_group" becomes invalid,
+    so the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in several exception handling paths
+    of btrfs_remove_block_group(). When those error scenarios occur such as
+    btrfs_alloc_path() returns NULL, the function forgets to decrease its
+    refcnt increased by btrfs_lookup_block_group() and will cause a refcnt
+    leak.
+    
+    Fix this issue by jumping to "out_put_group" label and calling
+    btrfs_put_block_group() when those error scenarios occur.
+    
+    CC: stable@vger.kernel.org # 4.4+
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Reviewed-by: David Sterba &lt;dsterba@suse.com&gt;
+    Signed-off-by: David Sterba &lt;dsterba@suse.com&gt;
+
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index af9e9a008724..696f47103cfc 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -916,7 +916,7 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
+ 	path = btrfs_alloc_path();
+ 	if (!path) {
+ 		ret = -ENOMEM;
+-		goto out;
++		goto out_put_group;
+ 	}
+ 
+ 	/*
+@@ -954,7 +954,7 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
+ 		ret = btrfs_orphan_add(trans, BTRFS_I(inode));
+ 		if (ret) {
+ 			btrfs_add_delayed_iput(inode);
+-			goto out;
++			goto out_put_group;
+ 		}
+ 		clear_nlink(inode);
+ 		/* One for the block groups ref */
+@@ -977,13 +977,13 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
+ 
+ 	ret = btrfs_search_slot(trans, tree_root, &amp;key, path, -1, 1);
+ 	if (ret &lt; 0)
+-		goto out;
++		goto out_put_group;
+ 	if (ret &gt; 0)
+ 		btrfs_release_path(path);
+ 	if (ret == 0) {
+ 		ret = btrfs_del_item(trans, tree_root, path);
+ 		if (ret)
+-			goto out;
++			goto out_put_group;
+ 		btrfs_release_path(path);
+ 	}
+ 
+@@ -1102,9 +1102,9 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
+ 
+ 	ret = remove_block_group_free_space(trans, block_group);
+ 	if (ret)
+-		goto out;
++		goto out_put_group;
+ 
+-	btrfs_put_block_group(block_group);
++	/* Once for the block groups rbtree */
+ 	btrfs_put_block_group(block_group);
+ 
+ 	ret = btrfs_search_slot(trans, root, &amp;key, path, -1, 1);
+@@ -1127,6 +1127,10 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
+ 		/* once for the tree */
+ 		free_extent_map(em);
+ 	}
++
++out_put_group:
++	/* Once for the lookup reference */
++	btrfs_put_block_group(block_group);
+ out:
+ 	if (remove_rsv)
+ 		btrfs_delayed_refs_rsv_release(fs_info, 1);</pre><hr><pre>commit 332e0e17ad49e084b7db670ef43b5eb59abd9e34
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Mon Apr 20 13:44:16 2020 +0800
+
+    staging: comedi: Fix comedi_device refcnt leak in comedi_open
+    
+    comedi_open() invokes comedi_dev_get_from_minor(), which returns a
+    reference of the COMEDI device to "dev" with increased refcount.
+    
+    When comedi_open() returns, "dev" becomes invalid, so the refcount
+    should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one exception handling path of
+    comedi_open(). When "cfp" allocation is failed, the refcnt increased by
+    comedi_dev_get_from_minor() is not decreased, causing a refcnt leak.
+    
+    Fix this issue by calling comedi_dev_put() on this error path when "cfp"
+    allocation is failed.
+    
+    Fixes: 20f083c07565 ("staging: comedi: prepare support for per-file read and write subdevices")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Cc: stable &lt;stable@vger.kernel.org&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Ian Abbott &lt;abbotti@mev.co.uk&gt;
+    Link: https://lore.kernel.org/r/1587361459-83622-1-git-send-email-xiyuyang19@fudan.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/staging/comedi/comedi_fops.c b/drivers/staging/comedi/comedi_fops.c
+index 08d1bbbebf2d..e84b4fb493d6 100644
+--- a/drivers/staging/comedi/comedi_fops.c
++++ b/drivers/staging/comedi/comedi_fops.c
+@@ -2725,8 +2725,10 @@ static int comedi_open(struct inode *inode, struct file *file)
+ 	}
+ 
+ 	cfp = kzalloc(sizeof(*cfp), GFP_KERNEL);
+-	if (!cfp)
++	if (!cfp) {
++		comedi_dev_put(dev);
+ 		return -ENOMEM;
++	}
+ 
+ 	cfp-&gt;dev = dev;
+ </pre><hr><pre>commit e3436ce60cf5f5eaedda2b8c622f69feb97595e2
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Thu Apr 23 13:15:40 2020 +0800
+
+    staging: gasket: Fix mapping refcnt leak when register/store fails
+    
+    gasket_sysfs_register_store() invokes get_mapping(), which returns a
+    reference of the specified gasket_sysfs_mapping object to "mapping" with
+    increased refcnt.
+    
+    When gasket_sysfs_register_store() returns, local variable "mapping"
+    becomes invalid, so the refcount should be decreased to keep refcount
+    balanced.
+    
+    The reference counting issue happens in one exception handling path of
+    gasket_sysfs_register_store(). When gasket_dev is NULL, the function
+    forgets to decrease the refcnt increased by get_mapping(), causing a
+    refcnt leak.
+    
+    Fix this issue by calling put_mapping() when gasket_dev is NULL.
+    
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Link: https://lore.kernel.org/r/1587618941-13718-1-git-send-email-xiyuyang19@fudan.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/staging/gasket/gasket_sysfs.c b/drivers/staging/gasket/gasket_sysfs.c
+index f24edc38c27b..b4aa8c2ba2c0 100644
+--- a/drivers/staging/gasket/gasket_sysfs.c
++++ b/drivers/staging/gasket/gasket_sysfs.c
+@@ -374,6 +374,7 @@ ssize_t gasket_sysfs_register_store(struct device *device,
+ 	gasket_dev = mapping-&gt;gasket_dev;
+ 	if (!gasket_dev) {
+ 		dev_err(device, "Device driver may have been removed\n");
++		put_mapping(mapping);
+ 		return 0;
+ 	}
+ </pre><hr><pre>commit 57a66838e1494cd881b7f4e110ec685736e8e3ca
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Thu Apr 23 13:14:55 2020 +0800
+
+    staging: gasket: Fix mapping refcnt leak when put attribute fails
+    
+    gasket_sysfs_put_attr() invokes get_mapping(), which returns a reference
+    of the specified gasket_sysfs_mapping object to "mapping" with increased
+    refcnt.
+    
+    When gasket_sysfs_put_attr() returns, local variable "mapping" becomes
+    invalid, so the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one path of
+    gasket_sysfs_put_attr(). When mapping attribute is unknown, the function
+    forgets to decrease the refcnt increased by get_mapping(), causing a
+    refcnt leak.
+    
+    Fix this issue by calling put_mapping() when put attribute fails due to
+    unknown attribute.
+    
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Link: https://lore.kernel.org/r/1587618895-13660-1-git-send-email-xiyuyang19@fudan.edu.cn
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/staging/gasket/gasket_sysfs.c b/drivers/staging/gasket/gasket_sysfs.c
+index a2d67c28f530..f24edc38c27b 100644
+--- a/drivers/staging/gasket/gasket_sysfs.c
++++ b/drivers/staging/gasket/gasket_sysfs.c
+@@ -340,6 +340,7 @@ void gasket_sysfs_put_attr(struct device *device,
+ 
+ 	dev_err(device, "Unable to put unknown attribute: %s\n",
+ 		attr-&gt;attr.attr.name);
++	put_mapping(mapping);
+ }
+ EXPORT_SYMBOL(gasket_sysfs_put_attr);
+ </pre><hr><pre>commit 59e1947ca09ebd1cae147c08c7c41f3141233c84
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Thu Apr 23 12:54:19 2020 +0800
+
+    ALSA: usb-audio: Fix usb audio refcnt leak when getting spdif
+    
+    snd_microii_spdif_default_get() invokes snd_usb_lock_shutdown(), which
+    increases the refcount of the snd_usb_audio object "chip".
+    
+    When snd_microii_spdif_default_get() returns, local variable "chip"
+    becomes invalid, so the refcount should be decreased to keep refcount
+    balanced.
+    
+    The reference counting issue happens in several exception handling paths
+    of snd_microii_spdif_default_get(). When those error scenarios occur
+    such as usb_ifnum_to_if() returns NULL, the function forgets to decrease
+    the refcnt increased by snd_usb_lock_shutdown(), causing a refcnt leak.
+    
+    Fix this issue by jumping to "end" label when those error scenarios
+    occur.
+    
+    Fixes: 447d6275f0c2 ("ALSA: usb-audio: Add sanity checks for endpoint accesses")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Cc: &lt;stable@vger.kernel.org&gt;
+    Link: https://lore.kernel.org/r/1587617711-13200-1-git-send-email-xiyuyang19@fudan.edu.cn
+    Signed-off-by: Takashi Iwai &lt;tiwai@suse.de&gt;
+
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 02b036b2aefb..a5f65a9a0254 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -1509,11 +1509,15 @@ static int snd_microii_spdif_default_get(struct snd_kcontrol *kcontrol,
+ 
+ 	/* use known values for that card: interface#1 altsetting#1 */
+ 	iface = usb_ifnum_to_if(chip-&gt;dev, 1);
+-	if (!iface || iface-&gt;num_altsetting &lt; 2)
+-		return -EINVAL;
++	if (!iface || iface-&gt;num_altsetting &lt; 2) {
++		err = -EINVAL;
++		goto end;
++	}
+ 	alts = &amp;iface-&gt;altsetting[1];
+-	if (get_iface_desc(alts)-&gt;bNumEndpoints &lt; 1)
+-		return -EINVAL;
++	if (get_iface_desc(alts)-&gt;bNumEndpoints &lt; 1) {
++		err = -EINVAL;
++		goto end;
++	}
+ 	ep = get_endpoint(alts, 0)-&gt;bEndpointAddress;
+ 
+ 	err = snd_usb_ctl_msg(chip-&gt;dev,</pre><hr><pre>commit efe57fd58e1cb77f9186152ee12a8aa4ae3348e0
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Mon Apr 20 23:14:19 2020 +0800
+
+    SUNRPC: Remove unreachable error condition
+    
+    rpc_clnt_test_and_add_xprt() invokes rpc_call_null_helper(), which
+    return the value of rpc_run_task() to "task". Since rpc_run_task() is
+    impossible to return an ERR pointer, there is no need to add the
+    IS_ERR() condition on "task" here. So we need to remove it.
+    
+    Fixes: 7f554890587c ("SUNRPC: Allow addition of new transports to a struct rpc_clnt")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Trond Myklebust &lt;trond.myklebust@hammerspace.com&gt;
+
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 325a0858700f..05404bb05607 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2808,8 +2808,7 @@ int rpc_clnt_test_and_add_xprt(struct rpc_clnt *clnt,
+ 	task = rpc_call_null_helper(clnt, xprt, NULL,
+ 			RPC_TASK_SOFT|RPC_TASK_SOFTCONN|RPC_TASK_ASYNC|RPC_TASK_NULLCREDS,
+ 			&amp;rpc_cb_add_xprt_call_ops, data);
+-	if (IS_ERR(task))
+-		return PTR_ERR(task);
++
+ 	rpc_put_task(task);
+ success:
+ 	return 1;</pre><hr><pre>commit 6f91a3f7af4186099dd10fa530dd7e0d9c29747d
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Mon Apr 20 13:37:20 2020 +0800
+
+    batman-adv: Fix refcnt leak in batadv_v_ogm_process
+    
+    batadv_v_ogm_process() invokes batadv_hardif_neigh_get(), which returns
+    a reference of the neighbor object to "hardif_neigh" with increased
+    refcount.
+    
+    When batadv_v_ogm_process() returns, "hardif_neigh" becomes invalid, so
+    the refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in one exception handling paths of
+    batadv_v_ogm_process(). When batadv_v_ogm_orig_get() fails to get the
+    orig node and returns NULL, the refcnt increased by
+    batadv_hardif_neigh_get() is not decreased, causing a refcnt leak.
+    
+    Fix this issue by jumping to "out" label when batadv_v_ogm_orig_get()
+    fails to get the orig node.
+    
+    Fixes: 9323158ef9f4 ("batman-adv: OGMv2 - implement originators logic")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Sven Eckelmann &lt;sven@narfation.org&gt;
+    Signed-off-by: Simon Wunderlich &lt;sw@simonwunderlich.de&gt;
+
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 969466218999..80b87b1f4e3a 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -893,7 +893,7 @@ static void batadv_v_ogm_process(const struct sk_buff *skb, int ogm_offset,
+ 
+ 	orig_node = batadv_v_ogm_orig_get(bat_priv, ogm_packet-&gt;orig);
+ 	if (!orig_node)
+-		return;
++		goto out;
+ 
+ 	neigh_node = batadv_neigh_node_get_or_create(orig_node, if_incoming,
+ 						     ethhdr-&gt;h_source);</pre><hr><pre>commit 6107c5da0fca8b50b4d3215e94d619d38cc4a18c
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Wed Apr 15 16:35:21 2020 +0800
+
+    batman-adv: Fix refcnt leak in batadv_store_throughput_override
+    
+    batadv_show_throughput_override() invokes batadv_hardif_get_by_netdev(),
+    which gets a batadv_hard_iface object from net_dev with increased refcnt
+    and its reference is assigned to a local pointer 'hard_iface'.
+    
+    When batadv_store_throughput_override() returns, "hard_iface" becomes
+    invalid, so the refcount should be decreased to keep refcount balanced.
+    
+    The issue happens in one error path of
+    batadv_store_throughput_override(). When batadv_parse_throughput()
+    returns NULL, the refcnt increased by batadv_hardif_get_by_netdev() is
+    not decreased, causing a refcnt leak.
+    
+    Fix this issue by jumping to "out" label when batadv_parse_throughput()
+    returns NULL.
+    
+    Fixes: 0b5ecc6811bd ("batman-adv: add throughput override attribute to hard_ifaces")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Sven Eckelmann &lt;sven@narfation.org&gt;
+    Signed-off-by: Simon Wunderlich &lt;sw@simonwunderlich.de&gt;
+
+diff --git a/net/batman-adv/sysfs.c b/net/batman-adv/sysfs.c
+index c0b00268aac4..0f962dcd239e 100644
+--- a/net/batman-adv/sysfs.c
++++ b/net/batman-adv/sysfs.c
+@@ -1150,7 +1150,7 @@ static ssize_t batadv_store_throughput_override(struct kobject *kobj,
+ 	ret = batadv_parse_throughput(net_dev, buff, "throughput_override",
+ 				      &amp;tp_override);
+ 	if (!ret)
+-		return count;
++		goto out;
+ 
+ 	old_tp_override = atomic_read(&amp;hard_iface-&gt;bat_v.throughput_override);
+ 	if (old_tp_override == tp_override)</pre><hr><pre>commit f872de8185acf1b48b954ba5bd8f9bc0a0d14016
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Wed Apr 15 16:31:50 2020 +0800
+
+    batman-adv: Fix refcnt leak in batadv_show_throughput_override
+    
+    batadv_show_throughput_override() invokes batadv_hardif_get_by_netdev(),
+    which gets a batadv_hard_iface object from net_dev with increased refcnt
+    and its reference is assigned to a local pointer 'hard_iface'.
+    
+    When batadv_show_throughput_override() returns, "hard_iface" becomes
+    invalid, so the refcount should be decreased to keep refcount balanced.
+    
+    The issue happens in the normal path of
+    batadv_show_throughput_override(), which forgets to decrease the refcnt
+    increased by batadv_hardif_get_by_netdev() before the function returns,
+    causing a refcnt leak.
+    
+    Fix this issue by calling batadv_hardif_put() before the
+    batadv_show_throughput_override() returns in the normal path.
+    
+    Fixes: 0b5ecc6811bd ("batman-adv: add throughput override attribute to hard_ifaces")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Sven Eckelmann &lt;sven@narfation.org&gt;
+    Signed-off-by: Simon Wunderlich &lt;sw@simonwunderlich.de&gt;
+
+diff --git a/net/batman-adv/sysfs.c b/net/batman-adv/sysfs.c
+index c45962d8527b..c0b00268aac4 100644
+--- a/net/batman-adv/sysfs.c
++++ b/net/batman-adv/sysfs.c
+@@ -1190,6 +1190,7 @@ static ssize_t batadv_show_throughput_override(struct kobject *kobj,
+ 
+ 	tp_override = atomic_read(&amp;hard_iface-&gt;bat_v.throughput_override);
+ 
++	batadv_hardif_put(hard_iface);
+ 	return sprintf(buff, "%u.%u MBit\n", tp_override / 10,
+ 		       tp_override % 10);
+ }</pre><hr><pre>commit e07c7606a00c4361bad72ff4e72ed0dfbefa23b0
+Author: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+Date:   Mon Apr 20 13:41:54 2020 +0800
+
+    drm/i915/selftests: Fix i915_address_space refcnt leak
+    
+    igt_ppgtt_pin_update() invokes i915_gem_context_get_vm_rcu(), which
+    returns a reference of the i915_address_space object to "vm" with
+    increased refcount.
+    
+    When igt_ppgtt_pin_update() returns, "vm" becomes invalid, so the
+    refcount should be decreased to keep refcount balanced.
+    
+    The reference counting issue happens in two exception handling paths of
+    igt_ppgtt_pin_update(). When i915_gem_object_create_internal() returns
+    IS_ERR, the refcnt increased by i915_gem_context_get_vm_rcu() is not
+    decreased, causing a refcnt leak.
+    
+    Fix this issue by jumping to "out_vm" label when
+    i915_gem_object_create_internal() returns IS_ERR.
+    
+    Fixes: a4e7ccdac38e ("drm/i915: Move context management under GEM")
+    Signed-off-by: Xiyu Yang &lt;xiyuyang19@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Reviewed-by: Chris Wilson &lt;chris@chris-wilson.co.uk&gt;
+    Signed-off-by: Chris Wilson &lt;chris@chris-wilson.co.uk&gt;
+    Link: https://patchwork.freedesktop.org/patch/msgid/1587361342-83494-1-git-send-email-xiyuyang19@fudan.edu.cn
+
+diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+index 2d0fd50c5312..d4f94ca9ae0d 100644
+--- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
++++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+@@ -1477,8 +1477,10 @@ static int igt_ppgtt_pin_update(void *arg)
+ 		unsigned int page_size = BIT(first);
+ 
+ 		obj = i915_gem_object_create_internal(dev_priv, page_size);
+-		if (IS_ERR(obj))
+-			return PTR_ERR(obj);
++		if (IS_ERR(obj)) {
++			err = PTR_ERR(obj);
++			goto out_vm;
++		}
+ 
+ 		vma = i915_vma_instance(obj, vm, NULL);
+ 		if (IS_ERR(vma)) {
+@@ -1531,8 +1533,10 @@ static int igt_ppgtt_pin_update(void *arg)
+ 	}
+ 
+ 	obj = i915_gem_object_create_internal(dev_priv, PAGE_SIZE);
+-	if (IS_ERR(obj))
+-		return PTR_ERR(obj);
++	if (IS_ERR(obj)) {
++		err = PTR_ERR(obj);
++		goto out_vm;
++	}
+ 
+ 	vma = i915_vma_instance(obj, vm, NULL);
+ 	if (IS_ERR(vma)) {</pre>
+    <div class="pagination">
+        <a href='16_6.html'>&lt;&lt;Prev</a><a href='16.html'>1</a><a href='16_2.html'>2</a><a href='16_3.html'>3</a><a href='16_4.html'>4</a><a href='16_5.html'>5</a><a href='16_6.html'>6</a><span>[7]</span><a href='16_8.html'>8</a><a href='16_8.html'>Next&gt;&gt;</a>
+    <div>
+</body>

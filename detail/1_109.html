@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_108.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><span>[109]</span><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_110.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 2b2d6d019724de6e51ac5bcf22b5ef969daefa8b
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Jul 26 16:15:44 2008 -0400
+
+    ext4: Cleanup whitespace and other miscellaneous style issues
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/acl.c b/fs/ext4/acl.c
+index c7d04e165446..694ed6fadcc8 100644
+--- a/fs/ext4/acl.c
++++ b/fs/ext4/acl.c
+@@ -40,34 +40,35 @@ ext4_acl_from_disk(const void *value, size_t size)
+ 	acl = posix_acl_alloc(count, GFP_NOFS);
+ 	if (!acl)
+ 		return ERR_PTR(-ENOMEM);
+-	for (n=0; n &lt; count; n++) {
++	for (n = 0; n &lt; count; n++) {
+ 		ext4_acl_entry *entry =
+ 			(ext4_acl_entry *)value;
+ 		if ((char *)value + sizeof(ext4_acl_entry_short) &gt; end)
+ 			goto fail;
+ 		acl-&gt;a_entries[n].e_tag  = le16_to_cpu(entry-&gt;e_tag);
+ 		acl-&gt;a_entries[n].e_perm = le16_to_cpu(entry-&gt;e_perm);
+-		switch(acl-&gt;a_entries[n].e_tag) {
+-			case ACL_USER_OBJ:
+-			case ACL_GROUP_OBJ:
+-			case ACL_MASK:
+-			case ACL_OTHER:
+-				value = (char *)value +
+-					sizeof(ext4_acl_entry_short);
+-				acl-&gt;a_entries[n].e_id = ACL_UNDEFINED_ID;
+-				break;
+-
+-			case ACL_USER:
+-			case ACL_GROUP:
+-				value = (char *)value + sizeof(ext4_acl_entry);
+-				if ((char *)value &gt; end)
+-					goto fail;
+-				acl-&gt;a_entries[n].e_id =
+-					le32_to_cpu(entry-&gt;e_id);
+-				break;
+-
+-			default:
++
++		switch (acl-&gt;a_entries[n].e_tag) {
++		case ACL_USER_OBJ:
++		case ACL_GROUP_OBJ:
++		case ACL_MASK:
++		case ACL_OTHER:
++			value = (char *)value +
++				sizeof(ext4_acl_entry_short);
++			acl-&gt;a_entries[n].e_id = ACL_UNDEFINED_ID;
++			break;
++
++		case ACL_USER:
++		case ACL_GROUP:
++			value = (char *)value + sizeof(ext4_acl_entry);
++			if ((char *)value &gt; end)
+ 				goto fail;
++			acl-&gt;a_entries[n].e_id =
++				le32_to_cpu(entry-&gt;e_id);
++			break;
++
++		default:
++			goto fail;
+ 		}
+ 	}
+ 	if (value != end)
+@@ -96,27 +97,26 @@ ext4_acl_to_disk(const struct posix_acl *acl, size_t *size)
+ 		return ERR_PTR(-ENOMEM);
+ 	ext_acl-&gt;a_version = cpu_to_le32(EXT4_ACL_VERSION);
+ 	e = (char *)ext_acl + sizeof(ext4_acl_header);
+-	for (n=0; n &lt; acl-&gt;a_count; n++) {
++	for (n = 0; n &lt; acl-&gt;a_count; n++) {
+ 		ext4_acl_entry *entry = (ext4_acl_entry *)e;
+ 		entry-&gt;e_tag  = cpu_to_le16(acl-&gt;a_entries[n].e_tag);
+ 		entry-&gt;e_perm = cpu_to_le16(acl-&gt;a_entries[n].e_perm);
+-		switch(acl-&gt;a_entries[n].e_tag) {
+-			case ACL_USER:
+-			case ACL_GROUP:
+-				entry-&gt;e_id =
+-					cpu_to_le32(acl-&gt;a_entries[n].e_id);
+-				e += sizeof(ext4_acl_entry);
+-				break;
+-
+-			case ACL_USER_OBJ:
+-			case ACL_GROUP_OBJ:
+-			case ACL_MASK:
+-			case ACL_OTHER:
+-				e += sizeof(ext4_acl_entry_short);
+-				break;
+-
+-			default:
+-				goto fail;
++		switch (acl-&gt;a_entries[n].e_tag) {
++		case ACL_USER:
++		case ACL_GROUP:
++			entry-&gt;e_id = cpu_to_le32(acl-&gt;a_entries[n].e_id);
++			e += sizeof(ext4_acl_entry);
++			break;
++
++		case ACL_USER_OBJ:
++		case ACL_GROUP_OBJ:
++		case ACL_MASK:
++		case ACL_OTHER:
++			e += sizeof(ext4_acl_entry_short);
++			break;
++
++		default:
++			goto fail;
+ 		}
+ 	}
+ 	return (char *)ext_acl;
+@@ -167,23 +167,23 @@ ext4_get_acl(struct inode *inode, int type)
+ 	if (!test_opt(inode-&gt;i_sb, POSIX_ACL))
+ 		return NULL;
+ 
+-	switch(type) {
+-		case ACL_TYPE_ACCESS:
+-			acl = ext4_iget_acl(inode, &amp;ei-&gt;i_acl);
+-			if (acl != EXT4_ACL_NOT_CACHED)
+-				return acl;
+-			name_index = EXT4_XATTR_INDEX_POSIX_ACL_ACCESS;
+-			break;
+-
+-		case ACL_TYPE_DEFAULT:
+-			acl = ext4_iget_acl(inode, &amp;ei-&gt;i_default_acl);
+-			if (acl != EXT4_ACL_NOT_CACHED)
+-				return acl;
+-			name_index = EXT4_XATTR_INDEX_POSIX_ACL_DEFAULT;
+-			break;
+-
+-		default:
+-			return ERR_PTR(-EINVAL);
++	switch (type) {
++	case ACL_TYPE_ACCESS:
++		acl = ext4_iget_acl(inode, &amp;ei-&gt;i_acl);
++		if (acl != EXT4_ACL_NOT_CACHED)
++			return acl;
++		name_index = EXT4_XATTR_INDEX_POSIX_ACL_ACCESS;
++		break;
++
++	case ACL_TYPE_DEFAULT:
++		acl = ext4_iget_acl(inode, &amp;ei-&gt;i_default_acl);
++		if (acl != EXT4_ACL_NOT_CACHED)
++			return acl;
++		name_index = EXT4_XATTR_INDEX_POSIX_ACL_DEFAULT;
++		break;
++
++	default:
++		return ERR_PTR(-EINVAL);
+ 	}
+ 	retval = ext4_xattr_get(inode, name_index, "", NULL, 0);
+ 	if (retval &gt; 0) {
+@@ -201,14 +201,14 @@ ext4_get_acl(struct inode *inode, int type)
+ 	kfree(value);
+ 
+ 	if (!IS_ERR(acl)) {
+-		switch(type) {
+-			case ACL_TYPE_ACCESS:
+-				ext4_iset_acl(inode, &amp;ei-&gt;i_acl, acl);
+-				break;
+-
+-			case ACL_TYPE_DEFAULT:
+-				ext4_iset_acl(inode, &amp;ei-&gt;i_default_acl, acl);
+-				break;
++		switch (type) {
++		case ACL_TYPE_ACCESS:
++			ext4_iset_acl(inode, &amp;ei-&gt;i_acl, acl);
++			break;
++
++		case ACL_TYPE_DEFAULT:
++			ext4_iset_acl(inode, &amp;ei-&gt;i_default_acl, acl);
++			break;
+ 		}
+ 	}
+ 	return acl;
+@@ -232,31 +232,31 @@ ext4_set_acl(handle_t *handle, struct inode *inode, int type,
+ 	if (S_ISLNK(inode-&gt;i_mode))
+ 		return -EOPNOTSUPP;
+ 
+-	switch(type) {
+-		case ACL_TYPE_ACCESS:
+-			name_index = EXT4_XATTR_INDEX_POSIX_ACL_ACCESS;
+-			if (acl) {
+-				mode_t mode = inode-&gt;i_mode;
+-				error = posix_acl_equiv_mode(acl, &amp;mode);
+-				if (error &lt; 0)
+-					return error;
+-				else {
+-					inode-&gt;i_mode = mode;
+-					ext4_mark_inode_dirty(handle, inode);
+-					if (error == 0)
+-						acl = NULL;
+-				}
++	switch (type) {
++	case ACL_TYPE_ACCESS:
++		name_index = EXT4_XATTR_INDEX_POSIX_ACL_ACCESS;
++		if (acl) {
++			mode_t mode = inode-&gt;i_mode;
++			error = posix_acl_equiv_mode(acl, &amp;mode);
++			if (error &lt; 0)
++				return error;
++			else {
++				inode-&gt;i_mode = mode;
++				ext4_mark_inode_dirty(handle, inode);
++				if (error == 0)
++					acl = NULL;
+ 			}
+-			break;
++		}
++		break;
+ 
+-		case ACL_TYPE_DEFAULT:
+-			name_index = EXT4_XATTR_INDEX_POSIX_ACL_DEFAULT;
+-			if (!S_ISDIR(inode-&gt;i_mode))
+-				return acl ? -EACCES : 0;
+-			break;
++	case ACL_TYPE_DEFAULT:
++		name_index = EXT4_XATTR_INDEX_POSIX_ACL_DEFAULT;
++		if (!S_ISDIR(inode-&gt;i_mode))
++			return acl ? -EACCES : 0;
++		break;
+ 
+-		default:
+-			return -EINVAL;
++	default:
++		return -EINVAL;
+ 	}
+ 	if (acl) {
+ 		value = ext4_acl_to_disk(acl, &amp;size);
+@@ -269,14 +269,14 @@ ext4_set_acl(handle_t *handle, struct inode *inode, int type,
+ 
+ 	kfree(value);
+ 	if (!error) {
+-		switch(type) {
+-			case ACL_TYPE_ACCESS:
+-				ext4_iset_acl(inode, &amp;ei-&gt;i_acl, acl);
+-				break;
+-
+-			case ACL_TYPE_DEFAULT:
+-				ext4_iset_acl(inode, &amp;ei-&gt;i_default_acl, acl);
+-				break;
++		switch (type) {
++		case ACL_TYPE_ACCESS:
++			ext4_iset_acl(inode, &amp;ei-&gt;i_acl, acl);
++			break;
++
++		case ACL_TYPE_DEFAULT:
++			ext4_iset_acl(inode, &amp;ei-&gt;i_default_acl, acl);
++			break;
+ 		}
+ 	}
+ 	return error;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index f7529e27d791..612c3d2c3824 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1441,7 +1441,7 @@ unsigned int ext4_ext_check_overlap(struct inode *inode,
+ 
+ 	/*
+ 	 * get the next allocated block if the extent in the path
+-	 * is before the requested block(s) 
++	 * is before the requested block(s)
+ 	 */
+ 	if (b2 &lt; b1) {
+ 		b2 = ext4_ext_next_allocated_block(path);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 85a862c9c4cc..0080999d2cd4 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1054,10 +1054,9 @@ static void ext4_da_update_reserve_space(struct inode *inode, int used)
+ 
+ 
+ /*
++ * The ext4_get_blocks_wrap() function try to look up the requested blocks,
++ * and returns if the blocks are already mapped.
+  *
+- *
+- * ext4_ext4 get_block() wrapper function
+- * It will do a look up first, and returns if the blocks already mapped.
+  * Otherwise it takes the write lock of the i_data_sem and allocate blocks
+  * and store the allocated blocks in the result buffer head and mark it
+  * mapped.
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index f000fbe2cd93..0a9265164265 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -73,7 +73,7 @@ static int verify_group_input(struct super_block *sb,
+ 			     "Inode bitmap not in group (block %llu)",
+ 			     (unsigned long long)input-&gt;inode_bitmap);
+ 	else if (outside(input-&gt;inode_table, start, end) ||
+-	         outside(itend - 1, start, end))
++		 outside(itend - 1, start, end))
+ 		ext4_warning(sb, __func__,
+ 			     "Inode table not in group (blocks %llu-%llu)",
+ 			     (unsigned long long)input-&gt;inode_table, itend - 1);
+@@ -104,7 +104,7 @@ static int verify_group_input(struct super_block *sb,
+ 			     (unsigned long long)input-&gt;inode_bitmap,
+ 			     start, metaend - 1);
+ 	else if (inside(input-&gt;inode_table, start, metaend) ||
+-	         inside(itend - 1, start, metaend))
++		 inside(itend - 1, start, metaend))
+ 		ext4_warning(sb, __func__,
+ 			     "Inode table (%llu-%llu) overlaps"
+ 			     "GDT table (%llu-%llu)",
+@@ -158,9 +158,9 @@ static int extend_or_restart_transaction(handle_t *handle, int thresh,
+ 	if (err) {
+ 		if ((err = ext4_journal_restart(handle, EXT4_MAX_TRANS_DATA)))
+ 			return err;
+-	        if ((err = ext4_journal_get_write_access(handle, bh)))
++		if ((err = ext4_journal_get_write_access(handle, bh)))
+ 			return err;
+-        }
++	}
+ 
+ 	return 0;
+ }
+@@ -416,11 +416,11 @@ static int add_new_gdb(handle_t *handle, struct inode *inode,
+ 		       "EXT4-fs: ext4_add_new_gdb: adding group block %lu\n",
+ 		       gdb_num);
+ 
+-	/*
+-	 * If we are not using the primary superblock/GDT copy don't resize,
+-	 * because the user tools have no way of handling this.  Probably a
+-	 * bad time to do it anyways.
+-	 */
++        /*
++         * If we are not using the primary superblock/GDT copy don't resize,
++         * because the user tools have no way of handling this.  Probably a
++         * bad time to do it anyways.
++         */
+ 	if (EXT4_SB(sb)-&gt;s_sbh-&gt;b_blocknr !=
+ 	    le32_to_cpu(EXT4_SB(sb)-&gt;s_es-&gt;s_first_data_block)) {
+ 		ext4_warning(sb, __func__,
+@@ -507,14 +507,14 @@ static int add_new_gdb(handle_t *handle, struct inode *inode,
+ 	return 0;
+ 
+ exit_inode:
+-	//ext4_journal_release_buffer(handle, iloc.bh);
++	/* ext4_journal_release_buffer(handle, iloc.bh); */
+ 	brelse(iloc.bh);
+ exit_dindj:
+-	//ext4_journal_release_buffer(handle, dind);
++	/* ext4_journal_release_buffer(handle, dind); */
+ exit_primary:
+-	//ext4_journal_release_buffer(handle, *primary);
++	/* ext4_journal_release_buffer(handle, *primary); */
+ exit_sbh:
+-	//ext4_journal_release_buffer(handle, *primary);
++	/* ext4_journal_release_buffer(handle, *primary); */
+ exit_dind:
+ 	brelse(dind);
+ exit_bh:
+@@ -818,12 +818,12 @@ int ext4_group_add(struct super_block *sb, struct ext4_new_group_data *input)
+ 	if ((err = ext4_journal_get_write_access(handle, sbi-&gt;s_sbh)))
+ 		goto exit_journal;
+ 
+-	/*
+-	 * We will only either add reserved group blocks to a backup group
+-	 * or remove reserved blocks for the first group in a new group block.
+-	 * Doing both would be mean more complex code, and sane people don't
+-	 * use non-sparse filesystems anymore.  This is already checked above.
+-	 */
++        /*
++         * We will only either add reserved group blocks to a backup group
++         * or remove reserved blocks for the first group in a new group block.
++         * Doing both would be mean more complex code, and sane people don't
++         * use non-sparse filesystems anymore.  This is already checked above.
++         */
+ 	if (gdb_off) {
+ 		primary = sbi-&gt;s_group_desc[gdb_num];
+ 		if ((err = ext4_journal_get_write_access(handle, primary)))
+@@ -835,24 +835,24 @@ int ext4_group_add(struct super_block *sb, struct ext4_new_group_data *input)
+ 	} else if ((err = add_new_gdb(handle, inode, input, &amp;primary)))
+ 		goto exit_journal;
+ 
+-	/*
+-	 * OK, now we've set up the new group.  Time to make it active.
+-	 *
+-	 * Current kernels don't lock all allocations via lock_super(),
+-	 * so we have to be safe wrt. concurrent accesses the group
+-	 * data.  So we need to be careful to set all of the relevant
+-	 * group descriptor data etc. *before* we enable the group.
+-	 *
+-	 * The key field here is sbi-&gt;s_groups_count: as long as
+-	 * that retains its old value, nobody is going to access the new
+-	 * group.
+-	 *
+-	 * So first we update all the descriptor metadata for the new
+-	 * group; then we update the total disk blocks count; then we
+-	 * update the groups count to enable the group; then finally we
+-	 * update the free space counts so that the system can start
+-	 * using the new disk blocks.
+-	 */
++        /*
++         * OK, now we've set up the new group.  Time to make it active.
++         *
++         * Current kernels don't lock all allocations via lock_super(),
++         * so we have to be safe wrt. concurrent accesses the group
++         * data.  So we need to be careful to set all of the relevant
++         * group descriptor data etc. *before* we enable the group.
++         *
++         * The key field here is sbi-&gt;s_groups_count: as long as
++         * that retains its old value, nobody is going to access the new
++         * group.
++         *
++         * So first we update all the descriptor metadata for the new
++         * group; then we update the total disk blocks count; then we
++         * update the groups count to enable the group; then finally we
++         * update the free space counts so that the system can start
++         * using the new disk blocks.
++         */
+ 
+ 	/* Update group descriptor block for new group */
+ 	gdp = (struct ext4_group_desc *)((char *)primary-&gt;b_data +
+@@ -946,7 +946,8 @@ int ext4_group_add(struct super_block *sb, struct ext4_new_group_data *input)
+ 	return err;
+ } /* ext4_group_add */
+ 
+-/* Extend the filesystem to the new number of blocks specified.  This entry
++/*
++ * Extend the filesystem to the new number of blocks specified.  This entry
+  * point is only used to extend the current filesystem to the end of the last
+  * existing group.  It can be accessed via ioctl, or by "remount,resize=&lt;size&gt;"
+  * for emergencies (because it has no dependencies on reserved blocks).
+@@ -1024,7 +1025,7 @@ int ext4_group_extend(struct super_block *sb, struct ext4_super_block *es,
+ 			     o_blocks_count + add, add);
+ 
+ 	/* See if the device is actually as big as what was requested */
+-	bh = sb_bread(sb, o_blocks_count + add -1);
++	bh = sb_bread(sb, o_blocks_count + add - 1);
+ 	if (!bh) {
+ 		ext4_warning(sb, __func__,
+ 			     "can't read last block, resize aborted");
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index e34fc2d6dbf5..09e3c56782a7 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -49,20 +49,19 @@ static int ext4_load_journal(struct super_block *, struct ext4_super_block *,
+ 			     unsigned long journal_devnum);
+ static int ext4_create_journal(struct super_block *, struct ext4_super_block *,
+ 			       unsigned int);
+-static void ext4_commit_super (struct super_block * sb,
+-			       struct ext4_super_block * es,
+-			       int sync);
+-static void ext4_mark_recovery_complete(struct super_block * sb,
+-					struct ext4_super_block * es);
+-static void ext4_clear_journal_err(struct super_block * sb,
+-				   struct ext4_super_block * es);
++static void ext4_commit_super(struct super_block *sb,
++			      struct ext4_super_block *es, int sync);
++static void ext4_mark_recovery_complete(struct super_block *sb,
++					struct ext4_super_block *es);
++static void ext4_clear_journal_err(struct super_block *sb,
++				   struct ext4_super_block *es);
+ static int ext4_sync_fs(struct super_block *sb, int wait);
+-static const char *ext4_decode_error(struct super_block * sb, int errno,
++static const char *ext4_decode_error(struct super_block *sb, int errno,
+ 				     char nbuf[16]);
+-static int ext4_remount (struct super_block * sb, int * flags, char * data);
+-static int ext4_statfs (struct dentry * dentry, struct kstatfs * buf);
++static int ext4_remount(struct super_block *sb, int *flags, char *data);
++static int ext4_statfs(struct dentry *dentry, struct kstatfs *buf);
+ static void ext4_unlockfs(struct super_block *sb);
+-static void ext4_write_super (struct super_block * sb);
++static void ext4_write_super(struct super_block *sb);
+ static void ext4_write_super_lockfs(struct super_block *sb);
+ 
+ 
+@@ -211,15 +210,15 @@ static void ext4_handle_error(struct super_block *sb)
+ 	if (sb-&gt;s_flags &amp; MS_RDONLY)
+ 		return;
+ 
+-	if (!test_opt (sb, ERRORS_CONT)) {
++	if (!test_opt(sb, ERRORS_CONT)) {
+ 		journal_t *journal = EXT4_SB(sb)-&gt;s_journal;
+ 
+ 		EXT4_SB(sb)-&gt;s_mount_opt |= EXT4_MOUNT_ABORT;
+ 		if (journal)
+ 			jbd2_journal_abort(journal, -EIO);
+ 	}
+-	if (test_opt (sb, ERRORS_RO)) {
+-		printk (KERN_CRIT "Remounting filesystem read-only\n");
++	if (test_opt(sb, ERRORS_RO)) {
++		printk(KERN_CRIT "Remounting filesystem read-only\n");
+ 		sb-&gt;s_flags |= MS_RDONLY;
+ 	}
+ 	ext4_commit_super(sb, es, 1);
+@@ -228,13 +227,13 @@ static void ext4_handle_error(struct super_block *sb)
+ 			sb-&gt;s_id);
+ }
+ 
+-void ext4_error (struct super_block * sb, const char * function,
+-		 const char * fmt, ...)
++void ext4_error(struct super_block *sb, const char *function,
++		const char *fmt, ...)
+ {
+ 	va_list args;
+ 
+ 	va_start(args, fmt);
+-	printk(KERN_CRIT "EXT4-fs error (device %s): %s: ",sb-&gt;s_id, function);
++	printk(KERN_CRIT "EXT4-fs error (device %s): %s: ", sb-&gt;s_id, function);
+ 	vprintk(fmt, args);
+ 	printk("\n");
+ 	va_end(args);
+@@ -242,7 +241,7 @@ void ext4_error (struct super_block * sb, const char * function,
+ 	ext4_handle_error(sb);
+ }
+ 
+-static const char *ext4_decode_error(struct super_block * sb, int errno,
++static const char *ext4_decode_error(struct super_block *sb, int errno,
+ 				     char nbuf[16])
+ {
+ 	char *errstr = NULL;
+@@ -278,8 +277,7 @@ static const char *ext4_decode_error(struct super_block * sb, int errno,
+ /* __ext4_std_error decodes expected errors from journaling functions
+  * automatically and invokes the appropriate error response.  */
+ 
+-void __ext4_std_error (struct super_block * sb, const char * function,
+-		       int errno)
++void __ext4_std_error(struct super_block *sb, const char *function, int errno)
+ {
+ 	char nbuf[16];
+ 	const char *errstr;
+@@ -292,8 +290,8 @@ void __ext4_std_error (struct super_block * sb, const char * function,
+ 		return;
+ 
+ 	errstr = ext4_decode_error(sb, errno, nbuf);
+-	printk (KERN_CRIT "EXT4-fs error (device %s) in %s: %s\n",
+-		sb-&gt;s_id, function, errstr);
++	printk(KERN_CRIT "EXT4-fs error (device %s) in %s: %s\n",
++	       sb-&gt;s_id, function, errstr);
+ 
+ 	ext4_handle_error(sb);
+ }
+@@ -308,15 +306,15 @@ void __ext4_std_error (struct super_block * sb, const char * function,
+  * case we take the easy way out and panic immediately.
+  */
+ 
+-void ext4_abort (struct super_block * sb, const char * function,
+-		 const char * fmt, ...)
++void ext4_abort(struct super_block *sb, const char *function,
++		const char *fmt, ...)
+ {
+ 	va_list args;
+ 
+-	printk (KERN_CRIT "ext4_abort called.\n");
++	printk(KERN_CRIT "ext4_abort called.\n");
+ 
+ 	va_start(args, fmt);
+-	printk(KERN_CRIT "EXT4-fs error (device %s): %s: ",sb-&gt;s_id, function);
++	printk(KERN_CRIT "EXT4-fs error (device %s): %s: ", sb-&gt;s_id, function);
+ 	vprintk(fmt, args);
+ 	printk("\n");
+ 	va_end(args);
+@@ -334,8 +332,8 @@ void ext4_abort (struct super_block * sb, const char * function,
+ 	jbd2_journal_abort(EXT4_SB(sb)-&gt;s_journal, -EIO);
+ }
+ 
+-void ext4_warning (struct super_block * sb, const char * function,
+-		   const char * fmt, ...)
++void ext4_warning(struct super_block *sb, const char *function,
++		  const char *fmt, ...)
+ {
+ 	va_list args;
+ 
+@@ -496,7 +494,7 @@ static void dump_orphan_list(struct super_block *sb, struct ext4_sb_info *sbi)
+ 	}
+ }
+ 
+-static void ext4_put_super (struct super_block * sb)
++static void ext4_put_super(struct super_block *sb)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_super_block *es = sbi-&gt;s_es;
+@@ -647,7 +645,8 @@ static void ext4_clear_inode(struct inode *inode)
+ 				       &amp;EXT4_I(inode)-&gt;jinode);
+ }
+ 
+-static inline void ext4_show_quota_options(struct seq_file *seq, struct super_block *sb)
++static inline void ext4_show_quota_options(struct seq_file *seq,
++					   struct super_block *sb)
+ {
+ #if defined(CONFIG_QUOTA)
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+@@ -822,8 +821,8 @@ static struct dentry *ext4_fh_to_parent(struct super_block *sb, struct fid *fid,
+ }
+ 
+ #ifdef CONFIG_QUOTA
+-#define QTYPE2NAME(t) ((t)==USRQUOTA?"user":"group")
+-#define QTYPE2MOPT(on, t) ((t)==USRQUOTA?((on)##USRJQUOTA):((on)##GRPJQUOTA))
++#define QTYPE2NAME(t) ((t) == USRQUOTA?"user":"group")
++#define QTYPE2MOPT(on, t) ((t) == USRQUOTA?((on)##USRJQUOTA):((on)##GRPJQUOTA))
+ 
+ static int ext4_dquot_initialize(struct inode *inode, int type);
+ static int ext4_dquot_drop(struct inode *inode);
+@@ -991,12 +990,12 @@ static ext4_fsblk_t get_sb_block(void **data)
+ 	return sb_block;
+ }
+ 
+-static int parse_options (char *options, struct super_block *sb,
+-			  unsigned int *inum, unsigned long *journal_devnum,
+-			  ext4_fsblk_t *n_blocks_count, int is_remount)
++static int parse_options(char *options, struct super_block *sb,
++			 unsigned int *inum, unsigned long *journal_devnum,
++			 ext4_fsblk_t *n_blocks_count, int is_remount)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	char * p;
++	char *p;
+ 	substring_t args[MAX_OPT_ARGS];
+ 	int data_opt = 0;
+ 	int option;
+@@ -1009,7 +1008,7 @@ static int parse_options (char *options, struct super_block *sb,
+ 	if (!options)
+ 		return 1;
+ 
+-	while ((p = strsep (&amp;options, ",")) != NULL) {
++	while ((p = strsep(&amp;options, ",")) != NULL) {
+ 		int token;
+ 		if (!*p)
+ 			continue;
+@@ -1017,16 +1016,16 @@ static int parse_options (char *options, struct super_block *sb,
+ 		token = match_token(p, tokens, args);
+ 		switch (token) {
+ 		case Opt_bsd_df:
+-			clear_opt (sbi-&gt;s_mount_opt, MINIX_DF);
++			clear_opt(sbi-&gt;s_mount_opt, MINIX_DF);
+ 			break;
+ 		case Opt_minix_df:
+-			set_opt (sbi-&gt;s_mount_opt, MINIX_DF);
++			set_opt(sbi-&gt;s_mount_opt, MINIX_DF);
+ 			break;
+ 		case Opt_grpid:
+-			set_opt (sbi-&gt;s_mount_opt, GRPID);
++			set_opt(sbi-&gt;s_mount_opt, GRPID);
+ 			break;
+ 		case Opt_nogrpid:
+-			clear_opt (sbi-&gt;s_mount_opt, GRPID);
++			clear_opt(sbi-&gt;s_mount_opt, GRPID);
+ 			break;
+ 		case Opt_resuid:
+ 			if (match_int(&amp;args[0], &amp;option))
+@@ -1043,41 +1042,41 @@ static int parse_options (char *options, struct super_block *sb,
+ 			/* *sb_block = match_int(&amp;args[0]); */
+ 			break;
+ 		case Opt_err_panic:
+-			clear_opt (sbi-&gt;s_mount_opt, ERRORS_CONT);
+-			clear_opt (sbi-&gt;s_mount_opt, ERRORS_RO);
+-			set_opt (sbi-&gt;s_mount_opt, ERRORS_PANIC);
++			clear_opt(sbi-&gt;s_mount_opt, ERRORS_CONT);
++			clear_opt(sbi-&gt;s_mount_opt, ERRORS_RO);
++			set_opt(sbi-&gt;s_mount_opt, ERRORS_PANIC);
+ 			break;
+ 		case Opt_err_ro:
+-			clear_opt (sbi-&gt;s_mount_opt, ERRORS_CONT);
+-			clear_opt (sbi-&gt;s_mount_opt, ERRORS_PANIC);
+-			set_opt (sbi-&gt;s_mount_opt, ERRORS_RO);
++			clear_opt(sbi-&gt;s_mount_opt, ERRORS_CONT);
++			clear_opt(sbi-&gt;s_mount_opt, ERRORS_PANIC);
++			set_opt(sbi-&gt;s_mount_opt, ERRORS_RO);
+ 			break;
+ 		case Opt_err_cont:
+-			clear_opt (sbi-&gt;s_mount_opt, ERRORS_RO);
+-			clear_opt (sbi-&gt;s_mount_opt, ERRORS_PANIC);
+-			set_opt (sbi-&gt;s_mount_opt, ERRORS_CONT);
++			clear_opt(sbi-&gt;s_mount_opt, ERRORS_RO);
++			clear_opt(sbi-&gt;s_mount_opt, ERRORS_PANIC);
++			set_opt(sbi-&gt;s_mount_opt, ERRORS_CONT);
+ 			break;
+ 		case Opt_nouid32:
+-			set_opt (sbi-&gt;s_mount_opt, NO_UID32);
++			set_opt(sbi-&gt;s_mount_opt, NO_UID32);
+ 			break;
+ 		case Opt_nocheck:
+-			clear_opt (sbi-&gt;s_mount_opt, CHECK);
++			clear_opt(sbi-&gt;s_mount_opt, CHECK);
+ 			break;
+ 		case Opt_debug:
+-			set_opt (sbi-&gt;s_mount_opt, DEBUG);
++			set_opt(sbi-&gt;s_mount_opt, DEBUG);
+ 			break;
+ 		case Opt_oldalloc:
+-			set_opt (sbi-&gt;s_mount_opt, OLDALLOC);
++			set_opt(sbi-&gt;s_mount_opt, OLDALLOC);
+ 			break;
+ 		case Opt_orlov:
+-			clear_opt (sbi-&gt;s_mount_opt, OLDALLOC);
++			clear_opt(sbi-&gt;s_mount_opt, OLDALLOC);
+ 			break;
+ #ifdef CONFIG_EXT4DEV_FS_XATTR
+ 		case Opt_user_xattr:
+-			set_opt (sbi-&gt;s_mount_opt, XATTR_USER);
++			set_opt(sbi-&gt;s_mount_opt, XATTR_USER);
+ 			break;
+ 		case Opt_nouser_xattr:
+-			clear_opt (sbi-&gt;s_mount_opt, XATTR_USER);
++			clear_opt(sbi-&gt;s_mount_opt, XATTR_USER);
+ 			break;
+ #else
+ 		case Opt_user_xattr:
+@@ -1115,7 +1114,7 @@ static int parse_options (char *options, struct super_block *sb,
+ 				       "journal on remount\n");
+ 				return 0;
+ 			}
+-			set_opt (sbi-&gt;s_mount_opt, UPDATE_JOURNAL);
++			set_opt(sbi-&gt;s_mount_opt, UPDATE_JOURNAL);
+ 			break;
+ 		case Opt_journal_inum:
+ 			if (is_remount) {
+@@ -1145,7 +1144,7 @@ static int parse_options (char *options, struct super_block *sb,
+ 			set_opt(sbi-&gt;s_mount_opt, JOURNAL_CHECKSUM);
+ 			break;
+ 		case Opt_noload:
+-			set_opt (sbi-&gt;s_mount_opt, NOLOAD);
++			set_opt(sbi-&gt;s_mount_opt, NOLOAD);
+ 			break;
+ 		case Opt_commit:
+ 			if (match_int(&amp;args[0], &amp;option))
+@@ -1331,7 +1330,7 @@ static int parse_options (char *options, struct super_block *sb,
+ 					"on this filesystem, use tune2fs\n");
+ 				return 0;
+ 			}
+-			set_opt (sbi-&gt;s_mount_opt, EXTENTS);
++			set_opt(sbi-&gt;s_mount_opt, EXTENTS);
+ 			break;
+ 		case Opt_noextents:
+ 			/*
+@@ -1348,7 +1347,7 @@ static int parse_options (char *options, struct super_block *sb,
+ 						"-o noextents options\n");
+ 				return 0;
+ 			}
+-			clear_opt (sbi-&gt;s_mount_opt, EXTENTS);
++			clear_opt(sbi-&gt;s_mount_opt, EXTENTS);
+ 			break;
+ 		case Opt_i_version:
+ 			set_opt(sbi-&gt;s_mount_opt, I_VERSION);
+@@ -1374,9 +1373,9 @@ static int parse_options (char *options, struct super_block *sb,
+ 			set_opt(sbi-&gt;s_mount_opt, DELALLOC);
+ 			break;
+ 		default:
+-			printk (KERN_ERR
+-				"EXT4-fs: Unrecognized mount option \"%s\" "
+-				"or missing value\n", p);
++			printk(KERN_ERR
++			       "EXT4-fs: Unrecognized mount option \"%s\" "
++			       "or missing value\n", p);
+ 			return 0;
+ 		}
+ 	}
+@@ -1423,31 +1422,31 @@ static int ext4_setup_super(struct super_block *sb, struct ext4_super_block *es,
+ 	int res = 0;
+ 
+ 	if (le32_to_cpu(es-&gt;s_rev_level) &gt; EXT4_MAX_SUPP_REV) {
+-		printk (KERN_ERR "EXT4-fs warning: revision level too high, "
+-			"forcing read-only mode\n");
++		printk(KERN_ERR "EXT4-fs warning: revision level too high, "
++		       "forcing read-only mode\n");
+ 		res = MS_RDONLY;
+ 	}
+ 	if (read_only)
+ 		return res;
+ 	if (!(sbi-&gt;s_mount_state &amp; EXT4_VALID_FS))
+-		printk (KERN_WARNING "EXT4-fs warning: mounting unchecked fs, "
+-			"running e2fsck is recommended\n");
++		printk(KERN_WARNING "EXT4-fs warning: mounting unchecked fs, "
++		       "running e2fsck is recommended\n");
+ 	else if ((sbi-&gt;s_mount_state &amp; EXT4_ERROR_FS))
+-		printk (KERN_WARNING
+-			"EXT4-fs warning: mounting fs with errors, "
+-			"running e2fsck is recommended\n");
++		printk(KERN_WARNING
++		       "EXT4-fs warning: mounting fs with errors, "
++		       "running e2fsck is recommended\n");
+ 	else if ((__s16) le16_to_cpu(es-&gt;s_max_mnt_count) &gt;= 0 &amp;&amp;
+ 		 le16_to_cpu(es-&gt;s_mnt_count) &gt;=
+ 		 (unsigned short) (__s16) le16_to_cpu(es-&gt;s_max_mnt_count))
+-		printk (KERN_WARNING
+-			"EXT4-fs warning: maximal mount count reached, "
+-			"running e2fsck is recommended\n");
++		printk(KERN_WARNING
++		       "EXT4-fs warning: maximal mount count reached, "
++		       "running e2fsck is recommended\n");
+ 	else if (le32_to_cpu(es-&gt;s_checkinterval) &amp;&amp;
+ 		(le32_to_cpu(es-&gt;s_lastcheck) +
+ 			le32_to_cpu(es-&gt;s_checkinterval) &lt;= get_seconds()))
+-		printk (KERN_WARNING
+-			"EXT4-fs warning: checktime reached, "
+-			"running e2fsck is recommended\n");
++		printk(KERN_WARNING
++		       "EXT4-fs warning: checktime reached, "
++		       "running e2fsck is recommended\n");
+ #if 0
+ 		/* @@@ We _will_ want to clear the valid bit if we find
+ 		 * inconsistencies, to force a fsck at reboot.  But for
+@@ -1596,16 +1595,14 @@ static int ext4_check_descriptors(struct super_block *sb)
+ 				(EXT4_BLOCKS_PER_GROUP(sb) - 1);
+ 
+ 		block_bitmap = ext4_block_bitmap(sb, gdp);
+-		if (block_bitmap &lt; first_block || block_bitmap &gt; last_block)
+-		{
++		if (block_bitmap &lt; first_block || block_bitmap &gt; last_block) {
+ 			printk(KERN_ERR "EXT4-fs: ext4_check_descriptors: "
+ 			       "Block bitmap for group %lu not in group "
+ 			       "(block %llu)!", i, block_bitmap);
+ 			return 0;
+ 		}
+ 		inode_bitmap = ext4_inode_bitmap(sb, gdp);
+-		if (inode_bitmap &lt; first_block || inode_bitmap &gt; last_block)
+-		{
++		if (inode_bitmap &lt; first_block || inode_bitmap &gt; last_block) {
+ 			printk(KERN_ERR "EXT4-fs: ext4_check_descriptors: "
+ 			       "Inode bitmap for group %lu not in group "
+ 			       "(block %llu)!", i, inode_bitmap);
+@@ -1613,8 +1610,7 @@ static int ext4_check_descriptors(struct super_block *sb)
+ 		}
+ 		inode_table = ext4_inode_table(sb, gdp);
+ 		if (inode_table &lt; first_block ||
+-		    inode_table + sbi-&gt;s_itb_per_group - 1 &gt; last_block)
+-		{
++		    inode_table + sbi-&gt;s_itb_per_group - 1 &gt; last_block) {
+ 			printk(KERN_ERR "EXT4-fs: ext4_check_descriptors: "
+ 			       "Inode table for group %lu not in group "
+ 			       "(block %llu)!", i, inode_table);
+@@ -1635,7 +1631,7 @@ static int ext4_check_descriptors(struct super_block *sb)
+ 	}
+ 
+ 	ext4_free_blocks_count_set(sbi-&gt;s_es, ext4_count_free_blocks(sb));
+-	sbi-&gt;s_es-&gt;s_free_inodes_count=cpu_to_le32(ext4_count_free_inodes(sb));
++	sbi-&gt;s_es-&gt;s_free_inodes_count = cpu_to_le32(ext4_count_free_inodes(sb));
+ 	return 1;
+ }
+ 
+@@ -1656,8 +1652,8 @@ static int ext4_check_descriptors(struct super_block *sb)
+  * e2fsck was run on this filesystem, and it must have already done the orphan
+  * inode cleanup for us, so we can safely abort without any further action.
+  */
+-static void ext4_orphan_cleanup (struct super_block * sb,
+-				 struct ext4_super_block * es)
++static void ext4_orphan_cleanup(struct super_block *sb,
++				struct ext4_super_block *es)
+ {
+ 	unsigned int s_flags = sb-&gt;s_flags;
+ 	int nr_orphans = 0, nr_truncates = 0;
+@@ -1734,7 +1730,7 @@ static void ext4_orphan_cleanup (struct super_block * sb,
+ 		iput(inode);  /* The delete magic happens here! */
+ 	}
+ 
+-#define PLURAL(x) (x), ((x)==1) ? "" : "s"
++#define PLURAL(x) (x), ((x) == 1) ? "" : "s"
+ 
+ 	if (nr_orphans)
+ 		printk(KERN_INFO "EXT4-fs: %s: %d orphan inode%s deleted\n",
+@@ -1901,12 +1897,12 @@ static unsigned long ext4_get_stripe_size(struct ext4_sb_info *sbi)
+ 	return 0;
+ }
+ 
+-static int ext4_fill_super (struct super_block *sb, void *data, int silent)
++static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 				__releases(kernel_lock)
+ 				__acquires(kernel_lock)
+ 
+ {
+-	struct buffer_head * bh;
++	struct buffer_head *bh;
+ 	struct ext4_super_block *es = NULL;
+ 	struct ext4_sb_info *sbi;
+ 	ext4_fsblk_t block;
+@@ -1955,7 +1951,7 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 	}
+ 
+ 	if (!(bh = sb_bread(sb, logical_sb_block))) {
+-		printk (KERN_ERR "EXT4-fs: unable to read superblock\n");
++		printk(KERN_ERR "EXT4-fs: unable to read superblock\n");
+ 		goto out_fail;
+ 	}
+ 	/*
+@@ -2028,8 +2024,8 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 	set_opt(sbi-&gt;s_mount_opt, DELALLOC);
+ 
+ 
+-	if (!parse_options ((char *) data, sb, &amp;journal_inum, &amp;journal_devnum,
+-			    NULL, 0))
++	if (!parse_options((char *) data, sb, &amp;journal_inum, &amp;journal_devnum,
++			   NULL, 0))
+ 		goto failed_mount;
+ 
+ 	sb-&gt;s_flags = (sb-&gt;s_flags &amp; ~MS_POSIXACL) |
+@@ -2104,7 +2100,7 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 			goto failed_mount;
+ 		}
+ 
+-		brelse (bh);
++		brelse(bh);
+ 		logical_sb_block = sb_block * EXT4_MIN_BLOCK_SIZE;
+ 		offset = do_div(logical_sb_block, blocksize);
+ 		bh = sb_bread(sb, logical_sb_block);
+@@ -2116,8 +2112,8 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 		es = (struct ext4_super_block *)(((char *)bh-&gt;b_data) + offset);
+ 		sbi-&gt;s_es = es;
+ 		if (es-&gt;s_magic != cpu_to_le16(EXT4_SUPER_MAGIC)) {
+-			printk (KERN_ERR
+-				"EXT4-fs: Magic mismatch, very weird !\n");
++			printk(KERN_ERR
++			       "EXT4-fs: Magic mismatch, very weird !\n");
+ 			goto failed_mount;
+ 		}
+ 	}
+@@ -2134,9 +2130,9 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 		if ((sbi-&gt;s_inode_size &lt; EXT4_GOOD_OLD_INODE_SIZE) ||
+ 		    (!is_power_of_2(sbi-&gt;s_inode_size)) ||
+ 		    (sbi-&gt;s_inode_size &gt; blocksize)) {
+-			printk (KERN_ERR
+-				"EXT4-fs: unsupported inode size: %d\n",
+-				sbi-&gt;s_inode_size);
++			printk(KERN_ERR
++			       "EXT4-fs: unsupported inode size: %d\n",
++			       sbi-&gt;s_inode_size);
+ 			goto failed_mount;
+ 		}
+ 		if (sbi-&gt;s_inode_size &gt; EXT4_GOOD_OLD_INODE_SIZE)
+@@ -2168,20 +2164,20 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 	sbi-&gt;s_mount_state = le16_to_cpu(es-&gt;s_state);
+ 	sbi-&gt;s_addr_per_block_bits = ilog2(EXT4_ADDR_PER_BLOCK(sb));
+ 	sbi-&gt;s_desc_per_block_bits = ilog2(EXT4_DESC_PER_BLOCK(sb));
+-	for (i=0; i &lt; 4; i++)
++	for (i = 0; i &lt; 4; i++)
+ 		sbi-&gt;s_hash_seed[i] = le32_to_cpu(es-&gt;s_hash_seed[i]);
+ 	sbi-&gt;s_def_hash_version = es-&gt;s_def_hash_version;
+ 
+ 	if (sbi-&gt;s_blocks_per_group &gt; blocksize * 8) {
+-		printk (KERN_ERR
+-			"EXT4-fs: #blocks per group too big: %lu\n",
+-			sbi-&gt;s_blocks_per_group);
++		printk(KERN_ERR
++		       "EXT4-fs: #blocks per group too big: %lu\n",
++		       sbi-&gt;s_blocks_per_group);
+ 		goto failed_mount;
+ 	}
+ 	if (sbi-&gt;s_inodes_per_group &gt; blocksize * 8) {
+-		printk (KERN_ERR
+-			"EXT4-fs: #inodes per group too big: %lu\n",
+-			sbi-&gt;s_inodes_per_group);
++		printk(KERN_ERR
++		       "EXT4-fs: #inodes per group too big: %lu\n",
++		       sbi-&gt;s_inodes_per_group);
+ 		goto failed_mount;
+ 	}
+ 
+@@ -2215,10 +2211,10 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 	sbi-&gt;s_groups_count = blocks_count;
+ 	db_count = (sbi-&gt;s_groups_count + EXT4_DESC_PER_BLOCK(sb) - 1) /
+ 		   EXT4_DESC_PER_BLOCK(sb);
+-	sbi-&gt;s_group_desc = kmalloc(db_count * sizeof (struct buffer_head *),
++	sbi-&gt;s_group_desc = kmalloc(db_count * sizeof(struct buffer_head *),
+ 				    GFP_KERNEL);
+ 	if (sbi-&gt;s_group_desc == NULL) {
+-		printk (KERN_ERR "EXT4-fs: not enough memory\n");
++		printk(KERN_ERR "EXT4-fs: not enough memory\n");
+ 		goto failed_mount;
+ 	}
+ 
+@@ -2228,13 +2224,13 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 		block = descriptor_loc(sb, logical_sb_block, i);
+ 		sbi-&gt;s_group_desc[i] = sb_bread(sb, block);
+ 		if (!sbi-&gt;s_group_desc[i]) {
+-			printk (KERN_ERR "EXT4-fs: "
+-				"can't read group descriptor %d\n", i);
++			printk(KERN_ERR "EXT4-fs: "
++			       "can't read group descriptor %d\n", i);
+ 			db_count = i;
+ 			goto failed_mount2;
+ 		}
+ 	}
+-	if (!ext4_check_descriptors (sb)) {
++	if (!ext4_check_descriptors(sb)) {
+ 		printk(KERN_ERR "EXT4-fs: group descriptors corrupted!\n");
+ 		goto failed_mount2;
+ 	}
+@@ -2310,11 +2306,11 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 		    EXT4_SB(sb)-&gt;s_journal-&gt;j_failed_commit) {
+ 			printk(KERN_CRIT "EXT4-fs error (device %s): "
+ 			       "ext4_fill_super: Journal transaction "
+-			       "%u is corrupt\n", sb-&gt;s_id, 
++			       "%u is corrupt\n", sb-&gt;s_id,
+ 			       EXT4_SB(sb)-&gt;s_journal-&gt;j_failed_commit);
+-			if (test_opt (sb, ERRORS_RO)) {
+-				printk (KERN_CRIT
+-					"Mounting filesystem read-only\n");
++			if (test_opt(sb, ERRORS_RO)) {
++				printk(KERN_CRIT
++				       "Mounting filesystem read-only\n");
+ 				sb-&gt;s_flags |= MS_RDONLY;
+ 				EXT4_SB(sb)-&gt;s_mount_state |= EXT4_ERROR_FS;
+ 				es-&gt;s_state |= cpu_to_le16(EXT4_ERROR_FS);
+@@ -2334,9 +2330,9 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 			goto failed_mount3;
+ 	} else {
+ 		if (!silent)
+-			printk (KERN_ERR
+-				"ext4: No journal on filesystem on %s\n",
+-				sb-&gt;s_id);
++			printk(KERN_ERR
++			       "ext4: No journal on filesystem on %s\n",
++			       sb-&gt;s_id);
+ 		goto failed_mount3;
+ 	}
+ 
+@@ -2420,7 +2416,7 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 		goto failed_mount4;
+ 	}
+ 
+-	ext4_setup_super (sb, es, sb-&gt;s_flags &amp; MS_RDONLY);
++	ext4_setup_super(sb, es, sb-&gt;s_flags &amp; MS_RDONLY);
+ 
+ 	/* determine the minimum size of new large inodes, if present */
+ 	if (sbi-&gt;s_inode_size &gt; EXT4_GOOD_OLD_INODE_SIZE) {
+@@ -2459,12 +2455,12 @@ static int ext4_fill_super (struct super_block *sb, void *data, int silent)
+ 	ext4_orphan_cleanup(sb, es);
+ 	EXT4_SB(sb)-&gt;s_mount_state &amp;= ~EXT4_ORPHAN_FS;
+ 	if (needs_recovery)
+-		printk (KERN_INFO "EXT4-fs: recovery complete.\n");
++		printk(KERN_INFO "EXT4-fs: recovery complete.\n");
+ 	ext4_mark_recovery_complete(sb, es);
+-	printk (KERN_INFO "EXT4-fs: mounted filesystem with %s data mode.\n",
+-		test_opt(sb,DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA ? "journal":
+-		test_opt(sb,DATA_FLAGS) == EXT4_MOUNT_ORDERED_DATA ? "ordered":
+-		"writeback");
++	printk(KERN_INFO "EXT4-fs: mounted filesystem with %s data mode.\n",
++	       test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA ? "journal":
++	       test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_ORDERED_DATA ? "ordered":
++	       "writeback");
+ 
+ 	if (test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA) {
+ 		printk(KERN_WARNING "EXT4-fs: Ignoring delalloc option - "
+@@ -2577,14 +2573,14 @@ static journal_t *ext4_get_journal(struct super_block *sb,
+ static journal_t *ext4_get_dev_journal(struct super_block *sb,
+ 				       dev_t j_dev)
+ {
+-	struct buffer_head * bh;
++	struct buffer_head *bh;
+ 	journal_t *journal;
+ 	ext4_fsblk_t start;
+ 	ext4_fsblk_t len;
+ 	int hblock, blocksize;
+ 	ext4_fsblk_t sb_block;
+ 	unsigned long offset;
+-	struct ext4_super_block * es;
++	struct ext4_super_block *es;
+ 	struct block_device *bdev;
+ 
+ 	bdev = ext4_blkdev_get(j_dev);
+@@ -2699,8 +2695,8 @@ static int ext4_load_journal(struct super_block *sb,
+ 					"unavailable, cannot proceed.\n");
+ 				return -EROFS;
+ 			}
+-			printk (KERN_INFO "EXT4-fs: write access will "
+-					"be enabled during recovery.\n");
++			printk(KERN_INFO "EXT4-fs: write access will "
++			       "be enabled during recovery.\n");
+ 		}
+ 	}
+ 
+@@ -2753,8 +2749,8 @@ static int ext4_load_journal(struct super_block *sb,
+ 	return 0;
+ }
+ 
+-static int ext4_create_journal(struct super_block * sb,
+-			       struct ext4_super_block * es,
++static int ext4_create_journal(struct super_block *sb,
++			       struct ext4_super_block *es,
+ 			       unsigned int journal_inum)
+ {
+ 	journal_t *journal;
+@@ -2795,9 +2791,8 @@ static int ext4_create_journal(struct super_block * sb,
+ 	return 0;
+ }
+ 
+-static void ext4_commit_super (struct super_block * sb,
+-			       struct ext4_super_block * es,
+-			       int sync)
++static void ext4_commit_super(struct super_block *sb,
++			      struct ext4_super_block *es, int sync)
+ {
+ 	struct buffer_head *sbh = EXT4_SB(sb)-&gt;s_sbh;
+ 
+@@ -2818,8 +2813,8 @@ static void ext4_commit_super (struct super_block * sb,
+  * remounting) the filesystem readonly, then we will end up with a
+  * consistent fs on disk.  Record that fact.
+  */
+-static void ext4_mark_recovery_complete(struct super_block * sb,
+-					struct ext4_super_block * es)
++static void ext4_mark_recovery_complete(struct super_block *sb,
++					struct ext4_super_block *es)
+ {
+ 	journal_t *journal = EXT4_SB(sb)-&gt;s_journal;
+ 
+@@ -2841,8 +2836,8 @@ static void ext4_mark_recovery_complete(struct super_block * sb,
+  * has recorded an error from a previous lifetime, move that error to the
+  * main filesystem now.
+  */
+-static void ext4_clear_journal_err(struct super_block * sb,
+-				   struct ext4_super_block * es)
++static void ext4_clear_journal_err(struct super_block *sb,
++				   struct ext4_super_block *es)
+ {
+ 	journal_t *journal;
+ 	int j_errno;
+@@ -2867,7 +2862,7 @@ static void ext4_clear_journal_err(struct super_block * sb,
+ 
+ 		EXT4_SB(sb)-&gt;s_mount_state |= EXT4_ERROR_FS;
+ 		es-&gt;s_state |= cpu_to_le16(EXT4_ERROR_FS);
+-		ext4_commit_super (sb, es, 1);
++		ext4_commit_super(sb, es, 1);
+ 
+ 		jbd2_journal_clear_err(journal);
+ 	}
+@@ -2900,7 +2895,7 @@ int ext4_force_commit(struct super_block *sb)
+  * This implicitly triggers the writebehind on sync().
+  */
+ 
+-static void ext4_write_super (struct super_block * sb)
++static void ext4_write_super(struct super_block *sb)
+ {
+ 	if (mutex_trylock(&amp;sb-&gt;s_lock) != 0)
+ 		BUG();
+@@ -2956,9 +2951,9 @@ static void ext4_unlockfs(struct super_block *sb)
+ 	}
+ }
+ 
+-static int ext4_remount (struct super_block * sb, int * flags, char * data)
++static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ {
+-	struct ext4_super_block * es;
++	struct ext4_super_block *es;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	ext4_fsblk_t n_blocks_count = 0;
+ 	unsigned long old_sb_flags;
+@@ -3086,7 +3081,7 @@ static int ext4_remount (struct super_block * sb, int * flags, char * data)
+ 			sbi-&gt;s_mount_state = le16_to_cpu(es-&gt;s_state);
+ 			if ((err = ext4_group_extend(sb, es, n_blocks_count)))
+ 				goto restore_opts;
+-			if (!ext4_setup_super (sb, es, 0))
++			if (!ext4_setup_super(sb, es, 0))
+ 				sb-&gt;s_flags &amp;= ~MS_RDONLY;
+ 		}
+ 	}
+@@ -3116,7 +3111,7 @@ static int ext4_remount (struct super_block * sb, int * flags, char * data)
+ 	return err;
+ }
+ 
+-static int ext4_statfs (struct dentry * dentry, struct kstatfs * buf)
++static int ext4_statfs(struct dentry *dentry, struct kstatfs *buf)
+ {
+ 	struct super_block *sb = dentry-&gt;d_sb;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+@@ -3354,12 +3349,12 @@ static int ext4_quota_on(struct super_block *sb, int type, int format_id,
+ 	}
+ 	/* Journaling quota? */
+ 	if (EXT4_SB(sb)-&gt;s_qf_names[type]) {
+-		/* Quotafile not of fs root? */
++		/* Quotafile not in fs root? */
+ 		if (nd.path.dentry-&gt;d_parent-&gt;d_inode != sb-&gt;s_root-&gt;d_inode)
+ 			printk(KERN_WARNING
+ 				"EXT4-fs: Quota file not on filesystem root. "
+ 				"Journaled quota will not work.\n");
+- 	}
++	}
+ 
+ 	/*
+ 	 * When we journal data on quota file, we have to flush journal to see
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 93c5fdcdad2e..8954208b4893 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1512,7 +1512,7 @@ static inline void ext4_xattr_hash_entry(struct ext4_xattr_header *header,
+ 	char *name = entry-&gt;e_name;
+ 	int n;
+ 
+-	for (n=0; n &lt; entry-&gt;e_name_len; n++) {
++	for (n = 0; n &lt; entry-&gt;e_name_len; n++) {
+ 		hash = (hash &lt;&lt; NAME_HASH_SHIFT) ^
+ 		       (hash &gt;&gt; (8*sizeof(hash) - NAME_HASH_SHIFT)) ^
+ 		       *name++;</pre><hr><pre>commit 34071da71a665d8c81e3b3467c9a2e7c56386fec
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Aug 1 21:59:19 2008 -0400
+
+    ext4: don't assume extents can't cross block groups when truncating
+    
+    With the FLEX_BG layout, there is no reason why extents can't cross
+    block groups, so make the truncate code reserve enough credits so we
+    don't BUG if we come across such an extent.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index f554703eb924..f7529e27d791 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1910,9 +1910,13 @@ ext4_ext_rm_leaf(handle_t *handle, struct inode *inode,
+ 			BUG_ON(b != ex_ee_block + ex_ee_len - 1);
+ 		}
+ 
+-		/* at present, extent can't cross block group: */
+-		/* leaf + bitmap + group desc + sb + inode */
+-		credits = 5;
++		/*
++		 * 3 for leaf, sb, and inode plus 2 (bmap and group
++		 * descriptor) for each block group; assume two block
++		 * groups plus ex_ee_len/blocks_per_block_group for
++		 * the worst case
++		 */
++		credits = 7 + 2*(ex_ee_len/EXT4_BLOCKS_PER_GROUP(inode-&gt;i_sb));
+ 		if (ex == EXT_FIRST_EXTENT(eh)) {
+ 			correct_index = 1;
+ 			credits += (ext_depth(inode)) + 1;</pre><hr><pre>commit bc965ab3f2b4b7bb898b11d61d25295c2053b8ac
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Aug 2 21:10:38 2008 -0400
+
+    ext4: Fix lack of credits BUG() when deleting a badly fragmented inode
+    
+    The extents codepath for ext4_truncate() requests journal transaction
+    credits in very small chunks, requesting only what is needed.  This
+    means there may not be enough credits left on the transaction handle
+    after ext4_truncate() returns and then when ext4_delete_inode() tries
+    finish up its work, it may not have enough transaction credits,
+    causing a BUG() oops in the jbd2 core.
+    
+    Also, reserve an extra 2 blocks when starting an ext4_delete_inode()
+    since we need to update the inode bitmap, as well as update the
+    orphaned inode linked list.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 37f834bc7cd6..2697eaf0368f 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -191,6 +191,7 @@ static int ext4_journal_test_restart(handle_t *handle, struct inode *inode)
+ void ext4_delete_inode (struct inode * inode)
+ {
+ 	handle_t *handle;
++	int err;
+ 
+ 	if (ext4_should_order_data(inode))
+ 		ext4_begin_ordered_truncate(inode, 0);
+@@ -199,8 +200,9 @@ void ext4_delete_inode (struct inode * inode)
+ 	if (is_bad_inode(inode))
+ 		goto no_delete;
+ 
+-	handle = start_transaction(inode);
++	handle = ext4_journal_start(inode, blocks_for_truncate(inode)+3);
+ 	if (IS_ERR(handle)) {
++		ext4_std_error(inode-&gt;i_sb, PTR_ERR(handle));
+ 		/*
+ 		 * If we're going to skip the normal cleanup, we still need to
+ 		 * make sure that the in-core orphan linked list is properly
+@@ -213,8 +215,34 @@ void ext4_delete_inode (struct inode * inode)
+ 	if (IS_SYNC(inode))
+ 		handle-&gt;h_sync = 1;
+ 	inode-&gt;i_size = 0;
++	err = ext4_mark_inode_dirty(handle, inode);
++	if (err) {
++		ext4_warning(inode-&gt;i_sb, __func__,
++			     "couldn't mark inode dirty (err %d)", err);
++		goto stop_handle;
++	}
+ 	if (inode-&gt;i_blocks)
+ 		ext4_truncate(inode);
++
++	/*
++	 * ext4_ext_truncate() doesn't reserve any slop when it
++	 * restarts journal transactions; therefore there may not be
++	 * enough credits left in the handle to remove the inode from
++	 * the orphan list and set the dtime field.
++	 */
++	if (handle-&gt;h_buffer_credits &lt; 3) {
++		err = ext4_journal_extend(handle, 3);
++		if (err &gt; 0)
++			err = ext4_journal_restart(handle, 3);
++		if (err != 0) {
++			ext4_warning(inode-&gt;i_sb, __func__,
++				     "couldn't extend journal (err %d)", err);
++		stop_handle:
++			ext4_journal_stop(handle);
++			goto no_delete;
++		}
++	}
++
+ 	/*
+ 	 * Kill off the orphan record which ext4_truncate created.
+ 	 * AKPM: I think this can be inside the above `if'.</pre><hr><pre>commit 0123c93998511978556b03d2bb023af92aa24d55
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Aug 1 20:57:54 2008 -0400
+
+    ext4: Fix ext4_ext_journal_restart()
+    
+    The ext4_ext_journal_restart() is a convenience function which checks
+    to see if the requested number of credits is present, and if so it
+    closes the current transaction and attaches the current handle to the
+    new transaction.  Unfortunately, it wasn't proprely checking the
+    return value from ext4_journal_extend(), so it was starting a new
+    transaction when one was not necessary, and returning an error when
+    all that was necessary was to restart the handle with a new
+    transaction.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 8ee1fa54a4e1..f554703eb924 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -99,7 +99,7 @@ static int ext4_ext_journal_restart(handle_t *handle, int needed)
+ 	if (handle-&gt;h_buffer_credits &gt; needed)
+ 		return 0;
+ 	err = ext4_journal_extend(handle, needed);
+-	if (err)
++	if (err &lt;= 0)
+ 		return err;
+ 	return ext4_journal_restart(handle, needed);
+ }</pre><hr><pre>commit 8a266467b8c4841ca994d0fe59f39e584650e3df
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Jul 26 14:34:21 2008 -0400
+
+    ext4: Allow read/only mounts with corrupted block group checksums
+    
+    If the block group checksums are corrupted, still allow the mount to
+    succeed, so e2fsck can have a chance to try to fix things up.  Add
+    code in the remount r/w path to make sure the block group checksums
+    are valid before allowing the filesystem to be remounted read/write.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index b5479b1dff14..876e1c620365 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1626,7 +1626,8 @@ static int ext4_check_descriptors(struct super_block *sb)
+ 			       "Checksum for group %lu failed (%u!=%u)\n",
+ 			       i, le16_to_cpu(ext4_group_desc_csum(sbi, i,
+ 			       gdp)), le16_to_cpu(gdp-&gt;bg_checksum));
+-			return 0;
++			if (!(sb-&gt;s_flags &amp; MS_RDONLY))
++				return 0;
+ 		}
+ 		if (!flexbg_flag)
+ 			first_block += EXT4_BLOCKS_PER_GROUP(sb);
+@@ -2961,6 +2962,7 @@ static int ext4_remount (struct super_block * sb, int * flags, char * data)
+ 	ext4_fsblk_t n_blocks_count = 0;
+ 	unsigned long old_sb_flags;
+ 	struct ext4_mount_options old_opts;
++	ext4_group_t g;
+ 	int err;
+ #ifdef CONFIG_QUOTA
+ 	int i;
+@@ -3038,6 +3040,26 @@ static int ext4_remount (struct super_block * sb, int * flags, char * data)
+ 				goto restore_opts;
+ 			}
+ 
++			/*
++			 * Make sure the group descriptor checksums
++			 * are sane.  If they aren't, refuse to
++			 * remount r/w.
++			 */
++			for (g = 0; g &lt; sbi-&gt;s_groups_count; g++) {
++				struct ext4_group_desc *gdp =
++					ext4_get_group_desc(sb, g, NULL);
++
++				if (!ext4_group_desc_csum_verify(sbi, g, gdp)) {
++					printk(KERN_ERR
++	       "EXT4-fs: ext4_remount: "
++		"Checksum for group %lu failed (%u!=%u)\n",
++		g, le16_to_cpu(ext4_group_desc_csum(sbi, g, gdp)),
++					       le16_to_cpu(gdp-&gt;bg_checksum));
++					err = -EINVAL;
++					goto restore_opts;
++				}
++			}
++
+ 			/*
+ 			 * If we have an unprocessed orphan list hanging
+ 			 * around from a previously readonly bdev mount,</pre><hr><pre>commit 736603ab297506f4396cb5af592004499950fcfd
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Jul 11 19:27:31 2008 -0400
+
+    jbd2: Add commit time into the commit block
+    
+    Carlo Wood has demonstrated that it's possible to recover deleted
+    files from the journal.  Something that will make this easier is if we
+    can put the time of the commit into commit block.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
+index a2ed72f7ceee..92b6ac3df8ab 100644
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -112,6 +112,7 @@ static int journal_submit_commit_record(journal_t *journal,
+ 	struct buffer_head *bh;
+ 	int ret;
+ 	int barrier_done = 0;
++	struct timespec now = current_kernel_time();
+ 
+ 	if (is_journal_aborted(journal))
+ 		return 0;
+@@ -126,6 +127,8 @@ static int journal_submit_commit_record(journal_t *journal,
+ 	tmp-&gt;h_magic = cpu_to_be32(JBD2_MAGIC_NUMBER);
+ 	tmp-&gt;h_blocktype = cpu_to_be32(JBD2_COMMIT_BLOCK);
+ 	tmp-&gt;h_sequence = cpu_to_be32(commit_transaction-&gt;t_tid);
++	tmp-&gt;h_commit_sec = cpu_to_be64(now.tv_sec);
++	tmp-&gt;h_commit_nsec = cpu_to_be32(now.tv_nsec);
+ 
+ 	if (JBD2_HAS_COMPAT_FEATURE(journal,
+ 				    JBD2_FEATURE_COMPAT_CHECKSUM)) {
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index d147f0f90360..ec9cadf58227 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -168,6 +168,8 @@ struct commit_header {
+ 	unsigned char   h_chksum_size;
+ 	unsigned char 	h_padding[2];
+ 	__be32 		h_chksum[JBD2_CHECKSUM_BYTES];
++	__be64		h_commit_sec;
++	__be32		h_commit_nsec;
+ };
+ 
+ /*</pre><hr><pre>commit 7ad72ca60b6be3c79f90a81ce5883e12a2c6e667
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Jul 11 19:27:31 2008 -0400
+
+    ext4: Remove unused variable from ext4_show_options
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 02bf24343979..588cfb408642 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -671,7 +671,6 @@ static int ext4_show_options(struct seq_file *seq, struct vfsmount *vfs)
+ 	unsigned long def_mount_opts;
+ 	struct super_block *sb = vfs-&gt;mnt_sb;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	journal_t *journal = sbi-&gt;s_journal;
+ 	struct ext4_super_block *es = sbi-&gt;s_es;
+ 
+ 	def_mount_opts = le32_to_cpu(es-&gt;s_default_mount_opts);</pre><hr><pre>commit 574ca174c97f790086e3e6f2251381420ad38fd0
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Fri Jul 11 19:27:31 2008 -0400
+
+    ext4: Rename read_block_bitmap() to ext4_read_block_bitmap()
+    
+    Since this a non-static function, make it be ext4 specific to avoid
+    conflicts with potentially other filesystems.
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index c29d774abe55..ba411233cc25 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -295,7 +295,7 @@ static int ext4_valid_block_bitmap(struct super_block *sb,
+ 	return 0;
+ }
+ /**
+- * read_block_bitmap()
++ * ext4_read_block_bitmap()
+  * @sb:			super block
+  * @block_group:	given block group
+  *
+@@ -305,7 +305,7 @@ static int ext4_valid_block_bitmap(struct super_block *sb,
+  * Return buffer_head on success or NULL in case of failure.
+  */
+ struct buffer_head *
+-read_block_bitmap(struct super_block *sb, ext4_group_t block_group)
++ext4_read_block_bitmap(struct super_block *sb, ext4_group_t block_group)
+ {
+ 	struct ext4_group_desc * desc;
+ 	struct buffer_head * bh = NULL;
+@@ -693,7 +693,7 @@ void ext4_free_blocks_sb(handle_t *handle, struct super_block *sb,
+ 		count -= overflow;
+ 	}
+ 	brelse(bitmap_bh);
+-	bitmap_bh = read_block_bitmap(sb, block_group);
++	bitmap_bh = ext4_read_block_bitmap(sb, block_group);
+ 	if (!bitmap_bh)
+ 		goto error_return;
+ 	desc = ext4_get_group_desc (sb, block_group, &amp;gd_bh);
+@@ -1733,7 +1733,7 @@ ext4_fsblk_t ext4_new_blocks_old(handle_t *handle, struct inode *inode,
+ 		my_rsv = NULL;
+ 
+ 	if (free_blocks &gt; 0) {
+-		bitmap_bh = read_block_bitmap(sb, group_no);
++		bitmap_bh = ext4_read_block_bitmap(sb, group_no);
+ 		if (!bitmap_bh)
+ 			goto io_error;
+ 		grp_alloc_blk = ext4_try_to_allocate_with_rsv(sb, handle,
+@@ -1769,7 +1769,7 @@ ext4_fsblk_t ext4_new_blocks_old(handle_t *handle, struct inode *inode,
+ 			continue;
+ 
+ 		brelse(bitmap_bh);
+-		bitmap_bh = read_block_bitmap(sb, group_no);
++		bitmap_bh = ext4_read_block_bitmap(sb, group_no);
+ 		if (!bitmap_bh)
+ 			goto io_error;
+ 		/*
+@@ -1985,7 +1985,7 @@ ext4_fsblk_t ext4_count_free_blocks(struct super_block *sb)
+ 			continue;
+ 		desc_count += le16_to_cpu(gdp-&gt;bg_free_blocks_count);
+ 		brelse(bitmap_bh);
+-		bitmap_bh = read_block_bitmap(sb, i);
++		bitmap_bh = ext4_read_block_bitmap(sb, i);
+ 		if (bitmap_bh == NULL)
+ 			continue;
+ 
+diff --git a/fs/ext4/group.h b/fs/ext4/group.h
+index 7eb0604e7eea..c2c0a8d06d0e 100644
+--- a/fs/ext4/group.h
++++ b/fs/ext4/group.h
+@@ -13,7 +13,7 @@ extern __le16 ext4_group_desc_csum(struct ext4_sb_info *sbi, __u32 group,
+ 				   struct ext4_group_desc *gdp);
+ extern int ext4_group_desc_csum_verify(struct ext4_sb_info *sbi, __u32 group,
+ 				       struct ext4_group_desc *gdp);
+-struct buffer_head *read_block_bitmap(struct super_block *sb,
++struct buffer_head *ext4_read_block_bitmap(struct super_block *sb,
+ 				      ext4_group_t block_group);
+ extern unsigned ext4_init_block_bitmap(struct super_block *sb,
+ 				       struct buffer_head *bh,
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index 11cafe14aa27..b30cc79b9fcb 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -600,7 +600,7 @@ struct inode *ext4_new_inode(handle_t *handle, struct inode * dir, int mode)
+ 	/* We may have to initialize the block bitmap if it isn't already */
+ 	if (EXT4_HAS_RO_COMPAT_FEATURE(sb, EXT4_FEATURE_RO_COMPAT_GDT_CSUM) &amp;&amp;
+ 	    gdp-&gt;bg_flags &amp; cpu_to_le16(EXT4_BG_BLOCK_UNINIT)) {
+-		struct buffer_head *block_bh = read_block_bitmap(sb, group);
++		struct buffer_head *block_bh = ext4_read_block_bitmap(sb, group);
+ 
+ 		BUFFER_TRACE(block_bh, "get block bitmap access");
+ 		err = ext4_journal_get_write_access(handle, block_bh);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 6d69dd92aadb..21ee6d42ee7b 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2326,7 +2326,7 @@ static int ext4_mb_init_backend(struct super_block *sb)
+ 			meta_group_info[j]-&gt;bb_bitmap =
+ 				kmalloc(sb-&gt;s_blocksize, GFP_KERNEL);
+ 			BUG_ON(meta_group_info[j]-&gt;bb_bitmap == NULL);
+-			bh = read_block_bitmap(sb, i);
++			bh = ext4_read_block_bitmap(sb, i);
+ 			BUG_ON(bh == NULL);
+ 			memcpy(meta_group_info[j]-&gt;bb_bitmap, bh-&gt;b_data,
+ 					sb-&gt;s_blocksize);
+@@ -2769,7 +2769,7 @@ ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
+ 
+ 
+ 	err = -EIO;
+-	bitmap_bh = read_block_bitmap(sb, ac-&gt;ac_b_ex.fe_group);
++	bitmap_bh = ext4_read_block_bitmap(sb, ac-&gt;ac_b_ex.fe_group);
+ 	if (!bitmap_bh)
+ 		goto out_err;
+ 
+@@ -3589,7 +3589,7 @@ ext4_mb_discard_group_preallocations(struct super_block *sb,
+ 	if (list_empty(&amp;grp-&gt;bb_prealloc_list))
+ 		return 0;
+ 
+-	bitmap_bh = read_block_bitmap(sb, group);
++	bitmap_bh = ext4_read_block_bitmap(sb, group);
+ 	if (bitmap_bh == NULL) {
+ 		/* error handling here */
+ 		ext4_mb_release_desc(&amp;e4b);
+@@ -3763,7 +3763,7 @@ void ext4_mb_discard_inode_preallocations(struct inode *inode)
+ 		err = ext4_mb_load_buddy(sb, group, &amp;e4b);
+ 		BUG_ON(err != 0); /* error handling here */
+ 
+-		bitmap_bh = read_block_bitmap(sb, group);
++		bitmap_bh = ext4_read_block_bitmap(sb, group);
+ 		if (bitmap_bh == NULL) {
+ 			/* error handling here */
+ 			ext4_mb_release_desc(&amp;e4b);
+@@ -4262,7 +4262,7 @@ void ext4_mb_free_blocks(handle_t *handle, struct inode *inode,
+ 		overflow = bit + count - EXT4_BLOCKS_PER_GROUP(sb);
+ 		count -= overflow;
+ 	}
+-	bitmap_bh = read_block_bitmap(sb, block_group);
++	bitmap_bh = ext4_read_block_bitmap(sb, block_group);
+ 	if (!bitmap_bh)
+ 		goto error_return;
+ 	gdp = ext4_get_group_desc(sb, block_group, &amp;gd_bh);</pre><hr><pre>commit 034772b068be62a79470d6c1b81b01fbe27793ac
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Tue Jun 3 22:31:11 2008 -0400
+
+    jbd2: Fix barrier fallback code to re-lock the buffer head
+    
+    If the device doesn't support write barriers, the write is retried
+    without ordered mode.  But the buffer head needs to be re-locked or
+    submit_bh will fail with on BUG(!buffer_locked(bh)).
+    
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
+index 4d99685fdce4..a2ed72f7ceee 100644
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -168,6 +168,7 @@ static int journal_submit_commit_record(journal_t *journal,
+ 		spin_unlock(&amp;journal-&gt;j_state_lock);
+ 
+ 		/* And try again, without the barrier */
++		lock_buffer(bh);
+ 		set_buffer_uptodate(bh);
+ 		set_buffer_dirty(bh);
+ 		ret = submit_bh(WRITE, bh);</pre><hr><pre>commit cd0b6a39a1d68b61b1073662f40f747c8b728f98
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon May 26 10:28:28 2008 -0400
+
+    ext4: Display the journal_async_commit mount option in /proc/mounts
+    
+    Cc: Andreas Dilger &lt;adilger@clusterfs.com&gt;
+    Cc: Girish Shilamkar &lt;girish@clusterfs.com&gt;
+    Signed-off-by: "Theodore Ts'o" &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index d01a32e8b50a..ba92c606ad9a 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -731,6 +731,8 @@ static int ext4_show_options(struct seq_file *seq, struct vfsmount *vfs)
+ 	}
+ 	if (test_opt(sb, BARRIER))
+ 		seq_puts(seq, ",barrier=1");
++	if (test_opt(sb, JOURNAL_ASYNC_COMMIT))
++		seq_puts(seq, ",journal_async_commit");
+ 	if (test_opt(sb, NOBH))
+ 		seq_puts(seq, ",nobh");
+ 	if (!test_opt(sb, EXTENTS))</pre>
+    <div class="pagination">
+        <a href='1_108.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><a href='1_22.html'>22</a><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><span>[109]</span><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_110.html'>Next&gt;&gt;</a>
+    <div>
+</body>

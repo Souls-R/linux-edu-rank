@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by University of Utah</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by University of Utah</h1>
+    <div class="pagination">
+        <span>[1]</span>
+    </div>
+    <hr>
+    <pre>commit 1455b6ac210d5c094066264e7a6809c3a6a9a4d2
+Author: Soham Bagchi &lt;soham.bagchi@utah.edu&gt;
+Date:   Mon Jul 28 12:43:18 2025 -0600
+
+    kcov: load acquire coverage count in user-space code
+    
+    Update the KCOV documentation to use a load-acquire operation for the
+    first element of the shared memory buffer between kernel-space and
+    user-space.
+    
+    The load-acquire pairs with the write memory barrier used in
+    kcov_move_area().
+    
+    [soham.bagchi@utah.edu: v2]
+      Link: https://lkml.kernel.org/r/20250803180558.2967962-1-soham.bagchi@utah.edu
+    Link: https://lkml.kernel.org/r/20250728184318.1839137-2-soham.bagchi@utah.edu
+    Signed-off-by: Soham Bagchi &lt;soham.bagchi@utah.edu&gt;
+    Reviewed-by: Marco Elver &lt;elver@google.com&gt;
+    Cc: Alexander Potapenko &lt;glider@google.com&gt;
+    Cc: Andrey Konovalov &lt;andreyknvl@gmail.com&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Dmitriy Vyukov &lt;dvyukov@google.com&gt;
+    Cc: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Cc: Thomas Gleinxer &lt;tglx@linutronix.de&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/Documentation/dev-tools/kcov.rst b/Documentation/dev-tools/kcov.rst
+index 6611434e2dd2..8127849d40f5 100644
+--- a/Documentation/dev-tools/kcov.rst
++++ b/Documentation/dev-tools/kcov.rst
+@@ -361,7 +361,12 @@ local tasks spawned by the process and the global task that handles USB bus #1:
+ 	 */
+ 	sleep(2);
+ 
+-	n = __atomic_load_n(&amp;cover[0], __ATOMIC_RELAXED);
++        /*
++         * The load to the coverage count should be an acquire to pair with
++         * pair with the corresponding write memory barrier (smp_wmb()) on
++         * the kernel-side in kcov_move_area().
++         */
++	n = __atomic_load_n(&amp;cover[0], __ATOMIC_ACQUIRE);
+ 	for (i = 0; i &lt; n; i++)
+ 		printf("0x%lx\n", cover[i + 1]);
+ 	if (ioctl(fd, KCOV_DISABLE, 0))</pre><hr><pre>commit c2fe368b6eb24af72708890b04e9a773c8465703
+Author: Soham Bagchi &lt;soham.bagchi@utah.edu&gt;
+Date:   Mon Jul 28 12:43:17 2025 -0600
+
+    kcov: use write memory barrier after memcpy() in kcov_move_area()
+    
+    KCOV Remote uses two separate memory buffers, one private to the kernel
+    space (kcov_remote_areas) and the second one shared between user and
+    kernel space (kcov-&gt;area).  After every pair of kcov_remote_start() and
+    kcov_remote_stop(), the coverage data collected in the kcov_remote_areas
+    is copied to kcov-&gt;area so the user can read the collected coverage data.
+    This memcpy() is located in kcov_move_area().
+    
+    The load/store pattern on the kernel-side [1] is:
+    
+    ```
+    /* dst_area === kcov-&gt;area, dst_area[0] is where the count is stored */
+    dst_len = READ_ONCE(*(unsigned long *)dst_area);
+    ...
+    memcpy(dst_entries, src_entries, ...);
+    ...
+    WRITE_ONCE(*(unsigned long *)dst_area, dst_len + entries_moved);
+    ```
+    
+    And for the user [2]:
+    
+    ```
+    /* cover is equivalent to kcov-&gt;area */
+    n = __atomic_load_n(&amp;cover[0], __ATOMIC_RELAXED);
+    ```
+    
+    Without a write-memory barrier, the atomic load for the user can
+    potentially read fresh values of the count stored at cover[0], but
+    continue to read stale coverage data from the buffer itself.  Hence, we
+    recommend adding a write-memory barrier between the memcpy() and the
+    WRITE_ONCE() in kcov_move_area().
+    
+    Link: https://lkml.kernel.org/r/20250728184318.1839137-1-soham.bagchi@utah.edu
+    Link: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/kernel/kcov.c?h=master#n978 [1]
+    Link: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/dev-tools/kcov.rst#n364 [2]
+    Signed-off-by: Soham Bagchi &lt;soham.bagchi@utah.edu&gt;
+    Reviewed-by: Marco Elver &lt;elver@google.com&gt;
+    Cc: Alexander Potapenko &lt;glider@google.com&gt;
+    Cc: Andrey Konovalov &lt;andreyknvl@gmail.com&gt;
+    Cc: Arnd Bergmann &lt;arnd@arndb.de&gt;
+    Cc: Dmitriy Vyukov &lt;dvyukov@google.com&gt;
+    Cc: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Cc: Thomas Gleinxer &lt;tglx@linutronix.de&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+
+diff --git a/kernel/kcov.c b/kernel/kcov.c
+index 1d85597057e1..6563141f5de9 100644
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -978,6 +978,15 @@ static void kcov_move_area(enum kcov_mode mode, void *dst_area,
+ 	memcpy(dst_entries, src_entries, bytes_to_move);
+ 	entries_moved = bytes_to_move &gt;&gt; entry_size_log;
+ 
++	/*
++	 * A write memory barrier is required here, to ensure
++	 * that the writes from the memcpy() are visible before
++	 * the count is updated. Without this, it is possible for
++	 * a user to observe a new count value but stale
++	 * coverage data.
++	 */
++	smp_wmb();
++
+ 	switch (mode) {
+ 	case KCOV_MODE_TRACE_PC:
+ 		WRITE_ONCE(*(unsigned long *)dst_area, dst_len + entries_moved);</pre><hr><pre>commit 2c2a8dc32cebb71e42cfc2ed1bd433cbec792207
+Author: Shaobo He &lt;shaobo@cs.utah.edu&gt;
+Date:   Thu Feb 28 17:54:06 2019 -0500
+
+    media: platform/sh_veu.c: remove redundant NULL pointer checks
+    
+    Function `sh_veu_find_fmt` returns an address that is an addition of a
+    base pointer `sh_veu_fmt` and an offset. The base pointer refers to a
+    global variable of which address cannot be NULL. Therefore, this commit
+    removes the NULL pointer checks on the return values of function
+    `sh_veu_find_fmt`.
+    
+    Signed-off-by: Shaobo He &lt;shaobo@cs.utah.edu&gt;
+    Signed-off-by: Hans Verkuil &lt;hverkuil-cisco@xs4all.nl&gt;
+    Signed-off-by: Mauro Carvalho Chehab &lt;mchehab+samsung@kernel.org&gt;
+
+diff --git a/drivers/media/platform/sh_veu.c b/drivers/media/platform/sh_veu.c
+index d277cc674349..5a9ba05c996e 100644
+--- a/drivers/media/platform/sh_veu.c
++++ b/drivers/media/platform/sh_veu.c
+@@ -493,9 +493,6 @@ static int sh_veu_try_fmt_vid_cap(struct file *file, void *priv,
+ 	const struct sh_veu_format *fmt;
+ 
+ 	fmt = sh_veu_find_fmt(f);
+-	if (!fmt)
+-		/* wrong buffer type */
+-		return -EINVAL;
+ 
+ 	return sh_veu_try_fmt(f, fmt);
+ }
+@@ -506,9 +503,6 @@ static int sh_veu_try_fmt_vid_out(struct file *file, void *priv,
+ 	const struct sh_veu_format *fmt;
+ 
+ 	fmt = sh_veu_find_fmt(f);
+-	if (!fmt)
+-		/* wrong buffer type */
+-		return -EINVAL;
+ 
+ 	return sh_veu_try_fmt(f, fmt);
+ }</pre><hr><pre>commit 952a3cc9c06a6143147ccdd108c5ef8ac9a6454c
+Author: Shaobo He &lt;shaobo@cs.utah.edu&gt;
+Date:   Thu Feb 28 15:38:38 2019 -0700
+
+    cxgb4: kfree mhp after the debug print
+    
+    In function `c4iw_dealloc_mw`, variable mhp's value is printed after
+    freed, it is clearer to have the print before the kfree.
+    
+    Otherwise racing threads could allocate another mhp with the same pointer
+    value and create confusing tracing.
+    
+    Signed-off-by: Shaobo He &lt;shaobo@cs.utah.edu&gt;
+    Signed-off-by: Jason Gunthorpe &lt;jgg@mellanox.com&gt;
+
+diff --git a/drivers/infiniband/hw/cxgb4/mem.c b/drivers/infiniband/hw/cxgb4/mem.c
+index 8d1ab8273c2b..5baa31ab6366 100644
+--- a/drivers/infiniband/hw/cxgb4/mem.c
++++ b/drivers/infiniband/hw/cxgb4/mem.c
+@@ -678,8 +678,8 @@ int c4iw_dealloc_mw(struct ib_mw *mw)
+ 			  mhp-&gt;wr_waitp);
+ 	kfree_skb(mhp-&gt;dereg_skb);
+ 	c4iw_put_wr_wait(mhp-&gt;wr_waitp);
+-	kfree(mhp);
+ 	pr_debug("ib_mw %p mmid 0x%x ptr %p\n", mw, mmid, mhp);
++	kfree(mhp);
+ 	return 0;
+ }
+ </pre><hr><pre>commit 0baae41ea8365a7b5a34c6474a77d7eb1126f6b2
+Author: Scotty Bauer &lt;sbauer@eng.utah.edu&gt;
+Date:   Thu Oct 9 15:30:26 2014 -0700
+
+    kernel/sys.c: compat sysinfo syscall: fix undefined behavior
+    
+    Fix undefined behavior and compiler warning by replacing right shift 32
+    with upper_32_bits macro
+    
+    Signed-off-by: Scotty Bauer &lt;sbauer@eng.utah.edu&gt;
+    Cc: Clemens Ladisch &lt;clemens@ladisch.de&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 037fd76bdc76..dfce4debd138 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2330,7 +2330,7 @@ COMPAT_SYSCALL_DEFINE1(sysinfo, struct compat_sysinfo __user *, info)
+ 	/* Check to see if any memory value is too large for 32-bit and scale
+ 	 *  down if needed
+ 	 */
+-	if ((s.totalram &gt;&gt; 32) || (s.totalswap &gt;&gt; 32)) {
++	if (upper_32_bits(s.totalram) || upper_32_bits(s.totalswap)) {
+ 		int bitcount = 0;
+ 
+ 		while (s.mem_unit &lt; PAGE_SIZE) {</pre>
+    <div class="pagination">
+        <span>[1]</span>
+    <div>
+</body>

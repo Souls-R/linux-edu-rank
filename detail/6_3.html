@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Zhejiang University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Zhejiang University</h1>
+    <div class="pagination">
+        <a href='6_2.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><a href='6_2.html'>2</a><span>[3]</span><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_37.html'>37</a><a href='6_38.html'>38</a><a href='6_4.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 90a7138619a0c55e2aefaad27b12ffc2ddbeed78
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Sun Mar 16 00:51:13 2025 +0800
+
+    net/neighbor: add missing policy for NDTPA_QUEUE_LENBYTES
+    
+    Previous commit 8b5c171bb3dc ("neigh: new unresolved queue limits")
+    introduces new netlink attribute NDTPA_QUEUE_LENBYTES to represent
+    approximative value for deprecated QUEUE_LEN. However, it forgot to add
+    the associated nla_policy in nl_ntbl_parm_policy array. Fix it with one
+    simple NLA_U32 type policy.
+    
+    Fixes: 8b5c171bb3dc ("neigh: new unresolved queue limits")
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Link: https://patch.msgid.link/20250315165113.37600-1-linma@zju.edu.cn
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index bd0251bd74a1..1a620f903c56 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2250,6 +2250,7 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
+ static const struct nla_policy nl_ntbl_parm_policy[NDTPA_MAX+1] = {
+ 	[NDTPA_IFINDEX]			= { .type = NLA_U32 },
+ 	[NDTPA_QUEUE_LEN]		= { .type = NLA_U32 },
++	[NDTPA_QUEUE_LENBYTES]		= { .type = NLA_U32 },
+ 	[NDTPA_PROXY_QLEN]		= { .type = NLA_U32 },
+ 	[NDTPA_APP_PROBES]		= { .type = NLA_U32 },
+ 	[NDTPA_UCAST_PROBES]		= { .type = NLA_U32 },</pre><hr><pre>commit 2e3dbf938656986cce73ac4083500d0bcfbffe24
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Sun Dec 1 01:05:26 2024 +0800
+
+    wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
+    
+    Since the netlink attribute range validation provides inclusive
+    checking, the *max* of attribute NL80211_ATTR_MLO_LINK_ID should be
+    IEEE80211_MLD_MAX_NUM_LINKS - 1 otherwise causing an off-by-one.
+    
+    One crash stack for demonstration:
+    ==================================================================
+    BUG: KASAN: wild-memory-access in ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
+    Read of size 6 at addr 001102080000000c by task fuzzer.386/9508
+    
+    CPU: 1 PID: 9508 Comm: syz.1.386 Not tainted 6.1.70 #2
+    Call Trace:
+     &lt;TASK&gt;
+     __dump_stack lib/dump_stack.c:88 [inline]
+     dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
+     print_report+0xe0/0x750 mm/kasan/report.c:398
+     kasan_report+0x139/0x170 mm/kasan/report.c:495
+     kasan_check_range+0x287/0x290 mm/kasan/generic.c:189
+     memcpy+0x25/0x60 mm/kasan/shadow.c:65
+     ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
+     rdev_tx_control_port net/wireless/rdev-ops.h:761 [inline]
+     nl80211_tx_control_port+0x7b3/0xc40 net/wireless/nl80211.c:15453
+     genl_family_rcv_msg_doit+0x22e/0x320 net/netlink/genetlink.c:756
+     genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
+     genl_rcv_msg+0x539/0x740 net/netlink/genetlink.c:850
+     netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
+     genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
+     netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
+     netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
+     netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
+     sock_sendmsg_nosec net/socket.c:716 [inline]
+     __sock_sendmsg net/socket.c:728 [inline]
+     ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
+     ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
+     __sys_sendmsg net/socket.c:2582 [inline]
+     __do_sys_sendmsg net/socket.c:2591 [inline]
+     __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
+     do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+     do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
+     entry_SYSCALL_64_after_hwframe+0x63/0xcd
+    
+    Update the policy to ensure correct validation.
+    
+    Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Suggested-by: Cengiz Can &lt;cengiz.can@canonical.com&gt;
+    Link: https://patch.msgid.link/20241130170526.96698-1-linma@zju.edu.cn
+    Signed-off-by: Johannes Berg &lt;johannes.berg@intel.com&gt;
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 9d2edb71f981..dd84fc54fb9b 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -814,7 +814,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MLO_LINKS] =
+ 		NLA_POLICY_NESTED_ARRAY(nl80211_policy),
+ 	[NL80211_ATTR_MLO_LINK_ID] =
+-		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS),
++		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS - 1),
+ 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
+ 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },</pre><hr><pre>commit 47dd5447cab8ce30a847a0337d5341ae4c7476a7
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Tue Oct 15 21:16:21 2024 +0800
+
+    net: wwan: fix global oob in wwan_rtnl_policy
+    
+    The variable wwan_rtnl_link_ops assign a *bigger* maxtype which leads to
+    a global out-of-bounds read when parsing the netlink attributes. Exactly
+    same bug cause as the oob fixed in commit b33fb5b801c6 ("net: qualcomm:
+    rmnet: fix global oob in rmnet_policy").
+    
+    ==================================================================
+    BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:388 [inline]
+    BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x19d7/0x29a0 lib/nlattr.c:603
+    Read of size 1 at addr ffffffff8b09cb60 by task syz.1.66276/323862
+    
+    CPU: 0 PID: 323862 Comm: syz.1.66276 Not tainted 6.1.70 #1
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+    Call Trace:
+     &lt;TASK&gt;
+     __dump_stack lib/dump_stack.c:88 [inline]
+     dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
+     print_address_description mm/kasan/report.c:284 [inline]
+     print_report+0x14f/0x750 mm/kasan/report.c:395
+     kasan_report+0x139/0x170 mm/kasan/report.c:495
+     validate_nla lib/nlattr.c:388 [inline]
+     __nla_validate_parse+0x19d7/0x29a0 lib/nlattr.c:603
+     __nla_parse+0x3c/0x50 lib/nlattr.c:700
+     nla_parse_nested_deprecated include/net/netlink.h:1269 [inline]
+     __rtnl_newlink net/core/rtnetlink.c:3514 [inline]
+     rtnl_newlink+0x7bc/0x1fd0 net/core/rtnetlink.c:3623
+     rtnetlink_rcv_msg+0x794/0xef0 net/core/rtnetlink.c:6122
+     netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
+     netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
+     netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
+     netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
+     sock_sendmsg_nosec net/socket.c:716 [inline]
+     __sock_sendmsg net/socket.c:728 [inline]
+     ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
+     ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
+     __sys_sendmsg net/socket.c:2582 [inline]
+     __do_sys_sendmsg net/socket.c:2591 [inline]
+     __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
+     do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+     do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
+     entry_SYSCALL_64_after_hwframe+0x63/0xcd
+    RIP: 0033:0x7f67b19a24ad
+    RSP: 002b:00007f67b17febb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+    RAX: ffffffffffffffda RBX: 00007f67b1b45f80 RCX: 00007f67b19a24ad
+    RDX: 0000000000000000 RSI: 0000000020005e40 RDI: 0000000000000004
+    RBP: 00007f67b1a1e01d R08: 0000000000000000 R09: 0000000000000000
+    R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+    R13: 00007ffd2513764f R14: 00007ffd251376e0 R15: 00007f67b17fed40
+     &lt;/TASK&gt;
+    
+    The buggy address belongs to the variable:
+     wwan_rtnl_policy+0x20/0x40
+    
+    The buggy address belongs to the physical page:
+    page:ffffea00002c2700 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xb09c
+    flags: 0xfff00000001000(reserved|node=0|zone=1|lastcpupid=0x7ff)
+    raw: 00fff00000001000 ffffea00002c2708 ffffea00002c2708 0000000000000000
+    raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+    page dumped because: kasan: bad access detected
+    page_owner info is not present (never set?)
+    
+    Memory state around the buggy address:
+     ffffffff8b09ca00: 05 f9 f9 f9 05 f9 f9 f9 00 01 f9 f9 00 01 f9 f9
+     ffffffff8b09ca80: 00 00 00 05 f9 f9 f9 f9 00 00 03 f9 f9 f9 f9 f9
+    &gt;ffffffff8b09cb00: 00 00 00 00 05 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
+                                                           ^
+     ffffffff8b09cb80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    ==================================================================
+    
+    According to the comment of `nla_parse_nested_deprecated`, use correct size
+    `IFLA_WWAN_MAX` here to fix this issue.
+    
+    Fixes: 88b710532e53 ("wwan: add interface creation support")
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Reviewed-by: Loic Poulain &lt;loic.poulain@linaro.org&gt;
+    Reviewed-by: Simon Horman &lt;horms@kernel.org&gt;
+    Link: https://patch.msgid.link/20241015131621.47503-1-linma@zju.edu.cn
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+index 17431f1b1a0c..65a7ed4d6766 100644
+--- a/drivers/net/wwan/wwan_core.c
++++ b/drivers/net/wwan/wwan_core.c
+@@ -1038,7 +1038,7 @@ static const struct nla_policy wwan_rtnl_policy[IFLA_WWAN_MAX + 1] = {
+ 
+ static struct rtnl_link_ops wwan_rtnl_link_ops __read_mostly = {
+ 	.kind = "wwan",
+-	.maxtype = __IFLA_WWAN_MAX,
++	.maxtype = IFLA_WWAN_MAX,
+ 	.alloc = wwan_rtnl_alloc,
+ 	.validate = wwan_rtnl_validate,
+ 	.newlink = wwan_rtnl_newlink,</pre><hr><pre>commit 221af82f606d928ccef19a16d35633c63026f1be
+Author: Haoran Zhang &lt;wh1sper@zju.edu.cn&gt;
+Date:   Tue Oct 1 15:14:15 2024 -0500
+
+    vhost/scsi: null-ptr-dereference in vhost_scsi_get_req()
+    
+    Since commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code
+    from control queue handler") a null pointer dereference bug can be
+    triggered when guest sends an SCSI AN request.
+    
+    In vhost_scsi_ctl_handle_vq(), `vc.target` is assigned with
+    `&amp;v_req.tmf.lun[1]` within a switch-case block and is then passed to
+    vhost_scsi_get_req() which extracts `vc-&gt;req` and `tpg`. However, for
+    a `VIRTIO_SCSI_T_AN_*` request, tpg is not required, so `vc.target` is
+    set to NULL in this branch. Later, in vhost_scsi_get_req(),
+    `vc-&gt;target` is dereferenced without being checked, leading to a null
+    pointer dereference bug. This bug can be triggered from guest.
+    
+    When this bug occurs, the vhost_worker process is killed while holding
+    `vq-&gt;mutex` and the corresponding tpg will remain occupied
+    indefinitely.
+    
+    Below is the KASAN report:
+    Oops: general protection fault, probably for non-canonical address
+    0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
+    KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+    CPU: 1 PID: 840 Comm: poc Not tainted 6.10.0+ #1
+    Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS
+    1.16.3-debian-1.16.3-2 04/01/2014
+    RIP: 0010:vhost_scsi_get_req+0x165/0x3a0
+    Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 2b 02 00 00
+    48 b8 00 00 00 00 00 fc ff df 4d 8b 65 30 4c 89 e2 48 c1 ea 03 &lt;0f&gt; b6
+    04 02 4c 89 e2 83 e2 07 38 d0 7f 08 84 c0 0f 85 be 01 00 00
+    RSP: 0018:ffff888017affb50 EFLAGS: 00010246
+    RAX: dffffc0000000000 RBX: ffff88801b000000 RCX: 0000000000000000
+    RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888017affcb8
+    RBP: ffff888017affb80 R08: 0000000000000000 R09: 0000000000000000
+    R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+    R13: ffff888017affc88 R14: ffff888017affd1c R15: ffff888017993000
+    FS:  000055556e076500(0000) GS:ffff88806b100000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 00000000200027c0 CR3: 0000000010ed0004 CR4: 0000000000370ef0
+    Call Trace:
+     &lt;TASK&gt;
+     ? show_regs+0x86/0xa0
+     ? die_addr+0x4b/0xd0
+     ? exc_general_protection+0x163/0x260
+     ? asm_exc_general_protection+0x27/0x30
+     ? vhost_scsi_get_req+0x165/0x3a0
+     vhost_scsi_ctl_handle_vq+0x2a4/0xca0
+     ? __pfx_vhost_scsi_ctl_handle_vq+0x10/0x10
+     ? __switch_to+0x721/0xeb0
+     ? __schedule+0xda5/0x5710
+     ? __kasan_check_write+0x14/0x30
+     ? _raw_spin_lock+0x82/0xf0
+     vhost_scsi_ctl_handle_kick+0x52/0x90
+     vhost_run_work_list+0x134/0x1b0
+     vhost_task_fn+0x121/0x350
+    ...
+     &lt;/TASK&gt;
+    ---[ end trace 0000000000000000 ]---
+    
+    Let's add a check in vhost_scsi_get_req.
+    
+    Fixes: 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from control queue handler")
+    Signed-off-by: Haoran Zhang &lt;wh1sper@zju.edu.cn&gt;
+    [whitespace fixes]
+    Signed-off-by: Mike Christie &lt;michael.christie@oracle.com&gt;
+    Message-Id: &lt;b26d7ddd-b098-4361-88f8-17ca7f90adf7@oracle.com&gt;
+    Signed-off-by: Michael S. Tsirkin &lt;mst@redhat.com&gt;
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 006ffacf1c56..c50f3fb49a66 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -1029,20 +1029,23 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
+ 		/* virtio-scsi spec requires byte 0 of the lun to be 1 */
+ 		vq_err(vq, "Illegal virtio-scsi lun: %u\n", *vc-&gt;lunp);
+ 	} else {
+-		struct vhost_scsi_tpg **vs_tpg, *tpg;
+-
+-		vs_tpg = vhost_vq_get_backend(vq);	/* validated at handler entry */
+-
+-		tpg = READ_ONCE(vs_tpg[*vc-&gt;target]);
+-		if (unlikely(!tpg)) {
+-			vq_err(vq, "Target 0x%x does not exist\n", *vc-&gt;target);
+-		} else {
+-			if (tpgp)
+-				*tpgp = tpg;
+-			ret = 0;
++		struct vhost_scsi_tpg **vs_tpg, *tpg = NULL;
++
++		if (vc-&gt;target) {
++			/* validated at handler entry */
++			vs_tpg = vhost_vq_get_backend(vq);
++			tpg = READ_ONCE(vs_tpg[*vc-&gt;target]);
++			if (unlikely(!tpg)) {
++				vq_err(vq, "Target 0x%x does not exist\n", *vc-&gt;target);
++				goto out;
++			}
+ 		}
+-	}
+ 
++		if (tpgp)
++			*tpgp = tpg;
++		ret = 0;
++	}
++out:
+ 	return ret;
+ }
+ </pre><hr><pre>commit fe87a8deaad46c9a45381624f7e5f2f4fd145721
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Fri May 31 09:28:47 2024 +0800
+
+    netfilter: cttimeout: remove 'l3num' attr check
+    
+    After commit dd2934a95701 ("netfilter: conntrack: remove l3-&gt;l4 mapping
+    information"), the attribute of type `CTA_TIMEOUT_L3PROTO` is not used
+    any more in function cttimeout_default_set.
+    
+    However, the previous commit ea9cf2a55a7b ("netfilter: cttimeout: remove
+    set but not used variable 'l3num'") forgot to remove the attribute
+    present check when removing the related variable.
+    
+    This commit removes that check to ensure consistency.
+    
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Reviewed-by: Simon Horman &lt;horms@kernel.org&gt;
+    Signed-off-by: Pablo Neira Ayuso &lt;pablo@netfilter.org&gt;
+
+diff --git a/net/netfilter/nfnetlink_cttimeout.c b/net/netfilter/nfnetlink_cttimeout.c
+index f466af4f8531..eab4f476b47f 100644
+--- a/net/netfilter/nfnetlink_cttimeout.c
++++ b/net/netfilter/nfnetlink_cttimeout.c
+@@ -366,8 +366,7 @@ static int cttimeout_default_set(struct sk_buff *skb,
+ 	__u8 l4num;
+ 	int ret;
+ 
+-	if (!cda[CTA_TIMEOUT_L3PROTO] ||
+-	    !cda[CTA_TIMEOUT_L4PROTO] ||
++	if (!cda[CTA_TIMEOUT_L4PROTO] ||
+ 	    !cda[CTA_TIMEOUT_DATA])
+ 		return -EINVAL;
+ </pre><hr><pre>commit 166fcf86cd34e15c7f383eda4642d7a212393008
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Thu May 30 13:17:33 2024 +0800
+
+    ax25: Replace kfree() in ax25_dev_free() with ax25_dev_put()
+    
+    The object "ax25_dev" is managed by reference counting. Thus it should
+    not be directly released by kfree(), replace with ax25_dev_put().
+    
+    Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
+    Suggested-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20240530051733.11416-1-duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index 742d7c68e7e7..9efd6690b344 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -196,7 +196,7 @@ void __exit ax25_dev_free(void)
+ 	list_for_each_entry_safe(s, n, &amp;ax25_dev_list, list) {
+ 		netdev_put(s-&gt;dev, &amp;s-&gt;dev_tracker);
+ 		list_del(&amp;s-&gt;list);
+-		kfree(s);
++		ax25_dev_put(s);
+ 	}
+ 	spin_unlock_bh(&amp;ax25_dev_lock);
+ }</pre><hr><pre>commit ab904521f4de52fef4f179d2dfc1877645ef5f5c
+Author: Lin Ma &lt;linma@zju.edu.cn&gt;
+Date:   Tue May 21 15:50:59 2024 +0800
+
+    wifi: cfg80211: pmsr: use correct nla_get_uX functions
+    
+    The commit 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM
+    initiator API") defines four attributes NL80211_PMSR_FTM_REQ_ATTR_
+    {NUM_BURSTS_EXP}/{BURST_PERIOD}/{BURST_DURATION}/{FTMS_PER_BURST} in
+    following ways.
+    
+    static const struct nla_policy
+    nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+        ...
+        [NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP] =
+            NLA_POLICY_MAX(NLA_U8, 15),
+        [NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD] = { .type = NLA_U16 },
+        [NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION] =
+            NLA_POLICY_MAX(NLA_U8, 15),
+        [NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST] =
+            NLA_POLICY_MAX(NLA_U8, 31),
+        ...
+    };
+    
+    That is, those attributes are expected to be NLA_U8 and NLA_U16 types.
+    However, the consumers of these attributes in `pmsr_parse_ftm` blindly
+    all use `nla_get_u32`, which is incorrect and causes functionality issues
+    on little-endian platforms. Hence, fix them with the correct `nla_get_u8`
+    and `nla_get_u16` functions.
+    
+    Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
+    Signed-off-by: Lin Ma &lt;linma@zju.edu.cn&gt;
+    Link: https://msgid.link/20240521075059.47999-1-linma@zju.edu.cn
+    Signed-off-by: Johannes Berg &lt;johannes.berg@intel.com&gt;
+
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index e106dcea3977..c569c37da317 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -56,7 +56,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out-&gt;ftm.burst_period = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD])
+ 		out-&gt;ftm.burst_period =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
++			nla_get_u16(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
+ 
+ 	out-&gt;ftm.asap = !!tb[NL80211_PMSR_FTM_REQ_ATTR_ASAP];
+ 	if (out-&gt;ftm.asap &amp;&amp; !capa-&gt;ftm.asap) {
+@@ -75,7 +75,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out-&gt;ftm.num_bursts_exp = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP])
+ 		out-&gt;ftm.num_bursts_exp =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
+ 
+ 	if (capa-&gt;ftm.max_bursts_exponent &gt;= 0 &amp;&amp;
+ 	    out-&gt;ftm.num_bursts_exp &gt; capa-&gt;ftm.max_bursts_exponent) {
+@@ -88,7 +88,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out-&gt;ftm.burst_duration = 15;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION])
+ 		out-&gt;ftm.burst_duration =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
+ 
+ 	out-&gt;ftm.ftms_per_burst = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST])
+@@ -107,7 +107,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out-&gt;ftm.ftmr_retries = 3;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES])
+ 		out-&gt;ftm.ftmr_retries =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
+ 
+ 	out-&gt;ftm.request_lci = !!tb[NL80211_PMSR_FTM_REQ_ATTR_REQUEST_LCI];
+ 	if (out-&gt;ftm.request_lci &amp;&amp; !capa-&gt;ftm.request_lci) {</pre><hr><pre>commit 36e56b1b002bb26440403053f19f9e1a8bc075b2
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Thu May 9 17:37:02 2024 +0800
+
+    ax25: Fix reference count leak issue of net_device
+    
+    There is a reference count leak issue of the object "net_device" in
+    ax25_dev_device_down(). When the ax25 device is shutting down, the
+    ax25_dev_device_down() drops the reference count of net_device one
+    or zero times depending on if we goto unlock_put or not, which will
+    cause memory leak.
+    
+    In order to solve the above issue, decrease the reference count of
+    net_device after dev-&gt;ax25_ptr is set to null.
+    
+    Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
+    Suggested-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Link: https://lore.kernel.org/r/7ce3b23a40d9084657ba1125432f0ecc380cbc80.1715247018.git.duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index 52ccc37d5687..c9d55b99a7a5 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -118,15 +118,10 @@ void ax25_dev_device_down(struct net_device *dev)
+ 	list_for_each_entry(s, &amp;ax25_dev_list, list) {
+ 		if (s == ax25_dev) {
+ 			list_del(&amp;s-&gt;list);
+-			goto unlock_put;
++			break;
+ 		}
+ 	}
+-	dev-&gt;ax25_ptr = NULL;
+-	spin_unlock_bh(&amp;ax25_dev_lock);
+-	ax25_dev_put(ax25_dev);
+-	return;
+ 
+-unlock_put:
+ 	dev-&gt;ax25_ptr = NULL;
+ 	spin_unlock_bh(&amp;ax25_dev_lock);
+ 	netdev_put(dev, &amp;ax25_dev-&gt;dev_tracker);</pre><hr><pre>commit b505e0319852b08a3a716b64620168eab21f4ced
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Thu May 9 17:36:47 2024 +0800
+
+    ax25: Fix reference count leak issues of ax25_dev
+    
+    The ax25_addr_ax25dev() and ax25_dev_device_down() exist a reference
+    count leak issue of the object "ax25_dev".
+    
+    Memory leak issue in ax25_addr_ax25dev():
+    
+    The reference count of the object "ax25_dev" can be increased multiple
+    times in ax25_addr_ax25dev(). This will cause a memory leak.
+    
+    Memory leak issues in ax25_dev_device_down():
+    
+    The reference count of ax25_dev is set to 1 in ax25_dev_device_up() and
+    then increase the reference count when ax25_dev is added to ax25_dev_list.
+    As a result, the reference count of ax25_dev is 2. But when the device is
+    shutting down. The ax25_dev_device_down() drops the reference count once
+    or twice depending on if we goto unlock_put or not, which will cause
+    memory leak.
+    
+    As for the issue of ax25_addr_ax25dev(), it is impossible for one pointer
+    to be on a list twice. So add a break in ax25_addr_ax25dev(). As for the
+    issue of ax25_dev_device_down(), increase the reference count of ax25_dev
+    once in ax25_dev_device_up() and decrease the reference count of ax25_dev
+    after it is removed from the ax25_dev_list.
+    
+    Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
+    Suggested-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Link: https://lore.kernel.org/r/361bbf2a4b091e120006279ec3b382d73c4a0c17.1715247018.git.duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index f16ee5c09d07..52ccc37d5687 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -39,6 +39,7 @@ ax25_dev *ax25_addr_ax25dev(ax25_address *addr)
+ 		if (ax25cmp(addr, (const ax25_address *)ax25_dev-&gt;dev-&gt;dev_addr) == 0) {
+ 			res = ax25_dev;
+ 			ax25_dev_hold(ax25_dev);
++			break;
+ 		}
+ 	spin_unlock_bh(&amp;ax25_dev_lock);
+ 
+@@ -88,7 +89,6 @@ void ax25_dev_device_up(struct net_device *dev)
+ 	list_add(&amp;ax25_dev-&gt;list, &amp;ax25_dev_list);
+ 	dev-&gt;ax25_ptr     = ax25_dev;
+ 	spin_unlock_bh(&amp;ax25_dev_lock);
+-	ax25_dev_hold(ax25_dev);
+ 
+ 	ax25_register_dev_sysctl(ax25_dev);
+ }
+@@ -129,7 +129,6 @@ void ax25_dev_device_down(struct net_device *dev)
+ unlock_put:
+ 	dev-&gt;ax25_ptr = NULL;
+ 	spin_unlock_bh(&amp;ax25_dev_lock);
+-	ax25_dev_put(ax25_dev);
+ 	netdev_put(dev, &amp;ax25_dev-&gt;dev_tracker);
+ 	ax25_dev_put(ax25_dev);
+ }</pre><hr><pre>commit a7d6e36b9ad052926ba2ecba3a59d8bb67dabcb4
+Author: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+Date:   Thu May 9 17:36:33 2024 +0800
+
+    ax25: Use kernel universal linked list to implement ax25_dev_list
+    
+    The origin ax25_dev_list implements its own single linked list,
+    which is complicated and error-prone. For example, when deleting
+    the node of ax25_dev_list in ax25_dev_device_down(), we have to
+    operate on the head node and other nodes separately.
+    
+    This patch uses kernel universal linked list to replace original
+    ax25_dev_list, which make the operation of ax25_dev_list easier.
+    
+    We should do "dev-&gt;ax25_ptr = ax25_dev;" and "dev-&gt;ax25_ptr = NULL;"
+    while holding the spinlock, otherwise the ax25_dev_device_up() and
+    ax25_dev_device_down() could race.
+    
+    Suggested-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Signed-off-by: Duoming Zhou &lt;duoming@zju.edu.cn&gt;
+    Reviewed-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Link: https://lore.kernel.org/r/85bba3af651ca0e1a519da8d0d715b949891171c.1715247018.git.duoming@zju.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/include/net/ax25.h b/include/net/ax25.h
+index 0d939e5aee4e..c2a85fd3f5ea 100644
+--- a/include/net/ax25.h
++++ b/include/net/ax25.h
+@@ -216,7 +216,7 @@ typedef struct {
+ struct ctl_table;
+ 
+ typedef struct ax25_dev {
+-	struct ax25_dev		*next;
++	struct list_head	list;
+ 
+ 	struct net_device	*dev;
+ 	netdevice_tracker	dev_tracker;
+@@ -330,7 +330,6 @@ int ax25_addr_size(const ax25_digi *);
+ void ax25_digi_invert(const ax25_digi *, ax25_digi *);
+ 
+ /* ax25_dev.c */
+-extern ax25_dev *ax25_dev_list;
+ extern spinlock_t ax25_dev_lock;
+ 
+ #if IS_ENABLED(CONFIG_AX25)
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index 282ec581c072..f16ee5c09d07 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -22,11 +22,12 @@
+ #include &lt;net/sock.h&gt;
+ #include &lt;linux/uaccess.h&gt;
+ #include &lt;linux/fcntl.h&gt;
++#include &lt;linux/list.h&gt;
+ #include &lt;linux/mm.h&gt;
+ #include &lt;linux/interrupt.h&gt;
+ #include &lt;linux/init.h&gt;
+ 
+-ax25_dev *ax25_dev_list;
++static LIST_HEAD(ax25_dev_list);
+ DEFINE_SPINLOCK(ax25_dev_lock);
+ 
+ ax25_dev *ax25_addr_ax25dev(ax25_address *addr)
+@@ -34,7 +35,7 @@ ax25_dev *ax25_addr_ax25dev(ax25_address *addr)
+ 	ax25_dev *ax25_dev, *res = NULL;
+ 
+ 	spin_lock_bh(&amp;ax25_dev_lock);
+-	for (ax25_dev = ax25_dev_list; ax25_dev != NULL; ax25_dev = ax25_dev-&gt;next)
++	list_for_each_entry(ax25_dev, &amp;ax25_dev_list, list)
+ 		if (ax25cmp(addr, (const ax25_address *)ax25_dev-&gt;dev-&gt;dev_addr) == 0) {
+ 			res = ax25_dev;
+ 			ax25_dev_hold(ax25_dev);
+@@ -59,7 +60,6 @@ void ax25_dev_device_up(struct net_device *dev)
+ 	}
+ 
+ 	refcount_set(&amp;ax25_dev-&gt;refcount, 1);
+-	dev-&gt;ax25_ptr     = ax25_dev;
+ 	ax25_dev-&gt;dev     = dev;
+ 	netdev_hold(dev, &amp;ax25_dev-&gt;dev_tracker, GFP_KERNEL);
+ 	ax25_dev-&gt;forward = NULL;
+@@ -85,8 +85,8 @@ void ax25_dev_device_up(struct net_device *dev)
+ #endif
+ 
+ 	spin_lock_bh(&amp;ax25_dev_lock);
+-	ax25_dev-&gt;next = ax25_dev_list;
+-	ax25_dev_list  = ax25_dev;
++	list_add(&amp;ax25_dev-&gt;list, &amp;ax25_dev_list);
++	dev-&gt;ax25_ptr     = ax25_dev;
+ 	spin_unlock_bh(&amp;ax25_dev_lock);
+ 	ax25_dev_hold(ax25_dev);
+ 
+@@ -111,32 +111,25 @@ void ax25_dev_device_down(struct net_device *dev)
+ 	/*
+ 	 *	Remove any packet forwarding that points to this device.
+ 	 */
+-	for (s = ax25_dev_list; s != NULL; s = s-&gt;next)
++	list_for_each_entry(s, &amp;ax25_dev_list, list)
+ 		if (s-&gt;forward == dev)
+ 			s-&gt;forward = NULL;
+ 
+-	if ((s = ax25_dev_list) == ax25_dev) {
+-		ax25_dev_list = s-&gt;next;
+-		goto unlock_put;
+-	}
+-
+-	while (s != NULL &amp;&amp; s-&gt;next != NULL) {
+-		if (s-&gt;next == ax25_dev) {
+-			s-&gt;next = ax25_dev-&gt;next;
++	list_for_each_entry(s, &amp;ax25_dev_list, list) {
++		if (s == ax25_dev) {
++			list_del(&amp;s-&gt;list);
+ 			goto unlock_put;
+ 		}
+-
+-		s = s-&gt;next;
+ 	}
+-	spin_unlock_bh(&amp;ax25_dev_lock);
+ 	dev-&gt;ax25_ptr = NULL;
++	spin_unlock_bh(&amp;ax25_dev_lock);
+ 	ax25_dev_put(ax25_dev);
+ 	return;
+ 
+ unlock_put:
++	dev-&gt;ax25_ptr = NULL;
+ 	spin_unlock_bh(&amp;ax25_dev_lock);
+ 	ax25_dev_put(ax25_dev);
+-	dev-&gt;ax25_ptr = NULL;
+ 	netdev_put(dev, &amp;ax25_dev-&gt;dev_tracker);
+ 	ax25_dev_put(ax25_dev);
+ }
+@@ -200,16 +193,13 @@ struct net_device *ax25_fwd_dev(struct net_device *dev)
+  */
+ void __exit ax25_dev_free(void)
+ {
+-	ax25_dev *s, *ax25_dev;
++	ax25_dev *s, *n;
+ 
+ 	spin_lock_bh(&amp;ax25_dev_lock);
+-	ax25_dev = ax25_dev_list;
+-	while (ax25_dev != NULL) {
+-		s        = ax25_dev;
+-		netdev_put(ax25_dev-&gt;dev, &amp;ax25_dev-&gt;dev_tracker);
+-		ax25_dev = ax25_dev-&gt;next;
++	list_for_each_entry_safe(s, n, &amp;ax25_dev_list, list) {
++		netdev_put(s-&gt;dev, &amp;s-&gt;dev_tracker);
++		list_del(&amp;s-&gt;list);
+ 		kfree(s);
+ 	}
+-	ax25_dev_list = NULL;
+ 	spin_unlock_bh(&amp;ax25_dev_lock);
+ }</pre>
+    <div class="pagination">
+        <a href='6_2.html'>&lt;&lt;Prev</a><a href='6.html'>1</a><a href='6_2.html'>2</a><span>[3]</span><a href='6_4.html'>4</a><a href='6_5.html'>5</a><a href='6_6.html'>6</a><a href='6_7.html'>7</a><a href='6_8.html'>8</a><a href='6_9.html'>9</a><a href='6_10.html'>10</a><a href='6_11.html'>11</a><a href='6_12.html'>12</a><a href='6_13.html'>13</a><a href='6_14.html'>14</a><a href='6_15.html'>15</a><a href='6_16.html'>16</a><a href='6_17.html'>17</a><a href='6_18.html'>18</a><a href='6_19.html'>19</a><a href='6_20.html'>20</a><a href='6_21.html'>21</a><a href='6_22.html'>22</a><a href='6_23.html'>23</a><a href='6_24.html'>24</a><a href='6_25.html'>25</a><a href='6_26.html'>26</a><a href='6_27.html'>27</a><a href='6_28.html'>28</a><a href='6_29.html'>29</a><a href='6_30.html'>30</a><a href='6_31.html'>31</a><a href='6_32.html'>32</a><a href='6_33.html'>33</a><a href='6_34.html'>34</a><a href='6_35.html'>35</a><a href='6_36.html'>36</a><a href='6_37.html'>37</a><a href='6_38.html'>38</a><a href='6_4.html'>Next&gt;&gt;</a>
+    <div>
+</body>

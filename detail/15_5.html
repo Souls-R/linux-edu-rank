@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Carnegie Mellon University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Carnegie Mellon University</h1>
+    <div class="pagination">
+        <a href='15_4.html'>&lt;&lt;Prev</a><a href='15.html'>1</a><a href='15_2.html'>2</a><a href='15_3.html'>3</a><a href='15_4.html'>4</a><span>[5]</span><a href='15_6.html'>6</a><a href='15_7.html'>7</a><a href='15_8.html'>8</a><a href='15_6.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 8c6d21528406ec719aaea9d589876fd105c31646
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:43 2007 -0700
+
+    coda: allow removal of busy directories
+    
+    A directory without children may still be busy when it is the cwd for some
+    process.  We can safely remove such a directory because the VFS prevents
+    further operations.  Also we don't need to call d_delete as it is already
+    called in vfs_rmdir.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/dir.c b/fs/coda/dir.c
+index 56a3b76b91ca..01f55f447d82 100644
+--- a/fs/coda/dir.c
++++ b/fs/coda/dir.c
+@@ -391,28 +391,23 @@ int coda_rmdir(struct inode *dir, struct dentry *de)
+ {
+ 	const char *name = de-&gt;d_name.name;
+ 	int len = de-&gt;d_name.len;
+-        int error;
++	int error;
+ 
+ 	lock_kernel();
+ 	coda_vfs_stat.rmdir++;
+ 
+-	if (!d_unhashed(de)) {
+-		unlock_kernel();
+-		return -EBUSY;
+-	}
+ 	error = venus_rmdir(dir-&gt;i_sb, coda_i2f(dir), name, len);
++	if (!error) {
++		/* VFS may delete the child */
++		if (de-&gt;d_inode)
++		    de-&gt;d_inode-&gt;i_nlink = 0;
+ 
+-	if ( error ) {
+-		unlock_kernel();
+-		return error;
++		/* fix the link count of the parent */
++		coda_dir_drop_nlink(dir);
++		coda_dir_update_mtime(dir);
+ 	}
+-
+-	coda_dir_drop_nlink(dir);
+-	coda_dir_update_mtime(dir);
+-	drop_nlink(de-&gt;d_inode);
+-	d_delete(de);
+ 	unlock_kernel();
+-	return 0;
++	return error;
+ }
+ 
+ /* rename */</pre><hr><pre>commit d728900cd5502927158db747c653007cf72e2e49
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:43 2007 -0700
+
+    coda: fix nlink updates for directories
+    
+    The Coda client sets the directory link count to 1 when it isn't sure how many
+    subdirectories we have.  In this case we shouldn't change the link count in
+    the kernel when a subdirectory is created or removed.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/dir.c b/fs/coda/dir.c
+index 898a86dde8f5..56a3b76b91ca 100644
+--- a/fs/coda/dir.c
++++ b/fs/coda/dir.c
+@@ -173,12 +173,11 @@ int coda_permission(struct inode *inode, int mask, struct nameidata *nd)
+ 
+  out:
+ 	unlock_kernel();
+-
+-        return error; 
++	return error;
+ }
+ 
+ 
+-static inline void coda_dir_changed(struct inode *dir, int link)
++static inline void coda_dir_update_mtime(struct inode *dir)
+ {
+ #ifdef REQUERY_VENUS_FOR_MTIME
+ 	/* invalidate the directory cnode's attributes so we refetch the
+@@ -186,12 +185,27 @@ static inline void coda_dir_changed(struct inode *dir, int link)
+ 	coda_flag_inode(dir, C_VATTR);
+ #else
+ 	/* optimistically we can also act as if our nose bleeds. The
+-         * granularity of the mtime is coarse anyways so we might actually be
+-         * right most of the time. Note: we only do this for directories. */
++	 * granularity of the mtime is coarse anyways so we might actually be
++	 * right most of the time. Note: we only do this for directories. */
+ 	dir-&gt;i_mtime = dir-&gt;i_ctime = CURRENT_TIME_SEC;
+ #endif
+-	if (link)
+-		dir-&gt;i_nlink += link;
++}
++
++/* we have to wrap inc_nlink/drop_nlink because sometimes userspace uses a
++ * trick to fool GNU find's optimizations. If we can't be sure of the link
++ * (because of volume mount points) we set i_nlink to 1 which forces find
++ * to consider every child as a possible directory. We should also never
++ * see an increment or decrement for deleted directories where i_nlink == 0 */
++static inline void coda_dir_inc_nlink(struct inode *dir)
++{
++	if (dir-&gt;i_nlink &gt;= 2)
++		inc_nlink(dir);
++}
++
++static inline void coda_dir_drop_nlink(struct inode *dir)
++{
++	if (dir-&gt;i_nlink &gt; 2)
++		drop_nlink(dir);
+ }
+ 
+ /* creation routines: create, mknod, mkdir, link, symlink */
+@@ -229,10 +243,10 @@ static int coda_create(struct inode *dir, struct dentry *de, int mode, struct na
+ 	}
+ 
+ 	/* invalidate the directory cnode's attributes */
+-	coda_dir_changed(dir, 0);
++	coda_dir_update_mtime(dir);
+ 	unlock_kernel();
+ 	d_instantiate(de, inode);
+-        return 0;
++	return 0;
+ }
+ 
+ static int coda_mkdir(struct inode *dir, struct dentry *de, int mode)
+@@ -268,12 +282,13 @@ static int coda_mkdir(struct inode *dir, struct dentry *de, int mode)
+ 		d_drop(de);
+ 		return PTR_ERR(inode);
+ 	}
+-	
++
+ 	/* invalidate the directory cnode's attributes */
+-	coda_dir_changed(dir, 1);
++	coda_dir_inc_nlink(dir);
++	coda_dir_update_mtime(dir);
+ 	unlock_kernel();
+ 	d_instantiate(de, inode);
+-        return 0;
++	return 0;
+ }
+ 
+ /* try to make de an entry in dir_inodde linked to source_de */ 
+@@ -296,16 +311,16 @@ static int coda_link(struct dentry *source_de, struct inode *dir_inode,
+ 	error = venus_link(dir_inode-&gt;i_sb, coda_i2f(inode),
+ 			   coda_i2f(dir_inode), (const char *)name, len);
+ 
+-	if (error) { 
++	if (error) {
+ 		d_drop(de);
+ 		goto out;
+ 	}
+ 
+-	coda_dir_changed(dir_inode, 0);
++	coda_dir_update_mtime(dir_inode);
+ 	atomic_inc(&amp;inode-&gt;i_count);
+ 	d_instantiate(de, inode);
+ 	inc_nlink(inode);
+-        
++
+ out:
+ 	unlock_kernel();
+ 	return(error);
+@@ -336,18 +351,18 @@ static int coda_symlink(struct inode *dir_inode, struct dentry *de,
+ 
+ 	/*
+ 	 * This entry is now negative. Since we do not create
+-	 * an inode for the entry we have to drop it. 
++	 * an inode for the entry we have to drop it.
+ 	 */
+ 	d_drop(de);
+-	error = venus_symlink(dir_inode-&gt;i_sb, coda_i2f(dir_inode), name, len, 
++	error = venus_symlink(dir_inode-&gt;i_sb, coda_i2f(dir_inode), name, len,
+ 			      symname, symlen);
+ 
+ 	/* mtime is no good anymore */
+ 	if ( !error )
+-		coda_dir_changed(dir_inode, 0);
++		coda_dir_update_mtime(dir_inode);
+ 
+ 	unlock_kernel();
+-        return error;
++	return error;
+ }
+ 
+ /* destruction routines: unlink, rmdir */
+@@ -360,17 +375,16 @@ int coda_unlink(struct inode *dir, struct dentry *de)
+ 	lock_kernel();
+ 	coda_vfs_stat.unlink++;
+ 
+-        error = venus_remove(dir-&gt;i_sb, coda_i2f(dir), name, len);
+-        if ( error ) {
++	error = venus_remove(dir-&gt;i_sb, coda_i2f(dir), name, len);
++	if ( error ) {
+ 		unlock_kernel();
+-                return error;
+-        }
++		return error;
++	}
+ 
+-	coda_dir_changed(dir, 0);
++	coda_dir_update_mtime(dir);
+ 	drop_nlink(de-&gt;d_inode);
+ 	unlock_kernel();
+-
+-        return 0;
++	return 0;
+ }
+ 
+ int coda_rmdir(struct inode *dir, struct dentry *de)
+@@ -388,49 +402,49 @@ int coda_rmdir(struct inode *dir, struct dentry *de)
+ 	}
+ 	error = venus_rmdir(dir-&gt;i_sb, coda_i2f(dir), name, len);
+ 
+-        if ( error ) {
++	if ( error ) {
+ 		unlock_kernel();
+-                return error;
+-        }
++		return error;
++	}
+ 
+-	coda_dir_changed(dir, -1);
++	coda_dir_drop_nlink(dir);
++	coda_dir_update_mtime(dir);
+ 	drop_nlink(de-&gt;d_inode);
+ 	d_delete(de);
+ 	unlock_kernel();
+-
+-        return 0;
++	return 0;
+ }
+ 
+ /* rename */
+-static int coda_rename(struct inode *old_dir, struct dentry *old_dentry, 
++static int coda_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 		       struct inode *new_dir, struct dentry *new_dentry)
+ {
+-        const char *old_name = old_dentry-&gt;d_name.name;
+-        const char *new_name = new_dentry-&gt;d_name.name;
++	const char *old_name = old_dentry-&gt;d_name.name;
++	const char *new_name = new_dentry-&gt;d_name.name;
+ 	int old_length = old_dentry-&gt;d_name.len;
+ 	int new_length = new_dentry-&gt;d_name.len;
+-        int link_adjust = 0;
+-        int error;
++	int error;
+ 
+ 	lock_kernel();
+ 	coda_vfs_stat.rename++;
+ 
+-        error = venus_rename(old_dir-&gt;i_sb, coda_i2f(old_dir), 
+-			     coda_i2f(new_dir), old_length, new_length, 
++	error = venus_rename(old_dir-&gt;i_sb, coda_i2f(old_dir),
++			     coda_i2f(new_dir), old_length, new_length,
+ 			     (const char *) old_name, (const char *)new_name);
+ 
+-        if ( !error ) {
++	if ( !error ) {
+ 		if ( new_dentry-&gt;d_inode ) {
+-			if ( S_ISDIR(new_dentry-&gt;d_inode-&gt;i_mode) )
+-                        	link_adjust = 1;
+-
+-                        coda_dir_changed(old_dir, -link_adjust);
+-                        coda_dir_changed(new_dir,  link_adjust);
++			if ( S_ISDIR(new_dentry-&gt;d_inode-&gt;i_mode) ) {
++				coda_dir_drop_nlink(old_dir);
++				coda_dir_inc_nlink(new_dir);
++			}
++			coda_dir_update_mtime(old_dir);
++			coda_dir_update_mtime(new_dir);
+ 			coda_flag_inode(new_dentry-&gt;d_inode, C_VATTR);
+ 		} else {
+ 			coda_flag_inode(old_dir, C_VATTR);
+ 			coda_flag_inode(new_dir, C_VATTR);
+-                }
++		}
+ 	}
+ 	unlock_kernel();
+ </pre><hr><pre>commit 56ee3547940f895a2cf20f2ac462fbeaee55fa2a
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:42 2007 -0700
+
+    coda: correctly invalidate cached access rights
+    
+    Change the epoch value to forces a refresh instead of clearing the cached
+    rights mask and block all further accesses to the object.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/cache.c b/fs/coda/cache.c
+index fcb88fa8d2f2..11538a2b5423 100644
+--- a/fs/coda/cache.c
++++ b/fs/coda/cache.c
+@@ -43,7 +43,7 @@ void coda_cache_enter(struct inode *inode, int mask)
+ void coda_cache_clear_inode(struct inode *inode)
+ {
+ 	struct coda_inode_info *cii = ITOC(inode);
+-        cii-&gt;c_cached_perm = 0;
++	cii-&gt;c_cached_epoch = atomic_read(&amp;permission_epoch) - 1;
+ }
+ 
+ /* remove all acl caches */</pre><hr><pre>commit 38c2e4370da495813ca93d7cad31ed5090e8c310
+Author: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+Date:   Thu Jul 19 01:48:41 2007 -0700
+
+    coda: do not grab an uninitialized fd when the open upcall returns an error
+    
+    When open fails the fd in the response is uninitialized and we ended up taking
+    a reference on the file struct and never released it.
+    
+    Signed-off-by: Jan Harkes &lt;jaharkes@cs.cmu.edu&gt;
+    Signed-off-by: Andrew Morton &lt;akpm@linux-foundation.org&gt;
+    Signed-off-by: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+
+diff --git a/fs/coda/file.c b/fs/coda/file.c
+index 99dbe866816d..e7d622709c90 100644
+--- a/fs/coda/file.c
++++ b/fs/coda/file.c
+@@ -143,8 +143,11 @@ int coda_open(struct inode *coda_inode, struct file *coda_file)
+ 	lock_kernel();
+ 
+ 	error = venus_open(coda_inode-&gt;i_sb, coda_i2f(coda_inode), coda_flags,
+-			   &amp;host_file); 
+-	if (error || !host_file) {
++			   &amp;host_file);
++	if (!host_file)
++		error = -EIO;
++
++	if (error) {
+ 		kfree(cfi);
+ 		unlock_kernel();
+ 		return error;
+diff --git a/fs/coda/psdev.c b/fs/coda/psdev.c
+index 803aacf0d49c..09382d47a4e1 100644
+--- a/fs/coda/psdev.c
++++ b/fs/coda/psdev.c
+@@ -195,7 +195,8 @@ static ssize_t coda_psdev_write(struct file *file, const char __user *buf,
+ 	if (req-&gt;uc_opcode == CODA_OPEN_BY_FD) {
+ 		struct coda_open_by_fd_out *outp =
+ 			(struct coda_open_by_fd_out *)req-&gt;uc_data;
+-		outp-&gt;fh = fget(outp-&gt;fd);
++		if (!outp-&gt;oh.result)
++			outp-&gt;fh = fget(outp-&gt;fd);
+ 	}
+ 
+         wake_up(&amp;req-&gt;uc_sleep);
+diff --git a/fs/coda/upcall.c b/fs/coda/upcall.c
+index 5faacdb1a479..1651b918219a 100644
+--- a/fs/coda/upcall.c
++++ b/fs/coda/upcall.c
+@@ -251,12 +251,12 @@ int venus_open(struct super_block *sb, struct CodaFid *fid,
+ 	insize = SIZE(open_by_fd);
+ 	UPARG(CODA_OPEN_BY_FD);
+ 
+-        inp-&gt;coda_open.VFid = *fid;
+-        inp-&gt;coda_open.flags = flags;
++	inp-&gt;coda_open_by_fd.VFid = *fid;
++	inp-&gt;coda_open_by_fd.flags = flags;
+ 
+-        error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
+-
+-	*fh = outp-&gt;coda_open_by_fd.fh;
++	error = coda_upcall(coda_sbp(sb), insize, &amp;outsize, inp);
++	if (!error)
++		*fh = outp-&gt;coda_open_by_fd.fh;
+ 
+ 	CODA_FREE(inp, insize);
+ 	return error;</pre><hr><pre>commit 7deeed13170e634adc4552ff94588d6301a3da83
+Author: Benjamin Gilbert &lt;bgilbert@cs.cmu.edu&gt;
+Date:   Tue Jun 19 09:05:21 2007 +0200
+
+    [TRIVIAL PATCH] Kill blk_congestion_wait() stub for !CONFIG_BLOCK
+    
+    blk_congestion_wait() doesn't exist anymore, but there's still a stub
+    in blkdev.h for the !CONFIG_BLOCK case.  Kill it.
+    
+    Signed-off-by: Benjamin Gilbert &lt;bgilbert@cs.cmu.edu&gt;
+    Signed-off-by: Jens Axboe &lt;jens.axboe@oracle.com&gt;
+
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index db5b00a792f5..fae138bd2207 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -868,11 +868,6 @@ void kblockd_flush_work(struct work_struct *work);
+  */
+ #define buffer_heads_over_limit 0
+ 
+-static inline long blk_congestion_wait(int rw, long timeout)
+-{
+-	return io_schedule_timeout(timeout);
+-}
+-
+ static inline long nr_blockdev_pages(void)
+ {
+ 	return 0;</pre><hr><pre>commit d4473b9b778f39f0b5da870a9a96b5778861c60b
+Author: Eric Cooper &lt;ecc@cmu.edu&gt;
+Date:   Sat Jul 29 20:10:54 2017 -0400
+
+    rtc: m41t80: enable wakealarm when "wakeup-source" is specified
+    
+    Don't require an IRQ if the wakeup-source device-tree property is present.
+    
+    Signed-off-by: Eric Cooper &lt;ecc@cmu.edu&gt;
+    Signed-off-by: Alexandre Belloni &lt;alexandre.belloni@free-electrons.com&gt;
+
+diff --git a/drivers/rtc/rtc-m41t80.c b/drivers/rtc/rtc-m41t80.c
+index 8940e9e43ea0..412a4e04de79 100644
+--- a/drivers/rtc/rtc-m41t80.c
++++ b/drivers/rtc/rtc-m41t80.c
+@@ -927,6 +927,7 @@ static int m41t80_probe(struct i2c_client *client,
+ 	struct rtc_device *rtc = NULL;
+ 	struct rtc_time tm;
+ 	struct m41t80_data *m41t80_data = NULL;
++	bool wakeup_source = false;
+ 
+ 	if (!i2c_check_functionality(client-&gt;adapter, I2C_FUNC_SMBUS_I2C_BLOCK |
+ 				     I2C_FUNC_SMBUS_BYTE_DATA)) {
+@@ -947,6 +948,10 @@ static int m41t80_probe(struct i2c_client *client,
+ 		m41t80_data-&gt;features = id-&gt;driver_data;
+ 	i2c_set_clientdata(client, m41t80_data);
+ 
++#ifdef CONFIG_OF
++	wakeup_source = of_property_read_bool(client-&gt;dev.of_node,
++					      "wakeup-source");
++#endif
+ 	if (client-&gt;irq &gt; 0) {
+ 		rc = devm_request_threaded_irq(&amp;client-&gt;dev, client-&gt;irq,
+ 					       NULL, m41t80_handle_irq,
+@@ -955,14 +960,16 @@ static int m41t80_probe(struct i2c_client *client,
+ 		if (rc) {
+ 			dev_warn(&amp;client-&gt;dev, "unable to request IRQ, alarms disabled\n");
+ 			client-&gt;irq = 0;
+-		} else {
+-			m41t80_rtc_ops.read_alarm = m41t80_read_alarm;
+-			m41t80_rtc_ops.set_alarm = m41t80_set_alarm;
+-			m41t80_rtc_ops.alarm_irq_enable = m41t80_alarm_irq_enable;
+-			/* Enable the wakealarm */
+-			device_init_wakeup(&amp;client-&gt;dev, true);
++			wakeup_source = false;
+ 		}
+ 	}
++	if (client-&gt;irq &gt; 0 || wakeup_source) {
++		m41t80_rtc_ops.read_alarm = m41t80_read_alarm;
++		m41t80_rtc_ops.set_alarm = m41t80_set_alarm;
++		m41t80_rtc_ops.alarm_irq_enable = m41t80_alarm_irq_enable;
++		/* Enable the wakealarm */
++		device_init_wakeup(&amp;client-&gt;dev, true);
++	}
+ 
+ 	rtc = devm_rtc_device_register(&amp;client-&gt;dev, client-&gt;name,
+ 				       &amp;m41t80_rtc_ops, THIS_MODULE);
+@@ -970,6 +977,10 @@ static int m41t80_probe(struct i2c_client *client,
+ 		return PTR_ERR(rtc);
+ 
+ 	m41t80_data-&gt;rtc = rtc;
++	if (client-&gt;irq &lt;= 0) {
++		/* We cannot support UIE mode if we do not have an IRQ line */
++		rtc-&gt;uie_unsupported = 1;
++	}
+ 
+ 	/* Make sure HT (Halt Update) bit is cleared */
+ 	rc = i2c_smbus_read_byte_data(client, M41T80_REG_ALARM_HOUR);</pre><hr><pre>commit def7ac806a9ac035abf0e7573ccc8bbfd38e163c
+Author: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+Date:   Tue Mar 8 13:30:50 2016 -0500
+
+    firmware: qemu_fw_cfg.c: hold ACPI global lock during device access
+    
+    Allowing for the future possibility of implementing AML-based
+    (i.e., firmware-triggered) access to the QEMU fw_cfg device,
+    acquire the global ACPI lock when accessing the device on behalf
+    of the guest-side sysfs driver, to prevent any potential race
+    conditions.
+    
+    Suggested-by: Michael S. Tsirkin &lt;mst@redhat.com&gt;
+    Signed-off-by: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+    Signed-off-by: Michael S. Tsirkin &lt;mst@redhat.com&gt;
+
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+index e4c471413d46..815c4a5cae54 100644
+--- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -77,12 +77,28 @@ static inline u16 fw_cfg_sel_endianness(u16 key)
+ static inline void fw_cfg_read_blob(u16 key,
+ 				    void *buf, loff_t pos, size_t count)
+ {
++	u32 glk;
++	acpi_status status;
++
++	/* If we have ACPI, ensure mutual exclusion against any potential
++	 * device access by the firmware, e.g. via AML methods:
++	 */
++	status = acpi_acquire_global_lock(ACPI_WAIT_FOREVER, &amp;glk);
++	if (ACPI_FAILURE(status) &amp;&amp; status != AE_NOT_CONFIGURED) {
++		/* Should never get here */
++		WARN(1, "fw_cfg_read_blob: Failed to lock ACPI!\n");
++		memset(buf, 0, count);
++		return;
++	}
++
+ 	mutex_lock(&amp;fw_cfg_dev_lock);
+ 	iowrite16(fw_cfg_sel_endianness(key), fw_cfg_reg_ctrl);
+ 	while (pos-- &gt; 0)
+ 		ioread8(fw_cfg_reg_data);
+ 	ioread8_rep(fw_cfg_reg_data, buf, count);
+ 	mutex_unlock(&amp;fw_cfg_dev_lock);
++
++	acpi_release_global_lock(glk);
+ }
+ 
+ /* clean up fw_cfg device i/o */</pre><hr><pre>commit 00411b7b1e3ec477b75bb83ccd417c7609832db6
+Author: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+Date:   Mon Feb 22 16:18:18 2016 -0500
+
+    firmware: fw_cfg register offsets on supported architectures only
+    
+    Refrain from defining default fw_cfg register offsets on
+    unsupported architectures -- throw an error instead. If
+    QEMU were to add fw_cfg support on additional architectures,
+    we should add them to the FW_CFG_SYSFS depends statement in
+    drivers/firmware/Kconfig, and provide default values for
+    register offsets in drivers/firmware/qemu_fw_cfg.c at that
+    time.
+    
+    Suggested-by: Michael S. Tsirkin &lt;mst@redhat.com&gt;
+    Signed-off-by: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+    Acked-by: Michael S. Tsirkin &lt;mst@redhat.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+index fedbff55a7f3..7bba76c0206c 100644
+--- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -109,9 +109,7 @@ static void fw_cfg_io_cleanup(void)
+ #  define FW_CFG_CTRL_OFF 0x00
+ #  define FW_CFG_DATA_OFF 0x01
+ # else
+-#  warning "QEMU FW_CFG may not be available on this architecture!"
+-#  define FW_CFG_CTRL_OFF 0x00
+-#  define FW_CFG_DATA_OFF 0x01
++#  error "QEMU FW_CFG not available on this architecture!"
+ # endif
+ #endif
+ </pre><hr><pre>commit 92aed5d6ba90c2031c8d321a02e7af3d4cb05b8d
+Author: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+Date:   Thu Jan 28 09:23:14 2016 -0500
+
+    devicetree: update documentation for fw_cfg ARM bindings
+    
+    Remove fw_cfg hardware interface details from
+    Documentation/devicetree/bindings/arm/fw-cfg.txt,
+    and replace them with a pointer to the authoritative
+    documentation in the QEMU source tree.
+    
+    Signed-off-by: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+    Cc: Laszlo Ersek &lt;lersek@redhat.com&gt;
+    Acked-by: Rob Herring &lt;robh@kernel.org&gt;
+    Reviewed-by: Laszlo Ersek &lt;lersek@redhat.com&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/Documentation/devicetree/bindings/arm/fw-cfg.txt b/Documentation/devicetree/bindings/arm/fw-cfg.txt
+index 953fb640d9c4..fd54e1db2156 100644
+--- a/Documentation/devicetree/bindings/arm/fw-cfg.txt
++++ b/Documentation/devicetree/bindings/arm/fw-cfg.txt
+@@ -11,43 +11,9 @@ QEMU exposes the control and data register to ARM guests as memory mapped
+ registers; their location is communicated to the guest's UEFI firmware in the
+ DTB that QEMU places at the bottom of the guest's DRAM.
+ 
+-The guest writes a selector value (a key) to the selector register, and then
+-can read the corresponding data (produced by QEMU) via the data register. If
+-the selected entry is writable, the guest can rewrite it through the data
+-register.
++The authoritative guest-side hardware interface documentation to the fw_cfg
++device can be found in "docs/specs/fw_cfg.txt" in the QEMU source tree.
+ 
+-The selector register takes keys in big endian byte order.
+-
+-The data register allows accesses with 8, 16, 32 and 64-bit width (only at
+-offset 0 of the register). Accesses larger than a byte are interpreted as
+-arrays, bundled together only for better performance. The bytes constituting
+-such a word, in increasing address order, correspond to the bytes that would
+-have been transferred by byte-wide accesses in chronological order.
+-
+-The interface allows guest firmware to download various parameters and blobs
+-that affect how the firmware works and what tables it installs for the guest
+-OS. For example, boot order of devices, ACPI tables, SMBIOS tables, kernel and
+-initrd images for direct kernel booting, virtual machine UUID, SMP information,
+-virtual NUMA topology, and so on.
+-
+-The authoritative registry of the valid selector values and their meanings is
+-the QEMU source code; the structure of the data blobs corresponding to the
+-individual key values is also defined in the QEMU source code.
+-
+-The presence of the registers can be verified by selecting the "signature" blob
+-with key 0x0000, and reading four bytes from the data register. The returned
+-signature is "QEMU".
+-
+-The outermost protocol (involving the write / read sequences of the control and
+-data registers) is expected to be versioned, and/or described by feature bits.
+-The interface revision / feature bitmap can be retrieved with key 0x0001. The
+-blob to be read from the data register has size 4, and it is to be interpreted
+-as a uint32_t value in little endian byte order. The current value
+-(corresponding to the above outer protocol) is zero.
+-
+-The guest kernel is not expected to use these registers (although it is
+-certainly allowed to); the device tree bindings are documented here because
+-this is where device tree bindings reside in general.
+ 
+ Required properties:
+ </pre><hr><pre>commit 246c46ebaeaef17814dc5a8830d16e7f1b01116b
+Author: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+Date:   Thu Jan 28 09:23:13 2016 -0500
+
+    firmware: create directory hierarchy for sysfs fw_cfg entries
+    
+    Each fw_cfg entry of type "file" has an associated 56-char,
+    nul-terminated ASCII string which represents its name. While
+    the fw_cfg device doesn't itself impose any specific naming
+    convention, QEMU developers have traditionally used path name
+    semantics (i.e. "etc/acpi/rsdp") to descriptively name the
+    various fw_cfg "blobs" passed into the guest.
+    
+    This patch attempts, on a best effort basis, to create a
+    directory hierarchy representing the content of fw_cfg file
+    names, under /sys/firmware/qemu_fw_cfg/by_name.
+    
+    Upon successful creation of all directories representing the
+    "dirname" portion of a fw_cfg file, a symlink will be created
+    to represent the "basename", pointing at the appropriate
+    /sys/firmware/qemu_fw_cfg/by_key entry. If a file name is not
+    suitable for this procedure (e.g., if its basename or dirname
+    components collide with an already existing dirname component
+    or basename, respectively) the corresponding fw_cfg blob is
+    skipped and will remain available in sysfs only by its selector
+    key value.
+    
+    Signed-off-by: Gabriel Somlo &lt;somlo@cmu.edu&gt;
+    Cc: Andy Lutomirski &lt;luto@amacapital.net&gt;
+    Signed-off-by: Greg Kroah-Hartman &lt;gregkh@linuxfoundation.org&gt;
+
+diff --git a/Documentation/ABI/testing/sysfs-firmware-qemu_fw_cfg b/Documentation/ABI/testing/sysfs-firmware-qemu_fw_cfg
+index e9e58d4ea60a..011dda4f8e8a 100644
+--- a/Documentation/ABI/testing/sysfs-firmware-qemu_fw_cfg
++++ b/Documentation/ABI/testing/sysfs-firmware-qemu_fw_cfg
+@@ -56,3 +56,45 @@ Description:
+ 			  entry via the control register, and reading a number
+ 			  of bytes equal to the blob size from the data
+ 			  register.
++
++		--- Listing fw_cfg blobs by file name ---
++
++		While the fw_cfg device does not impose any specific naming
++		convention on the blobs registered in the file directory,
++		QEMU developers have traditionally used path name semantics
++		to give each blob a descriptive name. For example:
++
++			"bootorder"
++			"genroms/kvmvapic.bin"
++			"etc/e820"
++			"etc/boot-fail-wait"
++			"etc/system-states"
++			"etc/table-loader"
++			"etc/acpi/rsdp"
++			"etc/acpi/tables"
++			"etc/smbios/smbios-tables"
++			"etc/smbios/smbios-anchor"
++			...
++
++		In addition to the listing by unique selector key described
++		above, the fw_cfg sysfs driver also attempts to build a tree
++		of directories matching the path name components of fw_cfg
++		blob names, ending in symlinks to the by_key entry for each
++		"basename", as illustrated below (assume current directory is
++		/sys/firmware):
++
++		    qemu_fw_cfg/by_name/bootorder -&gt; ../by_key/38
++		    qemu_fw_cfg/by_name/etc/e820 -&gt; ../../by_key/35
++		    qemu_fw_cfg/by_name/etc/acpi/rsdp -&gt; ../../../by_key/41
++		    ...
++
++		Construction of the directory tree and symlinks is done on a
++		"best-effort" basis, as there is no guarantee that components
++		of fw_cfg blob names are always "well behaved". I.e., there is
++		the possibility that a symlink (basename) will conflict with
++		a dirname component of another fw_cfg blob, in which case the
++		creation of the offending /sys/firmware/qemu_fw_cfg/by_name
++		entry will be skipped.
++
++		The authoritative list of entries will continue to be found
++		under the /sys/firmware/qemu_fw_cfg/by_key directory.
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+index 83e8a5c8f887..19f6851be87f 100644
+--- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -334,9 +334,103 @@ static struct bin_attribute fw_cfg_sysfs_attr_raw = {
+ 	.read = fw_cfg_sysfs_read_raw,
+ };
+ 
+-/* kobjects representing top-level and by_key folders */
++/*
++ * Create a kset subdirectory matching each '/' delimited dirname token
++ * in 'name', starting with sysfs kset/folder 'dir'; At the end, create
++ * a symlink directed at the given 'target'.
++ * NOTE: We do this on a best-effort basis, since 'name' is not guaranteed
++ * to be a well-behaved path name. Whenever a symlink vs. kset directory
++ * name collision occurs, the kernel will issue big scary warnings while
++ * refusing to add the offending link or directory. We follow up with our
++ * own, slightly less scary error messages explaining the situation :)
++ */
++static int fw_cfg_build_symlink(struct kset *dir,
++				struct kobject *target, const char *name)
++{
++	int ret;
++	struct kset *subdir;
++	struct kobject *ko;
++	char *name_copy, *p, *tok;
++
++	if (!dir || !target || !name || !*name)
++		return -EINVAL;
++
++	/* clone a copy of name for parsing */
++	name_copy = p = kstrdup(name, GFP_KERNEL);
++	if (!name_copy)
++		return -ENOMEM;
++
++	/* create folders for each dirname token, then symlink for basename */
++	while ((tok = strsep(&amp;p, "/")) &amp;&amp; *tok) {
++
++		/* last (basename) token? If so, add symlink here */
++		if (!p || !*p) {
++			ret = sysfs_create_link(&amp;dir-&gt;kobj, target, tok);
++			break;
++		}
++
++		/* does the current dir contain an item named after tok ? */
++		ko = kset_find_obj(dir, tok);
++		if (ko) {
++			/* drop reference added by kset_find_obj */
++			kobject_put(ko);
++
++			/* ko MUST be a kset - we're about to use it as one ! */
++			if (ko-&gt;ktype != dir-&gt;kobj.ktype) {
++				ret = -EINVAL;
++				break;
++			}
++
++			/* descend into already existing subdirectory */
++			dir = to_kset(ko);
++		} else {
++			/* create new subdirectory kset */
++			subdir = kzalloc(sizeof(struct kset), GFP_KERNEL);
++			if (!subdir) {
++				ret = -ENOMEM;
++				break;
++			}
++			subdir-&gt;kobj.kset = dir;
++			subdir-&gt;kobj.ktype = dir-&gt;kobj.ktype;
++			ret = kobject_set_name(&amp;subdir-&gt;kobj, "%s", tok);
++			if (ret) {
++				kfree(subdir);
++				break;
++			}
++			ret = kset_register(subdir);
++			if (ret) {
++				kfree(subdir);
++				break;
++			}
++
++			/* descend into newly created subdirectory */
++			dir = subdir;
++		}
++	}
++
++	/* we're done with cloned copy of name */
++	kfree(name_copy);
++	return ret;
++}
++
++/* recursively unregister fw_cfg/by_name/ kset directory tree */
++static void fw_cfg_kset_unregister_recursive(struct kset *kset)
++{
++	struct kobject *k, *next;
++
++	list_for_each_entry_safe(k, next, &amp;kset-&gt;list, entry)
++		/* all set members are ksets too, but check just in case... */
++		if (k-&gt;ktype == kset-&gt;kobj.ktype)
++			fw_cfg_kset_unregister_recursive(to_kset(k));
++
++	/* symlinks are cleanly and automatically removed with the directory */
++	kset_unregister(kset);
++}
++
++/* kobjects &amp; kset representing top-level, by_key, and by_name folders */
+ static struct kobject *fw_cfg_top_ko;
+ static struct kobject *fw_cfg_sel_ko;
++static struct kset *fw_cfg_fname_kset;
+ 
+ /* register an individual fw_cfg file */
+ static int fw_cfg_register_file(const struct fw_cfg_file *f)
+@@ -363,6 +457,9 @@ static int fw_cfg_register_file(const struct fw_cfg_file *f)
+ 	if (err)
+ 		goto err_add_raw;
+ 
++	/* try adding "/sys/firmware/qemu_fw_cfg/by_name/" symlink */
++	fw_cfg_build_symlink(fw_cfg_fname_kset, &amp;entry-&gt;kobj, entry-&gt;f.name);
++
+ 	/* success, add entry to global cache */
+ 	fw_cfg_sysfs_cache_enlist(entry);
+ 	return 0;
+@@ -417,18 +514,21 @@ static int fw_cfg_sysfs_probe(struct platform_device *pdev)
+ 
+ 	/* NOTE: If we supported multiple fw_cfg devices, we'd first create
+ 	 * a subdirectory named after e.g. pdev-&gt;id, then hang per-device
+-	 * by_key subdirectories underneath it. However, only
++	 * by_key (and by_name) subdirectories underneath it. However, only
+ 	 * one fw_cfg device exist system-wide, so if one was already found
+ 	 * earlier, we might as well stop here.
+ 	 */
+ 	if (fw_cfg_sel_ko)
+ 		return -EBUSY;
+ 
+-	/* create by_key subdirectory of /sys/firmware/qemu_fw_cfg/ */
++	/* create by_key and by_name subdirs of /sys/firmware/qemu_fw_cfg/ */
+ 	err = -ENOMEM;
+ 	fw_cfg_sel_ko = kobject_create_and_add("by_key", fw_cfg_top_ko);
+ 	if (!fw_cfg_sel_ko)
+ 		goto err_sel;
++	fw_cfg_fname_kset = kset_create_and_add("by_name", NULL, fw_cfg_top_ko);
++	if (!fw_cfg_fname_kset)
++		goto err_name;
+ 
+ 	/* initialize fw_cfg device i/o from platform data */
+ 	err = fw_cfg_do_platform_probe(pdev);
+@@ -457,6 +557,8 @@ static int fw_cfg_sysfs_probe(struct platform_device *pdev)
+ err_rev:
+ 	fw_cfg_io_cleanup();
+ err_probe:
++	fw_cfg_kset_unregister_recursive(fw_cfg_fname_kset);
++err_name:
+ 	fw_cfg_kobj_cleanup(fw_cfg_sel_ko);
+ err_sel:
+ 	return err;
+@@ -466,6 +568,7 @@ static int fw_cfg_sysfs_remove(struct platform_device *pdev)
+ {
+ 	pr_debug("fw_cfg: unloading.\n");
+ 	fw_cfg_sysfs_cache_cleanup();
++	fw_cfg_kset_unregister_recursive(fw_cfg_fname_kset);
+ 	fw_cfg_kobj_cleanup(fw_cfg_sel_ko);
+ 	fw_cfg_io_cleanup();
+ 	return 0;</pre>
+    <div class="pagination">
+        <a href='15_4.html'>&lt;&lt;Prev</a><a href='15.html'>1</a><a href='15_2.html'>2</a><a href='15_3.html'>3</a><a href='15_4.html'>4</a><span>[5]</span><a href='15_6.html'>6</a><a href='15_7.html'>7</a><a href='15_8.html'>8</a><a href='15_6.html'>Next&gt;&gt;</a>
+    <div>
+</body>

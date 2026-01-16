@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Southeast University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Southeast University</h1>
+    <div class="pagination">
+        <a href='28.html'>&lt;&lt;Prev</a><a href='28.html'>1</a><span>[2]</span><a href='28_3.html'>3</a><a href='28_3.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 76ce17f6f7f78ab79b9741388bdb4dafa985b4e9
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Sun Nov 9 14:56:48 2025 +0000
+
+    crypto: iaa - Fix incorrect return value in save_iaa_wq()
+    
+    The save_iaa_wq() function unconditionally returns 0, even when an error
+    is encountered. This prevents the error code from being propagated to the
+    caller.
+    
+    Fix this by returning the 'ret' variable, which holds the actual status
+    of the operations within the function.
+    
+    Fixes: ea7a5cbb43696 ("crypto: iaa - Add Intel IAA Compression Accelerator crypto driver core")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: Herbert Xu &lt;herbert@gondor.apana.org.au&gt;
+
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index 23f585219fb4..d0058757b000 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -805,7 +805,7 @@ static int save_iaa_wq(struct idxd_wq *wq)
+ 	if (!cpus_per_iaa)
+ 		cpus_per_iaa = 1;
+ out:
+-	return 0;
++	return ret;
+ }
+ 
+ static void remove_iaa_wq(struct idxd_wq *wq)</pre><hr><pre>commit a55ef3bff84f11ee8c84a1ae29b071ffd4ccbbd9
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Mon Nov 10 06:41:25 2025 +0000
+
+    xfrm: fix memory leak in xfrm_add_acquire()
+    
+    The xfrm_add_acquire() function constructs an xfrm policy by calling
+    xfrm_policy_construct(). This allocates the policy structure and
+    potentially associates a security context and a device policy with it.
+    
+    However, at the end of the function, the policy object is freed using
+    only kfree() . This skips the necessary cleanup for the security context
+    and device policy, leading to a memory leak.
+    
+    To fix this, invoke the proper cleanup functions xfrm_dev_policy_delete(),
+    xfrm_dev_policy_free(), and security_xfrm_policy_free() before freeing the
+    policy object. This approach mirrors the error handling path in
+    xfrm_add_policy(), ensuring that all associated resources are correctly
+    released.
+    
+    Fixes: 980ebd25794f ("[IPSEC]: Sync series - acquire insert")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: Sabrina Dubroca &lt;sd@queasysnail.net&gt;
+    Signed-off-by: Steffen Klassert &lt;steffen.klassert@secunet.com&gt;
+
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 9d98cc9daa37..403b5ecac2c5 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3038,6 +3038,9 @@ static int xfrm_add_acquire(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	}
+ 
+ 	xfrm_state_free(x);
++	xfrm_dev_policy_delete(xp);
++	xfrm_dev_policy_free(xp);
++	security_xfrm_policy_free(xp-&gt;security);
+ 	kfree(xp);
+ 
+ 	return 0;</pre><hr><pre>commit 407a06507c2358554958e8164dc97176feddcafc
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed Nov 12 05:21:14 2025 +0000
+
+    mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
+    
+    The function mlxsw_sp_flower_stats() calls mlxsw_sp_acl_ruleset_get() to
+    obtain a ruleset reference. If the subsequent call to
+    mlxsw_sp_acl_rule_lookup() fails to find a rule, the function returns
+    an error without releasing the ruleset reference, causing a memory leak.
+    
+    Fix this by using a goto to the existing error handling label, which
+    calls mlxsw_sp_acl_ruleset_put() to properly release the reference.
+    
+    Fixes: 7c1b8eb175b69 ("mlxsw: spectrum: Add support for TC flower offload statistics")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: Ido Schimmel &lt;idosch@nvidia.com&gt;
+    Link: https://patch.msgid.link/20251112052114.1591695-1-zilin@seu.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+index 6a4a81c63451..353fd9ca89a6 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+@@ -830,8 +830,10 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
+ 		return -EINVAL;
+ 
+ 	rule = mlxsw_sp_acl_rule_lookup(mlxsw_sp, ruleset, f-&gt;cookie);
+-	if (!rule)
+-		return -EINVAL;
++	if (!rule) {
++		err = -EINVAL;
++		goto err_rule_get_stats;
++	}
+ 
+ 	err = mlxsw_sp_acl_rule_get_stats(mlxsw_sp, rule, &amp;packets, &amp;bytes,
+ 					  &amp;drops, &amp;lastuse, &amp;used_hw_stats);</pre><hr><pre>commit 3072f00bba764082fa41b3c3a2a7b013335353d2
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Thu Nov 6 14:45:11 2025 +0000
+
+    net/handshake: Fix memory leak in tls_handshake_accept()
+    
+    In tls_handshake_accept(), a netlink message is allocated using
+    genlmsg_new(). In the error handling path, genlmsg_cancel() is called
+    to cancel the message construction, but the message itself is not freed.
+    This leads to a memory leak.
+    
+    Fix this by calling nlmsg_free() in the error path after genlmsg_cancel()
+    to release the allocated memory.
+    
+    Fixes: 2fd5532044a89 ("net/handshake: Add a kernel API for requesting a TLSv1.3 handshake")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: Chuck Lever &lt;chuck.lever@oracle.com&gt;
+    Link: https://patch.msgid.link/20251106144511.3859535-1-zilin@seu.edu.cn
+    Signed-off-by: Jakub Kicinski &lt;kuba@kernel.org&gt;
+
+diff --git a/net/handshake/tlshd.c b/net/handshake/tlshd.c
+index 081093dfd553..8f9532a15f43 100644
+--- a/net/handshake/tlshd.c
++++ b/net/handshake/tlshd.c
+@@ -259,6 +259,7 @@ static int tls_handshake_accept(struct handshake_req *req,
+ 
+ out_cancel:
+ 	genlmsg_cancel(msg, hdr);
++	nlmsg_free(msg);
+ out:
+ 	return ret;
+ }</pre><hr><pre>commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Thu Nov 6 12:01:32 2025 +0000
+
+    tracing: Fix memory leaks in create_field_var()
+    
+    The function create_field_var() allocates memory for 'val' through
+    create_hist_field() inside parse_atom(), and for 'var' through
+    create_var(), which in turn allocates var-&gt;type and var-&gt;var.name
+    internally. Simply calling kfree() to release these structures will
+    result in memory leaks.
+    
+    Use destroy_hist_field() to properly free 'val', and explicitly release
+    the memory of var-&gt;type and var-&gt;var.name before freeing 'var' itself.
+    
+    Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
+    Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Signed-off-by: Steven Rostedt (Google) &lt;rostedt@goodmis.org&gt;
+
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 1d536219b624..6bfaf1210dd2 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -3272,14 +3272,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
+ 	var = create_var(hist_data, file, field_name, val-&gt;size, val-&gt;type);
+ 	if (IS_ERR(var)) {
+ 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
+-		kfree(val);
++		destroy_hist_field(val, 0);
+ 		ret = PTR_ERR(var);
+ 		goto err;
+ 	}
+ 
+ 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
+ 	if (!field_var) {
+-		kfree(val);
++		destroy_hist_field(val, 0);
++		kfree_const(var-&gt;type);
++		kfree(var-&gt;var.name);
+ 		kfree(var);
+ 		ret =  -ENOMEM;
+ 		goto err;</pre><hr><pre>commit c367af440e03eba7beb0c9f3fe540f9bcb69134a
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed Nov 5 02:37:22 2025 +0000
+
+    btrfs: release root after error in data_reloc_print_warning_inode()
+    
+    data_reloc_print_warning_inode() calls btrfs_get_fs_root() to obtain
+    local_root, but fails to release its reference when paths_from_inode()
+    returns an error. This causes a potential memory leak.
+    
+    Add a missing btrfs_put_root() call in the error path to properly
+    decrease the reference count of local_root.
+    
+    Fixes: b9a9a85059cde ("btrfs: output affected files when relocation fails")
+    CC: stable@vger.kernel.org # 6.6+
+    Reviewed-by: Qu Wenruo &lt;wqu@suse.com&gt;
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: David Sterba &lt;dsterba@suse.com&gt;
+    Signed-off-by: David Sterba &lt;dsterba@suse.com&gt;
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index b95175116ea3..d097532fd85b 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -177,8 +177,10 @@ static int data_reloc_print_warning_inode(u64 inum, u64 offset, u64 num_bytes,
+ 		return ret;
+ 	}
+ 	ret = paths_from_inode(inum, ipath);
+-	if (ret &lt; 0)
++	if (ret &lt; 0) {
++		btrfs_put_root(local_root);
+ 		goto err;
++	}
+ 
+ 	/*
+ 	 * We deliberately ignore the bit ipath might have been too small to</pre><hr><pre>commit 5fea61aa1ca70c4b3738eebad9ce2d7e7938ebbd
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed Nov 5 03:53:21 2025 +0000
+
+    btrfs: scrub: put bio after errors in scrub_raid56_parity_stripe()
+    
+    scrub_raid56_parity_stripe() allocates a bio with bio_alloc(), but
+    fails to release it on some error paths, leading to a potential
+    memory leak.
+    
+    Add the missing bio_put() calls to properly drop the bio reference
+    in those error cases.
+    
+    Fixes: 1009254bf22a3 ("btrfs: scrub: use scrub_stripe to implement RAID56 P/Q scrub")
+    CC: stable@vger.kernel.org # 6.6+
+    Reviewed-by: Qu Wenruo &lt;wqu@suse.com&gt;
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: David Sterba &lt;dsterba@suse.com&gt;
+    Signed-off-by: David Sterba &lt;dsterba@suse.com&gt;
+
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index 651b11884f82..ba20d9286a34 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -2203,6 +2203,7 @@ static int scrub_raid56_parity_stripe(struct scrub_ctx *sctx,
+ 	ret = btrfs_map_block(fs_info, BTRFS_MAP_WRITE, full_stripe_start,
+ 			      &amp;length, &amp;bioc, NULL, NULL);
+ 	if (ret &lt; 0) {
++		bio_put(bio);
+ 		btrfs_put_bioc(bioc);
+ 		btrfs_bio_counter_dec(fs_info);
+ 		goto out;
+@@ -2212,6 +2213,7 @@ static int scrub_raid56_parity_stripe(struct scrub_ctx *sctx,
+ 	btrfs_put_bioc(bioc);
+ 	if (!rbio) {
+ 		ret = -ENOMEM;
++		bio_put(bio);
+ 		btrfs_bio_counter_dec(fs_info);
+ 		goto out;
+ 	}</pre><hr><pre>commit 90f601b497d76f40fa66795c3ecf625b6aced9fd
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Wed Nov 5 02:29:23 2025 +0000
+
+    binfmt_misc: restore write access before closing files opened by open_exec()
+    
+    bm_register_write() opens an executable file using open_exec(), which
+    internally calls do_open_execat() and denies write access on the file to
+    avoid modification while it is being executed.
+    
+    However, when an error occurs, bm_register_write() closes the file using
+    filp_close() directly. This does not restore the write permission, which
+    may cause subsequent write operations on the same file to fail.
+    
+    Fix this by calling exe_file_allow_write_access() before filp_close() to
+    restore the write permission properly.
+    
+    Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+    Signed-off-by: Christian Brauner &lt;brauner@kernel.org&gt;
+
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index a839f960cd4a..a8b1d79e4af0 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -837,8 +837,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
+ 	inode_unlock(d_inode(root));
+ 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			exe_file_allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
+ 	}</pre><hr><pre>commit acb59a4bb8ed34e738a4c3463127bf3f6b5e11a9
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Sat Sep 13 15:31:54 2025 +0000
+
+    vfio/pds: replace bitmap_free with vfree
+    
+    host_seq_bmp is allocated with vzalloc but is currently freed with
+    bitmap_free, which uses kfree internally. This mismach prevents the
+    resource from being released properly and may result in memory leaks
+    or other issues.
+    
+    Fix this by freeing host_seq_bmp with vfree to match the vzalloc
+    allocation.
+    
+    Fixes: f232836a9152 ("vfio/pds: Add support for dirty page tracking")
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Reviewed-by: Brett Creeley &lt;brett.creeley@amd.com&gt;
+    Link: https://lore.kernel.org/r/20250913153154.1028835-1-zilin@seu.edu.cn
+    Signed-off-by: Alex Williamson &lt;alex.williamson@redhat.com&gt;
+
+diff --git a/drivers/vfio/pci/pds/dirty.c b/drivers/vfio/pci/pds/dirty.c
+index c51f5e4c3dd6..481992142f79 100644
+--- a/drivers/vfio/pci/pds/dirty.c
++++ b/drivers/vfio/pci/pds/dirty.c
+@@ -82,7 +82,7 @@ static int pds_vfio_dirty_alloc_bitmaps(struct pds_vfio_region *region,
+ 
+ 	host_ack_bmp = vzalloc(bytes);
+ 	if (!host_ack_bmp) {
+-		bitmap_free(host_seq_bmp);
++		vfree(host_seq_bmp);
+ 		return -ENOMEM;
+ 	}
+ </pre><hr><pre>commit f87586598fffac31afc1141471b789251b030a76
+Author: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+Date:   Fri May 23 11:01:56 2025 +0000
+
+    wifi: cfg80211: use kfree_sensitive() for connkeys cleanup
+    
+    The nl80211_parse_connkeys() function currently uses kfree() to release
+    the 'result' structure in error handling paths. However, if an error
+    occurs due to result-&gt;def being less than 0, the 'result' structure may
+    contain sensitive information.
+    
+    To prevent potential leakage of sensitive data, replace kfree() with
+    kfree_sensitive() when freeing 'result'. This change aligns with the
+    approach used in its caller, nl80211_join_ibss(), enhancing the overall
+    security of the wireless subsystem.
+    
+    Signed-off-by: Zilin Guan &lt;zilin@seu.edu.cn&gt;
+    Link: https://patch.msgid.link/20250523110156.4017111-1-zilin@seu.edu.cn
+    Signed-off-by: Johannes Berg &lt;johannes.berg@intel.com&gt;
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index fd5f79266471..85f139016da2 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1583,7 +1583,7 @@ nl80211_parse_connkeys(struct cfg80211_registered_device *rdev,
+ 
+ 	return result;
+  error:
+-	kfree(result);
++	kfree_sensitive(result);
+ 	return ERR_PTR(err);
+ }
+ </pre>
+    <div class="pagination">
+        <a href='28.html'>&lt;&lt;Prev</a><a href='28.html'>1</a><span>[2]</span><a href='28_3.html'>3</a><a href='28_3.html'>Next&gt;&gt;</a>
+    <div>
+</body>

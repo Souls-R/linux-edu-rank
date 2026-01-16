@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Massachusetts Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Massachusetts Institute of Technology</h1>
+    <div class="pagination">
+        <a href='1_21.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><span>[22]</span><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_23.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit a45403b51582a87872927a3e0fc0a389c26867f1
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Mar 29 22:10:31 2018 -0400
+
+    ext4: always initialize the crc32c checksum driver
+    
+    The extended attribute code now uses the crc32c checksum for hashing
+    purposes, so we should just always always initialize it.  We also want
+    to prevent NULL pointer dereferences if one of the metadata checksum
+    features is enabled after the file sytsem is originally mounted.
+    
+    This issue has been assigned CVE-2018-1094.
+    
+    https://bugzilla.kernel.org/show_bug.cgi?id=199183
+    https://bugzilla.redhat.com/show_bug.cgi?id=1560788
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 9d1da40c1f62..7cd022c344d1 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3492,15 +3492,12 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 	}
+ 
+ 	/* Load the checksum driver */
+-	if (ext4_has_feature_metadata_csum(sb) ||
+-	    ext4_has_feature_ea_inode(sb)) {
+-		sbi-&gt;s_chksum_driver = crypto_alloc_shash("crc32c", 0, 0);
+-		if (IS_ERR(sbi-&gt;s_chksum_driver)) {
+-			ext4_msg(sb, KERN_ERR, "Cannot load crc32c driver.");
+-			ret = PTR_ERR(sbi-&gt;s_chksum_driver);
+-			sbi-&gt;s_chksum_driver = NULL;
+-			goto failed_mount;
+-		}
++	sbi-&gt;s_chksum_driver = crypto_alloc_shash("crc32c", 0, 0);
++	if (IS_ERR(sbi-&gt;s_chksum_driver)) {
++		ext4_msg(sb, KERN_ERR, "Cannot load crc32c driver.");
++		ret = PTR_ERR(sbi-&gt;s_chksum_driver);
++		sbi-&gt;s_chksum_driver = NULL;
++		goto failed_mount;
+ 	}
+ 
+ 	/* Check superblock checksum */</pre><hr><pre>commit 8e4b5eae5decd9dfe5a4ee369c22028f90ab4c44
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Thu Mar 29 21:56:09 2018 -0400
+
+    ext4: fail ext4_iget for root directory if unallocated
+    
+    If the root directory has an i_links_count of zero, then when the file
+    system is mounted, then when ext4_fill_super() notices the problem and
+    tries to call iput() the root directory in the error return path,
+    ext4_evict_inode() will try to free the inode on disk, before all of
+    the file system structures are set up, and this will result in an OOPS
+    caused by a NULL pointer dereference.
+    
+    This issue has been assigned CVE-2018-1092.
+    
+    https://bugzilla.kernel.org/show_bug.cgi?id=199179
+    https://bugzilla.redhat.com/show_bug.cgi?id=1560777
+    
+    Reported-by: Wen Xu &lt;wen.xu@gatech.edu&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 435965598cb8..18aa2ef963ad 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4732,6 +4732,12 @@ struct inode *ext4_iget(struct super_block *sb, unsigned long ino)
+ 		goto bad_inode;
+ 	raw_inode = ext4_raw_inode(&amp;iloc);
+ 
++	if ((ino == EXT4_ROOT_INO) &amp;&amp; (raw_inode-&gt;i_links_count == 0)) {
++		EXT4_ERROR_INODE(inode, "root inode unallocated");
++		ret = -EFSCORRUPTED;
++		goto bad_inode;
++	}
++
+ 	if (EXT4_INODE_SIZE(inode-&gt;i_sb) &gt; EXT4_GOOD_OLD_INODE_SIZE) {
+ 		ei-&gt;i_extra_isize = le16_to_cpu(raw_inode-&gt;i_extra_isize);
+ 		if (EXT4_GOOD_OLD_INODE_SIZE + ei-&gt;i_extra_isize &gt;</pre><hr><pre>commit 7dac4a1726a9c64a517d595c40e95e2d0d135f6f
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Mar 26 23:54:10 2018 -0400
+
+    ext4: add validity checks for bitmap block numbers
+    
+    An privileged attacker can cause a crash by mounting a crafted ext4
+    image which triggers a out-of-bounds read in the function
+    ext4_valid_block_bitmap() in fs/ext4/balloc.c.
+    
+    This issue has been assigned CVE-2018-1093.
+    
+    BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=199181
+    BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1560782
+    Reported-by: Wen Xu &lt;wen.xu@gatech.edu&gt;
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index f82c4966f4ce..a33d8fb1bf2a 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -338,20 +338,25 @@ static ext4_fsblk_t ext4_valid_block_bitmap(struct super_block *sb,
+ 	/* check whether block bitmap block number is set */
+ 	blk = ext4_block_bitmap(sb, desc);
+ 	offset = blk - group_first_block;
+-	if (!ext4_test_bit(EXT4_B2C(sbi, offset), bh-&gt;b_data))
++	if (offset &lt; 0 || EXT4_B2C(sbi, offset) &gt;= sb-&gt;s_blocksize ||
++	    !ext4_test_bit(EXT4_B2C(sbi, offset), bh-&gt;b_data))
+ 		/* bad block bitmap */
+ 		return blk;
+ 
+ 	/* check whether the inode bitmap block number is set */
+ 	blk = ext4_inode_bitmap(sb, desc);
+ 	offset = blk - group_first_block;
+-	if (!ext4_test_bit(EXT4_B2C(sbi, offset), bh-&gt;b_data))
++	if (offset &lt; 0 || EXT4_B2C(sbi, offset) &gt;= sb-&gt;s_blocksize ||
++	    !ext4_test_bit(EXT4_B2C(sbi, offset), bh-&gt;b_data))
+ 		/* bad block bitmap */
+ 		return blk;
+ 
+ 	/* check whether the inode table block number is set */
+ 	blk = ext4_inode_table(sb, desc);
+ 	offset = blk - group_first_block;
++	if (offset &lt; 0 || EXT4_B2C(sbi, offset) &gt;= sb-&gt;s_blocksize ||
++	    EXT4_B2C(sbi, offset + sbi-&gt;s_itb_per_group) &gt;= sb-&gt;s_blocksize)
++		return blk;
+ 	next_zero_bit = ext4_find_next_zero_bit(bh-&gt;b_data,
+ 			EXT4_B2C(sbi, offset + sbi-&gt;s_itb_per_group),
+ 			EXT4_B2C(sbi, offset));
+@@ -417,6 +422,7 @@ struct buffer_head *
+ ext4_read_block_bitmap_nowait(struct super_block *sb, ext4_group_t block_group)
+ {
+ 	struct ext4_group_desc *desc;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct buffer_head *bh;
+ 	ext4_fsblk_t bitmap_blk;
+ 	int err;
+@@ -425,6 +431,12 @@ ext4_read_block_bitmap_nowait(struct super_block *sb, ext4_group_t block_group)
+ 	if (!desc)
+ 		return ERR_PTR(-EFSCORRUPTED);
+ 	bitmap_blk = ext4_block_bitmap(sb, desc);
++	if ((bitmap_blk &lt;= le32_to_cpu(sbi-&gt;s_es-&gt;s_first_data_block)) ||
++	    (bitmap_blk &gt;= ext4_blocks_count(sbi-&gt;s_es))) {
++		ext4_error(sb, "Invalid block bitmap block %llu in "
++			   "block_group %u", bitmap_blk, block_group);
++		return ERR_PTR(-EFSCORRUPTED);
++	}
+ 	bh = sb_getblk(sb, bitmap_blk);
+ 	if (unlikely(!bh)) {
+ 		ext4_error(sb, "Cannot get buffer for block bitmap - "
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index 3fa93665b4a3..df92e3ec9913 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -122,6 +122,7 @@ static struct buffer_head *
+ ext4_read_inode_bitmap(struct super_block *sb, ext4_group_t block_group)
+ {
+ 	struct ext4_group_desc *desc;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct buffer_head *bh = NULL;
+ 	ext4_fsblk_t bitmap_blk;
+ 	int err;
+@@ -131,6 +132,12 @@ ext4_read_inode_bitmap(struct super_block *sb, ext4_group_t block_group)
+ 		return ERR_PTR(-EFSCORRUPTED);
+ 
+ 	bitmap_blk = ext4_inode_bitmap(sb, desc);
++	if ((bitmap_blk &lt;= le32_to_cpu(sbi-&gt;s_es-&gt;s_first_data_block)) ||
++	    (bitmap_blk &gt;= ext4_blocks_count(sbi-&gt;s_es))) {
++		ext4_error(sb, "Invalid inode bitmap blk %llu in "
++			   "block_group %u", bitmap_blk, block_group);
++		return ERR_PTR(-EFSCORRUPTED);
++	}
+ 	bh = sb_getblk(sb, bitmap_blk);
+ 	if (unlikely(!bh)) {
+ 		ext4_error(sb, "Cannot read inode bitmap - "</pre><hr><pre>commit 9f886f4d1d292442b2f22a0a33321eae821bde40
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sat Feb 25 18:21:33 2017 -0400
+
+    random: use a tighter cap in credit_entropy_bits_safe()
+    
+    This fixes a harmless UBSAN where root could potentially end up
+    causing an overflow while bumping the entropy_total field (which is
+    ignored once the entropy pool has been initialized, and this generally
+    is completed during the boot sequence).
+    
+    This is marginal for the stable kernel series, but it's a really
+    trivial patch, and it fixes UBSAN warning that might cause security
+    folks to get overly excited for no reason.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Reported-by: Chen Feng &lt;puck.chen@hisilicon.com&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index e5b3d3ba4660..11c23ca57430 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -732,7 +732,7 @@ static void credit_entropy_bits(struct entropy_store *r, int nbits)
+ 
+ static int credit_entropy_bits_safe(struct entropy_store *r, int nbits)
+ {
+-	const int nbits_max = (int)(~0U &gt;&gt; (ENTROPY_SHIFT + 1));
++	const int nbits_max = r-&gt;poolinfo-&gt;poolwords * 32;
+ 
+ 	if (nbits &lt; 0)
+ 		return -EINVAL;</pre><hr><pre>commit 044e6e3d74a3d7103a0c8a9305dfd94d64000660
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Feb 19 14:16:47 2018 -0500
+
+    ext4: don't update checksum of new initialized bitmaps
+    
+    When reading the inode or block allocation bitmap, if the bitmap needs
+    to be initialized, do not update the checksum in the block group
+    descriptor.  That's because we're not set up to journal those changes.
+    Instead, just set the verified bit on the bitmap block, so that it's
+    not necessary to validate the checksum.
+    
+    When a block or inode allocation actually happens, at that point the
+    checksum will be calculated, and update of the bg descriptor block
+    will be properly journalled.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index f9b3e0a83526..f82c4966f4ce 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -243,8 +243,6 @@ static int ext4_init_block_bitmap(struct super_block *sb,
+ 	 */
+ 	ext4_mark_bitmap_end(num_clusters_in_group(sb, block_group),
+ 			     sb-&gt;s_blocksize * 8, bh-&gt;b_data);
+-	ext4_block_bitmap_csum_set(sb, block_group, gdp, bh);
+-	ext4_group_desc_csum_set(sb, block_group, gdp);
+ 	return 0;
+ }
+ 
+@@ -448,6 +446,7 @@ ext4_read_block_bitmap_nowait(struct super_block *sb, ext4_group_t block_group)
+ 		err = ext4_init_block_bitmap(sb, bh, block_group, desc);
+ 		set_bitmap_uptodate(bh);
+ 		set_buffer_uptodate(bh);
++		set_buffer_verified(bh);
+ 		ext4_unlock_group(sb, block_group);
+ 		unlock_buffer(bh);
+ 		if (err) {
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index 7830d28df331..3fa93665b4a3 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -66,44 +66,6 @@ void ext4_mark_bitmap_end(int start_bit, int end_bit, char *bitmap)
+ 		memset(bitmap + (i &gt;&gt; 3), 0xff, (end_bit - i) &gt;&gt; 3);
+ }
+ 
+-/* Initializes an uninitialized inode bitmap */
+-static int ext4_init_inode_bitmap(struct super_block *sb,
+-				       struct buffer_head *bh,
+-				       ext4_group_t block_group,
+-				       struct ext4_group_desc *gdp)
+-{
+-	struct ext4_group_info *grp;
+-	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	J_ASSERT_BH(bh, buffer_locked(bh));
+-
+-	/* If checksum is bad mark all blocks and inodes use to prevent
+-	 * allocation, essentially implementing a per-group read-only flag. */
+-	if (!ext4_group_desc_csum_verify(sb, block_group, gdp)) {
+-		grp = ext4_get_group_info(sb, block_group);
+-		if (!EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
+-			percpu_counter_sub(&amp;sbi-&gt;s_freeclusters_counter,
+-					   grp-&gt;bb_free);
+-		set_bit(EXT4_GROUP_INFO_BBITMAP_CORRUPT_BIT, &amp;grp-&gt;bb_state);
+-		if (!EXT4_MB_GRP_IBITMAP_CORRUPT(grp)) {
+-			int count;
+-			count = ext4_free_inodes_count(sb, gdp);
+-			percpu_counter_sub(&amp;sbi-&gt;s_freeinodes_counter,
+-					   count);
+-		}
+-		set_bit(EXT4_GROUP_INFO_IBITMAP_CORRUPT_BIT, &amp;grp-&gt;bb_state);
+-		return -EFSBADCRC;
+-	}
+-
+-	memset(bh-&gt;b_data, 0, (EXT4_INODES_PER_GROUP(sb) + 7) / 8);
+-	ext4_mark_bitmap_end(EXT4_INODES_PER_GROUP(sb), sb-&gt;s_blocksize * 8,
+-			bh-&gt;b_data);
+-	ext4_inode_bitmap_csum_set(sb, block_group, gdp, bh,
+-				   EXT4_INODES_PER_GROUP(sb) / 8);
+-	ext4_group_desc_csum_set(sb, block_group, gdp);
+-
+-	return 0;
+-}
+-
+ void ext4_end_bitmap_read(struct buffer_head *bh, int uptodate)
+ {
+ 	if (uptodate) {
+@@ -187,17 +149,14 @@ ext4_read_inode_bitmap(struct super_block *sb, ext4_group_t block_group)
+ 
+ 	ext4_lock_group(sb, block_group);
+ 	if (desc-&gt;bg_flags &amp; cpu_to_le16(EXT4_BG_INODE_UNINIT)) {
+-		err = ext4_init_inode_bitmap(sb, bh, block_group, desc);
++		memset(bh-&gt;b_data, 0, (EXT4_INODES_PER_GROUP(sb) + 7) / 8);
++		ext4_mark_bitmap_end(EXT4_INODES_PER_GROUP(sb),
++				     sb-&gt;s_blocksize * 8, bh-&gt;b_data);
+ 		set_bitmap_uptodate(bh);
+ 		set_buffer_uptodate(bh);
+ 		set_buffer_verified(bh);
+ 		ext4_unlock_group(sb, block_group);
+ 		unlock_buffer(bh);
+-		if (err) {
+-			ext4_error(sb, "Failed to init inode bitmap for group "
+-				   "%u: %d", block_group, err);
+-			goto out;
+-		}
+ 		return bh;
+ 	}
+ 	ext4_unlock_group(sb, block_group);</pre><hr><pre>commit 85e0c4e89c1b864e763c4e3bb15d0b6d501ad5d9
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Mon Feb 19 12:22:53 2018 -0500
+
+    jbd2: if the journal is aborted then don't allow update of the log tail
+    
+    This updates the jbd2 superblock unnecessarily, and on an abort we
+    shouldn't truncate the log.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index efa0c72a0b9f..dfb057900e79 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -974,7 +974,7 @@ int __jbd2_update_log_tail(journal_t *journal, tid_t tid, unsigned long block)
+ }
+ 
+ /*
+- * This is a variaon of __jbd2_update_log_tail which checks for validity of
++ * This is a variation of __jbd2_update_log_tail which checks for validity of
+  * provided log tail and locks j_checkpoint_mutex. So it is safe against races
+  * with other threads updating log tail.
+  */
+@@ -1417,6 +1417,9 @@ int jbd2_journal_update_sb_log_tail(journal_t *journal, tid_t tail_tid,
+ 	journal_superblock_t *sb = journal-&gt;j_superblock;
+ 	int ret;
+ 
++	if (is_journal_aborted(journal))
++		return -EIO;
++
+ 	BUG_ON(!mutex_is_locked(&amp;journal-&gt;j_checkpoint_mutex));
+ 	jbd_debug(1, "JBD2: updating superblock (start %lu, seq %u)\n",
+ 		  tail_block, tail_tid);</pre><hr><pre>commit fb7c02445c497943e7296cd3deee04422b63acb8
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Feb 18 23:45:18 2018 -0500
+
+    ext4: pass -ESHUTDOWN code to jbd2 layer
+    
+    Previously the jbd2 layer assumed that a file system check would be
+    required after a journal abort.  In the case of the deliberate file
+    system shutdown, this should not be necessary.  Allow the jbd2 layer
+    to distinguish between these two cases by using the ESHUTDOWN errno.
+    
+    Also add proper locking to __journal_abort_soft().
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 16d3d1325f5b..9ac33a7cbd32 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -493,13 +493,13 @@ static int ext4_shutdown(struct super_block *sb, unsigned long arg)
+ 		set_bit(EXT4_FLAGS_SHUTDOWN, &amp;sbi-&gt;s_ext4_flags);
+ 		if (sbi-&gt;s_journal &amp;&amp; !is_journal_aborted(sbi-&gt;s_journal)) {
+ 			(void) ext4_force_commit(sb);
+-			jbd2_journal_abort(sbi-&gt;s_journal, 0);
++			jbd2_journal_abort(sbi-&gt;s_journal, -ESHUTDOWN);
+ 		}
+ 		break;
+ 	case EXT4_GOING_FLAGS_NOLOGFLUSH:
+ 		set_bit(EXT4_FLAGS_SHUTDOWN, &amp;sbi-&gt;s_ext4_flags);
+ 		if (sbi-&gt;s_journal &amp;&amp; !is_journal_aborted(sbi-&gt;s_journal))
+-			jbd2_journal_abort(sbi-&gt;s_journal, 0);
++			jbd2_journal_abort(sbi-&gt;s_journal, -ESHUTDOWN);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 3fbf48ec2188..efa0c72a0b9f 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1483,12 +1483,15 @@ static void jbd2_mark_journal_empty(journal_t *journal, int write_op)
+ void jbd2_journal_update_sb_errno(journal_t *journal)
+ {
+ 	journal_superblock_t *sb = journal-&gt;j_superblock;
++	int errcode;
+ 
+ 	read_lock(&amp;journal-&gt;j_state_lock);
+-	jbd_debug(1, "JBD2: updating superblock error (errno %d)\n",
+-		  journal-&gt;j_errno);
+-	sb-&gt;s_errno    = cpu_to_be32(journal-&gt;j_errno);
++	errcode = journal-&gt;j_errno;
+ 	read_unlock(&amp;journal-&gt;j_state_lock);
++	if (errcode == -ESHUTDOWN)
++		errcode = 0;
++	jbd_debug(1, "JBD2: updating superblock error (errno %d)\n", errcode);
++	sb-&gt;s_errno    = cpu_to_be32(errcode);
+ 
+ 	jbd2_write_superblock(journal, REQ_SYNC | REQ_FUA);
+ }
+@@ -2105,12 +2108,22 @@ void __jbd2_journal_abort_hard(journal_t *journal)
+  * but don't do any other IO. */
+ static void __journal_abort_soft (journal_t *journal, int errno)
+ {
+-	if (journal-&gt;j_flags &amp; JBD2_ABORT)
+-		return;
++	int old_errno;
+ 
+-	if (!journal-&gt;j_errno)
++	write_lock(&amp;journal-&gt;j_state_lock);
++	old_errno = journal-&gt;j_errno;
++	if (!journal-&gt;j_errno || errno == -ESHUTDOWN)
+ 		journal-&gt;j_errno = errno;
+ 
++	if (journal-&gt;j_flags &amp; JBD2_ABORT) {
++		write_unlock(&amp;journal-&gt;j_state_lock);
++		if (!old_errno &amp;&amp; old_errno != -ESHUTDOWN &amp;&amp;
++		    errno == -ESHUTDOWN)
++			jbd2_journal_update_sb_errno(journal);
++		return;
++	}
++	write_unlock(&amp;journal-&gt;j_state_lock);
++
+ 	__jbd2_journal_abort_hard(journal);
+ 
+ 	if (errno) {</pre><hr><pre>commit a6d9946bb925293fda9f5ed6d33d8580b001f006
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Feb 18 23:16:28 2018 -0500
+
+    ext4: eliminate sleep from shutdown ioctl
+    
+    The msleep() when processing EXT4_GOING_FLAGS_NOLOGFLUSH was a hack to
+    avoid some races (that are now fixed), but in fact it introduced its
+    own race.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 4d1b1575f8ac..16d3d1325f5b 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -498,10 +498,8 @@ static int ext4_shutdown(struct super_block *sb, unsigned long arg)
+ 		break;
+ 	case EXT4_GOING_FLAGS_NOLOGFLUSH:
+ 		set_bit(EXT4_FLAGS_SHUTDOWN, &amp;sbi-&gt;s_ext4_flags);
+-		if (sbi-&gt;s_journal &amp;&amp; !is_journal_aborted(sbi-&gt;s_journal)) {
+-			msleep(100);
++		if (sbi-&gt;s_journal &amp;&amp; !is_journal_aborted(sbi-&gt;s_journal))
+ 			jbd2_journal_abort(sbi-&gt;s_journal, 0);
+-		}
+ 		break;
+ 	default:
+ 		return -EINVAL;</pre><hr><pre>commit 576d18ed60f5465110087c5e0eb1010de13e374d
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Feb 18 22:07:36 2018 -0500
+
+    ext4: shutdown should not prevent get_write_access
+    
+    The ext4 forced shutdown flag needs to prevent new handles from being
+    started, but it needs to allow existing handles to complete.  So the
+    forced shutdown flag should not force ext4_journal_get_write_access to
+    fail.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+    Cc: stable@vger.kernel.org
+
+diff --git a/fs/ext4/ext4_jbd2.c b/fs/ext4/ext4_jbd2.c
+index 2d593201cf7a..7c70b08d104c 100644
+--- a/fs/ext4/ext4_jbd2.c
++++ b/fs/ext4/ext4_jbd2.c
+@@ -166,13 +166,6 @@ int __ext4_journal_get_write_access(const char *where, unsigned int line,
+ 	might_sleep();
+ 
+ 	if (ext4_handle_valid(handle)) {
+-		struct super_block *sb;
+-
+-		sb = handle-&gt;h_transaction-&gt;t_journal-&gt;j_private;
+-		if (unlikely(ext4_forced_shutdown(EXT4_SB(sb)))) {
+-			jbd2_journal_abort_handle(handle);
+-			return -EIO;
+-		}
+ 		err = jbd2_journal_get_write_access(handle, bh);
+ 		if (err)
+ 			ext4_journal_abort_handle(where, line, __func__, bh,</pre><hr><pre>commit ed65b00f8de1d0687565a1ad6511901a721adb66
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;
+Date:   Sun Feb 18 21:33:13 2018 -0500
+
+    jbd2: clarify bad journal block checksum message
+    
+    There were two error messages emitted by jbd2, one for a bad checksum
+    for a jbd2 descriptor block, and one for a bad checksum for a jbd2
+    data block.  Change the data block checksum error so that the two can
+    be disambiguated.
+    
+    Signed-off-by: Theodore Ts'o &lt;tytso@mit.edu&gt;
+
+diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
+index f99910b69c78..a4967b27ffb6 100644
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -600,8 +600,8 @@ static int do_one_pass(journal_t *journal,
+ 						success = -EFSBADCRC;
+ 						printk(KERN_ERR "JBD2: Invalid "
+ 						       "checksum recovering "
+-						       "block %llu in log\n",
+-						       blocknr);
++						       "data block %llu in "
++						       "log\n", blocknr);
+ 						block_error = 1;
+ 						goto skip_write;
+ 					}</pre>
+    <div class="pagination">
+        <a href='1_21.html'>&lt;&lt;Prev</a><a href='1.html'>1</a><a href='1_2.html'>2</a><a href='1_3.html'>3</a><a href='1_4.html'>4</a><a href='1_5.html'>5</a><a href='1_6.html'>6</a><a href='1_7.html'>7</a><a href='1_8.html'>8</a><a href='1_9.html'>9</a><a href='1_10.html'>10</a><a href='1_11.html'>11</a><a href='1_12.html'>12</a><a href='1_13.html'>13</a><a href='1_14.html'>14</a><a href='1_15.html'>15</a><a href='1_16.html'>16</a><a href='1_17.html'>17</a><a href='1_18.html'>18</a><a href='1_19.html'>19</a><a href='1_20.html'>20</a><a href='1_21.html'>21</a><span>[22]</span><a href='1_23.html'>23</a><a href='1_24.html'>24</a><a href='1_25.html'>25</a><a href='1_26.html'>26</a><a href='1_27.html'>27</a><a href='1_28.html'>28</a><a href='1_29.html'>29</a><a href='1_30.html'>30</a><a href='1_31.html'>31</a><a href='1_32.html'>32</a><a href='1_33.html'>33</a><a href='1_34.html'>34</a><a href='1_35.html'>35</a><a href='1_36.html'>36</a><a href='1_37.html'>37</a><a href='1_38.html'>38</a><a href='1_39.html'>39</a><a href='1_40.html'>40</a><a href='1_41.html'>41</a><a href='1_42.html'>42</a><a href='1_43.html'>43</a><a href='1_44.html'>44</a><a href='1_45.html'>45</a><a href='1_46.html'>46</a><a href='1_47.html'>47</a><a href='1_48.html'>48</a><a href='1_49.html'>49</a><a href='1_50.html'>50</a><a href='1_51.html'>51</a><a href='1_52.html'>52</a><a href='1_53.html'>53</a><a href='1_54.html'>54</a><a href='1_55.html'>55</a><a href='1_56.html'>56</a><a href='1_57.html'>57</a><a href='1_58.html'>58</a><a href='1_59.html'>59</a><a href='1_60.html'>60</a><a href='1_61.html'>61</a><a href='1_62.html'>62</a><a href='1_63.html'>63</a><a href='1_64.html'>64</a><a href='1_65.html'>65</a><a href='1_66.html'>66</a><a href='1_67.html'>67</a><a href='1_68.html'>68</a><a href='1_69.html'>69</a><a href='1_70.html'>70</a><a href='1_71.html'>71</a><a href='1_72.html'>72</a><a href='1_73.html'>73</a><a href='1_74.html'>74</a><a href='1_75.html'>75</a><a href='1_76.html'>76</a><a href='1_77.html'>77</a><a href='1_78.html'>78</a><a href='1_79.html'>79</a><a href='1_80.html'>80</a><a href='1_81.html'>81</a><a href='1_82.html'>82</a><a href='1_83.html'>83</a><a href='1_84.html'>84</a><a href='1_85.html'>85</a><a href='1_86.html'>86</a><a href='1_87.html'>87</a><a href='1_88.html'>88</a><a href='1_89.html'>89</a><a href='1_90.html'>90</a><a href='1_91.html'>91</a><a href='1_92.html'>92</a><a href='1_93.html'>93</a><a href='1_94.html'>94</a><a href='1_95.html'>95</a><a href='1_96.html'>96</a><a href='1_97.html'>97</a><a href='1_98.html'>98</a><a href='1_99.html'>99</a><a href='1_100.html'>100</a><a href='1_101.html'>101</a><a href='1_102.html'>102</a><a href='1_103.html'>103</a><a href='1_104.html'>104</a><a href='1_105.html'>105</a><a href='1_106.html'>106</a><a href='1_107.html'>107</a><a href='1_108.html'>108</a><a href='1_109.html'>109</a><a href='1_110.html'>110</a><a href='1_111.html'>111</a><a href='1_112.html'>112</a><a href='1_113.html'>113</a><a href='1_114.html'>114</a><a href='1_115.html'>115</a><a href='1_116.html'>116</a><a href='1_117.html'>117</a><a href='1_118.html'>118</a><a href='1_119.html'>119</a><a href='1_120.html'>120</a><a href='1_121.html'>121</a><a href='1_122.html'>122</a><a href='1_123.html'>123</a><a href='1_124.html'>124</a><a href='1_125.html'>125</a><a href='1_126.html'>126</a><a href='1_127.html'>127</a><a href='1_128.html'>128</a><a href='1_129.html'>129</a><a href='1_130.html'>130</a><a href='1_131.html'>131</a><a href='1_132.html'>132</a><a href='1_133.html'>133</a><a href='1_134.html'>134</a><a href='1_135.html'>135</a><a href='1_136.html'>136</a><a href='1_137.html'>137</a><a href='1_138.html'>138</a><a href='1_139.html'>139</a><a href='1_140.html'>140</a><a href='1_141.html'>141</a><a href='1_142.html'>142</a><a href='1_143.html'>143</a><a href='1_144.html'>144</a><a href='1_145.html'>145</a><a href='1_146.html'>146</a><a href='1_147.html'>147</a><a href='1_148.html'>148</a><a href='1_149.html'>149</a><a href='1_150.html'>150</a><a href='1_151.html'>151</a><a href='1_152.html'>152</a><a href='1_153.html'>153</a><a href='1_154.html'>154</a><a href='1_155.html'>155</a><a href='1_23.html'>Next&gt;&gt;</a>
+    <div>
+</body>

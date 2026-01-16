@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Fudan University</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Fudan University</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='16_2.html'>2</a><a href='16_3.html'>3</a><a href='16_4.html'>4</a><a href='16_5.html'>5</a><a href='16_6.html'>6</a><a href='16_7.html'>7</a><a href='16_8.html'>8</a><a href='16_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit e3f88665a78045fe35c7669d2926b8d97b892c11
+Author: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+Date:   Wed Sep 18 20:07:50 2024 +0800
+
+    HSI: ssi_protocol: Fix use after free vulnerability in ssi_protocol Driver Due to Race Condition
+    
+    In the ssi_protocol_probe() function, &amp;ssi-&gt;work is bound with
+    ssip_xmit_work(), In ssip_pn_setup(), the ssip_pn_xmit() function
+    within the ssip_pn_ops structure is capable of starting the
+    work.
+    
+    If we remove the module which will call ssi_protocol_remove()
+    to make a cleanup, it will free ssi through kfree(ssi),
+    while the work mentioned above will be used. The sequence
+    of operations that may lead to a UAF bug is as follows:
+    
+    CPU0                                    CPU1
+    
+                            | ssip_xmit_work
+    ssi_protocol_remove     |
+    kfree(ssi);             |
+                            | struct hsi_client *cl = ssi-&gt;cl;
+                            | // use ssi
+    
+    Fix it by ensuring that the work is canceled before proceeding
+    with the cleanup in ssi_protocol_remove().
+    
+    Signed-off-by: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+    Acked-by: Andy Shevchenko &lt;andriy.shevchenko@linux.intel.com&gt;
+    Link: https://lore.kernel.org/r/20240918120749.1730-1-kxwang23@m.fudan.edu.cn
+    Signed-off-by: Sebastian Reichel &lt;sebastian.reichel@collabora.com&gt;
+
+diff --git a/drivers/hsi/clients/ssi_protocol.c b/drivers/hsi/clients/ssi_protocol.c
+index afe470f3661c..6105ea9a6c6a 100644
+--- a/drivers/hsi/clients/ssi_protocol.c
++++ b/drivers/hsi/clients/ssi_protocol.c
+@@ -401,6 +401,7 @@ static void ssip_reset(struct hsi_client *cl)
+ 	del_timer(&amp;ssi-&gt;rx_wd);
+ 	del_timer(&amp;ssi-&gt;tx_wd);
+ 	del_timer(&amp;ssi-&gt;keep_alive);
++	cancel_work_sync(&amp;ssi-&gt;work);
+ 	ssi-&gt;main_state = 0;
+ 	ssi-&gt;send_state = 0;
+ 	ssi-&gt;recv_state = 0;</pre><hr><pre>commit e51aded92d42784313ba16c12f4f88cc4f973bbb
+Author: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+Date:   Tue Sep 10 01:20:07 2024 +0800
+
+    ntb: ntb_hw_switchtec: Fix use after free vulnerability in switchtec_ntb_remove due to race condition
+    
+    In the switchtec_ntb_add function, it can call switchtec_ntb_init_sndev
+    function, then &amp;sndev-&gt;check_link_status_work is bound with
+    check_link_status_work. switchtec_ntb_link_notification may be called
+    to start the work.
+    
+    If we remove the module which will call switchtec_ntb_remove to make
+    cleanup, it will free sndev through kfree(sndev), while the work
+    mentioned above will be used. The sequence of operations that may lead
+    to a UAF bug is as follows:
+    
+    CPU0                                 CPU1
+    
+                            | check_link_status_work
+    switchtec_ntb_remove    |
+    kfree(sndev);           |
+                            | if (sndev-&gt;link_force_down)
+                            | // use sndev
+    
+    Fix it by ensuring that the work is canceled before proceeding with
+    the cleanup in switchtec_ntb_remove.
+    
+    Signed-off-by: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+    Reviewed-by: Logan Gunthorpe &lt;logang@deltatee.com&gt;
+    Signed-off-by: Jon Mason &lt;jdmason@kudzu.us&gt;
+
+diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+index 31946387badf..ad1786be2554 100644
+--- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
++++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+@@ -1554,6 +1554,7 @@ static void switchtec_ntb_remove(struct device *dev)
+ 	switchtec_ntb_deinit_db_msg_irq(sndev);
+ 	switchtec_ntb_deinit_shared_mw(sndev);
+ 	switchtec_ntb_deinit_crosslink(sndev);
++	cancel_work_sync(&amp;sndev-&gt;check_link_status_work);
+ 	kfree(sndev);
+ 	dev_info(dev, "ntb device unregistered\n");
+ }</pre><hr><pre>commit b5109b60ee4fcb2f2bb24f589575e10cc5283ad4
+Author: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+Date:   Sun Sep 15 22:40:46 2024 +0800
+
+    net: seeq: Fix use after free vulnerability in ether3 Driver Due to Race Condition
+    
+    In the ether3_probe function, a timer is initialized with a callback
+    function ether3_ledoff, bound to &amp;prev(dev)-&gt;timer. Once the timer is
+    started, there is a risk of a race condition if the module or device
+    is removed, triggering the ether3_remove function to perform cleanup.
+    The sequence of operations that may lead to a UAF bug is as follows:
+    
+    CPU0                                    CPU1
+    
+                          |  ether3_ledoff
+    ether3_remove         |
+      free_netdev(dev);   |
+      put_devic           |
+      kfree(dev);         |
+     |  ether3_outw(priv(dev)-&gt;regs.config2 |= CFG2_CTRLO, REG_CONFIG2);
+                          | // use dev
+    
+    Fix it by ensuring that the timer is canceled before proceeding with
+    the cleanup in ether3_remove.
+    
+    Fixes: 6fd9c53f7186 ("net: seeq: Convert timers to use timer_setup()")
+    Signed-off-by: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+    Link: https://patch.msgid.link/20240915144045.451-1-kxwang23@m.fudan.edu.cn
+    Signed-off-by: Paolo Abeni &lt;pabeni@redhat.com&gt;
+
+diff --git a/drivers/net/ethernet/seeq/ether3.c b/drivers/net/ethernet/seeq/ether3.c
+index c672f92d65e9..9319a2675e7b 100644
+--- a/drivers/net/ethernet/seeq/ether3.c
++++ b/drivers/net/ethernet/seeq/ether3.c
+@@ -847,9 +847,11 @@ static void ether3_remove(struct expansion_card *ec)
+ {
+ 	struct net_device *dev = ecard_get_drvdata(ec);
+ 
++	ether3_outw(priv(dev)-&gt;regs.config2 |= CFG2_CTRLO, REG_CONFIG2);
+ 	ecard_set_drvdata(ec, NULL);
+ 
+ 	unregister_netdev(dev);
++	del_timer_sync(&amp;priv(dev)-&gt;timer);
+ 	free_netdev(dev);
+ 	ecard_release_resources(ec);
+ }</pre><hr><pre>commit 61850725779709369c7e907ae8c7c75dc7cec4f3
+Author: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+Date:   Sun Sep 15 00:39:33 2024 +0800
+
+    i3c: master: svc: Fix use after free vulnerability in svc_i3c_master Driver Due to Race Condition
+    
+    In the svc_i3c_master_probe function, &amp;master-&gt;hj_work is bound with
+    svc_i3c_master_hj_work, &amp;master-&gt;ibi_work is bound with
+    svc_i3c_master_ibi_work. And svc_i3c_master_ibi_work  can start the
+    hj_work, svc_i3c_master_irq_handler can start the ibi_work.
+    
+    If we remove the module which will call svc_i3c_master_remove to
+    make cleanup, it will free master-&gt;base through i3c_master_unregister
+    while the work mentioned above will be used. The sequence of operations
+    that may lead to a UAF bug is as follows:
+    
+    CPU0                                         CPU1
+    
+                                        | svc_i3c_master_hj_work
+    svc_i3c_master_remove               |
+    i3c_master_unregister(&amp;master-&gt;base)|
+    device_unregister(&amp;master-&gt;dev)     |
+    device_release                      |
+    //free master-&gt;base                 |
+                                        | i3c_master_do_daa(&amp;master-&gt;base)
+                                        | //use master-&gt;base
+    
+    Fix it by ensuring that the work is canceled before proceeding with the
+    cleanup in svc_i3c_master_remove.
+    
+    Fixes: 0f74f8b6675c ("i3c: Make i3c_master_unregister() return void")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+    Reviewed-by: Miquel Raynal &lt;miquel.raynal@bootlin.com&gt;
+    Reviewed-by: Frank Li &lt;Frank.Li@nxp.com&gt;
+    Link: https://lore.kernel.org/stable/20240914154030.180-1-kxwang23%40m.fudan.edu.cn
+    Link: https://lore.kernel.org/r/20240914163932.253-1-kxwang23@m.fudan.edu.cn
+    Signed-off-by: Alexandre Belloni &lt;alexandre.belloni@bootlin.com&gt;
+
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 423db3dca257..a7bfc678153e 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -1840,6 +1840,7 @@ static void svc_i3c_master_remove(struct platform_device *pdev)
+ {
+ 	struct svc_i3c_master *master = platform_get_drvdata(pdev);
+ 
++	cancel_work_sync(&amp;master-&gt;hj_work);
+ 	i3c_master_unregister(&amp;master-&gt;base);
+ 
+ 	pm_runtime_dont_use_autosuspend(&amp;pdev-&gt;dev);</pre><hr><pre>commit 609366e7a06d035990df78f1562291c3bf0d4a12
+Author: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+Date:   Wed Sep 11 23:35:44 2024 +0800
+
+    i3c: master: cdns: Fix use after free vulnerability in cdns_i3c_master Driver Due to Race Condition
+    
+    In the cdns_i3c_master_probe function, &amp;master-&gt;hj_work is bound with
+    cdns_i3c_master_hj. And cdns_i3c_master_interrupt can call
+    cnds_i3c_master_demux_ibis function to start the work.
+    
+    If we remove the module which will call cdns_i3c_master_remove to
+    make cleanup, it will free master-&gt;base through i3c_master_unregister
+    while the work mentioned above will be used. The sequence of operations
+    that may lead to a UAF bug is as follows:
+    
+    CPU0                                      CPU1
+    
+                                         | cdns_i3c_master_hj
+    cdns_i3c_master_remove               |
+    i3c_master_unregister(&amp;master-&gt;base) |
+    device_unregister(&amp;master-&gt;dev)      |
+    device_release                       |
+    //free master-&gt;base                  |
+                                         | i3c_master_do_daa(&amp;master-&gt;base)
+                                         | //use master-&gt;base
+    
+    Fix it by ensuring that the work is canceled before proceeding with
+    the cleanup in cdns_i3c_master_remove.
+    
+    Signed-off-by: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+    Link: https://lore.kernel.org/r/20240911153544.848398-1-kxwang23@m.fudan.edu.cn
+    Signed-off-by: Alexandre Belloni &lt;alexandre.belloni@bootlin.com&gt;
+
+diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
+index ee555255f1a2..fe4d59833ad5 100644
+--- a/drivers/i3c/master/i3c-master-cdns.c
++++ b/drivers/i3c/master/i3c-master-cdns.c
+@@ -1667,6 +1667,7 @@ static void cdns_i3c_master_remove(struct platform_device *pdev)
+ {
+ 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
+ 
++	cancel_work_sync(&amp;master-&gt;hj_work);
+ 	i3c_master_unregister(&amp;master-&gt;base);
+ 
+ 	clk_disable_unprepare(master-&gt;sysclk);</pre><hr><pre>commit 4a6921095eb04a900e0000da83d9475eb958e61e
+Author: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+Date:   Wed Sep 11 22:29:52 2024 +0800
+
+    fbdev: pxafb: Fix possible use after free in pxafb_task()
+    
+    In the pxafb_probe function, it calls the pxafb_init_fbinfo function,
+    after which &amp;fbi-&gt;task is associated with pxafb_task. Moreover,
+    within this pxafb_init_fbinfo function, the pxafb_blank function
+    within the &amp;pxafb_ops struct is capable of scheduling work.
+    
+    If we remove the module which will call pxafb_remove to make cleanup,
+    it will call unregister_framebuffer function which can call
+    do_unregister_framebuffer to free fbi-&gt;fb through
+    put_fb_info(fb_info), while the work mentioned above will be used.
+    The sequence of operations that may lead to a UAF bug is as follows:
+    
+    CPU0                                                CPU1
+    
+                                       | pxafb_task
+    pxafb_remove                       |
+    unregister_framebuffer(info)       |
+    do_unregister_framebuffer(fb_info) |
+    put_fb_info(fb_info)               |
+    // free fbi-&gt;fb                    | set_ctrlr_state(fbi, state)
+                                       | __pxafb_lcd_power(fbi, 0)
+                                       | fbi-&gt;lcd_power(on, &amp;fbi-&gt;fb.var)
+                                       | //use fbi-&gt;fb
+    
+    Fix it by ensuring that the work is canceled before proceeding
+    with the cleanup in pxafb_remove.
+    
+    Note that only root user can remove the driver at runtime.
+    
+    Signed-off-by: Kaixin Wang &lt;kxwang23@m.fudan.edu.cn&gt;
+    Signed-off-by: Helge Deller &lt;deller@gmx.de&gt;
+
+diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+index 2ef56fa28aff..5ce02495cda6 100644
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -2403,6 +2403,7 @@ static void pxafb_remove(struct platform_device *dev)
+ 	info = &amp;fbi-&gt;fb;
+ 
+ 	pxafb_overlay_exit(fbi);
++	cancel_work_sync(&amp;fbi-&gt;task);
+ 	unregister_framebuffer(info);
+ 
+ 	pxafb_disable_controller(fbi);</pre><hr><pre>commit 53fc25b7f557089aff101235152ae4bff15c428a
+Author: Chenyuan Mi &lt;cymi20@fudan.edu.cn&gt;
+Date:   Wed Jun 14 08:01:18 2023 -0700
+
+    perf subcmd: Fix missing check for return value of malloc() in add_cmdname()
+    
+    The malloc() function may return NULL when it fails,
+    which may cause null pointer deference in add_cmdname(),
+    add Null check for return value of malloc().
+    
+    Found by our static analysis tool.
+    
+    Signed-off-by: Chenyuan Mi &lt;cymi20@fudan.edu.cn&gt;
+    Acked-by: Ian Rogers &lt;irogers@google.com&gt;
+    Cc: Leo Yan &lt;leo.yan@linaro.org&gt;
+    Cc: Arnaldo Carvalho de Melo &lt;acme@redhat.com&gt;
+    Cc: linux-kernel@vger.kernel.org
+    Link: https://lore.kernel.org/r/20230614150118.115208-1-cymi20@fudan.edu.cn
+    Signed-off-by: Namhyung Kim &lt;namhyung@kernel.org&gt;
+
+diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
+index a66fb1a1a312..67a8d6b740ea 100644
+--- a/tools/lib/subcmd/help.c
++++ b/tools/lib/subcmd/help.c
+@@ -16,6 +16,8 @@
+ void add_cmdname(struct cmdnames *cmds, const char *name, size_t len)
+ {
+ 	struct cmdname *ent = malloc(sizeof(*ent) + len + 1);
++	if (!ent)
++		return;
+ 
+ 	ent-&gt;len = len;
+ 	memcpy(ent-&gt;name, name, len);</pre><hr><pre>commit 7396ba87f1edf549284869451665c7c4e74ecd4f
+Author: Xin Xiong &lt;xiongx18@fudan.edu.cn&gt;
+Date:   Sat Aug 13 20:49:08 2022 +0800
+
+    net: fix potential refcount leak in ndisc_router_discovery()
+    
+    The issue happens on specific paths in the function. After both the
+    object `rt` and `neigh` are grabbed successfully, when `lifetime` is
+    nonzero but the metric needs change, the function just deletes the
+    route and set `rt` to NULL. Then, it may try grabbing `rt` and `neigh`
+    again if above conditions hold. The function simply overwrite `neigh`
+    if succeeds or returns if fails, without decreasing the reference
+    count of previous `neigh`. This may result in memory leaks.
+    
+    Fix it by decrementing the reference count of `neigh` in place.
+    
+    Fixes: 6b2e04bc240f ("net: allow user to set metric on default route learned via Router Advertisement")
+    Signed-off-by: Xin Xiong &lt;xiongx18@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 98453693e400..3a553494ff16 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1378,6 +1378,9 @@ static void ndisc_router_discovery(struct sk_buff *skb)
+ 	if (!rt &amp;&amp; lifetime) {
+ 		ND_PRINTK(3, info, "RA: adding default router\n");
+ 
++		if (neigh)
++			neigh_release(neigh);
++
+ 		rt = rt6_add_dflt_router(net, &amp;ipv6_hdr(skb)-&gt;saddr,
+ 					 skb-&gt;dev, pref, defrtr_usr_metric);
+ 		if (!rt) {</pre><hr><pre>commit bfc48f1b0505ffcb03a6d749139b7577d6b81ae0
+Author: Xin Xiong &lt;xiongx18@fudan.edu.cn&gt;
+Date:   Wed Aug 10 23:29:13 2022 +0800
+
+    net/sunrpc: fix potential memory leaks in rpc_sysfs_xprt_state_change()
+    
+    The issue happens on some error handling paths. When the function
+    fails to grab the object `xprt`, it simply returns 0, forgetting to
+    decrease the reference count of another object `xps`, which is
+    increased by rpc_sysfs_xprt_kobj_get_xprt_switch(), causing refcount
+    leaks. Also, the function forgets to check whether `xps` is valid
+    before using it, which may result in NULL-dereferencing issues.
+    
+    Fix it by adding proper error handling code when either `xprt` or
+    `xps` is NULL.
+    
+    Fixes: 5b7eb78486cd ("SUNRPC: take a xprt offline using sysfs")
+    Signed-off-by: Xin Xiong &lt;xiongx18@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: David S. Miller &lt;davem@davemloft.net&gt;
+
+diff --git a/net/sunrpc/sysfs.c b/net/sunrpc/sysfs.c
+index 7330eb9a70cf..c65c90ad626a 100644
+--- a/net/sunrpc/sysfs.c
++++ b/net/sunrpc/sysfs.c
+@@ -291,8 +291,10 @@ static ssize_t rpc_sysfs_xprt_state_change(struct kobject *kobj,
+ 	int offline = 0, online = 0, remove = 0;
+ 	struct rpc_xprt_switch *xps = rpc_sysfs_xprt_kobj_get_xprt_switch(kobj);
+ 
+-	if (!xprt)
+-		return 0;
++	if (!xprt || !xps) {
++		count = 0;
++		goto out_put;
++	}
+ 
+ 	if (!strncmp(buf, "offline", 7))
+ 		offline = 1;</pre><hr><pre>commit 9c9cb23e00ddf45679b21b4dacc11d1ae7961ebe
+Author: Xin Xiong &lt;xiongx18@fudan.edu.cn&gt;
+Date:   Sun Jul 24 17:55:58 2022 +0800
+
+    xfrm: fix refcount leak in __xfrm_policy_check()
+    
+    The issue happens on an error path in __xfrm_policy_check(). When the
+    fetching process of the object `pols[1]` fails, the function simply
+    returns 0, forgetting to decrement the reference count of `pols[0]`,
+    which is incremented earlier by either xfrm_sk_policy_lookup() or
+    xfrm_policy_lookup(). This may result in memory leaks.
+    
+    Fix it by decreasing the reference count of `pols[0]` in that path.
+    
+    Fixes: 134b0fc544ba ("IPsec: propagate security module errors up from flow_cache_lookup")
+    Signed-off-by: Xin Xiong &lt;xiongx18@fudan.edu.cn&gt;
+    Signed-off-by: Xin Tan &lt;tanxin.ctf@gmail.com&gt;
+    Signed-off-by: Steffen Klassert &lt;steffen.klassert@secunet.com&gt;
+
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index f1a0bab920a5..4f8bbb825abc 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3599,6 +3599,7 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 		if (pols[1]) {
+ 			if (IS_ERR(pols[1])) {
+ 				XFRM_INC_STATS(net, LINUX_MIB_XFRMINPOLERROR);
++				xfrm_pol_put(pols[0]);
+ 				return 0;
+ 			}
+ 			pols[1]-&gt;curlft.use_time = ktime_get_real_seconds();</pre>
+    <div class="pagination">
+        <span>[1]</span><a href='16_2.html'>2</a><a href='16_3.html'>3</a><a href='16_4.html'>4</a><a href='16_5.html'>5</a><a href='16_6.html'>6</a><a href='16_7.html'>7</a><a href='16_8.html'>8</a><a href='16_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>

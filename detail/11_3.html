@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Huazhong University of Science and Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Huazhong University of Science and Technology</h1>
+    <div class="pagination">
+        <a href='11_2.html'>&lt;&lt;Prev</a><a href='11.html'>1</a><a href='11_2.html'>2</a><span>[3]</span><a href='11_4.html'>4</a><a href='11_5.html'>5</a><a href='11_6.html'>6</a><a href='11_7.html'>7</a><a href='11_8.html'>8</a><a href='11_9.html'>9</a><a href='11_10.html'>10</a><a href='11_11.html'>11</a><a href='11_12.html'>12</a><a href='11_4.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit ff8da2af1e7f3d1d35024f9b75eb0ba5724b0022
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Oct 18 09:54:44 2024 +0800
+
+    docs/zh_CN: update the translation of process/submitting-patches.rst
+    
+    Update to commit eb5ed2fae197 ("docs: submitting-patches: Advertise b4")
+    
+    scripts/checktransupdate.py reports:
+    
+    Documentation/translations/zh_CN/process/submitting-patches.rst
+    commit eb5ed2fae197 ("docs: submitting-patches: Advertise b4")
+    commit 413e775efaec ("Documentation: fix links to mailing list services")
+    2 commits needs resolving in total
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;si.yanteng@linux.dev&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20241018015452.3787741-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/process/submitting-patches.rst b/Documentation/translations/zh_CN/process/submitting-patches.rst
+index 7ca16bda3709..f7ae584a439e 100644
+--- a/Documentation/translations/zh_CN/process/submitting-patches.rst
++++ b/Documentation/translations/zh_CN/process/submitting-patches.rst
+@@ -105,7 +105,7 @@ xyzzy do frotz”或“[I]changed xyzzy to do frotz”，就好像你在命令
+ 当链接到邮件列表存档时，请首选lore.kernel.org邮件存档服务。用邮件中的
+ ``Message-ID`` 头（去掉尖括号）可以创建链接URL。例如::
+ 
+-    Link: https://lore.kernel.org/r/30th.anniversary.repost@klaava.Helsinki.FI/
++    Link: https://lore.kernel.org/30th.anniversary.repost@klaava.Helsinki.FI
+ 
+ 请检查该链接以确保可用且指向正确的邮件。
+ 
+@@ -195,11 +195,8 @@ scripts/get_maintainer.pl在这个步骤中非常有用。如果您找不到正
+ 在MAINTAINERS文件中查找子系统特定的列表；您的补丁可能会在那里得到更多的关注。
+ 不过，请不要发送垃圾邮件到无关的列表。
+ 
+-许多与内核相关的列表托管在vger.kernel.org上；您可以在
+-http://vger.kernel.org/vger-lists.html 上找到它们的列表。不过，也有与内核相关
+-的列表托管在其他地方。
+-
+-不要一次发送超过15个补丁到vger邮件列表！！！！
++许多与内核相关的列表托管在 kernel.org 上；您可以在 https://subspace.kernel.org
++上找到它们的列表。不过，也有与内核相关的列表托管在其他地方。
+ 
+ Linus Torvalds是决定改动能否进入 Linux 内核的最终裁决者。他的邮件地址是
+ torvalds@linux-foundation.org 。他收到的邮件很多，所以一般来说最好 **别**
+@@ -621,6 +618,13 @@ Fixes: 指示补丁修复了之前提交的一个问题。它可以便于确定
+ 的工作所基于的树的提交哈希。你应该在封面邮件或系列的第一个补丁中添加它，它应
+ 该放在 ``---`` 行的下面或所有其他内容之后，即只在你的电子邮件签名之前。
+ 
++工具
++----
++
++这个过程的许多技术方面可以使用 b4 自动完成，其文档可在
++https://b4.docs.kernel.org/en/latest/ 查看。该工具可帮助处理诸如追踪依赖项、运行
++checkpatch 以及格式化和发送邮件等事务。
++
+ 参考文献
+ --------
+ 
+@@ -643,9 +647,6 @@ Greg Kroah-Hartman，“如何惹恼内核子系统维护人员”
+ 
+   &lt;http://www.kroah.com/log/linux/maintainer-06.html&gt;
+ 
+-不！！！别再发巨型补丁炸弹给linux-kernel@vger.kernel.org的人们了！
+-  &lt;https://lore.kernel.org/r/20050711.125305.08322243.davem@davemloft.net&gt;
+-
+ 内核 Documentation/translations/zh_CN/process/coding-style.rst
+ 
+ Linus Torvalds关于标准补丁格式的邮件</pre><hr><pre>commit ca26a0a273c8288d03f57a97f5c28036677a1e8b
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Fri Oct 18 21:47:53 2024 +0800
+
+    docs/zh_CN: add the translations of kbuild/reproducible-builds.rst
+    
+    Finish the translation of kbuild/reproducible-builds.rst and move
+    reproducible-builds.rst from TODO to the main body.
+    
+    Update to commit 114ff6fe6cfb ("Documentation: kbuild: Add description
+    of git for reproducible builds")
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Link: https://lore.kernel.org/r/dcd09bf28f52ba0461b26f800fdbb145c879a313.1729259177.git.dzm91@hust.edu.cn
+    Reviewed-by: Yanteng Si &lt;si.yanteng@linux.dev&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+
+diff --git a/Documentation/translations/zh_CN/kbuild/index.rst b/Documentation/translations/zh_CN/kbuild/index.rst
+index c06268cf44be..0ba96aecb13a 100644
+--- a/Documentation/translations/zh_CN/kbuild/index.rst
++++ b/Documentation/translations/zh_CN/kbuild/index.rst
+@@ -16,6 +16,7 @@
+     headers_install
+     gcc-plugins
+     kbuild
++    reproducible-builds
+ 
+ TODO:
+ 
+@@ -24,7 +25,6 @@ TODO:
+ - makefiles
+ - modules
+ - issues
+-- reproducible-builds
+ - llvm
+ 
+ .. only::  subproject and html
+diff --git a/Documentation/translations/zh_CN/kbuild/reproducible-builds.rst b/Documentation/translations/zh_CN/kbuild/reproducible-builds.rst
+new file mode 100644
+index 000000000000..5f27ebf2fbfc
+--- /dev/null
++++ b/Documentation/translations/zh_CN/kbuild/reproducible-builds.rst
+@@ -0,0 +1,114 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/kbuild/reproducible-builds.rst
++
++:Translator: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++============
++可重现的构建
++============
++
++通常希望使用相同工具集构建相同源代码是可重现的，即，输出始终完全相同。这使得能够验证
++二进制分发或嵌入式系统的构建基础设施未被篡改。这样也更容易验证源代码或工具的更改不会
++影响最终生成的二进制文件。
++
++`可重现构建项目`_ 提供了有关该主题的更多信息。本文档涵盖了构建内核可能不可重现的
++各种原因，以及如何避免这些问题。
++
++时间戳
++------
++
++内核在三个地方嵌入时间戳：
++
++* 通过 ``uname()`` 显示与包含在 ``/proc/version`` 中的版本字符串
++
++* initramfs 中的文件时间戳
++
++* 如果启动 ``CONFIG_IKHEADERS``，内核或相应模块中嵌入的内核头文件的时间戳，
++  通过 ``/sys/kernel/kheaders.tar.xz`` 显示
++
++默认情况下，时间戳为当前时间或内核头文件的修改时间。这个内容必须使用
++`KBUILD_BUILD_TIMESTAMP`_ 变量进行覆盖。如果你从某个 git 提交进行构建，
++可以使用其提交日期。
++
++内核 *不* 使用 ``__DATE__`` 和 ``__TIME__`` 宏，并在使用这些宏时启用警告。
++如果你合并的外部代码使用这些宏，则必须通过设置 `SOURCE_DATE_EPOCH`_ 环境
++变量来覆盖它们对应的时间戳。
++
++用户，主机
++----------
++
++内核在 ``/proc/version`` 中嵌入构建用户和主机名。必须使用
++`KBUILD_BUILD_USER 和 KBUILD_BUILD_HOST`_ 变量来覆盖这些设置。如果
++您从某个 git 提交进行构建，可以使用其提交者地址。
++
++绝对文件名
++----------
++
++当内核在树外构建时，调试信息可能包括源文件的绝对文件名。这些信息必须通过在
++`KCFLAGS`_ 变量中包含 ``-fdebug-prefix-map`` 选项来覆盖。
++
++根据使用的编译器，``__FILE__`` 宏在树外构建中也可能扩展为绝对文件名。Kbuild
++自动使用 ``-fmacro-prefix-map`` 选项来防止这种情况，前提是它被支持。
++
++可重现构建网站提供了有关这些 `prefix-map 选项`_ 的更多信息。
++
++在源包中的生成文件
++------------------
++
++在 ``tools/`` 子目录下，一些程序的构建过程并不完全支持树外构建。这可能导致后续
++使用如 ``make rpm-pkg`` 构建的源码包包含生成的文件。在构建源码包之前，您应该通过
++运行 ``make mrproper`` 或 ``git clean -d -f -x`` 来确保源码树是干净的。
++
++模块签名
++--------
++
++如果你启用 ``CONFIG_MODULE_SIG_ALL``，默认行为是为每次构建生成不同的临时密钥，
++从而导致模块不可重现。然而，将签名密钥包含在源代码中显然会违背签名模块的目的。
++
++一种方法是将构建过程分为几个部分，以便不可重现的部分可以作为源处理：
++
++1. 生成一个持久的签名密钥。将该密钥的证书添加到内核源代码中。
++
++2. 将 ``CONFIG_SYSTEM_TRUSTED_KEYS`` 符号设置为包括签名密钥的证书，将
++``CONFIG_MODULE_SIG_KEY`` 设置为空字符串，并禁用 ``CONFIG_MODULE_SIG_ALL``。
++最后，构建内核和模块。
++
++3. 为模块创建分离的签名，并将它们作为源发布。
++
++4. 附加模块签名并进行第二次构建。这可以重建模块，或使用步骤 2 的输出。
++
++结构随机化
++----------
++
++如果你启用 ``CONFIG_RANDSTRUCT``，则需要在 ``scripts/basic/randstruct.seed``
++中预生成随机种子，以便每次构建都使用相同的值。有关详细信息，请参见
++``scripts/gen-randstruct-seed.sh``。
++
++调试信息冲突
++------------
++
++这并非是个不可重现性的问题，而是生成的文件 *过于* 可重现的问题。
++
++一旦你设置了所有必要的变量来开展可重现构建，vDSO 的调试信息可能即使对于不同的内核版
++本也是相同的。这会导致不同内核版本的调试信息软件包之间发生文件冲突。
++
++为了避免这种情况，你可以通过在 vDSO 中包含一个任意的 salt 字符串，使其对于不同的
++内核版本是不同的。这种机制由 Kconfig 符号 ``CONFIG_BUILD_SALT`` 指定。
++
++Git
++---
++
++未提交的更改或 Git 中的不同提交 ID 也可能导致不同的编译结果。例如，在执行
++``git reset HEAD^`` 后，即使代码相同，编译期间生成的
++``include/config/kernel.release`` 也会不同，导致最终生成的二进制文件也不尽相同。
++有关详细信息，请参见 ``scripts/setlocalversion``。
++
++.. _KBUILD_BUILD_TIMESTAMP: kbuild.html#kbuild-build-timestamp
++.. _KBUILD_BUILD_USER 和 KBUILD_BUILD_HOST: kbuild.html#kbuild-build-user-kbuild-build-host
++.. _KCFLAGS: kbuild.html#kcflags
++.. _prefix-map 选项: https://reproducible-builds.org/docs/build-path/
++.. _可重现构建项目: https://reproducible-builds.org/
++.. _SOURCE_DATE_EPOCH: https://reproducible-builds.org/docs/source-date-epoch/</pre><hr><pre>commit 3af2dd00a33ce15c1495166182c650e5bbe75c40
+Author: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+Date:   Sat Oct 19 22:22:41 2024 +0800
+
+    docs/zh_CN: add translation of dev-tools/kmsan.rst
+    
+    Add translation of kmsan.rst and remove it from TODO list.
+    update to commit 3f53d1b4a4d2 ("docs/dev-tools: fix a typo")
+    
+    Signed-off-by: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Reviewed-by: Yanteng Si &lt;si.yanteng@linux.dev&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20241019142243.88712-1-tttturtleruss@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/index.rst b/Documentation/translations/zh_CN/dev-tools/index.rst
+index 6a8c637c0be1..7b37194217b0 100644
+--- a/Documentation/translations/zh_CN/dev-tools/index.rst
++++ b/Documentation/translations/zh_CN/dev-tools/index.rst
+@@ -22,6 +22,7 @@ Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+    sparse
+    kcov
+    kcsan
++   kmsan
+    gcov
+    kasan
+    ubsan
+@@ -32,7 +33,6 @@ Todolist:
+ 
+  - checkpatch
+  - coccinelle
+- - kmsan
+  - kfence
+  - kgdb
+  - kselftest
+diff --git a/Documentation/translations/zh_CN/dev-tools/kmsan.rst b/Documentation/translations/zh_CN/dev-tools/kmsan.rst
+new file mode 100644
+index 000000000000..b1ddb47bd6c4
+--- /dev/null
++++ b/Documentation/translations/zh_CN/dev-tools/kmsan.rst
+@@ -0,0 +1,392 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/dev-tools/kmsan.rst
++:Translator: 刘浩阳 Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
++
++=======================
++内核内存消毒剂（KMSAN）
++=======================
++
++KMSAN 是一个动态错误检测器，旨在查找未初始化值的使用。它基于编译器插桩，类似于用
++户空间的 `MemorySanitizer tool`_。
++
++需要注意的是 KMSAN 并不适合生产环境，因为它会大幅增加内核内存占用并降低系统运行速度。
++
++使用方法
++========
++
++构建内核
++--------
++
++要构建带有 KMSAN 的内核，你需要一个较新的 Clang (14.0.6+)。
++请参阅 `LLVM documentation`_ 了解如何构建 Clang。
++
++现在配置并构建一个启用 CONFIG_KMSAN 的内核。
++
++示例报告
++--------
++
++以下是一个 KMSAN 报告的示例::
++
++  =====================================================
++  BUG: KMSAN: uninit-value in test_uninit_kmsan_check_memory+0x1be/0x380 [kmsan_test]
++   test_uninit_kmsan_check_memory+0x1be/0x380 mm/kmsan/kmsan_test.c:273
++   kunit_run_case_internal lib/kunit/test.c:333
++   kunit_try_run_case+0x206/0x420 lib/kunit/test.c:374
++   kunit_generic_run_threadfn_adapter+0x6d/0xc0 lib/kunit/try-catch.c:28
++   kthread+0x721/0x850 kernel/kthread.c:327
++   ret_from_fork+0x1f/0x30 ??:?
++
++  Uninit was stored to memory at:
++   do_uninit_local_array+0xfa/0x110 mm/kmsan/kmsan_test.c:260
++   test_uninit_kmsan_check_memory+0x1a2/0x380 mm/kmsan/kmsan_test.c:271
++   kunit_run_case_internal lib/kunit/test.c:333
++   kunit_try_run_case+0x206/0x420 lib/kunit/test.c:374
++   kunit_generic_run_threadfn_adapter+0x6d/0xc0 lib/kunit/try-catch.c:28
++   kthread+0x721/0x850 kernel/kthread.c:327
++   ret_from_fork+0x1f/0x30 ??:?
++
++  Local variable uninit created at:
++   do_uninit_local_array+0x4a/0x110 mm/kmsan/kmsan_test.c:256
++   test_uninit_kmsan_check_memory+0x1a2/0x380 mm/kmsan/kmsan_test.c:271
++
++  Bytes 4-7 of 8 are uninitialized
++  Memory access of size 8 starts at ffff888083fe3da0
++
++  CPU: 0 PID: 6731 Comm: kunit_try_catch Tainted: G    B       E     5.16.0-rc3+ #104
++  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
++  =====================================================
++
++报告指出本地变量 ``uninit`` 在 ``do_uninit_local_array()`` 中未初始化。
++第三个堆栈跟踪对应于该变量创建的位置。
++
++第一个堆栈跟踪显示了未初始化值的使用位置（在
++``test_uninit_kmsan_check_memory()``）。
++工具显示了局部变量中未初始化的字节及其被复制到其他内存位置前的堆栈。
++
++KMSAN 会在以下情况下报告未初始化的值 ``v``:
++
++ - 在条件判断中，例如 ``if (v) { ... }``；
++ - 在索引或指针解引用中，例如 ``array[v]`` 或 ``*v``；
++ - 当它被复制到用户空间或硬件时，例如 ``copy_to_user(..., &amp;v, ...)``；
++ - 当它作为函数参数传递，并且启用 ``CONFIG_KMSAN_CHECK_PARAM_RETVAL`` 时（见下文）。
++
++这些情况（除了复制数据到用户空间或硬件外，这是一个安全问题）被视为 C11 标准下的未定义行为。
++
++禁用插桩
++--------
++
++可以用 ``__no_kmsan_checks`` 标记函数。这样，KMSAN 会忽略该函数中的未初始化值，
++并将其输出标记为已初始化。如此，用户不会收到与该函数相关的 KMSAN 报告。
++
++KMSAN 还支持 ``__no_sanitize_memory`` 函数属性。KMSAN 不会对拥有该属性的函数进行
++插桩，这在我们不希望编译器干扰某些底层代码（例如标记为 ``noinstr`` 的代码，该
++代码隐式添加了 ``__no_sanitize_memory``）时可能很有用。
++
++然而，这会有代价：此类函数的栈分配将具有不正确的影子/初始值，可能导致误报。来
++自非插桩代码的函数也可能接收到不正确的元数据。
++
++
++作为经验之谈，避免显式使用 ``__no_sanitize_memory``。
++
++也可以通过 Makefile 禁用 KMSAN 对某个文件（例如 main.o）的作用::
++
++  KMSAN_SANITIZE_main.o := n
++
++或者对整个目录::
++
++  KMSAN_SANITIZE := n
++
++将其应用到文件或目录中的每个函数。大多数用户不会需要 KMSAN_SANITIZE，
++除非他们的代码被 KMSAN 破坏（例如在早期启动时运行的代码）。
++
++还可以通过调用 ``kmsan_disable_current()`` 和 ``kmsan_enable_current()``
++暂时对当前任务禁用 KMSAN 检查。每个 ``kmsan_enable_current()`` 必须在
++``kmsan_disable_current()`` 之后调用；这些调用对可以嵌套。在调用时需要注意保持
++嵌套区域简短，并且尽可能使用其他方法禁用插桩。
++
++支持
++====
++
++为了使用 KMSAN，内核必须使用 Clang 构建，到目前为止，Clang 是唯一支持 KMSAN
++的编译器。内核插桩过程基于用户空间的 `MemorySanitizer tool`_。
++
++目前运行时库仅支持 x86_64 架构。
++
++KMSAN 的工作原理
++================
++
++KMSAN 阴影内存
++--------------
++
++KMSAN 将一个元数据字节（也称为阴影字节）与每个内核内存字节关联。仅当内核内存字节
++的相应位未初始化时，阴影字节中的一个比特位才会被设置。将内存标记为未初始化（即
++将其阴影字节设置为 ``0xff``）称为中毒，将其标记为已初始化（将阴影字节设置为
++``0x00``）称为解毒。
++
++当在栈上分配新变量时，默认情况下它会中毒，这由编译器插入的插桩代码完成（除非它
++是立即初始化的栈变量）。任何未使用 ``__GFP_ZERO`` 的堆分配也会中毒。
++
++编译器插桩还跟踪阴影值在代码中的使用。当需要时，插桩代码会调用 ``mm/kmsan/`` 中
++的运行时库以持久化阴影值。
++
++基本或复合类型的阴影值是长度相同的字节数组。当常量值写入内存时，该内存会被解毒
++。当从内存读取值时，其阴影内存也会被获取，并传递到所有使用该值的操作中。对于每
++个需要一个或多个值的指令，编译器会生成代码根据这些值及其阴影来计算结果的阴影。
++
++
++示例::
++
++  int a = 0xff;  // i.e. 0x000000ff
++  int b;
++  int c = a | b;
++
++在这种情况下， ``a`` 的阴影为 ``0``， ``b`` 的阴影为 ``0xffffffff``，
++``c`` 的阴影为 ``0xffffff00``。这意味着 ``c`` 的高三个字节未初始化，而低字节已
++初始化。
++
++起源跟踪
++--------
++
++每四字节的内核内存都有一个所谓的源点与之映射。这个源点描述了在程序执行中，未初
++始化值的创建点。每个源点都与完整的分配栈（对于堆分配的内存）或包含未初始化变
++量的函数（对于局部变量）相关联。
++
++当一个未初始化的变量在栈或堆上分配时，会创建一个新的源点值，并将该变量的初始值
++填充为这个值。当从内存中读取一个值时，其初始值也会被读取并与阴影一起保留。对于
++每个接受一个或多个值的指令，结果的源点是与任何未初始化输入相对应的源点之一。如
++果一个污染值被写入内存，其起源也会被写入相应的存储中。
++
++示例 1::
++
++  int a = 42;
++  int b;
++  int c = a + b;
++
++在这种情况下， ``b`` 的源点是在函数入口时生成的，并在加法结果写入内存之前存储到
++``c`` 的源点中。
++
++如果几个变量共享相同的源点地址，则它们被存储在同一个四字节块中。在这种情况下，
++对任何变量的每次写入都会更新所有变量的源点。在这种情况下我们必须牺牲精度，因
++为为单独的位（甚至字节）存储源点成本过高。
++
++示例 2::
++
++  int combine(short a, short b) {
++    union ret_t {
++      int i;
++      short s[2];
++    } ret;
++    ret.s[0] = a;
++    ret.s[1] = b;
++    return ret.i;
++  }
++
++如果 ``a`` 已初始化而 ``b`` 未初始化，则结果的阴影为 0xffff0000，结果的源点为
++``b`` 的源点。 ``ret.s[0]`` 会有相同的起源，但它不会被使用，因为该变量已初始化。
++
++如果两个函数参数都未初始化，则只保留第二个参数的源点。
++
++源点链
++~~~~~~
++
++为了便于调试，KMSAN 在每次将未初始化值存储到内存时都会创建一个新的源点。新的源点
++引用了其创建栈以及值的前一个起源。这可能导致内存消耗增加，因此我们在运行时限制
++了源点链的长度。
++
++Clang 插桩 API
++--------------
++
++Clang 插桩通过在内核代码中插入定义在 ``mm/kmsan/instrumentation.c`` 中的函数调用
++来实现。
++
++
++阴影操作
++~~~~~~~~
++
++对于每次内存访问，编译器都会发出一个函数调用，该函数返回一对指针，指向给定内存
++的阴影和原始地址::
++
++  typedef struct {
++    void *shadow, *origin;
++  } shadow_origin_ptr_t
++
++  shadow_origin_ptr_t __msan_metadata_ptr_for_load_{1,2,4,8}(void *addr)
++  shadow_origin_ptr_t __msan_metadata_ptr_for_store_{1,2,4,8}(void *addr)
++  shadow_origin_ptr_t __msan_metadata_ptr_for_load_n(void *addr, uintptr_t size)
++  shadow_origin_ptr_t __msan_metadata_ptr_for_store_n(void *addr, uintptr_t size)
++
++函数名依赖于内存访问的大小。
++
++编译器确保对于每个加载的值，其阴影和原始值都从内存中读取。当一个值存储到内存时
++，其阴影和原始值也会通过元数据指针进行存储。
++
++处理局部变量
++~~~~~~~~~~~~
++
++一个特殊的函数用于为局部变量创建一个新的原始值，并将该变量的原始值设置为该值::
++
++  void __msan_poison_alloca(void *addr, uintptr_t size, char *descr)
++
++访问每个任务数据
++~~~~~~~~~~~~~~~~
++
++在每个插桩函数的开始处，KMSAN 插入一个对 ``__msan_get_context_state()`` 的调用
++::
++
++  kmsan_context_state *__msan_get_context_state(void)
++
++``kmsan_context_state`` 在 ``include/linux/kmsan.h`` 中声明::
++
++  struct kmsan_context_state {
++    char param_tls[KMSAN_PARAM_SIZE];
++    char retval_tls[KMSAN_RETVAL_SIZE];
++    char va_arg_tls[KMSAN_PARAM_SIZE];
++    char va_arg_origin_tls[KMSAN_PARAM_SIZE];
++    u64 va_arg_overflow_size_tls;
++    char param_origin_tls[KMSAN_PARAM_SIZE];
++    depot_stack_handle_t retval_origin_tls;
++  };
++
++KMSAN 使用此结构体在插桩函数之间传递参数阴影和原始值（除非立刻通过
++ ``CONFIG_KMSAN_CHECK_PARAM_RETVAL`` 检查参数）。
++
++将未初始化的值传递给函数
++~~~~~~~~~~~~~~~~~~~~~~~~
++
++Clang 的 MemorySanitizer 插桩有一个选项 ``-fsanitize-memory-param-retval``，该
++选项使编译器检查按值传递的函数参数，以及函数返回值。
++
++该选项由 ``CONFIG_KMSAN_CHECK_PARAM_RETVAL`` 控制，默认启用以便 KMSAN 更早报告
++未初始化的值。有关更多细节，请参考 `LKML discussion`_。
++
++由于 LLVM 中的实现检查的方式（它们仅应用于标记为 ``noundef`` 的参数），并不是所
++有参数都能保证被检查，因此我们不能放弃 ``kmsan_context_state`` 中的元数据存储
++。
++
++字符串函数
++~~~~~~~~~~~
++
++编译器将对 ``memcpy()``/``memmove()``/``memset()`` 的调用替换为以下函数。这些函
++数在数据结构初始化或复制时也会被调用，确保阴影和原始值与数据一起复制::
++
++  void *__msan_memcpy(void *dst, void *src, uintptr_t n)
++  void *__msan_memmove(void *dst, void *src, uintptr_t n)
++  void *__msan_memset(void *dst, int c, uintptr_t n)
++
++错误报告
++~~~~~~~~
++
++对于每个值的使用，编译器发出一个阴影检查，在值中毒的情况下调用
++``__msan_warning()``::
++
++  void __msan_warning(u32 origin)
++
++``__msan_warning()`` 使 KMSAN 运行时打印错误报告。
++
++内联汇编插桩
++~~~~~~~~~~~~
++
++KMSAN 对每个内联汇编输出进行插桩，调用::
++
++  void __msan_instrument_asm_store(void *addr, uintptr_t size)
++
++，该函数解除内存区域的污染。
++
++这种方法可能会掩盖某些错误，但也有助于避免许多位操作、原子操作等中的假阳性。
++
++有时传递给内联汇编的指针不指向有效内存。在这种情况下，它们在运行时被忽略。
++
++
++运行时库
++--------
++
++代码位于 ``mm/kmsan/``。
++
++每个任务 KMSAN 状态
++~~~~~~~~~~~~~~~~~~~
++
++每个 task_struct 都有一个关联的 KMSAN 任务状态，它保存 KMSAN
++上下文（见上文）和一个每个任务计数器以禁止 KMSAN 报告::
++
++  struct kmsan_context {
++    ...
++    unsigned int depth;
++    struct kmsan_context_state cstate;
++    ...
++  }
++
++  struct task_struct {
++    ...
++    struct kmsan_context kmsan;
++    ...
++  }
++
++KMSAN 上下文
++~~~~~~~~~~~~
++
++在内核任务上下文中运行时，KMSAN 使用 ``current-&gt;kmsan.cstate`` 来
++保存函数参数和返回值的元数据。
++
++但在内核运行于中断、softirq 或 NMI 上下文中， ``current`` 不可用时，
++KMSAN 切换到每 CPU 中断状态::
++
++  DEFINE_PER_CPU(struct kmsan_ctx, kmsan_percpu_ctx);
++
++元数据分配
++~~~~~~~~~~
++
++内核中有多个地方存储元数据。
++
++1. 每个 ``struct page`` 实例包含两个指向其影子和内存页面的指针
++::
++
++  struct page {
++    ...
++    struct page *shadow, *origin;
++    ...
++  };
++
++在启动时，内核为每个可用的内核页面分配影子和源页面。这是在内核地址空间已经碎片
++化时后完成的，完成的相当晚，因此普通数据页面可能与元数据页面任意交错。
++
++这意味着通常两个相邻的内存页面，它们的影子/源页面可能不是连续的。因此，如果内存
++访问跨越内存块的边界，访问影子/源内存可能会破坏其他页面或从中读取错误的值。
++
++实际上，由相同 ``alloc_pages()`` 调用返回的连续内存页面将具有连续的元数据，而
++如果这些页面属于两个不同的分配，它们的元数据页面可能会被碎片化。
++
++对于内核数据（ ``.data``、 ``.bss`` 等）和每 CPU 内存区域，也没有对元数据连续
++性的保证。
++
++在 ``__msan_metadata_ptr_for_XXX_YYY()`` 遇到两个页面之间的
++非连续元数据边界时，它返回指向假影子/源区域的指针::
++
++  char dummy_load_page[PAGE_SIZE] __attribute__((aligned(PAGE_SIZE)));
++  char dummy_store_page[PAGE_SIZE] __attribute__((aligned(PAGE_SIZE)));
++
++``dummy_load_page`` 被初始化为零，因此读取它始终返回零。对 ``dummy_store_page`` 的
++所有写入都被忽略。
++
++2. 对于 vmalloc 内存和模块，内存范围、影子和源之间有一个直接映射。KMSAN 将
++vmalloc 区域缩小了 3/4，仅使前四分之一可用于 ``vmalloc()``。vmalloc
++区域的第二个四分之一包含第一个四分之一的影子内存，第三个四分之一保存源。第四个
++四分之一的小部分包含内核模块的影子和源。有关更多详细信息，请参阅
++``arch/x86/include/asm/pgtable_64_types.h``。
++
++当一系列页面映射到一个连续的虚拟内存空间时，它们的影子和源页面也以连续区域的方
++式映射。
++
++参考文献
++========
++
++E. Stepanov, K. Serebryany. `MemorySanitizer: fast detector of uninitialized
++memory use in C++
++&lt;https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/43308.pdf&gt;`_.
++In Proceedings of CGO 2015.
++
++.. _MemorySanitizer tool: https://clang.llvm.org/docs/MemorySanitizer.html
++.. _LLVM documentation: https://llvm.org/docs/GettingStarted.html
++.. _LKML discussion: https://lore.kernel.org/all/20220614144853.3693273-1-glider@google.com/</pre><hr><pre>commit a1e42d2543b442ea3ef3e76f46fe8e57e1e1e055
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Wed Oct 16 21:16:32 2024 +0800
+
+    docs/zh_CN: add the translation of kbuild/kbuild.rst
+    
+    Finish the translation of kbuild/kbuild.rst and move kbuild
+    from TODO to the main body.
+    
+    Update to commit 2eb5d7f24299 ("kbuild: doc: describe the -C
+    option precisely for external module builds")
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20241016131710.2619567-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/kbuild/index.rst b/Documentation/translations/zh_CN/kbuild/index.rst
+index e8eb448c1197..c06268cf44be 100644
+--- a/Documentation/translations/zh_CN/kbuild/index.rst
++++ b/Documentation/translations/zh_CN/kbuild/index.rst
+@@ -15,12 +15,12 @@
+     kconfig
+     headers_install
+     gcc-plugins
++    kbuild
+ 
+ TODO:
+ 
+ - kconfig-language
+ - kconfig-macro-language
+-- kbuild
+ - makefiles
+ - modules
+ - issues
+diff --git a/Documentation/translations/zh_CN/kbuild/kbuild.rst b/Documentation/translations/zh_CN/kbuild/kbuild.rst
+new file mode 100644
+index 000000000000..e5e2aebe1ebc
+--- /dev/null
++++ b/Documentation/translations/zh_CN/kbuild/kbuild.rst
+@@ -0,0 +1,304 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/kbuild/kbuild.rst
++:Translator: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++======
++Kbuild
++======
++
++
++输出文件
++========
++
++modules.order
++-------------
++该文件记录模块在 Makefile 中出现的顺序。modprobe 使用该文件来确定性
++解析匹配多个模块的别名。
++
++modules.builtin
++---------------
++该文件列出了所有内置到内核中的模块。modprobe 使用该文件来避免尝试加载
++内置模块时出错。
++
++modules.builtin.modinfo
++-----------------------
++该文件包含所有内置模块的 modinfo。与单独模块的 modinfo 不同，所有字段
++都带有模块名称前缀。
++
++modules.builtin.ranges
++----------------------
++该文件包含所有内核内置模块的地址偏移范围（每个 ELF 节）。结合 System.map
++文件，它可以用来将模块名称与符号关联起来。
++
++环境变量
++========
++
++KCPPFLAGS
++---------
++在预处理时传递的额外选项。kbuild 进行所有预处理（包括构建 C 文件和汇编文件）
++时，都会使用这些预处理选项。
++
++KAFLAGS
++-------
++传递给汇编器的额外选项（适用于内置模块和外部模块）。
++
++AFLAGS_MODULE
++-------------
++外部模块的额外汇编选项。
++
++AFLAGS_KERNEL
++-------------
++内置模块的额外汇编选项。
++
++KCFLAGS
++-------
++传递给 C 编译器的额外选项（适用于内置模块和外部模块）。
++
++KRUSTFLAGS
++----------
++传递给 Rust 编译器的额外选项（适用于内置模块和外部模块）。
++
++CFLAGS_KERNEL
++-------------
++在编译内置代码时，传递给 $(CC) 的额外选项。
++
++CFLAGS_MODULE
++-------------
++编译外部模块时，传递给 $(CC) 的额外模块特定选项。
++
++RUSTFLAGS_KERNEL
++----------------
++在编译内置代码时，传递给 $(RUSTC) 的额外选项。
++
++RUSTFLAGS_MODULE
++----------------
++用于 $(RUSTC) 的额外模块特定选项。
++
++LDFLAGS_MODULE
++--------------
++用于 $(LD) 链接模块时的额外选项。
++
++HOSTCFLAGS
++----------
++在构建主机程序时传递给 $(HOSTCC) 的额外标志。
++
++HOSTCXXFLAGS
++------------
++在构建主机程序时传递给 $(HOSTCXX) 的额外标志。
++
++HOSTRUSTFLAGS
++-------------
++在构建主机程序时传递给 $(HOSTRUSTC) 的额外标志。
++
++HOSTLDFLAGS
++-----------
++链接主机程序时传递的额外选项。
++
++HOSTLDLIBS
++----------
++在构建主机程序时链接的额外库。
++
++.. _zh_cn_userkbuildflags:
++
++USERCFLAGS
++----------
++用于 $(CC) 编译用户程序（userprogs）时的额外选项。
++
++USERLDFLAGS
++-----------
++用于 $(LD) 链接用户程序时的额外选项。用户程序（userprogs）是使用 CC 链接的，
++因此 $(USERLDFLAGS) 应该根据需要包含 "-Wl," 前缀。
++
++KBUILD_KCONFIG
++--------------
++将顶级 Kconfig 文件设置为此环境变量的值。默认名称为 "Kconfig"。
++
++KBUILD_VERBOSE
++--------------
++设置 kbuild 的详细程度。可以分配与 "V=..." 相同的值。
++
++有关完整列表，请参见 `make help`。
++
++设置 "V=..." 优先于 KBUILD_VERBOSE。
++
++KBUILD_EXTMOD
++-------------
++在构建外部模块时设置内核源代码的搜索目录。
++
++设置 "M=..." 优先于 KBUILD_EXTMOD。
++
++KBUILD_OUTPUT
++-------------
++指定内核构建的输出目录。
++
++在单独的构建目录中为预构建内核构建外部模块时，这个变量也可以指向内核输出目录。请注意，
++这并不指定外部模块本身的输出目录。
++
++输出目录也可以使用 "O=..." 指定。
++
++设置 "O=..." 优先于 KBUILD_OUTPUT。
++
++KBUILD_EXTRA_WARN
++-----------------
++指定额外的构建检查。也可以通过在命令行传递 "W=..." 来设置相同的值。
++
++请参阅 `make help` 了解支持的值列表。
++
++设置 "W=..." 优先于 KBUILD_EXTRA_WARN。
++
++KBUILD_DEBARCH
++--------------
++对于 deb-pkg 目标，允许覆盖 deb-pkg 部署的正常启发式方法。通常 deb-pkg 尝试根据
++UTS_MACHINE 变量（在某些架构中还包括内核配置）来猜测正确的架构。KBUILD_DEBARCH
++的值假定（不检查）为有效的 Debian 架构。
++
++KDOCFLAGS
++---------
++指定在构建过程中用于 kernel-doc 检查的额外（警告/错误）标志，查看
++scripts/kernel-doc 了解支持的标志。请注意，这目前不适用于文档构建。
++
++ARCH
++----
++设置 ARCH 为要构建的架构。
++
++在大多数情况下，架构的名称与 arch/ 目录中的子目录名称相同。
++
++但某些架构（如 x86 和 sparc）有别名。
++
++- x86: i386 表示 32 位，x86_64 表示 64 位
++- parisc: parisc64 表示 64 位
++- sparc: sparc32 表示 32 位，sparc64 表示 64 位
++
++CROSS_COMPILE
++-------------
++指定 binutils 文件名的可选固定部分。CROSS_COMPILE 可以是文件名的一部分或完整路径。
++
++在某些设置中，CROSS_COMPILE 也用于 ccache。
++
++CF
++--
++用于 sparse 的额外选项。
++
++CF 通常在命令行中如下所示使用::
++
++    make CF=-Wbitwise C=2
++
++INSTALL_PATH
++------------
++INSTALL_PATH 指定放置更新后的内核和系统映像的路径。默认值是 /boot，但你可以设置
++为其他值。
++
++INSTALLKERNEL
++-------------
++使用 "make install" 时调用的安装脚本。
++默认名称是 "installkernel"。
++
++该脚本将会以以下参数调用：
++
++   - $1 - 内核版本
++   - $2 - 内核映像文件
++   - $3 - 内核映射文件
++   - $4 - 默认安装路径（如果为空，则使用根目录）
++
++"make install" 的实现是架构特定的，可能与上述有所不同。
++
++提供 INSTALLKERNEL 以便在交叉编译内核时可以指定自定义安装程序。
++
++MODLIB
++------
++指定模块的安装位置。
++默认值为::
++
++    $(INSTALL_MOD_PATH)/lib/modules/$(KERNELRELEASE)
++
++该值可以被覆盖，在这种情况下将忽略默认值。
++
++INSTALL_MOD_PATH
++----------------
++INSTALL_MOD_PATH 指定了模块目录重定位时 MODLIB 的前缀，通常由构建根
++（build roots）所需。它没有在 makefile 中定义，但如果需要，可以作为
++参数传递给 make。
++
++INSTALL_MOD_STRIP
++-----------------
++如果 INSTALL_MOD_STRIP 被定义，内核模块在安装后会被剥离。如果
++INSTALL_MOD_STRIP 的值为 '1'，则会使用默认选项 --strip-debug。否则，
++INSTALL_MOD_STRIP 的值将作为 strip 命令的选项。
++
++INSTALL_HDR_PATH
++----------------
++INSTALL_HDR_PATH 指定了执行 "make headers_*" 时，用户空间头文件的安装位置。
++
++默认值为::
++
++    $(objtree)/usr
++
++$(objtree) 是保存输出文件的目录。
++输出目录通常使用命令行中的 "O=..." 进行设置。
++
++该值可以被覆盖，在这种情况下将忽略默认值。
++
++INSTALL_DTBS_PATH
++-----------------
++INSTALL_DTBS_PATH 指定了设备树二进制文件的安装位置，通常由构建根（build roots）所需。
++它没有在 makefile 中定义，但如果需要，可以作为参数传递给 make。
++
++KBUILD_ABS_SRCTREE
++--------------------------------------------------
++Kbuild 在可能的情况下使用相对路径指向源代码树。例如，在源代码树中构建时，源代码树路径是
++'.'。
++
++设置该标志请求 Kbuild 使用源代码树的绝对路径。
++在某些情况下这是有用的，例如在生成带有绝对路径条目的标签文件时等。
++
++KBUILD_SIGN_PIN
++---------------
++当签署内核模块时，如果私钥需要密码或 PIN，此变量允许将密码或 PIN 传递给 sign-file 工具。
++
++KBUILD_MODPOST_WARN
++-------------------
++KBUILD_MODPOST_WARN 可以设置为在最终模块链接阶段出现未定义符号时避免错误。它将这些错误
++转为警告。
++
++KBUILD_MODPOST_NOFINAL
++----------------------
++KBUILD_MODPOST_NOFINAL 可以设置为跳过模块的最终链接。这仅在加速编译测试时有用。
++
++KBUILD_EXTRA_SYMBOLS
++--------------------
++用于依赖其他模块符号的模块。详见 modules.rst。
++
++ALLSOURCE_ARCHS
++---------------
++对于 tags/TAGS/cscope 目标，可以指定包含在数据库中的多个架构，用空格分隔。例如::
++
++    $ make ALLSOURCE_ARCHS="x86 mips arm" tags
++
++要获取所有可用架构，也可以指定 all。例如::
++
++    $ make ALLSOURCE_ARCHS=all tags
++
++IGNORE_DIRS
++-----------
++对于 tags/TAGS/cscope 目标，可以选择不包含在数据库中的目录，用空格分隔。例如::
++
++    $ make IGNORE_DIRS="drivers/gpu/drm/radeon tools" cscope
++
++KBUILD_BUILD_TIMESTAMP
++----------------------
++将该环境变量设置为日期字符串，可以覆盖在 UTS_VERSION 定义中使用的时间戳
++（运行内核时的 uname -v）。该值必须是一个可以传递给 date -d 的字符串。默认值是
++内核构建某个时刻的 date 命令输出。
++
++KBUILD_BUILD_USER, KBUILD_BUILD_HOST
++------------------------------------
++这两个变量允许覆盖启动时显示的 user@host 字符串以及 /proc/version 中的信息。
++默认值分别是 whoami 和 host 命令的输出。
++
++LLVM
++----
++如果该变量设置为 1，Kbuild 将使用 Clang 和 LLVM 工具，而不是 GCC 和 GNU
++binutils 来构建内核。</pre><hr><pre>commit 3f53d1b4a4d27daa7dcbab7b09c1c4052313ab87
+Author: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+Date:   Tue Oct 15 22:01:59 2024 +0800
+
+    docs/dev-tools: fix a typo
+    
+    fix a typo in dev-tools/kmsan.rst
+    
+    [jc: this is not really a typo, but "iff" is clearly a confusing construct
+    for non-native speakers; changing it will prevent people from trying to
+    "fix" it repeatedly.]
+    
+    Signed-off-by: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20241015140159.8082-1-tttturtleruss@hust.edu.cn
+
+diff --git a/Documentation/dev-tools/kmsan.rst b/Documentation/dev-tools/kmsan.rst
+index 6a48d96c5c85..0dc668b183f6 100644
+--- a/Documentation/dev-tools/kmsan.rst
++++ b/Documentation/dev-tools/kmsan.rst
+@@ -133,7 +133,7 @@ KMSAN shadow memory
+ -------------------
+ 
+ KMSAN associates a metadata byte (also called shadow byte) with every byte of
+-kernel memory. A bit in the shadow byte is set iff the corresponding bit of the
++kernel memory. A bit in the shadow byte is set if the corresponding bit of the
+ kernel memory byte is uninitialized. Marking the memory uninitialized (i.e.
+ setting its shadow bytes to ``0xff``) is called poisoning, marking it
+ initialized (setting the shadow bytes to ``0x00``) is called unpoisoning.</pre><hr><pre>commit fbdeb12af1eb1992bf391dd7fadb4e6d51f63b00
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Oct 5 22:40:48 2024 +0800
+
+    docs/zh_CN: add the translation of kbuild/kconfig.rst
+    
+    Finish the translation of kbuild/kconfig.rst and move kconfig
+    from TODO to the main body.
+    
+    Update to commit f6314b76d826 ("docs: kbuild/kconfig: reformat/cleanup")
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20241005144121.3953919-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/kbuild/index.rst b/Documentation/translations/zh_CN/kbuild/index.rst
+index b51655d981f6..e8eb448c1197 100644
+--- a/Documentation/translations/zh_CN/kbuild/index.rst
++++ b/Documentation/translations/zh_CN/kbuild/index.rst
+@@ -12,6 +12,7 @@
+ .. toctree::
+     :maxdepth: 1
+ 
++    kconfig
+     headers_install
+     gcc-plugins
+ 
+@@ -20,7 +21,6 @@ TODO:
+ - kconfig-language
+ - kconfig-macro-language
+ - kbuild
+-- kconfig
+ - makefiles
+ - modules
+ - issues
+diff --git a/Documentation/translations/zh_CN/kbuild/kconfig.rst b/Documentation/translations/zh_CN/kbuild/kconfig.rst
+new file mode 100644
+index 000000000000..3b06d8913dbf
+--- /dev/null
++++ b/Documentation/translations/zh_CN/kbuild/kconfig.rst
+@@ -0,0 +1,259 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/kbuild/kconfig.rst
++:Translator: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++================
++配置目标和编辑器
++================
++
++本文件包含使用 ``make *config`` 的一些帮助。
++
++使用 ``make help`` 列出所有可能的配置目标。
++
++xconfig（'qconf'）、menuconfig（'mconf'）和 nconfig（'nconf'）程序也包含
++内嵌的帮助文本。请务必查看这些帮助文本以获取导航、搜索和其他帮助信息。
++
++gconfig（'gconf'）程序的帮助文本较少。
++
++
++通用信息
++========
++
++新的内核版本通常会引入新的配置符号。更重要的是，新的内核版本可能会重命名配置符号。
++当这种情况发生时，使用之前正常工作的 .config 文件并运行 "make oldconfig"
++不一定会生成一个可正常工作的新内核，因此，你可能需要查看哪些新的内核符号被引入。
++
++要查看新配置符号的列表，请使用::
++
++    cp user/some/old.config .config
++    make listnewconfig
++
++配置程序将列出所有新配置符号，每行一个。
++
++或者，你可以使用暴力破解方法::
++
++    make oldconfig
++    scripts/diffconfig .config.old .config | less
++
++
++环境变量
++========
++
++``*config`` 的环境变量：
++
++``KCONFIG_CONFIG``
++    该环境变量可用于指定一个默认的内核配置文件名，以覆盖默认的 ".config"。
++
++``KCONFIG_DEFCONFIG_LIST``
++    该环境变量指定了一个配置文件列表，当 .config 不存在时，这些文件可用作基础配置。
++    列表中的条目以空格分隔，只有第一个存在的文件会被使用。
++
++``KCONFIG_OVERWRITECONFIG``
++    如果该环境变量被设置，当 .config 是指向其他位置的符号链接时，Kconfig 不会
++    破坏符号链接。
++
++``KCONFIG_WARN_UNKNOWN_SYMBOLS``
++    该环境变量使 Kconfig 对配置输入中所有无法识别的符号发出警告。
++
++``KCONFIG_WERROR``
++    如果该环境变量被设置，Kconfig 将所有警告视为错误。
++
++``CONFIG_``
++    如果该环境变量被设置，Kconfig 将在保存配置时，为所有符号添加其值作为前缀，
++    而不是使用默认值。
++
++``{allyes/allmod/allno/rand}config`` 的环境变量：
++
++``KCONFIG_ALLCONFIG``
++    allyesconfig/allmodconfig/allnoconfig/randconfig 这些变体也可以使用环境
++    变量 KCONFIG_ALLCONFIG 作为标志或包含用户要求设置为特定值的配置符号的文件名。
++    如果 KCONFIG_ALLCONFIG 未指定文件名，即 KCONFIG_ALLCONFIG == "" 或
++    KCONFIG_ALLCONFIG == "1"，则 ``make *config`` 将查找名为
++    "all{yes/mod/no/def/random}.config" 的文件（对应于所使用的 ``*config``
++    命令）以强制符号值。如果找不到此文件，它会查找名为 "all.config" 的文件以包含
++    强制值。
++
++    这可以创建“微型”配置（miniconfig）或自定义配置文件，其中仅包含感兴趣的配置符号。
++    然后，内核配置系统将生成完整的 .config 文件，包括 miniconfig 文件中的符号。
++
++    ``KCONFIG_ALLCONFIG`` 文件包含许多预设配置符号（通常是所有符号的子集）。
++    这些变量设置仍需遵守正常的依赖性检查。
++
++    示例::
++
++        KCONFIG_ALLCONFIG=custom-notebook.config make allnoconfig
++
++    或::
++
++        KCONFIG_ALLCONFIG=mini.config make allnoconfig
++
++    或::
++
++        make KCONFIG_ALLCONFIG=mini.config allnoconfig
++
++    这些示例将禁用大多数配置选项（allnoconfig），但启用或禁用 miniconfig 文件
++    中显式列出的选项。
++
++``randconfig`` 的环境变量：
++
++``KCONFIG_SEED``
++    如果你想调试 kconfig 解析器/前端的行为，你可以将此变量设置整数值，用于初始化
++    随机数生成器。如果未设置，将使用当前时间。
++
++``KCONFIG_PROBABILITY``
++    该变量可用于倾斜概率分布。此变量可不设置或设置为空，或设置为以下三种不同格式：
++
++    =======================     ==================  =====================
++    KCONFIG_PROBABILITY         y:n 分配             y:m:n 分配
++    =======================     ==================  =====================
++    未设置或设置为空               50  : 50            33  : 33  : 34
++    N                            N  : 100-N         N/2 : N/2 : 100-N
++    [1] N:M                     N+M : 100-(N+M)      N  :  M  : 100-(N+M)
++    [2] N:M:L                    N  : 100-N          M  :  L  : 100-(M+L)
++    =======================     ==================  =====================
++
++其中 N、M 和 L 是范围在 [0,100] 内的整数（以十进制表示），并且需满足：
++
++    [1] N+M 的范围在 [0,100] 之间
++
++    [2] M+L 的范围在 [0,100] 之间
++
++示例::
++
++    KCONFIG_PROBABILITY=10
++        10% 的布尔值将设置为 'y'，90% 设置为 'n'
++        5% 的三态值将设置为 'y'，5% 设置为 'm'，90% 设置为 'n'
++    KCONFIG_PROBABILITY=15:25
++        40% 的布尔值将设置为 'y'，60% 设置为 'n'
++        15% 的三态值将设置为 'y'，25% 设置为 'm'，60% 设置为 'n'
++    KCONFIG_PROBABILITY=10:15:15
++        10% 的布尔值将设置为 'y'，90% 设置为 'n'
++        15% 的三态值将设置为 'y'，15% 设置为 'm'，70% 设置为 'n'
++
++``syncconfig`` 的环境变量：
++
++``KCONFIG_NOSILENTUPDATE``
++    如果该变量非空，它将阻止静默的内核配置更新（需要明确更新）。
++
++``KCONFIG_AUTOCONFIG``
++    该环境变量可以设置为 "auto.conf" 文件的路径和名称。默认值为
++    "include/config/auto.conf"。
++
++``KCONFIG_AUTOHEADER``
++    该环境变量可以设置为 "autoconf.h" 头文件的路径和名称。默认值为
++    "include/generated/autoconf.h"。
++
++menuconfig
++==========
++
++在 menuconfig 中搜索：
++
++    搜索功能会搜索内核配置符号名称，因此你必须知道欲搜索内容的大致名称。
++
++    示例::
++
++        /hotplug
++        这会列出所有包含 "hotplug" 的配置符号，例如，HOTPLUG_CPU，
++        MEMORY_HOTPLUG。
++
++    若需要搜索帮助，输入 / 后跟 TAB-TAB（高亮显示 &lt;Help&gt;）并按回车键。
++    这说明你还可以在搜索字符串中使用正则表达式（regex），所以如果你对
++    MEMORY_HOTPLUG 不感兴趣，你可以尝试::
++
++        /^hotplug
++
++    在搜索时，符号将按以下顺序排序：
++
++    - 首先，完全匹配的符号，按字母顺序排列（完全匹配是指搜索与符号名称完全匹配）；
++    - 然后是其他匹配项，按字母顺序排列。
++
++    例如，^ATH.K 匹配::
++
++        ATH5K ATH9K ATH5K_AHB ATH5K_DEBUG [...] ATH6KL ATH6KL_DEBUG
++        [...] ATH9K_AHB ATH9K_BTCOEX_SUPPORT ATH9K_COMMON [...]
++
++    其中只有 ATH5K 和 ATH9K 完全匹配，因此它们排在前面（按字母顺序），
++    接下来是其他符号，同样按字母顺序排列。
++
++    在此菜单中，按下以 (#) 为前缀的键将直接跳转到该位置。退出此新菜单后，
++    你将返回当前的搜索结果。
++
++'menuconfig' 的用户界面选项：
++
++``MENUCONFIG_COLOR``
++    可以使用变量 MENUCONFIG_COLOR 选择不同的配色主题。使用以下命令选择主题::
++
++        make MENUCONFIG_COLOR=&lt;theme&gt; menuconfig
++
++    可用的主题有::
++
++      - mono       =&gt; 选择适合单色显示器的颜色
++      - blackbg    =&gt; 选择具有黑色背景的配色方案
++      - classic    =&gt; 经典外观，蓝色背景
++      - bluetitle  =&gt; 经典外观的 LCD 友好版本（默认）
++
++``MENUCONFIG_MODE``
++    此模式会将所有子菜单显示为一个大树状结构。
++
++    示例::
++
++        make MENUCONFIG_MODE=single_menu menuconfig
++
++nconfig
++=======
++
++nconfig 是一个替代的基于文本的配置工具。它在终端（窗口）底部列出功能键，用于执行
++命令。除非你在数据输入窗口中，否则你也可以直接使用相应的数字键来执行命令。例如，你
++可以直接按 6，而非 F6 进行保存。
++
++使用 F1 获取全局帮助或 F3 打开简短帮助菜单。
++
++在 nconfig 中搜索：
++
++    你可以在菜单项“提示”字符串中或配置符号中进行搜索。
++
++    使用 / 开始在菜单项中搜索。这不支持正则表达式。使用 &lt;Down&gt; 或 &lt;Up&gt;
++    分别为下一个命中项和上一个命中项。使用 &lt;Esc&gt; 退出搜索模式。
++
++    F8（SymSearch）在配置符号中搜索给定的字符串或正则表达式（regex）。
++
++    在 SymSearch 中，按下 (#) 前缀的键会直接跳转到该位置。退出该新菜单后，
++    你将返回到当前的搜索结果。
++
++环境变量：
++
++``NCONFIG_MODE``
++    此模式会将所有子菜单显示为一个大型树结构。
++
++    示例::
++
++        make NCONFIG_MODE=single_menu nconfig
++
++xconfig
++=======
++
++在 xconfig 中搜索：
++
++    搜索功能会搜索内核配置符号名称，因此你必须知道欲搜索内容的大致名称。
++
++    示例::
++
++        Ctrl-F hotplug
++
++    或::
++
++        菜单：File, Search, hotplug
++
++    列出所有符号名称中包含 "hotplug" 的配置符号项。在此搜索对话框中，
++    你可以更改任何未灰显条目的配置设置。你还可以输入不同的搜索字符串，
++    而无需返回主菜单。
++
++gconfig
++=======
++
++在 gconfig 中搜索：
++
++    gconfig 中没有搜索命令。然而，gconfig 具有几种不同的查看选择、模式和选项。</pre><hr><pre>commit 5d5f9229ab0143639ec7cd3beea88c8e763cf5a7
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Sat Sep 7 15:02:08 2024 +0800
+
+    docs/zh_CN: add the translation of kbuild/gcc-plugins.rst
+    
+    Finish the translation of kbuild/gcc-plugins.rst and move gcc-plugins
+    from TODO to the main body.
+    
+    Update to commit 3832d1fd84b6 ("docs/core-api: expand Fedora instructions
+    for GCC plugins")
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Reviewed-by: Yanteng Si &lt;si.yanteng@linux.dev&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Message-ID: &lt;20240907070244.206808-1-dzm91@hust.edu.cn&gt;
+
+diff --git a/Documentation/translations/zh_CN/kbuild/gcc-plugins.rst b/Documentation/translations/zh_CN/kbuild/gcc-plugins.rst
+new file mode 100644
+index 000000000000..67a8abbf5887
+--- /dev/null
++++ b/Documentation/translations/zh_CN/kbuild/gcc-plugins.rst
+@@ -0,0 +1,126 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/kbuild/gcc-plugins.rst
++:Translator: 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
++
++================
++GCC 插件基础设施
++================
++
++
++介绍
++====
++
++GCC 插件是为编译器提供额外功能的可加载模块 [1]_。它们对于运行时插装和静态分析非常有用。
++我们可以在编译过程中通过回调 [2]_，GIMPLE [3]_，IPA [4]_ 和 RTL Passes [5]_
++（译者注：Pass 是编译器所采用的一种结构化技术，用于完成编译对象的分析、优化或转换等功能）
++来分析、修改和添加更多的代码。
++
++内核的 GCC 插件基础设施支持构建树外模块、交叉编译和在单独的目录中构建。插件源文件必须由
++C++ 编译器编译。
++
++目前 GCC 插件基础设施只支持一些架构。搜索 "select HAVE_GCC_PLUGINS" 来查找支持
++GCC 插件的架构。
++
++这个基础设施是从 grsecurity [6]_  和 PaX [7]_ 移植过来的。
++
++--
++
++.. [1] https://gcc.gnu.org/onlinedocs/gccint/Plugins.html
++.. [2] https://gcc.gnu.org/onlinedocs/gccint/Plugin-API.html#Plugin-API
++.. [3] https://gcc.gnu.org/onlinedocs/gccint/GIMPLE.html
++.. [4] https://gcc.gnu.org/onlinedocs/gccint/IPA.html
++.. [5] https://gcc.gnu.org/onlinedocs/gccint/RTL.html
++.. [6] https://grsecurity.net/
++.. [7] https://pax.grsecurity.net/
++
++
++目的
++====
++
++GCC 插件的设计目的是提供一个用于试验 GCC 或 Clang 上游没有的潜在编译器功能的场所。
++一旦它们的实用性得到验证，这些功能将被添加到 GCC（和 Clang）的上游。随后，在所有
++支持的 GCC 版本都支持这些功能后，它们会被从内核中移除。
++
++具体来说，新插件应该只实现上游编译器（GCC 和 Clang）不支持的功能。
++
++当 Clang 中存在 GCC 中不存在的某项功能时，应努力将该功能做到 GCC 上游（而不仅仅
++是作为内核专用的 GCC 插件），以使整个生态都能从中受益。
++
++类似的，如果 GCC 插件提供的功能在 Clang 中 **不** 存在，但该功能被证明是有用的，也应
++努力将该功能上传到 GCC（和 Clang）。
++
++在上游 GCC 提供了某项功能后，该插件将无法在相应的 GCC 版本（以及更高版本）下编译。
++一旦所有内核支持的 GCC 版本都提供了该功能，该插件将从内核中移除。
++
++
++文件
++====
++
++**$(src)/scripts/gcc-plugins**
++
++	这是 GCC 插件的目录。
++
++**$(src)/scripts/gcc-plugins/gcc-common.h**
++
++	这是 GCC 插件的兼容性头文件。
++	应始终包含它，而不是单独的 GCC 头文件。
++
++**$(src)/scripts/gcc-plugins/gcc-generate-gimple-pass.h,
++$(src)/scripts/gcc-plugins/gcc-generate-ipa-pass.h,
++$(src)/scripts/gcc-plugins/gcc-generate-simple_ipa-pass.h,
++$(src)/scripts/gcc-plugins/gcc-generate-rtl-pass.h**
++
++	这些头文件可以自动生成 GIMPLE、SIMPLE_IPA、IPA 和 RTL passes 的注册结构。
++	与手动创建结构相比，它们更受欢迎。
++
++
++用法
++====
++
++你必须为你的 GCC 版本安装 GCC 插件头文件，以 Ubuntu 上的 gcc-10 为例::
++
++	apt-get install gcc-10-plugin-dev
++
++或者在 Fedora 上::
++
++	dnf install gcc-plugin-devel libmpc-devel
++
++或者在 Fedora 上使用包含插件的交叉编译器时::
++
++	dnf install libmpc-devel
++
++在内核配置中启用 GCC 插件基础设施与一些你想使用的插件::
++
++	CONFIG_GCC_PLUGINS=y
++	CONFIG_GCC_PLUGIN_LATENT_ENTROPY=y
++	...
++
++运行 gcc（本地或交叉编译器），确保能够检测到插件头文件::
++
++	gcc -print-file-name=plugin
++	CROSS_COMPILE=arm-linux-gnu- ${CROSS_COMPILE}gcc -print-file-name=plugin
++
++"plugin" 这个词意味着它们没有被检测到::
++
++	plugin
++
++完整的路径则表示插件已经被检测到::
++
++       /usr/lib/gcc/x86_64-redhat-linux/12/plugin
++
++编译包括插件在内的最小工具集::
++
++	make scripts
++
++或者直接在内核中运行 make，使用循环复杂性 GCC 插件编译整个内核。
++
++
++4. 如何添加新的 GCC 插件
++========================
++
++GCC 插件位于 scripts/gcc-plugins/。你需要将插件源文件放在 scripts/gcc-plugins/ 目录下。
++子目录创建并不支持，你必须添加在 scripts/gcc-plugins/Makefile、scripts/Makefile.gcc-plugins
++和相关的 Kconfig 文件中。
+diff --git a/Documentation/translations/zh_CN/kbuild/index.rst b/Documentation/translations/zh_CN/kbuild/index.rst
+index d906a4e88d0f..b51655d981f6 100644
+--- a/Documentation/translations/zh_CN/kbuild/index.rst
++++ b/Documentation/translations/zh_CN/kbuild/index.rst
+@@ -13,6 +13,7 @@
+     :maxdepth: 1
+ 
+     headers_install
++    gcc-plugins
+ 
+ TODO:
+ 
+@@ -24,7 +25,6 @@ TODO:
+ - modules
+ - issues
+ - reproducible-builds
+-- gcc-plugins
+ - llvm
+ 
+ .. only::  subproject and html</pre><hr><pre>commit 49417ad48abb8ddb56168da19ff173d8241bdba5
+Author: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+Date:   Tue Jun 11 10:04:36 2024 +0800
+
+    docs/zh_CN: update the translation of security-bugs
+    
+    Update to commit 5928d411557e ("Documentation: Document the Linux Kernel
+    CVE process")
+    
+    commit 0217f3944aeb ("Documentation: security-bugs.rst: linux-distros
+    relaxed their rules")
+    commit 3c1897ae4b6b ("Documentation: security-bugs.rst: clarify CVE
+    handling")
+    commit 4fee0915e649 ("Documentation: security-bugs.rst: update
+    preferences when dealing with the linux-distros group")
+    commit 44ac5abac86b ("Documentation/security-bugs: move from admin-guide/
+    to process/")
+    
+    Signed-off-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Reviewed-by: Alex Shi &lt;alexs@kernel.org&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240611020514.48770-1-dzm91@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/admin-guide/index.rst b/Documentation/translations/zh_CN/admin-guide/index.rst
+index 0db80ab830a0..15d9ab5993a7 100644
+--- a/Documentation/translations/zh_CN/admin-guide/index.rst
++++ b/Documentation/translations/zh_CN/admin-guide/index.rst
+@@ -37,7 +37,6 @@ Todolist:
+ 
+    reporting-issues
+    reporting-regressions
+-   security-bugs
+    bug-hunting
+    bug-bisect
+    tainted-kernels
+diff --git a/Documentation/translations/zh_CN/admin-guide/reporting-issues.rst b/Documentation/translations/zh_CN/admin-guide/reporting-issues.rst
+index 59e51e3539b4..9ff4ba94391d 100644
+--- a/Documentation/translations/zh_CN/admin-guide/reporting-issues.rst
++++ b/Documentation/translations/zh_CN/admin-guide/reporting-issues.rst
+@@ -300,7 +300,7 @@ Documentation/admin-guide/reporting-regressions.rst 对此进行了更详细的
+ 添加到回归跟踪列表中，以确保它不会被忽略。
+ 
+ 什么是安全问题留给您自己判断。在继续之前，请考虑阅读
+-Documentation/translations/zh_CN/admin-guide/security-bugs.rst ，
++Documentation/translations/zh_CN/process/security-bugs.rst ，
+ 因为它提供了如何最恰当地处理安全问题的额外细节。
+ 
+ 当发生了完全无法接受的糟糕事情时，此问题就是一个“非常严重的问题”。例如，
+@@ -983,7 +983,7 @@ Documentation/admin-guide/reporting-regressions.rst ；它还提供了大量其
+ 报告，请将报告的文本转发到这些地址；但请在报告的顶部加上注释，表明您提交了
+ 报告，并附上工单链接。
+ 
+-更多信息请参见 Documentation/translations/zh_CN/admin-guide/security-bugs.rst 。
++更多信息请参见 Documentation/translations/zh_CN/process/security-bugs.rst 。
+ 
+ 
+ 发布报告后的责任
+diff --git a/Documentation/translations/zh_CN/process/index.rst b/Documentation/translations/zh_CN/process/index.rst
+index 5a5cd7c01c62..3bcb3bdaf533 100644
+--- a/Documentation/translations/zh_CN/process/index.rst
++++ b/Documentation/translations/zh_CN/process/index.rst
+@@ -49,10 +49,11 @@ TODOLIST:
+ 
+    embargoed-hardware-issues
+    cve
++   security-bugs
+ 
+ TODOLIST:
+ 
+-* security-bugs
++* handling-regressions
+ 
+ 其它大多数开发人员感兴趣的社区指南：
+ 
+diff --git a/Documentation/translations/zh_CN/admin-guide/security-bugs.rst b/Documentation/translations/zh_CN/process/security-bugs.rst
+similarity index 57%
+rename from Documentation/translations/zh_CN/admin-guide/security-bugs.rst
+rename to Documentation/translations/zh_CN/process/security-bugs.rst
+index d6b8f8a4e7f6..a8f5fcbfadc9 100644
+--- a/Documentation/translations/zh_CN/admin-guide/security-bugs.rst
++++ b/Documentation/translations/zh_CN/process/security-bugs.rst
+@@ -1,3 +1,5 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
++
+ .. include:: ../disclaimer-zh_CN.rst
+ 
+ :Original: :doc:`../../../process/security-bugs`
+@@ -5,6 +7,7 @@
+ :译者:
+ 
+  吴想成 Wu XiangCheng &lt;bobwxc@email.cn&gt;
++ 慕冬亮 Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+ 
+ 安全缺陷
+ =========
+@@ -17,13 +20,13 @@ Linux内核开发人员非常重视安全性。因此我们想知道何时发现
+ 
+ 可以通过电子邮件&lt;security@kernel.org&gt;联系Linux内核安全团队。这是一个安全人员
+ 的私有列表，他们将帮助验证错误报告并开发和发布修复程序。如果您已经有了一个
+-修复，请将其包含在您的报告中，这样可以大大加快进程。安全团队可能会从区域维护
++修复，请将其包含在您的报告中，这样可以大大加快处理进程。安全团队可能会从区域维护
+ 人员那里获得额外的帮助，以理解和修复安全漏洞。
+ 
+ 与任何缺陷一样，提供的信息越多，诊断和修复就越容易。如果您不清楚哪些信息有用，
+ 请查看“Documentation/translations/zh_CN/admin-guide/reporting-issues.rst”中
+-概述的步骤。任何利用漏洞的攻击代码都非常有用，未经报告者同意不会对外发布，除
+-非已经公开。
++概述的步骤。任何利用漏洞的攻击代码都非常有用，未经报告者同意不会对外发布，
++除非已经公开。
+ 
+ 请尽可能发送无附件的纯文本电子邮件。如果所有的细节都藏在附件里，那么就很难对
+ 一个复杂的问题进行上下文引用的讨论。把它想象成一个
+@@ -49,24 +52,31 @@ Linux内核开发人员非常重视安全性。因此我们想知道何时发现
+ 换句话说，我们唯一感兴趣的是修复缺陷。提交给安全列表的所有其他资料以及对报告
+ 的任何后续讨论，即使在解除限制之后，也将永久保密。
+ 
+-协调
+-------
++与其他团队协调
++--------------
++
++虽然内核安全团队仅关注修复漏洞，但还有其他组织关注修复发行版上的安全问题以及协调
++操作系统厂商的漏洞披露。协调通常由 "linux-distros" 邮件列表处理，而披露则由
++公共 "oss-security" 邮件列表进行。两者紧密关联且被展示在 linux-distros 维基：
++&lt;https://oss-security.openwall.org/wiki/mailing-lists/distros&gt;
++
++请注意，这三个列表的各自政策和规则是不同的，因为它们追求不同的目标。内核安全团队
++与其他团队之间的协调很困难，因为对于内核安全团队，保密期（即最大允许天数）是从补丁
++可用时开始，而 "linux-distros" 则从首次发布到列表时开始计算，无论是否存在补丁。
+ 
+-对敏感缺陷（例如那些可能导致权限提升的缺陷）的修复可能需要与私有邮件列表
+-&lt;linux-distros@vs.openwall.org&gt;进行协调，以便分发供应商做好准备，在公开披露
+-上游补丁时发布一个已修复的内核。发行版将需要一些时间来测试建议的补丁，通常
+-会要求至少几天的限制，而供应商更新发布更倾向于周二至周四。若合适，安全团队
+-可以协助这种协调，或者报告者可以从一开始就包括linux发行版。在这种情况下，请
+-记住在电子邮件主题行前面加上“[vs]”，如linux发行版wiki中所述：
+-&lt;http://oss-security.openwall.org/wiki/mailing-lists/distros#how-to-use-the-lists&gt;。
++因此，内核安全团队强烈建议，作为一位潜在安全问题的报告者，在受影响代码的维护者
++接受补丁之前，且在您阅读上述发行版维基页面并完全理解联系 "linux-distros"
++邮件列表会对您和内核社区施加的要求之前，不要联系 "linux-distros" 邮件列表。
++这也意味着通常情况下不要同时抄送两个邮件列表，除非在协调时有已接受但尚未合并的补丁。
++换句话说，在补丁被接受之前，不要抄送 "linux-distros"；在修复程序被合并之后，
++不要抄送内核安全团队。
+ 
+ CVE分配
+ --------
+ 
+-安全团队通常不分配CVE，我们也不需要它们来进行报告或修复，因为这会使过程不必
+-要的复杂化，并可能耽误缺陷处理。如果报告者希望在公开披露之前分配一个CVE编号，
+-他们需要联系上述的私有linux-distros列表。当在提供补丁之前已有这样的CVE编号时，
+-如报告者愿意，最好在提交消息中提及它。
++安全团队不分配 CVE，同时我们也不需要 CVE 来报告或修复漏洞，因为这会使过程不必要
++的复杂化，并可能延误漏洞处理。如果报告者希望为确认的问题分配一个 CVE 编号，
++可以联系 :doc:`内核 CVE 分配团队 &lt;../process/cve&gt;` 获取。
+ 
+ 保密协议
+ ---------
+diff --git a/Documentation/translations/zh_CN/process/submitting-patches.rst b/Documentation/translations/zh_CN/process/submitting-patches.rst
+index 7864107e60a8..7ca16bda3709 100644
+--- a/Documentation/translations/zh_CN/process/submitting-patches.rst
++++ b/Documentation/translations/zh_CN/process/submitting-patches.rst
+@@ -208,7 +208,7 @@ torvalds@linux-foundation.org 。他收到的邮件很多，所以一般来说
+ 如果您有修复可利用安全漏洞的补丁，请将该补丁发送到 security@kernel.org 。对于
+ 严重的bug，可以考虑短期禁令以允许分销商（有时间）向用户发布补丁；在这种情况下，
+ 显然不应将补丁发送到任何公共列表。
+-参见 Documentation/translations/zh_CN/admin-guide/security-bugs.rst 。
++参见 Documentation/translations/zh_CN/process/security-bugs.rst 。
+ 
+ 修复已发布内核中严重错误的补丁程序应该抄送给稳定版维护人员，方法是把以下列行
+ 放进补丁的签准区（注意，不是电子邮件收件人）::
+diff --git a/Documentation/translations/zh_TW/admin-guide/reporting-issues.rst b/Documentation/translations/zh_TW/admin-guide/reporting-issues.rst
+index bc132b25f2ae..1d4e4c7a6750 100644
+--- a/Documentation/translations/zh_TW/admin-guide/reporting-issues.rst
++++ b/Documentation/translations/zh_TW/admin-guide/reporting-issues.rst
+@@ -301,7 +301,7 @@ Documentation/admin-guide/reporting-regressions.rst 對此進行了更詳細的
+ 添加到迴歸跟蹤列表中，以確保它不會被忽略。
+ 
+ 什麼是安全問題留給您自己判斷。在繼續之前，請考慮閱讀
+-Documentation/translations/zh_CN/admin-guide/security-bugs.rst ，
++Documentation/translations/zh_CN/process/security-bugs.rst ，
+ 因爲它提供瞭如何最恰當地處理安全問題的額外細節。
+ 
+ 當發生了完全無法接受的糟糕事情時，此問題就是一個“非常嚴重的問題”。例如，
+@@ -984,7 +984,7 @@ Documentation/admin-guide/reporting-regressions.rst ；它還提供了大量其
+ 報告，請將報告的文本轉發到這些地址；但請在報告的頂部加上註釋，表明您提交了
+ 報告，並附上工單鏈接。
+ 
+-更多信息請參見 Documentation/translations/zh_CN/admin-guide/security-bugs.rst 。
++更多信息請參見 Documentation/translations/zh_CN/process/security-bugs.rst 。
+ 
+ 
+ 發佈報告後的責任
+diff --git a/Documentation/translations/zh_TW/process/submitting-patches.rst b/Documentation/translations/zh_TW/process/submitting-patches.rst
+index f12f2f193f85..64de92c07906 100644
+--- a/Documentation/translations/zh_TW/process/submitting-patches.rst
++++ b/Documentation/translations/zh_TW/process/submitting-patches.rst
+@@ -209,7 +209,7 @@ torvalds@linux-foundation.org 。他收到的郵件很多，所以一般來說
+ 如果您有修復可利用安全漏洞的補丁，請將該補丁發送到 security@kernel.org 。對於
+ 嚴重的bug，可以考慮短期禁令以允許分銷商（有時間）向用戶發佈補丁；在這種情況下，
+ 顯然不應將補丁發送到任何公共列表。
+-參見 Documentation/translations/zh_CN/admin-guide/security-bugs.rst 。
++參見 Documentation/translations/zh_CN/process/security-bugs.rst 。
+ 
+ 修復已發佈內核中嚴重錯誤的補丁程序應該抄送給穩定版維護人員，方法是把以下列行
+ 放進補丁的籤準區（注意，不是電子郵件收件人）::</pre><hr><pre>commit 72ffee678f6f7d9ebf5350a6e38f31fd306c9b8a
+Author: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+Date:   Fri Jul 26 01:46:31 2024 +0800
+
+    docs: update dev-tools/kcsan.rst url about KTSAN
+    
+    The KTSAN doc has moved to
+    https://github.com/google/kernel-sanitizers/blob/master/KTSAN.md.
+    Update the url in kcsan.rst accordingly.
+    
+    Signed-off-by: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+    Reviewed-by: Dongliang Mu &lt;dzm91@hust.edu.cn&gt;
+    Acked-by: Marco Elver &lt;elver@google.com&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240725174632.23803-1-tttturtleruss@hust.edu.cn
+
+diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
+index 02143f060b22..d81c42d1063e 100644
+--- a/Documentation/dev-tools/kcsan.rst
++++ b/Documentation/dev-tools/kcsan.rst
+@@ -361,7 +361,8 @@ Alternatives Considered
+ -----------------------
+ 
+ An alternative data race detection approach for the kernel can be found in the
+-`Kernel Thread Sanitizer (KTSAN) &lt;https://github.com/google/ktsan/wiki&gt;`_.
++`Kernel Thread Sanitizer (KTSAN)
++&lt;https://github.com/google/kernel-sanitizers/blob/master/KTSAN.md&gt;`_.
+ KTSAN is a happens-before data race detector, which explicitly establishes the
+ happens-before order between memory operations, which can then be used to
+ determine data races as defined in `Data Races`_.</pre><hr><pre>commit 748c3404c8cd3e019df4d1cce9582176c541fb3a
+Author: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+Date:   Sun Aug 18 01:51:51 2024 +0800
+
+    docs/zh_CN: Add dev-tools/kcsan Chinese translation
+    
+    Translate dev-tools/kcsan commit 31f605a308e6
+    ("kcsan, compiler_types: Introduce __data_racy type qualifier")
+    into Chinese and add it in dev-tools/zh_CN/index.rst
+    
+    Signed-off-by: Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
+    Reviewed-by: Yanteng Si &lt;siyanteng@loongson.cn&gt;
+    Signed-off-by: Jonathan Corbet &lt;corbet@lwn.net&gt;
+    Link: https://lore.kernel.org/r/20240817175151.164923-1-tttturtleruss@hust.edu.cn
+
+diff --git a/Documentation/translations/zh_CN/dev-tools/index.rst b/Documentation/translations/zh_CN/dev-tools/index.rst
+index c540e4a7d5db..6a8c637c0be1 100644
+--- a/Documentation/translations/zh_CN/dev-tools/index.rst
++++ b/Documentation/translations/zh_CN/dev-tools/index.rst
+@@ -21,6 +21,7 @@ Documentation/translations/zh_CN/dev-tools/testing-overview.rst
+    testing-overview
+    sparse
+    kcov
++   kcsan
+    gcov
+    kasan
+    ubsan
+@@ -32,7 +33,6 @@ Todolist:
+  - checkpatch
+  - coccinelle
+  - kmsan
+- - kcsan
+  - kfence
+  - kgdb
+  - kselftest
+diff --git a/Documentation/translations/zh_CN/dev-tools/kcsan.rst b/Documentation/translations/zh_CN/dev-tools/kcsan.rst
+new file mode 100644
+index 000000000000..8c495c17f109
+--- /dev/null
++++ b/Documentation/translations/zh_CN/dev-tools/kcsan.rst
+@@ -0,0 +1,320 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/dev-tools/kcsan.rst
++:Translator: 刘浩阳 Haoyang Liu &lt;tttturtleruss@hust.edu.cn&gt;
++
++内核并发消毒剂(KCSAN)
++=====================
++
++内核并发消毒剂（KCSAN）是一个动态竞争检测器，依赖编译时插桩，并且使用基于观察
++点的采样方法来检测竞争。KCSAN 的主要目的是检测 `数据竞争`_。
++
++使用
++----
++
++KCSAN 受 GCC 和 Clang 支持。使用 GCC 需要版本 11 或更高，使用 Clang 也需要
++版本 11 或更高。
++
++为了启用 KCSAN，用如下参数配置内核::
++
++    CONFIG_KCSAN = y
++
++KCSAN 提供了几个其他的配置选项来自定义行为（见 ``lib/Kconfig.kcsan`` 中的各自的
++帮助文档以获取更多信息）。
++
++错误报告
++~~~~~~~~
++
++一个典型数据竞争的报告如下所示::
++
++    ==================================================================
++    BUG: KCSAN: data-race in test_kernel_read / test_kernel_write
++
++    write to 0xffffffffc009a628 of 8 bytes by task 487 on cpu 0:
++     test_kernel_write+0x1d/0x30
++     access_thread+0x89/0xd0
++     kthread+0x23e/0x260
++     ret_from_fork+0x22/0x30
++
++    read to 0xffffffffc009a628 of 8 bytes by task 488 on cpu 6:
++     test_kernel_read+0x10/0x20
++     access_thread+0x89/0xd0
++     kthread+0x23e/0x260
++     ret_from_fork+0x22/0x30
++
++    value changed: 0x00000000000009a6 -&gt; 0x00000000000009b2
++
++    Reported by Kernel Concurrency Sanitizer on:
++    CPU: 6 PID: 488 Comm: access_thread Not tainted 5.12.0-rc2+ #1
++    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
++    ==================================================================
++
++报告的头部提供了一个关于竞争中涉及到的函数的简短总结。随后是竞争中的两个线程的
++访问类型和堆栈信息。如果 KCSAN 发现了一个值的变化，那么那个值的旧值和新值会在
++“value changed”这一行单独显示。
++
++另一个不太常见的数据竞争类型的报告如下所示::
++
++    ==================================================================
++    BUG: KCSAN: data-race in test_kernel_rmw_array+0x71/0xd0
++
++    race at unknown origin, with read to 0xffffffffc009bdb0 of 8 bytes by task 515 on cpu 2:
++     test_kernel_rmw_array+0x71/0xd0
++     access_thread+0x89/0xd0
++     kthread+0x23e/0x260
++     ret_from_fork+0x22/0x30
++
++    value changed: 0x0000000000002328 -&gt; 0x0000000000002329
++
++    Reported by Kernel Concurrency Sanitizer on:
++    CPU: 2 PID: 515 Comm: access_thread Not tainted 5.12.0-rc2+ #1
++    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
++    ==================================================================
++
++这个报告是当另一个竞争线程不可能被发现，但是可以从观测的内存地址的值改变而推断
++出来的时候生成的。这类报告总是会带有“value changed”行。这类报告的出现通常是因
++为在竞争线程中缺少插桩，也可能是因为其他原因，比如 DMA 访问。这类报告只会在
++设置了内核参数 ``CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=y`` 时才会出现，而这
++个参数是默认启用的。
++
++选择性分析
++~~~~~~~~~~
++
++对于一些特定的访问，函数，编译单元或者整个子系统，可能需要禁用数据竞争检测。
++对于静态黑名单，有如下可用的参数：
++
++* KCSAN 支持使用 ``data_race(expr)`` 注解，这个注解告诉 KCSAN 任何由访问
++  ``expr`` 所引起的数据竞争都应该被忽略，其产生的行为后果被认为是安全的。请查阅
++  `在 LKMM 中 "标记共享内存访问"`_ 获得更多信息。
++
++* 与 ``data_race(...)`` 相似，可以使用类型限定符 ``__data_racy`` 来标记一个变量
++  ，所有访问该变量而导致的数据竞争都是故意为之并且应该被 KCSAN 忽略::
++
++    struct foo {
++        ...
++        int __data_racy stats_counter;
++        ...
++    };
++
++* 使用函数属性 ``__no_kcsan`` 可以对整个函数禁用数据竞争检测::
++
++    __no_kcsan
++    void foo(void) {
++        ...
++
++  为了动态限制该为哪些函数生成报告，查阅 `Debug 文件系统接口`_ 黑名单/白名单特性。
++
++* 为特定的编译单元禁用数据竞争检测，将下列参数加入到 ``Makefile`` 中::
++
++    KCSAN_SANITIZE_file.o := n
++
++* 为 ``Makefile`` 中的所有编译单元禁用数据竞争检测，将下列参数添加到相应的
++  ``Makefile`` 中::
++
++    KCSAN_SANITIZE := n
++
++.. _在 LKMM 中 "标记共享内存访问": https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/access-marking.txt
++
++此外，KCSAN 可以根据偏好设置显示或隐藏整个类别的数据竞争。可以使用如下
++Kconfig 参数进行更改:
++
++* ``CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY``: 如果启用了该参数并且通过观测点
++  (watchpoint) 观测到一个有冲突的写操作，但是对应的内存地址中存储的值没有改变，
++  则不会报告这起数据竞争。
++
++* ``CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC``: 假设默认情况下，不超过字大小的简
++  单对齐写入操作是原子的。假设这些写入操作不会受到不安全的编译器优化影响，从而导
++  致数据竞争。该选项使 KCSAN 不报告仅由不超过字大小的简单对齐写入操作引起
++  的冲突所导致的数据竞争。
++
++* ``CONFIG_KCSAN_PERMISSIVE``: 启用额外的宽松规则来忽略某些常见类型的数据竞争。
++  与上面的规则不同，这条规则更加复杂，涉及到值改变模式，访问类型和地址。这个
++  选项依赖编译选项 ``CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY=y``。请查看
++  ``kernel/kcsan/permissive.h`` 获取更多细节。对于只侧重于特定子系统而不是整个
++  内核报告的测试者和维护者，建议禁用该选项。
++
++要使用尽可能严格的规则，选择 ``CONFIG_KCSAN_STRICT=y``，这将配置 KCSAN 尽可
++能紧密地遵循 Linux 内核内存一致性模型（LKMM）。
++
++Debug 文件系统接口
++~~~~~~~~~~~~~~~~~~
++
++文件 ``/sys/kernel/debug/kcsan`` 提供了如下接口：
++
++* 读 ``/sys/kernel/debug/kcsan`` 返回不同的运行时统计数据。
++
++* 将 ``on`` 或 ``off`` 写入 ``/sys/kernel/debug/kcsan`` 允许打开或关闭 KCSAN。
++
++* 将 ``!some_func_name`` 写入 ``/sys/kernel/debug/kcsan`` 会将
++  ``some_func_name`` 添加到报告过滤列表中，该列表（默认）会将数据竞争报告中的顶
++  层堆栈帧是列表中函数的情况列入黑名单。
++
++* 将 ``blacklist`` 或 ``whitelist`` 写入 ``/sys/kernel/debug/kcsan`` 会改变报告
++  过滤行为。例如，黑名单的特性可以用来过滤掉经常发生的数据竞争。白名单特性可以帮
++  助复现和修复测试。
++
++性能调优
++~~~~~~~~
++
++影响 KCSAN 整体的性能和 bug 检测能力的核心参数是作为内核命令行参数公开的，其默认
++值也可以通过相应的 Kconfig 选项更改。
++
++* ``kcsan.skip_watch`` (``CONFIG_KCSAN_SKIP_WATCH``): 在另一个观测点设置之前每
++  个 CPU 要跳过的内存操作次数。更加频繁的设置观测点将增加观察到竞争情况的可能性
++  。这个参数对系统整体的性能和竞争检测能力影响最显著。
++
++* ``kcsan.udelay_task`` (``CONFIG_KCSAN_UDELAY_TASK``): 对于任务，观测点设置之
++  后暂停执行的微秒延迟。值越大，检测到竞争情况的可能性越高。
++
++* ``kcsan.udelay_interrupt`` (``CONFIG_KCSAN_UDELAY_INTERRUPT``): 对于中断，
++  观测点设置之后暂停执行的微秒延迟。中断对于延迟的要求更加严格，其延迟通常应该小
++  于为任务选择的延迟。
++
++它们可以通过 ``/sys/module/kcsan/parameters/`` 在运行时进行调整。
++
++数据竞争
++--------
++
++在一次执行中，如果两个内存访问存在 *冲突*，在不同的线程中并发执行，并且至少
++有一个访问是 *简单访问*，则它们就形成了 *数据竞争*。如果它们访问了同一个内存地址并且
++至少有一个是写操作，则称它们存在 *冲突*。有关更详细的讨论和定义，见
++`LKMM 中的 "简单访问和数据竞争"`_。
++
++.. _LKMM 中的 "简单访问和数据竞争": https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/explanation.txt#n1922
++
++与 Linux 内核内存一致性模型(LKMM)的关系
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++LKMM 定义了各种内存操作的传播和排序规则，让开发者可以推理并发代码。最终这允许确
++定并发代码可能的执行情况并判断这些代码是否存在数据竞争。
++
++KCSAN 可以识别 *被标记的原子操作* （ ``READ_ONCE``, ``WRITE_ONCE`` , ``atomic_*``
++等），以及内存屏障所隐含的一部分顺序保证。启用 ``CONFIG_KCSAN_WEAK_MEMORY=y``
++配置，KCSAN 会对加载或存储缓冲区进行建模，并可以检测遗漏的
++``smp_mb()``, ``smp_wmb()``, ``smp_rmb()``, ``smp_store_release()``，以及所有的
++具有等效隐含内存屏障的 ``atomic_*`` 操作。
++
++请注意，KCSAN 不会报告所有由于缺失内存顺序而导致的数据竞争，特别是在需要内存屏障
++来禁止后续内存操作在屏障之前重新排序的情况下。因此，开发人员应该仔细考虑那些未
++被检查的内存顺序要求。
++
++数据竞争以外的竞争检测
++---------------------------
++
++对于有着复杂并发设计的代码，竞争状况不总是表现为数据竞争。如果并发操作引起了意
++料之外的系统行为，则认为发生了竞争状况。另一方面，数据竞争是在 C 语言层面定义
++的。内核定义了一些宏定义用来检测非数据竞争的漏洞并发代码的属性。
++
++.. note::
++     为了不引入新的文档编译警告，这里不展示宏定义的具体内容，如果想查看具体
++     宏定义可以结合原文（Documentation/dev-tools/kcsan.rst）阅读。
++
++实现细节
++--------
++
++KCSAN 需要观测两个并发访问。特别重要的是，我们想要（a）增加观测到竞争的机会（尤
++其是很少发生的竞争），以及（b）能够实际观测到这些竞争。我们可以通过（a）注入
++不同的延迟，以及（b）使用地址观测点（或断点）来实现。
++
++如果我们在设置了地址观察点的情况下故意延迟一个内存访问，然后观察到观察点被触发
++，那么两个对同一地址的访问就发生了竞争。使用硬件观察点，这是 `DataCollider
++&lt;http://usenix.org/legacy/events/osdi10/tech/full_papers/Erickson.pdf&gt;`_ 中采用
++的方法。与 DataCollider 不同，KCSAN 不使用硬件观察点，而是依赖于编译器插桩和“软
++观测点”。
++
++在 KCSAN 中，观察点是通过一种高效的编码实现的，该编码将访问类型、大小和地址存储
++在一个长整型变量中；使用“软观察点”的好处是具有可移植性和更大的灵活性。然后，
++KCSAN依赖于编译器对普通访问的插桩。对于每个插桩的普通访问：
++
++1. 检测是否存在一个符合的观测点，如果存在，并且至少有一个操作是写操作，则我们发
++   现了一个竞争访问。
++
++2. 如果不存在匹配的观察点，则定期的设置一个观测点并随机延迟一小段时间。
++
++3. 在延迟前检查数据值，并在延迟后重新检查数据值；如果值不匹配，我们推测存在一个
++   未知来源的竞争状况。
++
++为了检测普通访问和标记访问之间的数据竞争，KCSAN 也对标记访问进行标记，但仅用于
++检查是否存在观察点；即 KCSAN 不会在标记访问上设置观察点。通过不在标记操作上设
++置观察点，如果对一个变量的所有并发访问都被正确标记，KCSAN 将永远不会触发观察点
++，因此也不会报告这些访问。
++
++弱内存建模
++~~~~~~~~~~
++
++KCSAN 通过建模访问重新排序（使用 ``CONFIG_KCSAN_WEAK_MEMORY=y``）来检测由于缺少
++内存屏障而导致的数据竞争。每个设置了观察点的普通内存访问也会被选择在其函数范围
++内进行模拟重新排序（最多一个正在进行的访问）。
++
++一旦某个访问被选择用于重新排序，它将在函数范围内与每个其他访问进行检查。如果遇
++到适当的内存屏障，该访问将不再被考虑进行模拟重新排序。
++
++当内存操作的结果应该由屏障排序时，KCSAN 可以检测到仅由于缺失屏障而导致的冲突的
++数据竞争。考虑下面的例子::
++
++    int x, flag;
++    void T1(void)
++    {
++        x = 1;                  // data race!
++        WRITE_ONCE(flag, 1);    // correct: smp_store_release(&amp;flag, 1)
++    }
++    void T2(void)
++    {
++        while (!READ_ONCE(flag));   // correct: smp_load_acquire(&amp;flag)
++        ... = x;                    // data race!
++    }
++
++当启用了弱内存建模，KCSAN 将考虑对 ``T1`` 中的 ``x`` 进行模拟重新排序。在写入
++``flag`` 之后，x再次被检查是否有并发访问：因为 ``T2`` 可以在写入
++``flag`` 之后继续进行，因此检测到数据竞争。如果遇到了正确的屏障， ``x`` 在正确
++释放 ``flag`` 后将不会被考虑重新排序，因此不会检测到数据竞争。
++
++在复杂性上的权衡以及实际的限制意味着只能检测到一部分由于缺失内存屏障而导致的数
++据竞争。由于当前可用的编译器支持，KCSAN 的实现仅限于建模“缓冲”（延迟访问）的
++效果，因为运行时不能“预取”访问。同时要注意，观测点只设置在普通访问上，这是唯
++一一个 KCSAN 会模拟重新排序的访问类型。这意味着标记访问的重新排序不会被建模。
++
++上述情况的一个后果是获取 (acquire) 操作不需要屏障插桩（不需要预取）。此外，引
++入地址或控制依赖的标记访问不需要特殊处理（标记访问不能重新排序，后续依赖的访问
++不能被预取）。
++
++关键属性
++~~~~~~~~
++
++1. **内存开销**：整体的内存开销只有几 MiB，取决于配置。当前的实现是使用一个小长
++   整型数组来编码观测点信息，几乎可以忽略不计。
++
++2. **性能开销**：KCSAN 的运行时旨在性能开销最小化，使用一个高效的观测点编码，在
++   快速路径中不需要获取任何锁。在拥有 8 个 CPU 的系统上的内核启动来说：
++
++   - 使用默认 KCSAN 配置时，性能下降 5 倍；
++   - 仅因运行时快速路径开销导致性能下降 2.8 倍（设置非常大的
++     ``KCSAN_SKIP_WATCH`` 并取消设置 ``KCSAN_SKIP_WATCH_RANDOMIZE``）。
++
++3. **注解开销**：KCSAN 运行时之外需要的注释很少。因此，随着内核的发展维护的开
++   销也很小。
++
++4. **检测设备的竞争写入**：由于设置观测点时会检查数据值，设备的竞争写入也可以
++   被检测到。
++
++5. **内存排序**：KCSAN 只了解一部分 LKMM 排序规则；这可能会导致漏报数据竞争（
++   假阴性）。
++
++6. **分析准确率**： 对于观察到的执行，由于使用采样策略，分析是 *不健全* 的
++   （可能有假阴性），但期望得到完整的分析（没有假阳性）。
++
++考虑的替代方案
++--------------
++
++一个内核数据竞争检测的替代方法是 `Kernel Thread Sanitizer (KTSAN)
++&lt;https://github.com/google/kernel-sanitizers/blob/master/KTSAN.md&gt;`_。KTSAN 是一
++个基于先行发生关系（happens-before）的数据竞争检测器，它显式建立内存操作之间的先
++后发生顺序，这可以用来确定 `数据竞争`_ 中定义的数据竞争。
++
++为了建立正确的先行发生关系，KTSAN 必须了解 LKMM 的所有排序规则和同步原语。不幸
++的是，任何遗漏都会导致大量的假阳性，这在包含众多自定义同步机制的内核上下文中特
++别有害。为了跟踪前因后果关系，KTSAN 的实现需要为每个内存位置提供元数据（影子内
++存），这意味着每页内存对应 4 页影子内存，在大型系统上可能会带来数十 GiB 的开销
++。</pre>
+    <div class="pagination">
+        <a href='11_2.html'>&lt;&lt;Prev</a><a href='11.html'>1</a><a href='11_2.html'>2</a><span>[3]</span><a href='11_4.html'>4</a><a href='11_5.html'>5</a><a href='11_6.html'>6</a><a href='11_7.html'>7</a><a href='11_8.html'>8</a><a href='11_9.html'>9</a><a href='11_10.html'>10</a><a href='11_11.html'>11</a><a href='11_12.html'>12</a><a href='11_4.html'>Next&gt;&gt;</a>
+    <div>
+</body>

@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patches contributed by Rochester Institute of Technology</title>
+    <style>
+    .pagination {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow-wrap: break-word;
+    }
+    .pagination a, .pagination span {
+        margin: 0 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Patches contributed by Rochester Institute of Technology</h1>
+    <div class="pagination">
+        <span>[1]</span><a href='30_2.html'>2</a><a href='30_3.html'>3</a><a href='30_2.html'>Next&gt;&gt;</a>
+    </div>
+    <hr>
+    <pre>commit 03ac8183c9a5f0a635184d3f4eceb47480fcd4a7
+Author: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+Date:   Tue Oct 14 09:35:30 2025 -0400
+
+    gpio: mpsse: support bryx radio interface kit
+    
+    This device is powered by an FT232H, which is very similar to the
+    FT2232H this driver was written for. The key difference is it has only
+    one MPSSE instead of two. As a result, it presents only one USB
+    interface to the system, which conveniently "just works" out of the box
+    with this driver.
+    
+    The brik exposes only two GPIO lines which are hardware limited to only
+    be useful in one direction. As a result, I've restricted things on the
+    driver side to refuse to configure any other lines.
+    
+    This device, unlike the sealevel device I wrote this driver for
+    originally, is hotpluggable, which makes for all sorts of weird
+    edgecases. I've tried my best to stress-test the parts that could go
+    wrong, but given the new usecase, more heads taking a critical look at
+    the teardown and synchronization bits on the driver as a whole would be
+    appreciated.
+    
+    Signed-off-by: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+    Reviewed-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20251014133530.3592716-5-mstrodl@csh.rit.edu
+    Signed-off-by: Bartosz Golaszewski &lt;bartosz.golaszewski@linaro.org&gt;
+
+diff --git a/drivers/gpio/gpio-mpsse.c b/drivers/gpio/gpio-mpsse.c
+index 5ca00dd51a63..ace652ba4df1 100644
+--- a/drivers/gpio/gpio-mpsse.c
++++ b/drivers/gpio/gpio-mpsse.c
+@@ -65,8 +65,19 @@ struct mpsse_quirk {
+ 	unsigned long dir_out;            /* Bitmask of valid output pins */
+ };
+ 
++static struct mpsse_quirk bryx_brik_quirk = {
++	.names = {
++		[3] = "Push to Talk",
++		[5] = "Channel Activity",
++	},
++	.dir_out = BIT(3),	/* Push to Talk     */
++	.dir_in  = BIT(5),	/* Channel Activity */
++};
++
+ static const struct usb_device_id gpio_mpsse_table[] = {
+ 	{ USB_DEVICE(0x0c52, 0xa064) },   /* SeaLevel Systems, Inc. */
++	{ USB_DEVICE(0x0403, 0x6988),     /* FTDI, assigned to Bryx */
++	  .driver_info = (kernel_ulong_t)&amp;bryx_brik_quirk},
+ 	{ }                               /* Terminating entry */
+ };
+ </pre><hr><pre>commit f13b0f72af238d63bb9a2e417657da8b45d72544
+Author: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+Date:   Tue Oct 14 09:35:29 2025 -0400
+
+    gpio: mpsse: add quirk support
+    
+    Builds out a facility for specifying compatible lines directions and
+    labels for MPSSE-based devices.
+    
+    * dir_in/out are bitmask of lines that can go in/out. 1 means
+      compatible, 0 means incompatible.
+    * names is an array of line names which will be exposed to userspace.
+    
+    Also changes the chip label format to include some more useful
+    information about the device to help identify it from userspace.
+    
+    Signed-off-by: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+    Reviewed-by: Dan Carpenter &lt;dan.carpenter@linaro.org&gt;
+    Reviewed-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20251014133530.3592716-4-mstrodl@csh.rit.edu
+    Signed-off-by: Bartosz Golaszewski &lt;bartosz.golaszewski@linaro.org&gt;
+
+diff --git a/drivers/gpio/gpio-mpsse.c b/drivers/gpio/gpio-mpsse.c
+index 6ec940f6b371..5ca00dd51a63 100644
+--- a/drivers/gpio/gpio-mpsse.c
++++ b/drivers/gpio/gpio-mpsse.c
+@@ -29,6 +29,9 @@ struct mpsse_priv {
+ 	u8 gpio_outputs[2];	     /* Output states for GPIOs [L, H] */
+ 	u8 gpio_dir[2];		     /* Directions for GPIOs [L, H] */
+ 
++	unsigned long dir_in;        /* Bitmask of valid input pins  */
++	unsigned long dir_out;       /* Bitmask of valid output pins */
++
+ 	u8 *bulk_in_buf;	     /* Extra recv buffer to grab status bytes */
+ 
+ 	struct usb_endpoint_descriptor *bulk_in;
+@@ -54,6 +57,14 @@ struct bulk_desc {
+ 	int timeout;
+ };
+ 
++#define MPSSE_NGPIO 16
++
++struct mpsse_quirk {
++	const char   *names[MPSSE_NGPIO]; /* Pin names, if applicable     */
++	unsigned long dir_in;             /* Bitmask of valid input pins  */
++	unsigned long dir_out;            /* Bitmask of valid output pins */
++};
++
+ static const struct usb_device_id gpio_mpsse_table[] = {
+ 	{ USB_DEVICE(0x0c52, 0xa064) },   /* SeaLevel Systems, Inc. */
+ 	{ }                               /* Terminating entry */
+@@ -171,6 +182,32 @@ static int gpio_mpsse_get_bank(struct mpsse_priv *priv, u8 bank)
+ 	return buf;
+ }
+ 
++static int mpsse_ensure_supported(struct gpio_chip *chip,
++				  unsigned long mask, int direction)
++{
++	unsigned long supported, unsupported;
++	char *type = "input";
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++
++	supported = priv-&gt;dir_in;
++	if (direction == GPIO_LINE_DIRECTION_OUT) {
++		supported = priv-&gt;dir_out;
++		type = "output";
++	}
++
++	/* An invalid bit was in the provided mask */
++	unsupported = mask &amp; ~supported;
++	if (unsupported) {
++		dev_err(&amp;priv-&gt;udev-&gt;dev,
++			"mpsse: GPIO %lu doesn't support %s\n",
++			find_first_bit(&amp;unsupported, sizeof(unsupported) * 8),
++			type);
++		return -EOPNOTSUPP;
++	}
++
++	return 0;
++}
++
+ static int gpio_mpsse_set_multiple(struct gpio_chip *chip, unsigned long *mask,
+ 				   unsigned long *bits)
+ {
+@@ -178,6 +215,10 @@ static int gpio_mpsse_set_multiple(struct gpio_chip *chip, unsigned long *mask,
+ 	int ret;
+ 	struct mpsse_priv *priv = gpiochip_get_data(chip);
+ 
++	ret = mpsse_ensure_supported(chip, *mask, GPIO_LINE_DIRECTION_OUT);
++	if (ret)
++		return ret;
++
+ 	guard(mutex)(&amp;priv-&gt;io_mutex);
+ 	for_each_set_clump8(i, bank_mask, mask, chip-&gt;ngpio) {
+ 		bank = i / 8;
+@@ -205,6 +246,10 @@ static int gpio_mpsse_get_multiple(struct gpio_chip *chip, unsigned long *mask,
+ 	int ret;
+ 	struct mpsse_priv *priv = gpiochip_get_data(chip);
+ 
++	ret = mpsse_ensure_supported(chip, *mask, GPIO_LINE_DIRECTION_IN);
++	if (ret)
++		return ret;
++
+ 	guard(mutex)(&amp;priv-&gt;io_mutex);
+ 	for_each_set_clump8(i, bank_mask, mask, chip-&gt;ngpio) {
+ 		bank = i / 8;
+@@ -253,10 +298,15 @@ static int gpio_mpsse_gpio_set(struct gpio_chip *chip, unsigned int offset,
+ static int gpio_mpsse_direction_output(struct gpio_chip *chip,
+ 				       unsigned int offset, int value)
+ {
++	int ret;
+ 	struct mpsse_priv *priv = gpiochip_get_data(chip);
+ 	int bank = (offset &amp; 8) &gt;&gt; 3;
+ 	int bank_offset = offset &amp; 7;
+ 
++	ret = mpsse_ensure_supported(chip, BIT(offset), GPIO_LINE_DIRECTION_OUT);
++	if (ret)
++		return ret;
++
+ 	scoped_guard(mutex, &amp;priv-&gt;io_mutex)
+ 		priv-&gt;gpio_dir[bank] |= BIT(bank_offset);
+ 
+@@ -266,10 +316,15 @@ static int gpio_mpsse_direction_output(struct gpio_chip *chip,
+ static int gpio_mpsse_direction_input(struct gpio_chip *chip,
+ 				      unsigned int offset)
+ {
++	int ret;
+ 	struct mpsse_priv *priv = gpiochip_get_data(chip);
+ 	int bank = (offset &amp; 8) &gt;&gt; 3;
+ 	int bank_offset = offset &amp; 7;
+ 
++	ret = mpsse_ensure_supported(chip, BIT(offset), GPIO_LINE_DIRECTION_IN);
++	if (ret)
++		return ret;
++
+ 	guard(mutex)(&amp;priv-&gt;io_mutex);
+ 	priv-&gt;gpio_dir[bank] &amp;= ~BIT(bank_offset);
+ 
+@@ -482,18 +537,49 @@ static void gpio_mpsse_ida_remove(void *data)
+ 	ida_free(&amp;gpio_mpsse_ida, priv-&gt;id);
+ }
+ 
++static int mpsse_init_valid_mask(struct gpio_chip *chip,
++				 unsigned long *valid_mask,
++				 unsigned int ngpios)
++{
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++
++	if (WARN_ON(priv == NULL))
++		return -ENODEV;
++
++	*valid_mask = priv-&gt;dir_in | priv-&gt;dir_out;
++
++	return 0;
++}
++
++static void mpsse_irq_init_valid_mask(struct gpio_chip *chip,
++				      unsigned long *valid_mask,
++				      unsigned int ngpios)
++{
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++
++	if (WARN_ON(priv == NULL))
++		return;
++
++	/* Can only use IRQ on input capable pins */
++	*valid_mask = priv-&gt;dir_in;
++}
++
+ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 			    const struct usb_device_id *id)
+ {
+ 	struct mpsse_priv *priv;
+ 	struct device *dev;
++	char *serial;
+ 	int err;
++	struct mpsse_quirk *quirk = (void *)id-&gt;driver_info;
+ 
+ 	dev = &amp;interface-&gt;dev;
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
++	INIT_LIST_HEAD(&amp;priv-&gt;workers);
++
+ 	priv-&gt;udev = usb_get_dev(interface_to_usbdev(interface));
+ 	priv-&gt;intf = interface;
+ 	priv-&gt;intf_id = interface-&gt;cur_altsetting-&gt;desc.bInterfaceNumber;
+@@ -520,9 +606,15 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 
+ 	raw_spin_lock_init(&amp;priv-&gt;irq_spin);
+ 
++	serial = priv-&gt;udev-&gt;serial;
++	if (!serial)
++		serial = "NONE";
++
+ 	priv-&gt;gpio.label = devm_kasprintf(dev, GFP_KERNEL,
+-					  "gpio-mpsse.%d.%d",
+-					  priv-&gt;id, priv-&gt;intf_id);
++					  "MPSSE%04x:%04x.%d.%d.%s",
++					  id-&gt;idVendor, id-&gt;idProduct,
++					  priv-&gt;intf_id, priv-&gt;id,
++					  serial);
+ 	if (!priv-&gt;gpio.label)
+ 		return -ENOMEM;
+ 
+@@ -536,10 +628,20 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 	priv-&gt;gpio.get_multiple = gpio_mpsse_get_multiple;
+ 	priv-&gt;gpio.set_multiple = gpio_mpsse_set_multiple;
+ 	priv-&gt;gpio.base = -1;
+-	priv-&gt;gpio.ngpio = 16;
++	priv-&gt;gpio.ngpio = MPSSE_NGPIO;
+ 	priv-&gt;gpio.offset = priv-&gt;intf_id * priv-&gt;gpio.ngpio;
+ 	priv-&gt;gpio.can_sleep = 1;
+ 
++	if (quirk) {
++		priv-&gt;dir_out = quirk-&gt;dir_out;
++		priv-&gt;dir_in = quirk-&gt;dir_in;
++		priv-&gt;gpio.names = quirk-&gt;names;
++		priv-&gt;gpio.init_valid_mask = mpsse_init_valid_mask;
++	} else {
++		priv-&gt;dir_in = U16_MAX;
++		priv-&gt;dir_out = U16_MAX;
++	}
++
+ 	err = usb_find_common_endpoints(interface-&gt;cur_altsetting,
+ 					&amp;priv-&gt;bulk_in, &amp;priv-&gt;bulk_out,
+ 					NULL, NULL);
+@@ -578,6 +680,7 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 	priv-&gt;gpio.irq.parents = NULL;
+ 	priv-&gt;gpio.irq.default_type = IRQ_TYPE_NONE;
+ 	priv-&gt;gpio.irq.handler = handle_simple_irq;
++	priv-&gt;gpio.irq.init_valid_mask = mpsse_irq_init_valid_mask;
+ 
+ 	err = devm_gpiochip_add_data(dev, &amp;priv-&gt;gpio, priv);
+ 	if (err)</pre><hr><pre>commit 179ef1127d7a4f09f0e741fa9f30b8a8e7886271
+Author: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+Date:   Tue Oct 14 09:35:28 2025 -0400
+
+    gpio: mpsse: ensure worker is torn down
+    
+    When an IRQ worker is running, unplugging the device would cause a
+    crash. The sealevel hardware this driver was written for was not
+    hotpluggable, so I never realized it.
+    
+    This change uses a spinlock to protect a list of workers, which
+    it tears down on disconnect.
+    
+    Signed-off-by: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+    Reviewed-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20251014133530.3592716-3-mstrodl@csh.rit.edu
+    Signed-off-by: Bartosz Golaszewski &lt;bartosz.golaszewski@linaro.org&gt;
+
+diff --git a/drivers/gpio/gpio-mpsse.c b/drivers/gpio/gpio-mpsse.c
+index c508d9e33054..6ec940f6b371 100644
+--- a/drivers/gpio/gpio-mpsse.c
++++ b/drivers/gpio/gpio-mpsse.c
+@@ -10,6 +10,7 @@
+ #include &lt;linux/cleanup.h&gt;
+ #include &lt;linux/gpio/driver.h&gt;
+ #include &lt;linux/mutex.h&gt;
++#include &lt;linux/spinlock.h&gt;
+ #include &lt;linux/usb.h&gt;
+ 
+ struct mpsse_priv {
+@@ -17,8 +18,10 @@ struct mpsse_priv {
+ 	struct usb_device *udev;     /* USB device encompassing all MPSSEs */
+ 	struct usb_interface *intf;  /* USB interface for this MPSSE */
+ 	u8 intf_id;                  /* USB interface number for this MPSSE */
+-	struct work_struct irq_work; /* polling work thread */
++	struct list_head workers;    /* polling work threads */
+ 	struct mutex irq_mutex;	     /* lock over irq_data */
++	struct mutex irq_race;	     /* race for polling worker teardown */
++	raw_spinlock_t irq_spin;     /* protects worker list */
+ 	atomic_t irq_type[16];	     /* pin -&gt; edge detection type */
+ 	atomic_t irq_enabled;
+ 	int id;
+@@ -34,6 +37,14 @@ struct mpsse_priv {
+ 	struct mutex io_mutex;	    /* sync I/O with disconnect */
+ };
+ 
++struct mpsse_worker {
++	struct mpsse_priv  *priv;
++	struct work_struct  work;
++	atomic_t       cancelled;
++	struct list_head    list;   /* linked list */
++	struct list_head destroy;   /* teardown linked list */
++};
++
+ struct bulk_desc {
+ 	bool tx;	            /* direction of bulk transfer */
+ 	u8 *data;                   /* input (tx) or output (rx) */
+@@ -283,18 +294,62 @@ static int gpio_mpsse_get_direction(struct gpio_chip *chip,
+ 	return ret;
+ }
+ 
+-static void gpio_mpsse_poll(struct work_struct *work)
++/*
++ * Stops all workers except `my_worker`.
++ * Safe to call only when `irq_race` is held.
++ */
++static void gpio_mpsse_stop_all_except(struct mpsse_priv *priv,
++				       struct mpsse_worker *my_worker)
++{
++	struct mpsse_worker *worker, *worker_tmp;
++	struct list_head destructors = LIST_HEAD_INIT(destructors);
++
++	scoped_guard(raw_spinlock_irqsave, &amp;priv-&gt;irq_spin) {
++		list_for_each_entry_safe(worker, worker_tmp,
++					 &amp;priv-&gt;workers, list) {
++			/* Don't stop ourselves */
++			if (worker == my_worker)
++				continue;
++
++			list_del(&amp;worker-&gt;list);
++
++			/* Give worker a chance to terminate itself */
++			atomic_set(&amp;worker-&gt;cancelled, 1);
++			/* Keep track of stuff to cancel */
++			INIT_LIST_HEAD(&amp;worker-&gt;destroy);
++			list_add(&amp;worker-&gt;destroy, &amp;destructors);
++		}
++	}
++
++	list_for_each_entry_safe(worker, worker_tmp,
++				 &amp;destructors, destroy) {
++		list_del(&amp;worker-&gt;destroy);
++		cancel_work_sync(&amp;worker-&gt;work);
++		kfree(worker);
++	}
++}
++
++static void gpio_mpsse_poll(struct work_struct *my_work)
+ {
+ 	unsigned long pin_mask, pin_states, flags;
+ 	int irq_enabled, offset, err, value, fire_irq,
+ 		irq, old_value[16], irq_type[16];
+-	struct mpsse_priv *priv = container_of(work, struct mpsse_priv,
+-					       irq_work);
++	struct mpsse_worker *my_worker = container_of(my_work, struct mpsse_worker, work);
++	struct mpsse_priv *priv = my_worker-&gt;priv;
+ 
+ 	for (offset = 0; offset &lt; priv-&gt;gpio.ngpio; ++offset)
+ 		old_value[offset] = -1;
+ 
+-	while ((irq_enabled = atomic_read(&amp;priv-&gt;irq_enabled))) {
++	/*
++	 * We only want one worker. Workers race to acquire irq_race and tear
++	 * down all other workers. This is a cond guard so that we don't deadlock
++	 * trying to cancel a worker.
++	 */
++	scoped_cond_guard(mutex_try, return, &amp;priv-&gt;irq_race)
++		gpio_mpsse_stop_all_except(priv, my_worker);
++
++	while ((irq_enabled = atomic_read(&amp;priv-&gt;irq_enabled)) &amp;&amp;
++	       !atomic_read(&amp;my_worker-&gt;cancelled)) {
+ 		usleep_range(MPSSE_POLL_INTERVAL, MPSSE_POLL_INTERVAL + 1000);
+ 		/* Cleanup will trigger at the end of the loop */
+ 		guard(mutex)(&amp;priv-&gt;irq_mutex);
+@@ -369,21 +424,45 @@ static int gpio_mpsse_set_irq_type(struct irq_data *irqd, unsigned int type)
+ 
+ static void gpio_mpsse_irq_disable(struct irq_data *irqd)
+ {
++	struct mpsse_worker *worker;
+ 	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
+ 
+ 	atomic_and(~BIT(irqd-&gt;hwirq), &amp;priv-&gt;irq_enabled);
+ 	gpiochip_disable_irq(&amp;priv-&gt;gpio, irqd-&gt;hwirq);
++
++	/*
++	 * Can't actually do teardown in IRQ context (it blocks).
++	 * As a result, these workers will stick around until irq is reenabled
++	 * or device gets disconnected
++	 */
++	scoped_guard(raw_spinlock_irqsave, &amp;priv-&gt;irq_spin)
++		list_for_each_entry(worker, &amp;priv-&gt;workers, list)
++			atomic_set(&amp;worker-&gt;cancelled, 1);
+ }
+ 
+ static void gpio_mpsse_irq_enable(struct irq_data *irqd)
+ {
++	struct mpsse_worker *worker;
+ 	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
+ 
+ 	gpiochip_enable_irq(&amp;priv-&gt;gpio, irqd-&gt;hwirq);
+ 	/* If no-one else was using the IRQ, enable it */
+ 	if (!atomic_fetch_or(BIT(irqd-&gt;hwirq), &amp;priv-&gt;irq_enabled)) {
+-		INIT_WORK(&amp;priv-&gt;irq_work, gpio_mpsse_poll);
+-		schedule_work(&amp;priv-&gt;irq_work);
++		/*
++		 * Can't be devm because it uses a non-raw spinlock (illegal in
++		 * this context, where a raw spinlock is held by our caller)
++		 */
++		worker = kzalloc(sizeof(*worker), GFP_NOWAIT);
++		if (!worker)
++			return;
++
++		worker-&gt;priv = priv;
++		INIT_LIST_HEAD(&amp;worker-&gt;list);
++		INIT_WORK(&amp;worker-&gt;work, gpio_mpsse_poll);
++		schedule_work(&amp;worker-&gt;work);
++
++		scoped_guard(raw_spinlock_irqsave, &amp;priv-&gt;irq_spin)
++			list_add(&amp;worker-&gt;list, &amp;priv-&gt;workers);
+ 	}
+ }
+ 
+@@ -435,6 +514,12 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 	if (err)
+ 		return err;
+ 
++	err = devm_mutex_init(dev, &amp;priv-&gt;irq_race);
++	if (err)
++		return err;
++
++	raw_spin_lock_init(&amp;priv-&gt;irq_spin);
++
+ 	priv-&gt;gpio.label = devm_kasprintf(dev, GFP_KERNEL,
+ 					  "gpio-mpsse.%d.%d",
+ 					  priv-&gt;id, priv-&gt;intf_id);
+@@ -505,6 +590,13 @@ static void gpio_mpsse_disconnect(struct usb_interface *intf)
+ {
+ 	struct mpsse_priv *priv = usb_get_intfdata(intf);
+ 
++	/*
++	 * Lock prevents double-free of worker from here and the teardown
++	 * step at the beginning of gpio_mpsse_poll
++	 */
++	scoped_guard(mutex, &amp;priv-&gt;irq_race)
++		gpio_mpsse_stop_all_except(priv, NULL);
++
+ 	priv-&gt;intf = NULL;
+ 	usb_set_intfdata(intf, NULL);
+ 	usb_put_dev(priv-&gt;udev);</pre><hr><pre>commit 523ebae1cdcf8056dfe090f31284d1e5f5d1b73f
+Author: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+Date:   Tue Oct 14 09:35:27 2025 -0400
+
+    gpio: mpsse: propagate error from direction_input
+    
+    Not sure how I missed this, but errors encountered when setting the
+    direction to input weren't being propagated to the caller.
+    
+    Signed-off-by: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+    Reviewed-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20251014133530.3592716-2-mstrodl@csh.rit.edu
+    Signed-off-by: Bartosz Golaszewski &lt;bartosz.golaszewski@linaro.org&gt;
+
+diff --git a/drivers/gpio/gpio-mpsse.c b/drivers/gpio/gpio-mpsse.c
+index 9f42bb30b4ec..c508d9e33054 100644
+--- a/drivers/gpio/gpio-mpsse.c
++++ b/drivers/gpio/gpio-mpsse.c
+@@ -261,9 +261,8 @@ static int gpio_mpsse_direction_input(struct gpio_chip *chip,
+ 
+ 	guard(mutex)(&amp;priv-&gt;io_mutex);
+ 	priv-&gt;gpio_dir[bank] &amp;= ~BIT(bank_offset);
+-	gpio_mpsse_set_bank(priv, bank);
+ 
+-	return 0;
++	return gpio_mpsse_set_bank(priv, bank);
+ }
+ 
+ static int gpio_mpsse_get_direction(struct gpio_chip *chip,</pre><hr><pre>commit c46a74ff05c0ac76ba11ef21c930c3b447abf31a
+Author: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+Date:   Wed Oct 9 09:11:31 2024 -0400
+
+    gpio: add support for FTDI's MPSSE as GPIO
+    
+    FTDI FT2232H is a USB to GPIO chip. Sealevel produces some devices
+    with this chip. FT2232H presents itself as a composite device with two
+    interfaces (each is an "MPSSE"). Each MPSSE has two banks (high and low)
+    of 8 GPIO each. I believe some MPSSE's have only one bank, but I don't
+    know how to identify them (I don't have any for testing) and as a result
+    are unsupported for the time being.
+    
+    Additionally, this driver provides software polling-based interrupts for
+    edge detection. For the Sealevel device I have to test with, this works
+    well because there is hardware debouncing. From talking to Sealevel's
+    people, this is their preferred way to do edge detection.
+    
+    Signed-off-by: Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
+    Reviewed-by: Linus Walleij &lt;linus.walleij@linaro.org&gt;
+    Link: https://lore.kernel.org/r/20241009131131.1618329-1-mstrodl@csh.rit.edu
+    Signed-off-by: Bartosz Golaszewski &lt;bartosz.golaszewski@linaro.org&gt;
+
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index bfa6b5a2c537..3598d5094393 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -1853,6 +1853,13 @@ config GPIO_VIPERBOARD
+ 	  River Tech's viperboard.h for detailed meaning
+ 	  of the module parameters.
+ 
++config GPIO_MPSSE
++	tristate "FTDI MPSSE GPIO support"
++	select GPIOLIB_IRQCHIP
++	help
++	  GPIO driver for FTDI's MPSSE interface. These can do input and
++	  output. Each MPSSE provides 16 IO pins.
++
+ endmenu
+ 
+ menu "Virtual GPIO drivers"
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 3cdfa927ed98..72b79642aa00 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -115,6 +115,7 @@ obj-$(CONFIG_GPIO_MOCKUP)		+= gpio-mockup.o
+ obj-$(CONFIG_GPIO_MOXTET)		+= gpio-moxtet.o
+ obj-$(CONFIG_GPIO_MPC5200)		+= gpio-mpc5200.o
+ obj-$(CONFIG_GPIO_MPC8XXX)		+= gpio-mpc8xxx.o
++obj-$(CONFIG_GPIO_MPSSE)		+= gpio-mpsse.o
+ obj-$(CONFIG_GPIO_MSC313)		+= gpio-msc313.o
+ obj-$(CONFIG_GPIO_MT7621)		+= gpio-mt7621.o
+ obj-$(CONFIG_GPIO_MVEBU)		+= gpio-mvebu.o
+diff --git a/drivers/gpio/gpio-mpsse.c b/drivers/gpio/gpio-mpsse.c
+new file mode 100644
+index 000000000000..3ab6651d2226
+--- /dev/null
++++ b/drivers/gpio/gpio-mpsse.c
+@@ -0,0 +1,522 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * FTDI MPSSE GPIO support
++ *
++ * Based on code by Anatolij Gustschin
++ *
++ * Copyright (C) 2024 Mary Strodl &lt;mstrodl@csh.rit.edu&gt;
++ */
++
++#include &lt;linux/cleanup.h&gt;
++#include &lt;linux/gpio/driver.h&gt;
++#include &lt;linux/mutex.h&gt;
++#include &lt;linux/usb.h&gt;
++
++struct mpsse_priv {
++	struct gpio_chip gpio;
++	struct usb_device *udev;     /* USB device encompassing all MPSSEs */
++	struct usb_interface *intf;  /* USB interface for this MPSSE */
++	u8 intf_id;                  /* USB interface number for this MPSSE */
++	struct work_struct irq_work; /* polling work thread */
++	struct mutex irq_mutex;	     /* lock over irq_data */
++	atomic_t irq_type[16];	     /* pin -&gt; edge detection type */
++	atomic_t irq_enabled;
++	int id;
++
++	u8 gpio_outputs[2];	     /* Output states for GPIOs [L, H] */
++	u8 gpio_dir[2];		     /* Directions for GPIOs [L, H] */
++
++	u8 *bulk_in_buf;	     /* Extra recv buffer to grab status bytes */
++
++	struct usb_endpoint_descriptor *bulk_in;
++	struct usb_endpoint_descriptor *bulk_out;
++
++	struct mutex io_mutex;	    /* sync I/O with disconnect */
++};
++
++struct bulk_desc {
++	bool tx;	            /* direction of bulk transfer */
++	u8 *data;                   /* input (tx) or output (rx) */
++	int len;                    /* Length of `data` if tx, or length of */
++				    /* Data to read if rx */
++	int len_actual;		    /* Length successfully transferred */
++	int timeout;
++};
++
++static const struct usb_device_id gpio_mpsse_table[] = {
++	{ USB_DEVICE(0x0c52, 0xa064) },   /* SeaLevel Systems, Inc. */
++	{ }                               /* Terminating entry */
++};
++
++MODULE_DEVICE_TABLE(usb, gpio_mpsse_table);
++
++static DEFINE_IDA(gpio_mpsse_ida);
++
++/* MPSSE commands */
++#define SET_BITS_CMD 0x80
++#define GET_BITS_CMD 0x81
++
++#define SET_BITMODE_REQUEST 0x0B
++#define MODE_MPSSE (2 &lt;&lt; 8)
++#define MODE_RESET 0
++
++/* Arbitrarily decided. This could probably be much less */
++#define MPSSE_WRITE_TIMEOUT 5000
++#define MPSSE_READ_TIMEOUT 5000
++
++/* 1 millisecond, also pretty arbitrary */
++#define MPSSE_POLL_INTERVAL 1000
++
++static int mpsse_bulk_xfer(struct usb_interface *intf, struct bulk_desc *desc)
++{
++	struct mpsse_priv *priv = usb_get_intfdata(intf);
++	struct usb_device *udev = priv-&gt;udev;
++	unsigned int pipe;
++	int ret;
++
++	if (desc-&gt;tx)
++		pipe = usb_sndbulkpipe(udev, priv-&gt;bulk_out-&gt;bEndpointAddress);
++	else
++		pipe = usb_rcvbulkpipe(udev, priv-&gt;bulk_in-&gt;bEndpointAddress);
++
++	ret = usb_bulk_msg(udev, pipe, desc-&gt;data, desc-&gt;len,
++			   &amp;desc-&gt;len_actual, desc-&gt;timeout);
++	if (ret)
++		dev_dbg(&amp;udev-&gt;dev, "mpsse: bulk transfer failed: %d\n", ret);
++
++	return ret;
++}
++
++static int mpsse_write(struct usb_interface *intf,
++		       u8 *buf, size_t len)
++{
++	int ret;
++	struct bulk_desc desc;
++
++	desc.len_actual = 0;
++	desc.tx = true;
++	desc.data = buf;
++	desc.len = len;
++	desc.timeout = MPSSE_WRITE_TIMEOUT;
++
++	ret = mpsse_bulk_xfer(intf, &amp;desc);
++
++	return ret;
++}
++
++static int mpsse_read(struct usb_interface *intf, u8 *buf, size_t len)
++{
++	int ret;
++	struct bulk_desc desc;
++	struct mpsse_priv *priv = usb_get_intfdata(intf);
++
++	desc.len_actual = 0;
++	desc.tx = false;
++	desc.data = priv-&gt;bulk_in_buf;
++	/* Device sends 2 additional status bytes, read len + 2 */
++	desc.len = min_t(size_t, len + 2, usb_endpoint_maxp(priv-&gt;bulk_in));
++	desc.timeout = MPSSE_READ_TIMEOUT;
++
++	ret = mpsse_bulk_xfer(intf, &amp;desc);
++	if (ret)
++		return ret;
++
++	/* Did we get enough data? */
++	if (desc.len_actual &lt; desc.len)
++		return -EIO;
++
++	memcpy(buf, desc.data + 2, desc.len_actual - 2);
++
++	return ret;
++}
++
++static int gpio_mpsse_set_bank(struct mpsse_priv *priv, u8 bank)
++{
++	int ret;
++	u8 tx_buf[3] = {
++		SET_BITS_CMD | (bank &lt;&lt; 1),
++		priv-&gt;gpio_outputs[bank],
++		priv-&gt;gpio_dir[bank],
++	};
++
++	ret = mpsse_write(priv-&gt;intf, tx_buf, 3);
++
++	return ret;
++}
++
++static int gpio_mpsse_get_bank(struct mpsse_priv *priv, u8 bank)
++{
++	int ret;
++	u8 buf = GET_BITS_CMD | (bank &lt;&lt; 1);
++
++	ret = mpsse_write(priv-&gt;intf, &amp;buf, 1);
++	if (ret)
++		return ret;
++
++	ret = mpsse_read(priv-&gt;intf, &amp;buf, 1);
++	if (ret)
++		return ret;
++
++	return buf;
++}
++
++static void gpio_mpsse_set_multiple(struct gpio_chip *chip, unsigned long *mask,
++				    unsigned long *bits)
++{
++	unsigned long i, bank, bank_mask, bank_bits;
++	int ret;
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++
++	guard(mutex)(&amp;priv-&gt;io_mutex);
++	for_each_set_clump8(i, bank_mask, mask, chip-&gt;ngpio) {
++		bank = i / 8;
++
++		if (bank_mask) {
++			bank_bits = bitmap_get_value8(bits, i);
++			/* Zero out pins we want to change */
++			priv-&gt;gpio_outputs[bank] &amp;= ~bank_mask;
++			/* Set pins we care about */
++			priv-&gt;gpio_outputs[bank] |= bank_bits &amp; bank_mask;
++
++			ret = gpio_mpsse_set_bank(priv, bank);
++			if (ret)
++				dev_err(&amp;priv-&gt;intf-&gt;dev,
++					"Couldn't set values for bank %ld!",
++					bank);
++		}
++	}
++}
++
++static int gpio_mpsse_get_multiple(struct gpio_chip *chip, unsigned long *mask,
++				   unsigned long *bits)
++{
++	unsigned long i, bank, bank_mask;
++	int ret;
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++
++	guard(mutex)(&amp;priv-&gt;io_mutex);
++	for_each_set_clump8(i, bank_mask, mask, chip-&gt;ngpio) {
++		bank = i / 8;
++
++		if (bank_mask) {
++			ret = gpio_mpsse_get_bank(priv, bank);
++			if (ret &lt; 0)
++				return ret;
++
++			bitmap_set_value8(bits, ret &amp; bank_mask, i);
++		}
++	}
++
++	return 0;
++}
++
++static int gpio_mpsse_gpio_get(struct gpio_chip *chip, unsigned int offset)
++{
++	int err;
++	unsigned long mask = 0, bits = 0;
++
++	__set_bit(offset, &amp;mask);
++	err = gpio_mpsse_get_multiple(chip, &amp;mask, &amp;bits);
++	if (err)
++		return err;
++
++	/* == is not guaranteed to give 1 if true */
++	if (bits)
++		return 1;
++	else
++		return 0;
++}
++
++static void gpio_mpsse_gpio_set(struct gpio_chip *chip, unsigned int offset,
++			       int value)
++{
++	unsigned long mask = 0, bits = 0;
++
++	__set_bit(offset, &amp;mask);
++	if (value)
++		__set_bit(offset, &amp;bits);
++
++	gpio_mpsse_set_multiple(chip, &amp;mask, &amp;bits);
++}
++
++static int gpio_mpsse_direction_output(struct gpio_chip *chip,
++				       unsigned int offset, int value)
++{
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++	int bank = (offset &amp; 8) &gt;&gt; 3;
++	int bank_offset = offset &amp; 7;
++
++	scoped_guard(mutex, &amp;priv-&gt;io_mutex)
++		priv-&gt;gpio_dir[bank] |= BIT(bank_offset);
++
++	gpio_mpsse_gpio_set(chip, offset, value);
++
++	return 0;
++}
++
++static int gpio_mpsse_direction_input(struct gpio_chip *chip,
++				      unsigned int offset)
++{
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++	int bank = (offset &amp; 8) &gt;&gt; 3;
++	int bank_offset = offset &amp; 7;
++
++	guard(mutex)(&amp;priv-&gt;io_mutex);
++	priv-&gt;gpio_dir[bank] &amp;= ~BIT(bank_offset);
++	gpio_mpsse_set_bank(priv, bank);
++
++	return 0;
++}
++
++static int gpio_mpsse_get_direction(struct gpio_chip *chip,
++				    unsigned int offset)
++{
++	int ret;
++	int bank = (offset &amp; 8) &gt;&gt; 3;
++	int bank_offset = offset &amp; 7;
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++
++	guard(mutex)(&amp;priv-&gt;io_mutex);
++	/* MPSSE directions are inverted */
++	if (priv-&gt;gpio_dir[bank] &amp; BIT(bank_offset))
++		ret = GPIO_LINE_DIRECTION_OUT;
++	else
++		ret = GPIO_LINE_DIRECTION_IN;
++
++	return ret;
++}
++
++static void gpio_mpsse_poll(struct work_struct *work)
++{
++	unsigned long pin_mask, pin_states, flags;
++	int irq_enabled, offset, err, value, fire_irq,
++		irq, old_value[16], irq_type[16];
++	struct mpsse_priv *priv = container_of(work, struct mpsse_priv,
++					       irq_work);
++
++	for (offset = 0; offset &lt; priv-&gt;gpio.ngpio; ++offset)
++		old_value[offset] = -1;
++
++	while ((irq_enabled = atomic_read(&amp;priv-&gt;irq_enabled))) {
++		usleep_range(MPSSE_POLL_INTERVAL, MPSSE_POLL_INTERVAL + 1000);
++		/* Cleanup will trigger at the end of the loop */
++		guard(mutex)(&amp;priv-&gt;irq_mutex);
++
++		pin_mask = 0;
++		pin_states = 0;
++		for (offset = 0; offset &lt; priv-&gt;gpio.ngpio; ++offset) {
++			irq_type[offset] = atomic_read(&amp;priv-&gt;irq_type[offset]);
++			if (irq_type[offset] != IRQ_TYPE_NONE &amp;&amp;
++			    irq_enabled &amp; BIT(offset))
++				pin_mask |= BIT(offset);
++			else
++				old_value[offset] = -1;
++		}
++
++		err = gpio_mpsse_get_multiple(&amp;priv-&gt;gpio, &amp;pin_mask,
++					      &amp;pin_states);
++		if (err) {
++			dev_err_ratelimited(&amp;priv-&gt;intf-&gt;dev,
++					    "Error polling!\n");
++			continue;
++		}
++
++		/* Check each value */
++		for (offset = 0; offset &lt; priv-&gt;gpio.ngpio; ++offset) {
++			if (old_value[offset] == -1)
++				continue;
++
++			fire_irq = 0;
++			value = pin_states &amp; BIT(offset);
++
++			switch (irq_type[offset]) {
++			case IRQ_TYPE_EDGE_RISING:
++				fire_irq = value &gt; old_value[offset];
++				break;
++			case IRQ_TYPE_EDGE_FALLING:
++				fire_irq = value &lt; old_value[offset];
++				break;
++			case IRQ_TYPE_EDGE_BOTH:
++				fire_irq = value != old_value[offset];
++				break;
++			}
++			if (!fire_irq)
++				continue;
++
++			irq = irq_find_mapping(priv-&gt;gpio.irq.domain,
++					       offset);
++			local_irq_save(flags);
++			generic_handle_irq(irq);
++			local_irq_disable();
++			local_irq_restore(flags);
++		}
++
++		/* Sync back values so we can refer to them next tick */
++		for (offset = 0; offset &lt; priv-&gt;gpio.ngpio; ++offset)
++			if (irq_type[offset] != IRQ_TYPE_NONE &amp;&amp;
++			    irq_enabled &amp; BIT(offset))
++				old_value[offset] = pin_states &amp; BIT(offset);
++	}
++}
++
++static int gpio_mpsse_set_irq_type(struct irq_data *irqd, unsigned int type)
++{
++	int offset;
++	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
++
++	offset = irqd-&gt;hwirq;
++	atomic_set(&amp;priv-&gt;irq_type[offset], type &amp; IRQ_TYPE_EDGE_BOTH);
++
++	return 0;
++}
++
++static void gpio_mpsse_irq_disable(struct irq_data *irqd)
++{
++	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
++
++	atomic_and(~BIT(irqd-&gt;hwirq), &amp;priv-&gt;irq_enabled);
++	gpiochip_disable_irq(&amp;priv-&gt;gpio, irqd-&gt;hwirq);
++}
++
++static void gpio_mpsse_irq_enable(struct irq_data *irqd)
++{
++	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
++
++	gpiochip_enable_irq(&amp;priv-&gt;gpio, irqd-&gt;hwirq);
++	/* If no-one else was using the IRQ, enable it */
++	if (!atomic_fetch_or(BIT(irqd-&gt;hwirq), &amp;priv-&gt;irq_enabled)) {
++		INIT_WORK(&amp;priv-&gt;irq_work, gpio_mpsse_poll);
++		schedule_work(&amp;priv-&gt;irq_work);
++	}
++}
++
++static const struct irq_chip gpio_mpsse_irq_chip = {
++	.name = "gpio-mpsse-irq",
++	.irq_enable = gpio_mpsse_irq_enable,
++	.irq_disable = gpio_mpsse_irq_disable,
++	.irq_set_type = gpio_mpsse_set_irq_type,
++	.flags = IRQCHIP_IMMUTABLE,
++	GPIOCHIP_IRQ_RESOURCE_HELPERS,
++};
++
++static void gpio_mpsse_ida_remove(void *data)
++{
++	struct mpsse_priv *priv = data;
++
++	ida_simple_remove(&amp;gpio_mpsse_ida, priv-&gt;id);
++}
++
++static int gpio_mpsse_probe(struct usb_interface *interface,
++			    const struct usb_device_id *id)
++{
++	struct mpsse_priv *priv;
++	struct device *dev;
++	int err;
++
++	dev = &amp;interface-&gt;dev;
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv-&gt;udev = usb_get_dev(interface_to_usbdev(interface));
++	priv-&gt;intf = interface;
++	priv-&gt;intf_id = interface-&gt;cur_altsetting-&gt;desc.bInterfaceNumber;
++
++	priv-&gt;id = ida_simple_get(&amp;gpio_mpsse_ida, 0, 0, GFP_KERNEL);
++	if (priv-&gt;id &lt; 0)
++		return priv-&gt;id;
++
++	err = devm_add_action_or_reset(dev, gpio_mpsse_ida_remove, priv);
++	if (err)
++		return err;
++
++	devm_mutex_init(dev, &amp;priv-&gt;io_mutex);
++	devm_mutex_init(dev, &amp;priv-&gt;irq_mutex);
++
++	priv-&gt;gpio.label = devm_kasprintf(dev, GFP_KERNEL,
++					  "gpio-mpsse.%d.%d",
++					  priv-&gt;id, priv-&gt;intf_id);
++	if (!priv-&gt;gpio.label)
++		return -ENOMEM;
++
++	priv-&gt;gpio.owner = THIS_MODULE;
++	priv-&gt;gpio.parent = interface-&gt;usb_dev;
++	priv-&gt;gpio.get_direction = gpio_mpsse_get_direction;
++	priv-&gt;gpio.direction_input = gpio_mpsse_direction_input;
++	priv-&gt;gpio.direction_output = gpio_mpsse_direction_output;
++	priv-&gt;gpio.get = gpio_mpsse_gpio_get;
++	priv-&gt;gpio.set = gpio_mpsse_gpio_set;
++	priv-&gt;gpio.get_multiple = gpio_mpsse_get_multiple;
++	priv-&gt;gpio.set_multiple = gpio_mpsse_set_multiple;
++	priv-&gt;gpio.base = -1;
++	priv-&gt;gpio.ngpio = 16;
++	priv-&gt;gpio.offset = priv-&gt;intf_id * priv-&gt;gpio.ngpio;
++	priv-&gt;gpio.can_sleep = 1;
++
++	err = usb_find_common_endpoints(interface-&gt;cur_altsetting,
++					&amp;priv-&gt;bulk_in, &amp;priv-&gt;bulk_out,
++					NULL, NULL);
++	if (err)
++		return err;
++
++	priv-&gt;bulk_in_buf = devm_kmalloc(dev, usb_endpoint_maxp(priv-&gt;bulk_in),
++					 GFP_KERNEL);
++	if (!priv-&gt;bulk_in_buf)
++		return -ENOMEM;
++
++	usb_set_intfdata(interface, priv);
++
++	/* Reset mode, needed to correctly enter MPSSE mode */
++	err = usb_control_msg(priv-&gt;udev, usb_sndctrlpipe(priv-&gt;udev, 0),
++			      SET_BITMODE_REQUEST,
++			      USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_DIR_OUT,
++			      MODE_RESET, priv-&gt;intf_id + 1, NULL, 0,
++			      USB_CTRL_SET_TIMEOUT);
++	if (err)
++		return err;
++
++	/* Enter MPSSE mode */
++	err = usb_control_msg(priv-&gt;udev, usb_sndctrlpipe(priv-&gt;udev, 0),
++			      SET_BITMODE_REQUEST,
++			      USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_DIR_OUT,
++			      MODE_MPSSE, priv-&gt;intf_id + 1, NULL, 0,
++			      USB_CTRL_SET_TIMEOUT);
++	if (err)
++		return err;
++
++	gpio_irq_chip_set_chip(&amp;priv-&gt;gpio.irq, &amp;gpio_mpsse_irq_chip);
++
++	priv-&gt;gpio.irq.parent_handler = NULL;
++	priv-&gt;gpio.irq.num_parents = 0;
++	priv-&gt;gpio.irq.parents = NULL;
++	priv-&gt;gpio.irq.default_type = IRQ_TYPE_NONE;
++	priv-&gt;gpio.irq.handler = handle_simple_irq;
++
++	err = devm_gpiochip_add_data(dev, &amp;priv-&gt;gpio, priv);
++	if (err)
++		return err;
++
++	return 0;
++}
++
++static void gpio_mpsse_disconnect(struct usb_interface *intf)
++{
++	struct mpsse_priv *priv = usb_get_intfdata(intf);
++
++	priv-&gt;intf = NULL;
++	usb_set_intfdata(intf, NULL);
++	usb_put_dev(priv-&gt;udev);
++}
++
++static struct usb_driver gpio_mpsse_driver = {
++	.name           = "gpio-mpsse",
++	.probe          = gpio_mpsse_probe,
++	.disconnect     = gpio_mpsse_disconnect,
++	.id_table       = gpio_mpsse_table,
++};
++
++module_usb_driver(gpio_mpsse_driver);
++
++MODULE_AUTHOR("Mary Strodl &lt;mstrodl@csh.rit.edu&gt;");
++MODULE_DESCRIPTION("MPSSE GPIO driver");
++MODULE_LICENSE("GPL");</pre><hr><pre>commit bd8d725078867cda250fe94b9c5a067b4a64ca74
+Author: Andrew Elble &lt;aweits@rit.edu&gt;
+Date:   Fri Oct 5 09:32:08 2018 -0400
+
+    nfsd: correctly decrement odstate refcount in error path
+    
+    alloc_init_deleg() both allocates an nfs4_delegation, and
+    bumps the refcount on odstate. So after this point, we need to
+    put_clnt_odstate() and nfs4_put_stid() to not leave the odstate
+    refcount inappropriately bumped.
+    
+    Signed-off-by: Andrew Elble &lt;aweits@rit.edu&gt;
+    Reviewed-by: Jeff Layton &lt;jlayton@kernel.org&gt;
+    Cc: stable@vger.kernel.org
+    Signed-off-by: J. Bruce Fields &lt;bfields@redhat.com&gt;
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 07a57d024f95..f093fbe47133 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4398,7 +4398,7 @@ nfs4_set_delegation(struct nfs4_client *clp, struct svc_fh *fh,
+ 
+ 	fl = nfs4_alloc_init_lease(dp, NFS4_OPEN_DELEGATE_READ);
+ 	if (!fl)
+-		goto out_stid;
++		goto out_clnt_odstate;
+ 
+ 	status = vfs_setlease(fp-&gt;fi_deleg_file, fl-&gt;fl_type, &amp;fl, NULL);
+ 	if (fl)
+@@ -4423,7 +4423,6 @@ nfs4_set_delegation(struct nfs4_client *clp, struct svc_fh *fh,
+ 	vfs_setlease(fp-&gt;fi_deleg_file, F_UNLCK, NULL, (void **)&amp;dp);
+ out_clnt_odstate:
+ 	put_clnt_odstate(dp-&gt;dl_clnt_odstate);
+-out_stid:
+ 	nfs4_put_stid(&amp;dp-&gt;dl_stid);
+ out_delegees:
+ 	put_deleg_file(fp);</pre><hr><pre>commit 692ad280bff3e81721ab138b9455948ab5289acf
+Author: Andrew Elble &lt;aweits@rit.edu&gt;
+Date:   Wed Apr 18 17:04:37 2018 -0400
+
+    nfsd: fix error handling in nfs4_set_delegation()
+    
+    I noticed a memory corruption crash in nfsd in
+    4.17-rc1. This patch corrects the issue.
+    
+    Fix to return error if the delegation couldn't be hashed or there was
+    a recall in progress. Use the existing error path instead of
+    destroy_delegation() for readability.
+    
+    Signed-off-by: Andrew Elble &lt;aweits@rit.edu&gt;
+    Fixes: 353601e7d323c ("nfsd: create a separate lease for each delegation")
+    Signed-off-by: J. Bruce Fields &lt;bfields@redhat.com&gt;
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index fc74d6f46bd5..3b40d1b57613 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4378,8 +4378,11 @@ nfs4_set_delegation(struct nfs4_client *clp, struct svc_fh *fh,
+ 	spin_unlock(&amp;state_lock);
+ 
+ 	if (status)
+-		destroy_unhashed_deleg(dp);
++		goto out_unlock;
++
+ 	return dp;
++out_unlock:
++	vfs_setlease(fp-&gt;fi_deleg_file, F_UNLCK, NULL, (void **)&amp;dp);
+ out_clnt_odstate:
+ 	put_clnt_odstate(dp-&gt;dl_clnt_odstate);
+ out_stid:</pre><hr><pre>commit ae254dac721d44c0bfebe2795df87459e2e88219
+Author: Andrew Elble &lt;aweits@rit.edu&gt;
+Date:   Thu Nov 9 13:41:10 2017 -0500
+
+    nfsd: check for use of the closed special stateid
+    
+    Prevent the use of the closed (invalid) special stateid by clients.
+    
+    Signed-off-by: Andrew Elble &lt;aweits@rit.edu&gt;
+    Signed-off-by: J. Bruce Fields &lt;bfields@redhat.com&gt;
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index d0992d59f4e1..73451436c1c2 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -72,6 +72,7 @@ static u64 current_sessionid = 1;
+ #define ZERO_STATEID(stateid) (!memcmp((stateid), &amp;zero_stateid, sizeof(stateid_t)))
+ #define ONE_STATEID(stateid)  (!memcmp((stateid), &amp;one_stateid, sizeof(stateid_t)))
+ #define CURRENT_STATEID(stateid) (!memcmp((stateid), &amp;currentstateid, sizeof(stateid_t)))
++#define CLOSE_STATEID(stateid)  (!memcmp((stateid), &amp;close_stateid, sizeof(stateid_t)))
+ 
+ /* forward declarations */
+ static bool check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner);
+@@ -4936,7 +4937,8 @@ static __be32 nfsd4_validate_stateid(struct nfs4_client *cl, stateid_t *stateid)
+ 	struct nfs4_stid *s;
+ 	__be32 status = nfserr_bad_stateid;
+ 
+-	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid))
++	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid) ||
++		CLOSE_STATEID(stateid))
+ 		return status;
+ 	/* Client debugging aid. */
+ 	if (!same_clid(&amp;stateid-&gt;si_opaque.so_clid, &amp;cl-&gt;cl_clientid)) {
+@@ -4994,7 +4996,8 @@ nfsd4_lookup_stateid(struct nfsd4_compound_state *cstate,
+ 	else if (typemask &amp; NFS4_DELEG_STID)
+ 		typemask |= NFS4_REVOKED_DELEG_STID;
+ 
+-	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid))
++	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid) ||
++		CLOSE_STATEID(stateid))
+ 		return nfserr_bad_stateid;
+ 	status = lookup_clientid(&amp;stateid-&gt;si_opaque.so_clid, cstate, nn);
+ 	if (status == nfserr_stale_clientid) {</pre><hr><pre>commit 4f34bd0540d290d1fe1bc699550025623b2761ef
+Author: Andrew Elble &lt;aweits@rit.edu&gt;
+Date:   Wed Nov 8 17:29:51 2017 -0500
+
+    nfsd: fix locking validator warning on nfs4_ol_stateid-&gt;st_mutex class
+    
+    The use of the st_mutex has been confusing the validator. Use the
+    proper nested notation so as to not produce warnings.
+    
+    Signed-off-by: Andrew Elble &lt;aweits@rit.edu&gt;
+    Signed-off-by: J. Bruce Fields &lt;bfields@redhat.com&gt;
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index ecb803d7c966..98342d262771 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -86,6 +86,11 @@ static void nfs4_free_ol_stateid(struct nfs4_stid *stid);
+  */
+ static DEFINE_SPINLOCK(state_lock);
+ 
++enum nfsd4_st_mutex_lock_subclass {
++	OPEN_STATEID_MUTEX = 0,
++	LOCK_STATEID_MUTEX = 1,
++};
++
+ /*
+  * A waitqueue for all in-progress 4.0 CLOSE operations that are waiting for
+  * the refcount on the open stateid to drop.
+@@ -3600,7 +3605,7 @@ nfsd4_lock_ol_stateid(struct nfs4_ol_stateid *stp)
+ {
+ 	__be32 ret;
+ 
+-	mutex_lock(&amp;stp-&gt;st_mutex);
++	mutex_lock_nested(&amp;stp-&gt;st_mutex, LOCK_STATEID_MUTEX);
+ 	ret = nfsd4_verify_open_stid(&amp;stp-&gt;st_stid);
+ 	if (ret != nfs_ok)
+ 		mutex_unlock(&amp;stp-&gt;st_mutex);
+@@ -3664,7 +3669,7 @@ init_open_stateid(struct nfs4_file *fp, struct nfsd4_open *open)
+ 	stp = open-&gt;op_stp;
+ 	/* We are moving these outside of the spinlocks to avoid the warnings */
+ 	mutex_init(&amp;stp-&gt;st_mutex);
+-	mutex_lock(&amp;stp-&gt;st_mutex);
++	mutex_lock_nested(&amp;stp-&gt;st_mutex, OPEN_STATEID_MUTEX);
+ 
+ retry:
+ 	spin_lock(&amp;oo-&gt;oo_owner.so_client-&gt;cl_lock);
+@@ -5741,7 +5746,7 @@ init_lock_stateid(struct nfs4_ol_stateid *stp, struct nfs4_lockowner *lo,
+ 	struct nfs4_ol_stateid *retstp;
+ 
+ 	mutex_init(&amp;stp-&gt;st_mutex);
+-	mutex_lock(&amp;stp-&gt;st_mutex);
++	mutex_lock_nested(&amp;stp-&gt;st_mutex, OPEN_STATEID_MUTEX);
+ retry:
+ 	spin_lock(&amp;clp-&gt;cl_lock);
+ 	spin_lock(&amp;fp-&gt;fi_lock);</pre><hr><pre>commit 95da1b3a5aded124dd1bda1e3cdb876184813140
+Author: Andrew Elble &lt;aweits@rit.edu&gt;
+Date:   Fri Nov 3 14:06:31 2017 -0400
+
+    nfsd: deal with revoked delegations appropriately
+    
+    If a delegation has been revoked by the server, operations using that
+    delegation should error out with NFS4ERR_DELEG_REVOKED in the &gt;4.1
+    case, and NFS4ERR_BAD_STATEID otherwise.
+    
+    The server needs NFSv4.1 clients to explicitly free revoked delegations.
+    If the server returns NFS4ERR_DELEG_REVOKED, the client will do that;
+    otherwise it may just forget about the delegation and be unable to
+    recover when it later sees SEQ4_STATUS_RECALLABLE_STATE_REVOKED set on a
+    SEQUENCE reply.  That can cause the Linux 4.1 client to loop in its
+    stage manager.
+    
+    Signed-off-by: Andrew Elble &lt;aweits@rit.edu&gt;
+    Reviewed-by: Trond Myklebust &lt;trond.myklebust@primarydata.com&gt;
+    Cc: stable@vger.kernel.org
+    Signed-off-by: J. Bruce Fields &lt;bfields@redhat.com&gt;
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index ecbc7b0dfa4d..b82817767b9d 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4016,7 +4016,8 @@ static struct nfs4_delegation *find_deleg_stateid(struct nfs4_client *cl, statei
+ {
+ 	struct nfs4_stid *ret;
+ 
+-	ret = find_stateid_by_type(cl, s, NFS4_DELEG_STID);
++	ret = find_stateid_by_type(cl, s,
++				NFS4_DELEG_STID|NFS4_REVOKED_DELEG_STID);
+ 	if (!ret)
+ 		return NULL;
+ 	return delegstateid(ret);
+@@ -4039,6 +4040,12 @@ nfs4_check_deleg(struct nfs4_client *cl, struct nfsd4_open *open,
+ 	deleg = find_deleg_stateid(cl, &amp;open-&gt;op_delegate_stateid);
+ 	if (deleg == NULL)
+ 		goto out;
++	if (deleg-&gt;dl_stid.sc_type == NFS4_REVOKED_DELEG_STID) {
++		nfs4_put_stid(&amp;deleg-&gt;dl_stid);
++		if (cl-&gt;cl_minorversion)
++			status = nfserr_deleg_revoked;
++		goto out;
++	}
+ 	flags = share_access_to_flags(open-&gt;op_share_access);
+ 	status = nfs4_check_delegmode(deleg, flags);
+ 	if (status) {
+@@ -4908,6 +4915,16 @@ nfsd4_lookup_stateid(struct nfsd4_compound_state *cstate,
+ 		     struct nfs4_stid **s, struct nfsd_net *nn)
+ {
+ 	__be32 status;
++	bool return_revoked = false;
++
++	/*
++	 *  only return revoked delegations if explicitly asked.
++	 *  otherwise we report revoked or bad_stateid status.
++	 */
++	if (typemask &amp; NFS4_REVOKED_DELEG_STID)
++		return_revoked = true;
++	else if (typemask &amp; NFS4_DELEG_STID)
++		typemask |= NFS4_REVOKED_DELEG_STID;
+ 
+ 	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid))
+ 		return nfserr_bad_stateid;
+@@ -4922,6 +4939,12 @@ nfsd4_lookup_stateid(struct nfsd4_compound_state *cstate,
+ 	*s = find_stateid_by_type(cstate-&gt;clp, stateid, typemask);
+ 	if (!*s)
+ 		return nfserr_bad_stateid;
++	if (((*s)-&gt;sc_type == NFS4_REVOKED_DELEG_STID) &amp;&amp; !return_revoked) {
++		nfs4_put_stid(*s);
++		if (cstate-&gt;minorversion)
++			return nfserr_deleg_revoked;
++		return nfserr_bad_stateid;
++	}
+ 	return nfs_ok;
+ }
+ </pre>
+    <div class="pagination">
+        <span>[1]</span><a href='30_2.html'>2</a><a href='30_3.html'>3</a><a href='30_2.html'>Next&gt;&gt;</a>
+    <div>
+</body>
